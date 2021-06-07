@@ -1,0 +1,188 @@
+.orders_advanced {
+  .p-modal-content.modal-lg, .p-modal-card.modal-lg{
+    width: 1032px;
+    height: 822px;
+  }
+  .modal-body {
+    padding: 16px;
+    height: 822px;
+
+    .modal-confirm {
+      width: 500px;
+      height: 200px;
+      margin: auto;
+    }
+
+    .card-body {
+      width: 100%;
+
+      .bulk-actions__main-bar {
+
+        .advanced_click {
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+
+
+    }
+
+    .tab-selected-order {
+
+      .order_advanced_pagination {
+        margin-top: 24px;
+        justify-content: flex-end;
+        margin-right: 42px;
+      }
+
+      .search_order {
+        .form-icons, .form-control-icon-right {
+          right: 14px;
+          left: auto;
+          top: 20px;
+          color: #B0B3B9;
+          font-size: 20px;
+        }
+        .form-control {
+          height: 40px;
+        }
+      }
+    }
+    .pagination-box {
+      width: auto;
+      .select_limit_box {
+        display: none;
+      }
+    }
+
+    .title_select {
+      padding-bottom: 13px;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 22.4px;
+      color: #686B70;
+      .search {
+        margin-right: 24px;
+        &:hover{
+          border-bottom: 1px solid #686B70;
+          cursor: pointer;
+          transition: 0.4s;
+        }
+      }
+      .order_selected {
+        &:hover{
+          border-bottom: 1px solid #686B70;
+          cursor: pointer;
+          transition: 0.4s;
+        }
+      }
+      .active{
+        color: #0554F2;
+        border-bottom: 1px solid #0554F2;
+      }
+    }
+
+
+    .bottom_select_order {
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 24px;
+      color: #17191D;
+
+      .se_all {
+        margin-right: 8px;
+        border-radius: 8px;
+        border-color: #686B70;
+      }
+      .se_order {
+        margin-right: 8px;
+        border-radius: 8px;
+        color: #0554F2;
+        border-color: #B0B3B9;
+      }
+    }
+  }
+
+  .date {
+    width: 100%;
+    background:#F4F5F6;
+    border-radius: 4px !important;
+    position: relative;
+    z-index: 100;
+    height: 40px;
+    margin-left: 0;
+    span {
+      color: #B0B3B9;
+    }
+    img {
+      color: #B0B3B9;
+    }
+
+  }
+
+  .reportrange-text {
+    background: unset !important;
+    border: unset !important;
+    cursor: unset !important;
+    padding-top: 11px !important;
+    //padding: unset !important;
+  }
+
+  .daterangepicker {
+    top: 45px !important;
+    right: 0 !important;
+  }
+
+  .search_date {
+    .close {
+      height: 40px;
+      align-items: center;
+      background: #F4F5F6;
+      padding-left: 18px;
+    }
+  }
+
+  .order_advanced_pagination {
+    margin-top: 15px;
+    justify-content: flex-end;
+    margin-right: 42px;
+
+    .page-linksy {
+      padding: 10px;
+      cursor: pointer;
+      i {
+        font-size: 10px;
+        position: relative;
+        bottom: 1px;
+      }
+      &.disabled {
+        pointer-events: none;
+        color: #b0b3b9;
+      }
+    }
+    span {
+      border-radius: 4px;
+      &.active {
+        color: #17191d !important;
+        cursor: default;
+        background-color: #dfe3e8;
+        font-weight: 700;
+        height: 30px !important;
+        display: inline-block;
+        line-height: 30px;
+      }
+    }
+    .page-item {
+      line-height: 30px;
+    }
+  }
+
+}
+
+@media (min-width: 992px) {
+  .orders_advanced .modal-lg, .orders_advanced .modal-xl {
+    max-width: 1032px;
+  }
+}

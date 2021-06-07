@@ -1,0 +1,98 @@
+.tracking-page{
+  .page-header{
+    margin-bottom: 15px;
+    .page-header-title{
+      font-size: 24px;
+      font-weight: bold;
+      line-height: 36px;
+    }
+  }
+  .page-content{
+      .list-tracking{
+        box-shadow: 0px -2px 2px rgba(0, 0, 0, 0.04), 0px 4px 32px -14px rgba(0, 0, 0, 0.12);
+        border-radius: 20px;
+        padding: 32px 32px;
+
+        .group-action{
+          display: flex;
+          margin-bottom: 10px;
+          .search{
+            width: 370px;
+            .date{
+              width: 100%;
+              height: 100%;
+              .reportrange-text{
+                padding-top: 14px !important;
+                background: #F4F5F6;
+                border:unset;
+              }
+            }
+          }
+          .export{
+            flex: 1;
+            a{
+              float: right;
+              img{
+                margin-right: 5px;
+              }
+            }
+          }
+          .close{
+            background: #F4F5F6;
+            width: 48px;
+            i{
+              margin: 0 auto;
+            }
+          }
+        }
+        .table-responsive{
+          .table{
+            margin-top: 20px;
+            thead{
+              display: block;
+              width: 100%;
+              tr{
+                width: 100%;
+                display: block;
+                th{
+                  display: inline-block;
+                  width: 33.33%;
+                  line-height: 60px;
+                }
+              }
+            }
+            tbody{
+              display: block;
+              width: 100%;
+              tr{
+                width: 100%;
+                display: block;
+                td{
+                  display: inline-block;
+                  width: 33.33%;
+                  line-height: 48px;
+                  max-width: unset;
+                  a{
+                    font-weight: 500;
+                  }
+                }
+              }
+
+            }
+          }
+        }
+      }
+  }
+  .page-footer{
+    margin-top: 32px;
+    .select_limit_box{
+      display: none;
+    }
+  }
+  .drp-calendar{
+    max-width: 240px !important;
+  }
+  .opensleft{
+    left: -71% !important;
+  }
+}

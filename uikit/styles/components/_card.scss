@@ -1,0 +1,12 @@
+.card-actions {
+	position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 10px;
+    font-size: 12px;
+	word-spacing: 1px;
+
+	a:hover {
+		cursor: pointer;
+	}
+}

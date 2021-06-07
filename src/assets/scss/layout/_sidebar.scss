@@ -1,0 +1,163 @@
+.site-navbar{
+  position: fixed;
+  z-index: 99;
+}
+.site-menu{
+  padding:0 10px ;
+}
+.site-menubar{
+  top: 56px;
+  padding-top: 32px;
+  position: fixed;
+  width: 14vw ;
+  background: #F9FAFB ;
+  transition: width 0.2s;
+  height: 100%;
+  border-right: 1px solid #DFE3E8;
+  z-index: 5;
+
+}
+
+.site-menu-item{
+  padding: 10px;
+  height: 40px;
+  // left: 10px;
+  margin-top: 4px;
+  border-radius: 8px;
+  position: relative;
+}
+
+.site-menu-item:hover {
+  background: rgba(223, 227, 232, 0.3);
+  a {
+    .site-menu-title {
+      color: #0554F2 ;
+    }
+  }
+  .site-menu-icon {
+    //filter: invert(21%) sepia(63%) saturate(7174%) hue-rotate(221deg) brightness(98%) contrast(96%);
+    &.default {
+      display: none;
+    }
+    &.active {
+      display: block;
+    }
+  }
+
+
+  .site-menubar-light, site-menubar{
+    width: 14vw !important;
+  }
+}
+.site-menu-title{
+  position: absolute;
+  left: 44px !important;
+  width: 10vw;
+  height: 40px;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 160%;
+  float: left;
+  color: #686B70;
+  opacity: 0;
+}
+
+//Logout
+.site-menubar-hide .site-menu-title {
+  opacity: 0;
+  visibility: hidden;
+
+}
+
+.site-menubar-hide .package-user {
+  display: none;
+
+}
+.site-menu-icon {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  &.active {
+    display: none;
+  }
+}
+
+.site-menubar-unfold .site-menu-title {
+  opacity: 1;
+
+}
+
+// -----------------
+.site-menubar .site-menu >.site-menu-item.active {
+  background: rgba(223, 227, 232, 0.3);
+
+  a {
+    span {
+      color: #0554F2;
+      font-weight: bold;
+    }
+  }
+  .site-menu-icon {
+    //filter: invert(21%) sepia(63%) saturate(7174%) hue-rotate(221deg) brightness(98%) contrast(96%);
+    &.default {
+      display: none;
+    }
+    &.active {
+      display: block;
+    }
+  }
+}
+
+
+.site-menubar-hide {
+  .site-menubar {
+    width: 60px;
+    .site-menu-icon {
+      position: absolute;
+    }
+    .icon {
+      opacity: 0;
+    }
+
+  }
+  .site-menubar:hover {
+    width: 14vw !important;
+    .site-menu-title {
+      opacity: 1;
+      transition: 0.5s;
+      visibility: visible;
+    }
+    .icon {
+      display: block !important;
+    }
+  }
+}
+
+.dropdown-item-shop{
+  padding: 0;
+  font-size: 14px;
+  line-height: 160%;
+  color: #37393E;
+  white-space: nowrap;
+  .shop-name{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 240px;
+  }
+  &:hover{
+    color: #0554F2;
+    background: rgba(244, 246, 248, 0.6);
+  }
+
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
