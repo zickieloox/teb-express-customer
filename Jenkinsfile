@@ -18,7 +18,7 @@ node {
         // Prepare stage: clone projects
         stage ('Prepare') {
             // clone lionnix repo
-            dir('lionnixapi') {
+            dir('shipping-customer') {
                 git(
                     credentialsId: 'GitAccessId',
                     branch: "${env.BRANCH_NAME}",
@@ -31,7 +31,7 @@ node {
         image = "${deploySettings.image_name}:${deploySettings.image_tag}"
         stage ('Build') {
             if (deploySettings.branch == 'master' || deploySettings.branch == 'dev') {
-                dir('lionnixapi') {
+                dir('shipping-customer') {
                     withDockerRegistry([
                         credentialsId: 'docker-registry-credentials',
                         url: "${deploySettings.private_registry_address}"]) {
@@ -57,7 +57,7 @@ node {
                 echo "Unable to get deploy tag or this branch is not allowed to deploy. Stop."
             }
 
-            dir('lionnixapi') {
+            dir('shipping-customer') {
                 // use same namespace on staging/dev
                 sh """
                     KUBECONFIG=${deploySettings.kube_config} helm upgrade --install -f ${deploySettings.helm_values_file} ${deploySettings.helm_release} --set image.tag=${deployTag} deploy/helm_chart
