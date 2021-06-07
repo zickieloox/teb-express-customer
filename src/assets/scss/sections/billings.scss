@@ -1,0 +1,433 @@
+.billings_detail-page{
+  .confirm-payment-btn{
+    .btn{
+      line-height: 40px;
+      padding: 0 16px !important;
+      box-shadow: none;
+    }
+    &.hidden{
+      visibility: hidden;
+      opacity: 0;
+    }
+    &.disabled{
+      cursor: not-allowed !important;
+      pointer-events: none;
+      color: black;
+    }
+  }
+  .hidden{
+    color: #B0B3B9;
+  }
+  .card{
+    box-shadow: 0px 1px 12px -6px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    padding: 26px 24px;
+
+  }
+  .btn{
+    transition: opacity .3s ease;
+    &:hover{
+      opacity: 0.9;
+    }
+  }
+
+  .btn-danger-custom{
+    background-color: white;
+    color: red;
+    border: 1px solid;
+    margin-right: 8px;
+
+      &:hover{
+        color: white;
+        transition:  0.3s;
+        background: red;
+      }
+
+    &.disabled{
+      pointer-events: none;
+      color: #B0B3B9;
+      background:#DFE3E8 ;
+      border: none;
+      cursor: not-allowed;
+    }
+
+  }
+  .btn-delete{
+    .hidden{
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+  .billing-metadata{
+    .billing-number{
+      font-weight: bold;
+      font-size: 24px;
+      line-height: 120%;
+      color: #17191D;
+      margin-right: 12px;
+    }
+    .billing-date{
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 160%;
+      color: #686B70;
+      margin-left: 12px;
+    }
+  }
+  .amount-billing{
+    margin-top: 22px;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: unset;
+    border-bottom-right-radius:unset ;
+    box-shadow: 0px 4px 32px -14px rgba(0, 0, 0, 0.12);
+      .total-amount{
+        font-size: 20px;
+        font-weight: 600;
+        color: #17191D;
+      }
+  }
+  .bill-history{
+    border: unset;
+    background: inherit;
+    box-shadow: unset;
+    margin-top: 10px;
+    .section-timeline-lg .timeline h3 {
+      border-bottom: 1px solid #DFE3E8;
+      padding-bottom: 12px;
+      margin-bottom: 32px;
+      font-family: Montserrat;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 120%;
+      color: #17191D;
+    }
+  }
+  .billing-info{
+    margin-top: 10px;
+    &:last-child{
+      .order-items{
+        border-radius: 0 0 20px 20px;
+      }
+    }
+    .card-block{
+      box-shadow: 0px 4px 32px -14px rgba(0, 0, 0, 0.12);
+
+      .card-title{
+        justify-content: space-between;
+        height: 70px;
+        background-color: white;
+        padding: 24px 32px;
+        box-shadow: 0px 4px 0px -14px rgba(0, 0, 0, 0.12);
+        border: 1px solid rgba(0,0,0,.125);
+        border-bottom: none;
+        margin-bottom: 0;
+        .oder-id{
+          color: #1f3aed;
+          font-weight: bold;
+        }
+        .total-cost{
+          margin-left: 24px;
+          span{
+            font-weight: bold;
+          }
+        }
+        .btn-delete{
+          a{
+            color: #37393E;
+            &.hidden{
+              cursor: not-allowed !important;
+              color: #B0B3B9;
+              pointer-events: none;
+            }
+          }
+          cursor:pointer;
+          img{
+            margin-right: 10px;
+            padding-bottom: 4px;
+          }
+        }
+      }
+      .order-items{
+        background-color: white;
+       max-height: 370px;
+        overflow: auto;
+        padding: 0 32px 45px 32px;
+        box-shadow: 0px 4px 0px -14px rgba(0, 0, 0, 0.12);
+        border: 1px solid rgba(0, 0, 0, 0.125);
+          .order-items-table{
+            th{
+              border-bottom: none;
+              height: 50px!important;
+              padding: 32px 0 24px 0;
+              position: sticky;
+              top: 0;
+              z-index: 2;
+              background: white;
+            }
+            tr{
+              td{
+                height: 48px !important;
+              }
+            }
+          }
+      }
+    }
+  }
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #DFE3E8;
+  }
+  ::-webkit-scrollbar-track {
+    box-shadow: none;
+  }
+  ::-webkit-scrollbar {
+    width: 12px;
+  }
+  .pagination{
+    .pagination-box{
+      margin-top: 32px;
+      ul{
+        z-index: 3;
+      }
+    }
+  }
+
+  .page-content{
+    .container-fluid{
+      padding: 0;
+    }
+  }
+
+  .page-footer{
+    margin-top: 37px;
+    .select_limit_box{
+      display: none;
+    }
+  }
+
+}
+
+.billing-list-page {
+  .page-header-group{
+    display: inline;
+  }
+  .search{
+    display: flex;
+    .input{
+    width: 78%;
+    }
+    .date{
+      width: 22%;
+      background:#F4F5F6;
+      border-radius: 4px !important;
+      position: relative;
+    }
+    .close{
+      background:#F4F5F6 ;
+      width: 48px;
+      i{
+        margin-left: 3px;
+      }
+    }
+  }
+  .reportrange-text{
+    background: unset !important;
+    border: unset !important;
+    cursor: pointer;
+    padding-top: 15px !important;
+  }
+  .list-billing .daterangepicker {
+    top:45px !important;
+    right: 0  !important;
+    .drp-calendar {
+      max-width: 240px;
+    }
+  }
+  .nav-tabs-horizontal{
+    margin-bottom: 24px;
+  }
+  .balance{
+    border-bottom: 1px solid #E5E7ED;
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    display: flex;
+    .out_standing{
+      padding: 16px;
+      width: 267px;
+      height: 96px;
+      background: rgba(230,242,255,0.5);
+      border-radius: 8px;
+      margin-right: 24px;
+      h4 {
+        margin-bottom: 0;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 24px;
+        letter-spacing: 0.2px;
+        color: #17191D;
+      }
+      span{
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 36px;
+        color: #37393E;
+      }
+      .out_standing_heading{
+        display: flex;
+        justify-content: space-between;
+        a {
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 20px;
+          letter-spacing: 0.2px;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+  .table-transaction{
+    .badge-round {
+      background: none;
+    }
+  }
+}
+
+/*balance-page*/
+.balance-page {
+  .search {
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    margin-bottom: 8px;
+    .multiselect-balance{
+      display: flex;
+      height: 40px;
+      .search-option {
+        width: 189px;
+      }
+      .search-type {
+        width: 137px;
+        margin-left: 8px;
+      }
+      .multiselect__tags {
+        height: 40px;
+        border: 1px solid #E5E7ED;
+        box-sizing: border-box;
+        border-radius: 8px;
+        background-color: #ffffff;
+        .multiselect__single, .multiselect__placeholder {
+          margin-top: 1px;
+          background-color: #ffffff;
+          color: #37393E;
+          padding-top: 0;
+        }
+      }
+      .multiselect__select {
+        top: -2px
+      }
+      .multiselect--active .multiselect__select {
+        transform:none
+      }
+      .multiselect--active .multiselect__tags {
+        border: 1px solid #37393E;
+border-radius: 8px 8px 0px 0px;
+      }
+      .multiselect__input {
+        font-size: 14px;
+      }
+      .multiselect__content-wrapper{
+        border: 1px solid #37393E;
+        border-radius: 0px 0px 8px 8px;
+        max-height: none;
+      }
+    }
+    .date-balance {
+      height: 40px;
+      width: 220px;
+      .reportrange-text {
+        height: 40px;
+        background: #FFFFFF !important;
+        border: 1px solid #E5E7ED !important;
+        box-sizing: border-box;
+        border-radius: 8px !important;
+        cursor: pointer !important;
+        padding-top: 11px !important;
+      }
+      .daterangepicker {
+        top:41px !important;
+        right: 0  !important;
+        .drp-calendar {
+          max-width: 240px;
+        }
+      }
+    }
+    .close{
+      background: #FFFFFF !important;
+      border: 1px solid #E5E7ED !important;
+      width: 40px;
+      height: 40px;
+      i{
+        margin-left: 1px;
+      }
+    }
+  }
+}
+
+.balance{
+  &-title{
+    margin-right: 24px;
+    width: 30%;
+    .title-text{
+      margin-bottom: 20px;
+      &.input{
+        height: 50px;
+        line-height: 50px;
+      }
+    }
+  }
+  &-input{
+    &_text, &_number{
+      margin-bottom: 21px;
+    }
+    &_number{
+      font-weight: 600;
+    }
+    &_error{
+      font-size: 12px;
+      color: red;
+    }
+    &_text{
+      height: 48px;
+      input{
+        background-color: #F4F5F6;
+        border-radius: 4px;
+        border: none;
+        padding: 13px 16px;
+        border:1px solid;
+        border-color: #F4F5F6;
+        box-shadow: none;
+        transition: box-shadow 0.25s linear, border 0.25s linear, color 0.25s linear, background-color 0.25s linear;
+        &:focus{
+          border-color:  #37393E;
+          background-color: #FFFFFF;
+        }
+      }
+      .has_error{
+        .form-control{
+          border-color: red;
+        }
+      }
+    }
+
+  }
+  &-desc{
+    font-weight: 500;
+  }
+  .modal-footer{
+    justify-content: flex-end;
+  }
+}

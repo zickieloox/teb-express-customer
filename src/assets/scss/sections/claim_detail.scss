@@ -1,0 +1,285 @@
+.claim-detail-page {
+  .table {
+    margin: 0;
+    th {
+      height: 66px;
+      &:first-child {
+        padding-left: 8px;
+      }
+    }
+    td {
+      height: 84px !important;
+      &:first-child {
+        padding-left: 8px;
+        .design-image {
+          width: 60px;
+          height: 60px;
+          position: relative;
+          border-radius: 4px;
+          object-fit: cover;
+        }
+      }
+      &:last-child {
+        text-align: center;
+        .icon-download {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+}
+
+.claim-detail-page {
+  .page-header-group {
+    margin-bottom: 20px;
+  }
+  .content-page {
+    .page-header {
+      .page-header_back {
+        .text {
+          color: #686b70;
+        }
+        .page-header_back_icon {
+          margin-bottom: 2px;
+        }
+      }
+
+      .page-header_title {
+        margin-bottom: 0;
+        line-height: 40px;
+        .edit-ticket {
+          position: relative;
+          left: 16px;
+          bottom: 2px;
+          cursor: pointer;
+        }
+      }
+    }
+    .page-content {
+      display: flex;
+
+      .card {
+        box-shadow: 0px 4px 32px -14px rgba(0, 0, 0, 0.12);
+        border-radius: 8px;
+        margin-bottom: 30px;
+        padding: 12px 24px 5px 24px;
+      }
+      .menu_content {
+        flex: 1;
+        .page-content_drag {
+          .user-content {
+            &.card {
+              padding: 24px;
+              margin-bottom: 12px;
+            }
+            .user-title {
+              padding-bottom: 20px;
+              border-bottom: 1px solid #dfe3e8;
+              .info-user {
+                .user-name {
+                  color: #37393e;
+                  font-weight: 700;
+                  line-height: 24px;
+                  margin-left: 8px;
+                }
+                .user-time {
+                  color: #686b70;
+                }
+                .role-user {
+                  background-color: #def6f3;
+                  color: #1dc9b7;
+                  font-size: 12px;
+                  border-radius: 50px;
+                  padding: 2px 8px;
+                  font-weight: 500;
+                  margin-left: 8px;
+                }
+              }
+            }
+            .user-text {
+              margin-top: 24px;
+              color: #37393e;
+            }
+            .ticket-attach-files {
+              margin-top: 16px;
+              .list-item {
+                display: flex;
+                .item {
+                  margin-right: 16px;
+                  .gallery-item {
+                    position: relative;
+                    img {
+                      width: 84px !important;
+                      height: 84px !important;
+                      object-fit: cover;
+                    }
+                    .icon {
+                      color: #fff;
+                      position: absolute;
+                      top: 50%;
+                      left: 50%;
+                      transform: translate(-50%, -50%);
+                      font-size: 25px;
+                      cursor: pointer;
+                      display: none;
+                    }
+                    &:before {
+                      content: '';
+                      position: absolute;
+                      background-color: rgba(0, 0, 0, 0.2);
+                      width: 100%;
+                      height: 100%;
+                      opacity: 0;
+                    }
+                    &:hover::before {
+                      opacity: 1;
+                      transition: 0.4s;
+                    }
+                    &:hover .icon {
+                      display: block;
+                      transition: 0.4s;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .page-content_note {
+      width: 340px;
+      height: 100%;
+      margin-right: 24px;
+      .note-content {
+        .list-note {
+          .item-note {
+            line-height: 24px;
+            margin-bottom: 8px;
+            .item-title {
+              color: #37393e;
+              font-weight: 600;
+              margin-right: 5px;
+            }
+          }
+        }
+      }
+      &.card {
+        padding: 24px;
+      }
+      .card {
+        padding: 24px;
+      }
+    }
+  }
+  .footer {
+    width: 100%;
+    .group-button {
+      float: right;
+      .close_claim {
+        width: 90px;
+        height: 40px;
+        background: #ffffff;
+        border: 1px solid #db1802;
+        border-radius: 4px;
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 24px;
+        text-align: center;
+        color: #db1802;
+      }
+      .save_claim {
+        width: 83px;
+        height: 40px;
+        background: #0554f2;
+        border-radius: 4px;
+        font-family: Montserrat;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 24px;
+        text-align: center;
+        border: unset;
+
+        color: #ffffff;
+      }
+      button {
+        margin: 0 4px;
+      }
+    }
+  }
+}
+
+.modal-reply-ticket {
+  .form-control {
+    position: relative;
+  }
+
+  .footer {
+    display: flex;
+
+    .rule {
+      flex: 0 0 60%;
+      text-align: left;
+      font-size: 12px;
+      line-height: 18px;
+      color: #b0b3b9;
+    }
+    .group-button {
+      flex: 0 0 40%;
+      text-align: right;
+    }
+  }
+
+  .el-upload-dragger {
+    height: auto;
+    padding: 13px 15px;
+    .el-upload__text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #37393e;
+      font-weight: normal;
+    }
+  }
+
+  .remove-file {
+    cursor: pointer;
+    &:hover {
+      color: #db1802;
+    }
+  }
+}
+.ticket-attach-files {
+  .gallery-item::before {
+    content: none !important;
+  }
+  .gallery-item > div {
+    cursor: pointer;
+    &::before {
+      content: '';
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.2);
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+    }
+  }
+  .gallery-item:hover > div {
+    &::before {
+      opacity: 1;
+    }
+  }
+}
+
+.claim-messages {
+  position: relative;
+
+  .main-claim.fixed {
+    position: fixed;
+    z-index: 999;
+    top: 56px;
+    width: 100%;
+  }
+}
