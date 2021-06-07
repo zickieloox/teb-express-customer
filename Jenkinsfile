@@ -85,8 +85,8 @@ def getDeploySettings() {
     def deploySettings = [:]
 
 
-    dockerImageName = "nexus.lionnix.net/web-ui/shipping-customer"
-    serviceName = "shipping-customer"
+    dockerImageName = "nexus.lionnix.net/web-ui/shipment-customer"
+    serviceName = "shipment-customer"
     namespace = "shipment-web-ui"
 
     // end fill args
