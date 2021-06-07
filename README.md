@@ -1,6 +1,3 @@
-# lionnix-seller-v2
-
-
 ## Project setup
 
 ```
