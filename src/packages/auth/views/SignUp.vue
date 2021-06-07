@@ -105,12 +105,6 @@ export default {
       return `${process.env.VUE_APP_RECAPCHA_KEY}`
     },
   },
-  props: {
-    listNumber: {
-      type: Array,
-      default: () => [{}],
-    },
-  },
 
   data() {
     return {
