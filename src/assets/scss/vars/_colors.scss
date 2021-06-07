@@ -116,14 +116,8 @@ $color-grey-700: #616161 !default;
 $color-grey-800: #424242 !default;
 $color-black: #121212  !default;
 
-// $color-grey-100        : #e6e6e6 !default;
-// $color-grey-200        : #d1d1d1 !default;
-// $color-grey-300        : #bfbfbf !default;
-// $color-grey-400        : #ababab !default;
-// $color-grey-500        : #949494 !default;
-// $color-grey-600        : #828282 !default;
-// $color-grey-700        : #6e6e6e !default;
-// $color-grey-800        : #595959 !default;
+
+
 $color-grey-900: #474747 !default;
 $color-blue-grey-100: #f3f7f9 !default;
 $color-blue-grey-200: #e4eaec !default;
@@ -133,16 +127,45 @@ $color-blue-grey-500: #37393E !default;
 $color-blue-grey-600: #526069 !default;
 $color-blue-grey-700: #37474f !default;
 $color-blue-grey-800: #263238 !default;
-
-// $color-blue-grey-100   : #e4e7eb !default;
-// $color-blue-grey-200   : #ccd2d9 !default;
-// $color-blue-grey-300   : #b6c0cc !default;
-// $color-blue-grey-400   : #9fadbd !default;
-// $color-blue-grey-500   : #8798ab !default;
-// $color-blue-grey-600   : #758596 !default;
-// $color-blue-grey-700   : #626f80 !default;
-// $color-blue-grey-800   : #4f5b69 !default;
 $color-blue-grey-900: #3e4854 !default;
+
+
+$color-java-blue-1: #dff6f7 !default;
+$color-java-blue-2: #b0e8eb !default;
+$color-java-blue-3: #7dd9df !default;
+$color-java-blue-4: #49cad2 !default;
+$color-java-blue-5: #20bfca !default;
+$color-java-blue-6: #00b4c3 !default;
+$color-java-blue-7: #00a4b1 !default;
+$color-java-blue-8: #008f98 !default;
+$color-java-blue-9: #007b81 !default;
+$color-java-blue-10: #015858 !default;
+
+
+$color-green: #48BE78 !default;
+$color-green-light: #C5E6CF !default;
+$color-green-lighter: #F0FFF3 !default;
+$color-green-dark: #32995F !default;
+$color-green-dark: #124D2F !default;
+
+
+$color-neutral-1:#F6F7F7 !default;
+$color-neutral-2:#EDEEEE !default;
+$color-neutral-3:#E1E2E2 !default;
+$color-neutral-4:#CFD0D0 !default;
+$color-neutral-5:#AAABAB !default;
+$color-neutral-6:#898A8A !default;
+$color-neutral-7:#626363 !default;
+$color-neutral-8:#4F5050 !default;
+$color-neutral-9:#313232 !default;
+$color-neutral-10:#111212 !default;
+
+$color-red: #F5222D !default;
+$color-red-light: #FFA39E !default;
+$color-red-lighter: #F5222D !default;
+$color-red-dark: #CF1322 !default;
+$color-red-darker: #820014 !default;
+
 $color-lists: (
   "red": (
     "100": $color-red-100,

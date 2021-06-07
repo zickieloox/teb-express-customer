@@ -57,8 +57,6 @@ $bg-end:  #1571b1;
   }
 
   form {
-    margin: 45px 0 20px;
-
     .form-material.floating  {
       & + & {
         margin-top: 30px;
@@ -137,11 +135,10 @@ $bg-end:  #1571b1;
             height: 16px;
           }
           .content_help-text, a{
-            font-weight: $font-weight-medium;
-            line-height: 22.4px;
             letter-spacing: 0.2px;
             margin-left: 4px;
-            color: #37393E;
+            color:  $color-neutral-10;
+            font-size: 12px;
           }
         }
         .logo_tablet{
@@ -163,31 +160,32 @@ $bg-end:  #1571b1;
             width: 100%;
           }
           form{
-            span.redirect:hover{
-              color: $bg-start!important;
-              cursor: pointer;
-            }
             label{
               text-align: left;
-              color: #17191D !important;
               margin-bottom: 4px !important;
             }
             .label{
               display: flex;
               justify-content: space-between;
-              .font-size-12{
-                color: #909398!important;
+              .redirect{
+                color: $color-java-blue-10 ;
+                &:hover{
+                  color: $color-java-blue-7 ;
+                  cursor: pointer;
+                }
               }
             }
             .qinput{
               margin-bottom: 16px;
             }
+            .new-member{
+              color: $color-neutral-9;
+            }
           }
           .creatAcount{
-            text-decoration:  #0554f2  underline ;
-            color: #37393e;
-            line-height: 160%;
-            font-weight: 600;
+            margin-left: 4px;
+            text-decoration: $color-java-blue-10  underline ;
+            color: $color-java-blue-10;
           }
         }
       }
@@ -233,7 +231,16 @@ $bg-end:  #1571b1;
     color: #db1802;
   }
 }
+.police{
+  &__text{
+    color: $color-neutral-9;
+    font-size: 12px;
+    &-link{
+      color: $color-java-blue-10;
+    }
+  }
 
+}
 //@include media-breakpoint-down(xs) {
 //  .page-login-v3 {
 //    .page-content {
