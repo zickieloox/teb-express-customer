@@ -22,7 +22,7 @@ node {
                 git(
                     credentialsId: 'GitAccessId',
                     branch: "${env.BRANCH_NAME}",
-                    url: 'git@gitlab.com:lionnix/lionnix-seller-v2.git'
+                    url: 'git@gitlab.com:lionnix/shipping-customer.git'
                 )
             }
         }
