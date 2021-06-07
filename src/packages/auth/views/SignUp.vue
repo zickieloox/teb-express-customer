@@ -1,28 +1,15 @@
 <template>
   <div class="page vertical-align">
     <div class="vertical-align-middle">
-      <div class="header mb-40">
-        <h2 class="header-2">
-          Sign up
-        </h2>
+      <div class="header mb-16">
+        <div class="header-2">
+          Tạo tài khoản mới
+        </div>
       </div>
 
       <form :model="form" class="" @submit.prevent="onSignUp">
         <div class="mb-16">
-          <label class="font-weight-bold">Email</label>
-          <p-input
-            placeholder="you@example.com"
-            type="email"
-            validate="on"
-            v-model="user.email"
-            :input="user.email"
-            @status="checkEmail($event)"
-            @keyup.enter="onSignUp"
-            :required="requiredEmail"
-          />
-        </div>
-        <div class="mb-16">
-          <label class="font-weight-bold">Username</label>
+          <label class="font-weight-600 color-newtral-10">Họ và tên</label>
           <p-input
             placeholder="Username"
             type="username"
@@ -35,7 +22,22 @@
           />
         </div>
         <div class="mb-16">
-          <label class="font-weight-bold">Password</label>
+          <label class="font-weight-600 color-newtral-10"
+            >Số điện thoại / Email</label
+          >
+          <p-input
+            placeholder="you@example.com"
+            type="email"
+            validate="on"
+            v-model="user.email"
+            :input="user.email"
+            @status="checkEmail($event)"
+            @keyup.enter="onSignUp"
+            :required="requiredEmail"
+          />
+        </div>
+        <div class="mb-16">
+          <label class="font-weight-600 color-newtral-10">Mật khẩu</label>
           <p-input
             placeholder="Enter password"
             hiddenPass="on"
@@ -48,44 +50,7 @@
             @status="checkPassword($event)"
           />
         </div>
-        <div class="mb-16">
-          <div class="row">
-            <div class="col-md-6 p-0">
-              <label class="font-weight-bold">Shop name</label>
-              <p-input
-                placeholder="Your shop name"
-                type="shopname"
-                validate="on"
-                v-model="shop_name"
-                :input="shop_name"
-                @keyup.enter="onSignUp"
-                :required="requiredShopname"
-                @status="checkShopname($event)"
-              />
-            </div>
-            <div class="col-md-6 pr-0 sign-up-phone">
-              <label class="font-weight-bold">Phone</label>
-              <select-phone
-                class="select-phone"
-                :current-number="numberC"
-                v-model="country_code"
-                :list-number="listNumber"
-              />
-              <p-input
-                placeholder="Ex. 923 456 789"
-                type="phonenumber"
-                validate="on"
-                v-model="user.phone_number"
-                :input="user.phone_number"
-                @keyup.enter="onSignUp"
-                :required="requiredPhonenumber"
-                @status="checkPhonenumber($event)"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div class="captcha mt-40 mb-20">
+        <div class="captcha mb-16">
           <vue-recaptcha
             ref="recapcha"
             @verify="onVerify"
@@ -98,9 +63,19 @@
             Please check the captcha
           </span>
         </div>
+        <div class="police mb-16">
+          <span class="police__text">
+            Khi nhấn nút <b> Đăng ký</b>, bạn đã đồng ý thực hiện mọi giao dịch
+            mua bán theo
 
+            <a class="police__text-link" href="/"
+              >Điều kiện sử dụng & chính sách</a
+            >
+            của xxx.
+          </span>
+        </div>
         <p-button
-          class="btn btn-special btn-primary mt-20 "
+          class="btn btn-special btn-primary mb-16 "
           :loading="isLoading"
           @click="onSignUp"
         >
@@ -108,30 +83,22 @@
         </p-button>
       </form>
 
-      <p class="text-center mb-80">
-        Already have an account?
-        <router-link
-          :to="{ name: 'sign-in' }"
-          class="font-weight-600 creatAcount"
-          >Sign in</router-link
+      <p class="mb-80">
+        Bạn đã có tài khoản?
+        <router-link :to="{ name: 'sign-in' }" class="creatAcount"
+          >Đăng nhập</router-link
         >
       </p>
     </div>
   </div>
 </template>
-<style scoped>
-.select-phone {
-  position: absolute;
-  font-size: 14px !important;
-}
-</style>
+
 <script>
 import { mapActions } from 'vuex'
-import SelectPhone from '@/components/shared/resource/SelectPhone'
 import Storage from '@core/helpers/storage'
 import VueRecaptcha from 'vue-recaptcha'
 export default {
-  components: { VueRecaptcha, SelectPhone },
+  components: { VueRecaptcha },
 
   computed: {
     recapchaKey() {
