@@ -30,7 +30,7 @@ node {
         // Build stage: build image then push to private registry. Only build on branch master
         image = "${deploySettings.image_name}:${deploySettings.image_tag}"
         stage ('Build') {
-            if (deploySettings.branch == 'master' || deploySettings.branch == 'dev-cloud') {
+            if (deploySettings.branch == 'master' || deploySettings.branch == 'dev') {
                 dir('lionnixapi') {
                     withDockerRegistry([
                         credentialsId: 'docker-registry-credentials',
@@ -104,7 +104,7 @@ def getDeploySettings() {
 
 
 
-    } else if (branchName == 'dev-cloud') {
+    } else if (branchName == 'dev') {
         // deploy code on master branch to master
         helmValueFile = "default.values.dev.yaml"
         kubeConfig = "/var/lib/jenkins/.kube/lionnix-dev"
