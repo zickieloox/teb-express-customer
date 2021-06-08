@@ -557,8 +557,19 @@ export default {
         } else {
           return { valid: false, errors }
         }
-      } else if (this.type == 'phonenumber') {
+      } else if (this.type == 'emailornumber' && !this.value.match(/[a-z]/i)) {
         for (let condition of this.validatePhonenumber) {
+          if (!condition.regex.test(this.input) == condition.result) {
+            errors.push(condition.message)
+          }
+        }
+        if (errors.length == 0) {
+          return { valid: true, errors }
+        } else {
+          return { valid: false, errors }
+        }
+      } else if (this.type == 'emailornumber' && this.value.match(/[a-z]/i)) {
+        for (let condition of this.validateEmail) {
           if (!condition.regex.test(this.input) == condition.result) {
             errors.push(condition.message)
           }

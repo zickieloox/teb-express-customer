@@ -27,8 +27,9 @@
           >
           <p-input
             placeholder="Nhập số điện thoại hoặc email"
-            :type="`${user.email.match(/[a-z]/i) ? 'email' : 'phonenumber'}`"
+            :type="type"
             validate="on"
+            ref="email"
             v-model="user.email"
             :input="user.email"
             @status="checkEmail($event)"
@@ -112,6 +113,7 @@ export default {
       form: {
         checkCaptcha: false,
       },
+      type: 'emailornumber',
       check: true,
       user: {
         fullname: '',
@@ -227,7 +229,7 @@ export default {
       this.form.checkCaptcha = false
       this.$toast.open({
         type: 'error',
-        message: this.result.error,
+        message: this.result.errors.join(','),
         duration: 3000,
       })
     },
