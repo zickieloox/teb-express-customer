@@ -11,11 +11,11 @@
         <div class="mb-16">
           <label class="font-weight-600 color-newtral-10">Họ và tên</label>
           <p-input
-            placeholder="Username"
-            type="username"
+            placeholder="vd. Nguyen Van A"
+            type="fullname"
             validate="on"
-            v-model="user.username"
-            :input="user.username"
+            v-model="user.fullname"
+            :input="user.fullname"
             @keyup.enter="onSignUp"
             @status="checkUsername($event)"
             :required="requiredUsername"
@@ -26,8 +26,8 @@
             >Số điện thoại / Email</label
           >
           <p-input
-            placeholder="you@example.com"
-            type="email"
+            placeholder="Nhập số điện thoại hoặc email"
+            :type="`${user.email.match(/[a-z]/i) ? 'email' : 'phonenumber'}`"
             validate="on"
             v-model="user.email"
             :input="user.email"
@@ -39,7 +39,7 @@
         <div class="mb-16">
           <label class="font-weight-600 color-newtral-10">Mật khẩu</label>
           <p-input
-            placeholder="Enter password"
+            placeholder="Nhập mật khẩu của bạn"
             hiddenPass="on"
             type="password"
             validate="on"
@@ -79,7 +79,7 @@
           :loading="isLoading"
           @click="onSignUp"
         >
-          Sign up
+          Đăng ký
         </p-button>
       </form>
 
@@ -113,37 +113,18 @@ export default {
       },
       check: true,
       user: {
-        username: '',
+        fullname: '',
         email: '',
         password: '',
-        user_referring_code: null,
-        phone_number: '',
       },
-      shop_name: '',
-      country_code: '',
       isLoading: false,
-      isShowSnackbar: false,
       result: { success: true, message: 'Some thing wrong' },
-      timeout: null,
       requiredEmail: false,
       requiredPassword: false,
       requiredUsername: false,
-      requiredShopname: false,
-      requiredPhonenumber: false,
       correctEmail: false,
       correctPassword: false,
       correctUsername: false,
-      correctShopname: false,
-      correctPhonenumber: false,
-      numberC: {
-        type: Object,
-        default: () => {},
-      },
-    }
-  },
-  created() {
-    if (typeof this.$route.query['ref_code'] !== 'undefined') {
-      this.user.user_referring_code = this.$route.query['ref_code']
     }
   },
 
@@ -167,18 +148,6 @@ export default {
         return (this.correctPassword = true)
       }
       return (this.correctPassword = false)
-    },
-    checkShopname(e) {
-      if (e) {
-        return (this.correctShopname = true)
-      }
-      return (this.correctShopname = false)
-    },
-    checkPhonenumber(e) {
-      if (e) {
-        return (this.correctPhonenumber = true)
-      }
-      return (this.correctPhonenumber = false)
     },
 
     checkRequired() {
@@ -204,20 +173,6 @@ export default {
         this.requiredEmail = false
       }
 
-      if (this.shop_name == '') {
-        this.requiredShopname = true
-        result = false
-      } else {
-        this.requiredShopname = false
-      }
-
-      if (this.user.phone_number == '') {
-        this.requiredPhonenumber = true
-        result = false
-      } else {
-        this.requiredPhonenumber = false
-      }
-
       return result
     },
 
@@ -235,10 +190,8 @@ export default {
       }
       if (
         this.correctEmail == false ||
-        this.correctUsername == false ||
-        this.correctPassword == false ||
-        this.correctShopname == false ||
-        this.correctPhonenumber == false
+        this.correctFullname == false ||
+        this.correctPassword == false
       ) {
         return
       }
@@ -248,29 +201,23 @@ export default {
         return
       }
       const data = {
-        username: this.user.username,
+        fullname: this.user.fullname.trim(),
         email: this.user.email.toLowerCase(),
         password: this.user.password,
-        user_referring_code: this.user.user_referring_code,
       }
-      if (this.country_code == '') {
-        data.phone_number = '+84' + this.user.phone_number
-      } else {
-        data.phone_number = this.country_code + this.user.phone_number
-      }
+
       this.isLoading = true
-      this.isShowSnackbar = false
-      this.result = await this.signUp({ user: data, shop_name: this.shop_name })
+      this.result = await this.signUp(data)
       setTimeout(() => {
         this.isLoading = false
-      }, 2000)
+      }, 1000)
 
       if (this.result.success) {
         Storage.set('userEmail', this.user.email)
         Storage.set('expried', null)
         setTimeout(() => {
           this.$router.push({
-            name: 'verify-email',
+            name: 'sign-in',
           })
         }, 2000)
         return
@@ -286,11 +233,3 @@ export default {
   },
 }
 </script>
-
-<style>
-@media (max-width: 767px) {
-  .sign-up-phone {
-    padding-left: 0;
-  }
-}
-</style>
