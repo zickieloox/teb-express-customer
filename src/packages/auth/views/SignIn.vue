@@ -48,9 +48,10 @@
             </span>
           </div>
           <p-button
-            class="mb-16 btn btn-special btn-primary"
+            class="mb-16 btn btn-special  "
             :loading="isLoading"
             @click="onSignIn"
+            :type="`java-blue`"
           >
             Đăng nhập
           </p-button>

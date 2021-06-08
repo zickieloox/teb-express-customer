@@ -75,9 +75,10 @@
           </span>
         </div>
         <p-button
-          class="btn btn-special btn-primary mb-16 "
+          class="btn btn-special  mb-16 "
           :loading="isLoading"
           @click="onSignUp"
+          :type="`java-blue`"
         >
           Đăng ký
         </p-button>
