@@ -16,6 +16,7 @@
             validate="on"
             v-model="user.fullname"
             :input="user.fullname"
+            @input="onQueryChange"
             @keyup.enter="onSignUp"
             @status="checkUsername($event)"
             :required="requiredUsername"
@@ -31,6 +32,7 @@
             validate="on"
             v-model="user.email"
             :input="user.email"
+            @input="onQueryChange"
             @status="checkEmail($event)"
             @keyup.enter="onSignUp"
             :required="requiredEmail"
@@ -45,6 +47,7 @@
             validate="on"
             v-model="user.password"
             :input="user.password"
+            @input="onQueryChange"
             @keyup.enter="onSignUp"
             :required="requiredPassword"
             @status="checkPassword($event)"
@@ -153,7 +156,7 @@ export default {
 
     checkRequired() {
       let result = true
-      if (this.user.username == '') {
+      if (this.user.fullname == '') {
         this.requiredUsername = true
         result = false
       } else {
@@ -227,9 +230,12 @@ export default {
       this.form.checkCaptcha = false
       this.$toast.open({
         type: 'error',
-        message: this.result.error,
+        message: this.result.errors.join(','),
         duration: 3000,
       })
+    },
+    onQueryChange() {
+      this.checkRequired()
     },
   },
 }

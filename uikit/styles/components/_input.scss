@@ -29,7 +29,9 @@
 }
 
 .input-invalid {
-  border-color: #db1802;
+  border: 1px solid #FFA39E !important;
+  box-sizing: border-box;
+  border-radius: 12px;
 }
 
 .input-invalid.focus,
