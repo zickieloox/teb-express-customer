@@ -16,9 +16,8 @@ export default {
    * @return {*}
    */
   signUp(payload) {
-    return http.post('/fulfill/auth/sign-up/seller', {
+    return http.post('/auth/sign-up', {
       user: payload.user,
-      shop_name: payload.shop_name,
     })
   },
   forgot(payload) {

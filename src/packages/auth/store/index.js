@@ -1,7 +1,6 @@
 import { ROLE_SELLER } from '@core/constants'
 import api from '../api'
 import AuthService from '@core/services/auth'
-import Affiliate from '@core/helpers/affiliate'
 import { HTTP_STATUS_FORBIDDEN } from '@core/constants/http'
 /**
  * Type
@@ -127,11 +126,6 @@ export const actions = {
    */
   // eslint-disable-next-line
   async signUp({ commit }, payload) {
-    if (Affiliate.hasRef()) {
-      payload.user_referring_code = Affiliate.getRef()
-    }
-
-    payload.user.username = payload.user.username.toLowerCase()
     const response = await api.signUp(payload)
 
     if (response && response.user && response.user.id) {

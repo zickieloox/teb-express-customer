@@ -201,13 +201,13 @@ export default {
         return
       }
       const data = {
-        fullname: this.user.fullname.trim(),
+        full_name: this.user.fullname.trim(),
         email: this.user.email.toLowerCase(),
         password: this.user.password,
       }
 
       this.isLoading = true
-      this.result = await this.signUp(data)
+      this.result = await this.signUp({ user: data })
       setTimeout(() => {
         this.isLoading = false
       }, 1000)
