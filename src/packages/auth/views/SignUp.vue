@@ -75,9 +75,10 @@
           </span>
         </div>
         <p-button
-          class="btn btn-special btn-primary mb-16 "
+          class="btn btn-special  mb-16 "
           :loading="isLoading"
           @click="onSignUp"
+          :type="`java-blue`"
         >
           Đăng ký
         </p-button>
@@ -226,7 +227,7 @@ export default {
       this.form.checkCaptcha = false
       this.$toast.open({
         type: 'error',
-        message: this.result.errors.join(','),
+        message: this.result.error,
         duration: 3000,
       })
     },

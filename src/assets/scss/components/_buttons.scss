@@ -47,10 +47,8 @@
   &:hover {
     background-color: #4A6FF6;
   }
-  //&:focus {
-  //  border: 2px solid #4A6FF6;
-  //}
 }
+
 .btn-pure {
   &,
   &:hover,
@@ -92,4 +90,9 @@
 
 .btn-danger {
   background: #DB1802;
+}
+.p-button.btn-loading::after{
+  border: 2px solid white;
+  border-right-color: transparent;
+  border-top-color: transparent;
 }
