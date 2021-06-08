@@ -192,8 +192,15 @@ $bg-end:  #1571b1;
     }
   }
   .p-button.btn-loading{
-    background: #4A6FF6;
+    background: $color-java-blue-6;
     cursor: not-allowed !important;
+  }
+  .p-button.btn-java-blue{
+    background: $color-java-blue-6 ;
+    color: #FFFFFF;
+    &:hover {
+      background-color: $color-java-blue-5;
+    }
   }
   .verify-email {
     text-align: center;
