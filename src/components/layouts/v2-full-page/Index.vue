@@ -21,22 +21,7 @@
               alt=""
             />
 
-            <a
-              target="_blank"
-              v-bind:href="
-                $route.path == '/sign-in'
-                  ? urlSingin
-                  : $route.path == '/forgot'
-                  ? urlPass
-                  : $route.path == '/verify-email'
-                  ? urlSingup
-                  : $route.path == '/reset-password'
-                  ? urlPass
-                  : urlSingup
-              "
-              class="content_help-text"
-              >Need help?</a
-            >
+            <a target="_blank" class="content_help-text">Cần trợ giúp ?</a>
           </div>
           <!-- logo tablet -->
           <div class="logo_tablet">

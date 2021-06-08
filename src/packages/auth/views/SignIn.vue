@@ -1,15 +1,17 @@
 <template>
   <div class="page vertical-align ">
     <div class="vertical-align-middle">
-      <div class="mb-40">
-        <h2 class="header-2">
-          Sign in
-        </h2>
+      <div class="mb-16">
+        <div class="header-2">
+          Đăng nhập
+        </div>
       </div>
       <div>
         <form @submit.prevent="onSignIn">
           <div class="mb-16">
-            <label class=" font-weight-bold">Email or username</label>
+            <label class=" color-newtral-10 font-weight-600"
+              >Số điện thoại / Email</label
+            >
             <p-input
               placeholder="you@example.com"
               v-model="email"
@@ -19,10 +21,9 @@
           </div>
           <div class="mb-16">
             <div class="label">
-              <label class=" font-weight-bold">Password</label>
-
+              <label class=" color-newtral-10 font-weight-600">Mật khẩu</label>
               <span class="font-size-12 redirect" @click="redirect()">
-                Forgot your password?
+                Quên mật khẩu?
               </span>
             </div>
             <p-input
@@ -47,18 +48,19 @@
             </span>
           </div>
           <p-button
-            class="mt-40 btn btn-special btn-primary"
+            class="mb-16 btn btn-special btn-primary"
             :loading="isLoading"
             @click="onSignIn"
           >
-            Sign in
+            Đăng nhập
           </p-button>
         </form>
       </div>
 
-      <p class="text-center ">
+      <p class="new-member">
+        <span>Bạn là thành viên mới?</span>
         <router-link class=" creatAcount" :to="{ name: 'sign-up' }"
-          >Create an Account
+          >Tạo tài khoản
         </router-link>
       </p>
     </div>
