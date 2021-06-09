@@ -385,7 +385,7 @@ export default {
         },
         {
           message: 'Số điện thoại / Email không hợp lệ',
-          regex: /.*[ ]$/,
+          regex: /^[ ].*|[ ]$/,
           result: false,
         },
       ],
