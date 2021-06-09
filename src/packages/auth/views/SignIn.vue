@@ -154,24 +154,9 @@ export default {
       if (this.email.includes('@')) {
         data.email = this.email.trim().toLowerCase()
       } else {
-        data.username = this.email.trim()
+        data.phone_number = this.email.trim()
       }
 
-      if (!data.email && !data.username) {
-        this.$toast.open({
-          type: 'error',
-          message: 'Username/Email required',
-        })
-        return
-      }
-
-      if (!data.password) {
-        this.$toast.open({
-          type: 'error',
-          message: 'Password required',
-        })
-        return
-      }
       if (this.count >= 1 && !this.form.checkCaptcha) {
         this.check = false
         return

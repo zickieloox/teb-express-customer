@@ -7,7 +7,7 @@ export default {
    * @return {*}
    */
   signIn(payload) {
-    return http.post('/fulfill/auth/sign-in/seller', payload)
+    return http.post('/auth/sign-in', payload)
   },
 
   /**

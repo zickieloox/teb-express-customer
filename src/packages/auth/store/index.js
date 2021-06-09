@@ -1,4 +1,4 @@
-import { ROLE_SELLER } from '@core/constants'
+import { ROLE_CUSTOMER } from '@core/constants'
 import api from '../api'
 import AuthService from '@core/services/auth'
 import { HTTP_STATUS_FORBIDDEN } from '@core/constants/http'
@@ -50,7 +50,7 @@ export const actions = {
 
       return {
         success: true,
-        permission: data.role === ROLE_SELLER,
+        permission: data.role === ROLE_CUSTOMER,
         user: data,
       }
     }
@@ -93,7 +93,7 @@ export const actions = {
 
       return {
         success: true,
-        permission: data.role === ROLE_SELLER,
+        permission: data.role === ROLE_CUSTOMER,
         user: data,
       }
     }
@@ -185,7 +185,7 @@ export const actions = {
 
       return {
         success: true,
-        permission: data.role === ROLE_SELLER,
+        permission: data.role === ROLE_CUSTOMER,
       }
     }
     return {
@@ -235,8 +235,8 @@ export const getters = {
   currentRole(state) {
     return state.user.role
   },
-  isSeller(state) {
-    return state.user.role === ROLE_SELLER
+  isCutomer(state) {
+    return state.user.role === ROLE_CUSTOMER
   },
 }
 
@@ -246,7 +246,7 @@ export const getters = {
  * @param payload
  */
 const handleAuthenticated = (commit, payload) => {
-  if (payload.role !== ROLE_SELLER) {
+  if (payload.role !== ROLE_CUSTOMER) {
     return
   }
 

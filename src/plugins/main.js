@@ -11,8 +11,8 @@ const MainPlugin = {
     Vue.prototype.$isLogin = function() {
       return Boolean(this.$store.getters['auth/currentRole'])
     }
-    Vue.prototype.$isSeller = function() {
-      return this.$store.getters['auth/isSeller']
+    Vue.prototype.$isCutomer = function() {
+      return this.$store.getters['auth/isCutomer']
     }
     Vue.prototype.$hasAuthorize = function(key) {
       if (typeof ACL[key] === 'undefined') {
