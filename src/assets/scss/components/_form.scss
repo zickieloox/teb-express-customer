@@ -114,7 +114,7 @@ input[type="search"] {
 .form-icons {
   .form-control-icon {
     position: absolute;
-    top: 50%;
+    top: $input-height/2;
     left: 20px;
     z-index: 4;
     transform: translateY(-50%);
