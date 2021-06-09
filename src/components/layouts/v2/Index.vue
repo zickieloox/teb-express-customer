@@ -9,11 +9,8 @@
     <p-header
       @toggleShowSidebar="toggleShowSidebar"
       :isSidebarOpen="isSidebarOpen"
-      :shop="shop"
-      :shops="shops"
-      @selectShop="handleSelectShop"
     />
-    <p-sidebar :shop="shop" :shops="shops" :isSidebarOpen="isSidebarOpen" />
+    <p-sidebar :isSidebarOpen="isSidebarOpen" />
     <router-view :key="$route.path"></router-view>
   </div>
 </template>
@@ -50,26 +47,6 @@ export default {
     },
     toggleShowTicket() {
       this.isTicketOpen = !this.isTicketOpen
-    },
-    async handleSelectShop(shop) {
-      const result = await this.selectShop({ id: shop.id })
-      if (!result.success) {
-        this.$toast.open({ type: 'error', message: result.message })
-        return
-      }
-
-      this.$toast.open({
-        type: 'success',
-        message: `Switch to "${shop.name}" successfully`,
-      })
-
-      if (this.$route.name === 'dashboard') {
-        setTimeout(() => {
-          location.reload()
-        }, 500)
-      } else {
-        this.$router.push('/')
-      }
     },
   },
 }
