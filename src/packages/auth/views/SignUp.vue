@@ -196,7 +196,7 @@ export default {
       }
       if (
         this.correctEmail == false ||
-        this.correctFullname == false ||
+        this.correctUsername == false ||
         this.correctPassword == false
       ) {
         return
@@ -208,7 +208,7 @@ export default {
       }
       const data = {
         full_name: this.user.fullname.trim(),
-        email: this.user.email.toLowerCase(),
+        email: this.user.email.trim().toLowerCase(),
         password: this.user.password,
       }
 
@@ -224,6 +224,11 @@ export default {
         setTimeout(() => {
           this.$router.push({
             name: 'sign-in',
+          })
+          this.$toast.open({
+            type: 'success',
+            message: 'Đăng ký thành công',
+            duration: 3000,
           })
         }, 2000)
         return
