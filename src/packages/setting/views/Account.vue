@@ -33,7 +33,25 @@
                 :required="requiredUsername"
               />
             </div>
-            <div class="col-6 right"></div>
+            <div class="col-6 right">
+              <label class="font-weight-600 color-newtral-10">Ngày sinh:</label>
+              <div style="display: flex">
+                <p-datepicker
+                  class="date birthday p-input-group input-group"
+                  :format="'dd/mm/yyyy'"
+                  :label="label"
+                  @update="selectDate"
+                  :single-date-picker="true"
+                >
+                </p-datepicker>
+                <p-button
+                  class="clear ml-2"
+                  type="default"
+                  icon="close"
+                  v-if="user.birthday"
+                  @click="clearDate"
+              /></div>
+            </div>
           </div>
         </div>
         <div class="account">
@@ -94,6 +112,8 @@
 </template>
 <script>
 // import { mapActions } from 'vuex'
+import { date } from '@core/utils/datetime'
+
 export default {
   data() {
     return {
@@ -101,8 +121,12 @@ export default {
         full_name: '',
         current_password: '',
         new_password: '',
+        birthday: '',
       },
       isLoading: false,
+      label: 'dd/mm/yyyy',
+      requiredPassword: false,
+      requiredUsername: false,
     }
   },
   created() {},
@@ -126,8 +150,31 @@ export default {
 
       return result
     },
+    checkUsername(e) {
+      if (e) {
+        return (this.correctUsername = true)
+      }
+      return (this.correctUsername = false)
+    },
+    checkPassword(e) {
+      if (e) {
+        return (this.correctPassword = true)
+      }
+      return (this.correctPassword = false)
+    },
+    selectDate(v) {
+      this.user.birthday = date(v.startDate, 'yyyy-MM-dd')
+      if (this.user.birthday == '') {
+        return (this.label = 'dd/mm/yyyy')
+      }
+      this.label = this.user.birthday
+    },
     onQueryChange() {
       this.checkRequired()
+    },
+    clearDate() {
+      this.user.birthday = ''
+      this.label = 'dd/mm/yyyy'
     },
   },
 }
