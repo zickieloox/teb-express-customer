@@ -1,22 +1,41 @@
 <template>
   <nav class="site-navbar" role="navigation">
-    <div class="navbar-header">
-      <div class="navbar-header-left">
+    <div class="navbar__header">
+      <div class="navbar__header-left">
         <div class="navbar-logo"> YOUR LOGO </div>
-        <a
-          data-toggle="menubar"
-          @click.prevent="toggleShowSidebar"
-          class="navbar-hamburger"
-        >
-        </a>
       </div>
-    </div>
-
-    <div class="navbar-container">
-      <div
-        class="navbar-collapse navbar-collapse-toolbar collapse navbar-mobile"
-        :class="{ show: isShowNavbarOnMobile }"
-      >
+      <div class="navbar__header-content">
+        <div class="navbar__header-input">
+          <p-input
+            placeholder="Tra cứu đơn hàng"
+            type="search"
+            hiddenPass="on"
+            prefixIcon="search"
+          />
+        </div>
+        <div class="navbar__header-drop">
+          <p-dropdown>
+            <div class="nav-link  pointer" slot="trigger">
+              username@yourdomain.com
+              <img src="@/assets/img/dropdown.svg" />
+            </div>
+            <p-dropdown-item>
+              <img
+                src="@/assets/img/Circle 16px.svg"
+                class="navbar__header-icon"
+              />
+              <router-link :to="{ name: '' }" class="">
+                Hỏi đáp trợ giúp
+              </router-link>
+            </p-dropdown-item>
+            <p-dropdown-item>
+              <img src="@/assets/img/Logout.svg" class="navbar__header-icon" />
+              <router-link :to="{ name: '' }" class="">
+                Đăng xuất
+              </router-link>
+            </p-dropdown-item>
+          </p-dropdown>
+        </div>
       </div>
     </div>
   </nav>
