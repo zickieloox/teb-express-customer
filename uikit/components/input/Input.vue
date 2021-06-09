@@ -335,11 +335,11 @@ export default {
         //   regex: /[^A-Za-z\d@$!%*#?& ]/,
         //   result: false,
         // },
-        {
-          message: 'Mật khẩu không hợp lệ ',
-          regex: /^[ ].*|[ ]$/,
-          result: false,
-        },
+        // {
+        //   message: 'Mật khẩu không hợp lệ ',
+        //   regex: /^[ ].*|[ ]$/,
+        //   result: false,
+        // },
         {
           message: 'Mật khẩu không hợp lệ',
           regex: /^.{4,}$/,
