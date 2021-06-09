@@ -4,7 +4,7 @@
       <ul class="site-menu">
         <li
           v-for="(menu, i) in availableMenus"
-          class="site-menu-item  has-sub"
+          class="site-menu-item  "
           :class="{
             active: isActive(menu.route) || childrenNameRoute(menu.title),
             hover: hoverIndex === i,
@@ -18,15 +18,33 @@
           <router-link :to="menu.route">
             <img class="site-menu-icon default" :src="menu.icon" />
             <img class="site-menu-icon active" :src="menu.iconActive" />
-            <span class="site-menu-title">{{ menu.title }}</span>
+            <span class="site-menu-title" @click="handleSub(i)">{{
+              menu.title
+            }}</span>
+            <div class="icon-sub">
+              <img
+                :class="{ 'is-active': activeSubIndex == i }"
+                class=""
+                v-if="menu.sub"
+                src="@/assets/img/dropdown.svg"
+              />
+            </div>
           </router-link>
-          <ul class="site-menu-sub" v-if="menu.sub">
-            <li class="site-menu-item" v-for="(sub, j) in menu.sub" :key="j">
+          <div
+            class="site-menu-sub"
+            :class="{ 'has-sub': activeSubIndex == i }"
+            v-if="menu.sub"
+          >
+            <div
+              class="site-menu-sub-item"
+              v-for="(sub, j) in menu.sub"
+              :key="j"
+            >
               <router-link :to="sub.route" class="animsition-link">
-                <span class="site-menu-title">{{ sub.title }}</span>
+                <span class="site-menu-sub-title">{{ sub.title }}</span>
               </router-link>
-            </li>
-          </ul>
+            </div>
+          </div>
         </li>
       </ul>
     </div>
@@ -86,18 +104,71 @@ export default {
     menus() {
       return [
         {
-          title: 'Home',
-          icon: require('@assets/img/layers_fill.svg'),
-          iconActive: require('@assets/img/layers_fill_active.svg'),
+          title: 'Trang chủ',
+          icon: require('@assets/img/HomeInactive.svg'),
+          iconActive: require('@assets/img/Home.svg'),
           route: '/',
           class: '',
         },
         {
-          title: 'Setting',
-          icon: require('@assets/img/settings.svg'),
-          iconActive: require('@assets/img/settings_active.svg'),
-          route: { name: 'setting' },
+          title: 'Đơn hàng',
+          icon: require('@assets/img/OrderInactive.svg'),
+          iconActive: require('@assets/img/Order.svg'),
+          route: '',
           class: '',
+          sub: [
+            {
+              route: '',
+              title: 'Tạo đơn lẻ',
+            },
+            {
+              route: '',
+              title: 'Quản lý đơn hàng',
+            },
+            {
+              route: '',
+              title: 'Đơn khiếu nại',
+            },
+          ],
+        },
+        {
+          title: 'Hóa đơn',
+          icon: require('@assets/img/BillInactive.svg'),
+          iconActive: require('@assets/img/Bill.svg'),
+          route: '/bill',
+          class: '',
+        },
+        {
+          title: 'Ví',
+          icon: require('@assets/img/WalletInactive.svg'),
+          iconActive: require('@assets/img/Wallet.svg'),
+          route: '/wallet',
+          class: '',
+        },
+        {
+          title: 'Setting',
+          icon: require('@assets/img/SettingInactive.svg'),
+          iconActive: require('@assets/img/Setting.svg'),
+          route: { name: '' },
+          class: '',
+          sub: [
+            {
+              route: '',
+              title: 'Thông tin tài khoản',
+            },
+            {
+              route: '',
+              title: 'Danh sách người gửi',
+            },
+            {
+              route: '',
+              title: 'Danh sách hàng hóa',
+            },
+            {
+              route: '',
+              title: 'Quản lý khuyến mãi',
+            },
+          ],
         },
       ]
     },
@@ -111,6 +182,8 @@ export default {
       chooseShop: {
         icon: require('@assets/img/shopping-bag.svg'),
       },
+      isActiveSub: false,
+      activeSubIndex: 0,
     }
   },
 
@@ -121,6 +194,10 @@ export default {
       }
 
       return this.$route.path === route || this.$route.fullPath === route
+    },
+    handleSub(index) {
+      this.activeSubIndex = index
+      console.log(index)
     },
     childrenNameRoute(title) {
       let fullPath = this.$route.fullPath

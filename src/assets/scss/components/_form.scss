@@ -114,12 +114,22 @@ input[type="search"] {
 .form-icons {
   .form-control-icon {
     position: absolute;
-    top: $input-height/2;
+    top: 50%;
     left: 20px;
     z-index: 4;
     transform: translateY(-50%);
   }
-
+  .p-input-search{
+    border-radius: 40px !important;
+    background-color: $color-neutral-1;
+    line-height: $input-height;
+    &::placeholder{
+      color: $color-neutral-6;
+    }
+    &:focus{
+      background-color: white;
+    }
+  }
   .round-input-control .form-control {
     border-radius: 200px;
   }

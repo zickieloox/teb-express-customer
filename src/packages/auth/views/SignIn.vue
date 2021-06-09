@@ -222,6 +222,7 @@ export default {
         this.$toast.open({
           type: 'error',
           message: this.result.message,
+          duration: 500000,
         })
       }
     },

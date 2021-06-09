@@ -28,20 +28,20 @@ const beforeEach = (router, store) => {
     if (to.meta.noAuthRequired) {
       return next()
     }
-    if (!AuthService.isAuthenticated() && !to.fullPath.startsWith('/sign-in')) {
-      const path = encodeURIComponent(
-        window.location.href.replace(window.location.origin, '')
-      )
-      const shop_id = ShopService.getId()
-
-      if (shop_id && !from.fullPath.startsWith('/404')) {
-        return next({ path: `/sign-in?path=${path}&shop_id=${shop_id}` })
-      } else if (!from.fullPath.startsWith('/404')) {
-        return next({ path: `/sign-in?path=${path}` })
-      } else {
-        return next({ path: `/sign-in` })
-      }
-    }
+    // if (!AuthService.isAuthenticated() && !to.fullPath.startsWith('/sign-in')) {
+    //   const path = encodeURIComponent(
+    //     window.location.href.replace(window.location.origin, '')
+    //   )
+    //   const shop_id = ShopService.getId()
+    //
+    //   if (shop_id && !from.fullPath.startsWith('/404')) {
+    //     return next({ path: `/sign-in?path=${path}&shop_id=${shop_id}` })
+    //   } else if (!from.fullPath.startsWith('/404')) {
+    //     return next({ path: `/sign-in?path=${path}` })
+    //   } else {
+    //     return next({ path: `/sign-in` })
+    //   }
+    // }
 
     if (store.getters['auth/isSeller']) {
       if (['shop-select', 'shop-add'].indexOf(to.name) !== -1) {
