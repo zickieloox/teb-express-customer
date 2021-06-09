@@ -139,12 +139,11 @@
         <slot name="prepend"></slot>
       </div>
 
-      <i
+      <img
         class="form-control-icon form-control-icon-left"
         v-if="prefixIcon"
-        :class="`wb-${prefixIcon}`"
-      >
-      </i>
+        src="@assets/img/search.svg"
+      />
 
       <i
         class="form-control-icon form-control-icon-right"
@@ -169,6 +168,7 @@
         @change="handleChange"
         v-on="listeners"
         ref="input"
+        class="p-input-search"
       />
 
       <div class="input-group-append" v-if="$slots.append">

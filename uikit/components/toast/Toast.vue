@@ -151,21 +151,45 @@ export default {
     },
 
     setupContainer() {
-      this.parentTop = document.querySelector('.p-notices.is-top')
-      this.parentBottom = document.querySelector('.p-notices.is-bottom')
+      console.log(window.location.pathname.split('/').includes('sign-up'))
+      if (
+        window.location.pathname.split('/').includes('sign-up') ||
+        window.location.pathname.split('/').includes('sign-in')
+      ) {
+        console.log(1)
+        this.parentTop = document.querySelector('.p-notices.is-top.is-home')
+        this.parentBottom = document.querySelector(
+          '.p-notices.is-bottom.is-home'
+        )
 
-      if (this.parentTop && this.parentBottom) {
-        return
-      }
+        if (this.parentTop && this.parentBottom) {
+          return
+        }
+        if (!this.parentTop) {
+          this.parentTop = document.createElement('div')
+          this.parentTop.className = 'p-notices is-top is-home'
+        }
 
-      if (!this.parentTop) {
-        this.parentTop = document.createElement('div')
-        this.parentTop.className = 'p-notices is-top'
-      }
+        if (!this.parentBottom) {
+          this.parentBottom = document.createElement('div')
+          this.parentBottom.className = 'p-notices is-bottom is-home'
+        }
+      } else {
+        this.parentTop = document.querySelector('.p-notices.is-top')
+        this.parentBottom = document.querySelector('.p-notices.is-bottom')
 
-      if (!this.parentBottom) {
-        this.parentBottom = document.createElement('div')
-        this.parentBottom.className = 'p-notices is-bottom'
+        if (this.parentTop && this.parentBottom) {
+          return
+        }
+        if (!this.parentTop) {
+          this.parentTop = document.createElement('div')
+          this.parentTop.className = 'p-notices is-top'
+        }
+
+        if (!this.parentBottom) {
+          this.parentBottom = document.createElement('div')
+          this.parentBottom.className = 'p-notices is-bottom'
+        }
       }
 
       const container =
@@ -184,6 +208,7 @@ export default {
     this.setupContainer()
   },
   mounted() {
+    this.setupContainer()
     this.showNotice()
   },
 }
