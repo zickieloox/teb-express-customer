@@ -48,7 +48,7 @@
                   class="clear ml-2"
                   type="default"
                   icon="close"
-                  v-if="data.birthday"
+                  v-if="this.isSelectDate"
                   @click="clearDate"
               /></div>
             </div>
@@ -119,11 +119,11 @@
 import { date } from '@core/utils/datetime'
 import { mapState, mapActions } from 'vuex'
 import { UPDATE_USER } from '@/packages/setting/store/index'
-
+import { GET_USER } from '../../../packages/shared/store'
 export default {
   name: 'Account',
   computed: {
-    ...mapState('auth', {
+    ...mapState('shared', {
       user: (state) => state.user,
     }),
   },
@@ -140,15 +140,33 @@ export default {
       requiredCurrentPassword: false,
       requiredNewPassword: false,
       requiredUsername: false,
+      isSelectDate: false,
     }
   },
-  mounted() {
-    this.data.full_name = this.user.full_name
-    this.data.birthday = this.user.birthday
+  created() {
+    this.init()
   },
 
   methods: {
     ...mapActions('setting', [UPDATE_USER]),
+    ...mapActions('shared', [GET_USER]),
+
+    async init() {
+      const result = await this.getUser()
+      if (result.error) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 3000,
+        })
+        return
+      }
+
+      this.data.full_name = this.user.full_name
+      this.data.birthday = this.user.birthday
+      this.label = this.data.birthday ? this.data.birthday : 'dd/mm/yyyy'
+      console.log(this.label)
+    },
 
     checkRequired() {
       let result = true
@@ -159,14 +177,14 @@ export default {
         this.requiredUsername = false
       }
 
-      if (this.data.current_password == '') {
+      if (this.data.current_password == '' && this.data.new_password != '') {
         this.requiredCurrentPassword = true
         result = false
       } else {
         this.requiredCurrentPassword = false
       }
 
-      if (this.data.new_password == '') {
+      if (this.data.new_password == '' && this.data.current_password != '') {
         this.requiredNewPassword = true
         result = false
       } else {
@@ -198,28 +216,32 @@ export default {
       if (this.correctUsername == false || this.correctPassword == false) {
         return
       }
-
       const result = await this.updateUser(this.data)
+
       if (result.error) {
         this.$toast.open({
           type: 'error',
           message: result.message,
+          duration: 3000,
         })
         return
       }
 
+      location.reload()
       this.$toast.open({
         type: 'success',
         message: 'Cập nhật thành công!',
+        duration: 3000,
       })
     },
 
     selectDate(v) {
-      this.data.birthday = date(v.startDate, 'yyyy-MM-dd')
+      this.data.birthday = date(v.startDate, 'dd/MM/yyyy')
       if (this.data.birthday == '') {
         return (this.label = 'dd/mm/yyyy')
       }
       this.label = this.data.birthday
+      this.isSelectDate = true
     },
 
     onQueryChange() {

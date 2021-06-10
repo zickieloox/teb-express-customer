@@ -18,12 +18,13 @@
 
 <script>
 import isMobile from 'ismobilejs'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import '@assets/scss/main.scss'
 import '@assets/fonts/material-design/material-design.min.css'
 import '@assets/fonts/web-icons/web-icons.min.css'
 import PHeader from './Header'
 import PSidebar from './Sidebar'
+import { GET_USER } from '../../../packages/shared/store'
 require('vue-image-lightbox/dist/vue-image-lightbox.min.css')
 
 export default {
@@ -33,7 +34,7 @@ export default {
     PSidebar,
   },
   computed: {
-    ...mapState('auth', {
+    ...mapState('shared', {
       user: (state) => state.user,
     }),
   },
@@ -48,7 +49,14 @@ export default {
       this.isSidebarOpen = false
     }
   },
+  created() {
+    this.init()
+  },
   methods: {
+    ...mapActions('shared', [GET_USER]),
+    async init() {
+      await this.getUser()
+    },
     toggleShowSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen
     },
