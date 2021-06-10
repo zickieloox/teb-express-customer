@@ -42,6 +42,9 @@
                   :label="label"
                   @update="selectDate"
                   :single-date-picker="true"
+                  :showDropdowns="true"
+                  :autoApply="true"
+                  :maxDate="maxDate"
                 >
                 </p-datepicker>
                 <p-button
@@ -126,6 +129,15 @@ export default {
     ...mapState('shared', {
       user: (state) => state.user,
     }),
+
+    maxDate() {
+      return new Date()
+    },
+  },
+  mounted() {
+    this.data.full_name = this.user.full_name
+    this.data.birthday = this.user.birthday
+    this.label = this.data.birthday ? this.data.birthday : 'dd/mm/yyyy'
   },
   data() {
     return {
@@ -196,6 +208,8 @@ export default {
       if (this.correctUsername == false || this.correctPassword == false) {
         return
       }
+
+      this.data.full_name = this.data.full_name.trim()
       const result = await this.updateUser(this.data)
 
       if (result.error) {
@@ -231,6 +245,7 @@ export default {
     clearDate() {
       this.data.birthday = ''
       this.label = 'dd/mm/yyyy'
+      this.isSelectDate = false
     },
   },
   watch: {
@@ -239,6 +254,7 @@ export default {
         this.data.full_name = newVal.full_name
         this.data.birthday = newVal.birthday
         this.label = this.data.birthday ? this.data.birthday : 'dd/mm/yyyy'
+        console.log(newVal)
       },
       deep: true,
     },
