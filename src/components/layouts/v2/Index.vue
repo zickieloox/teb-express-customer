@@ -6,7 +6,7 @@
       'site-menubar-hide': !isSidebarOpen,
     }"
   >
-    <p-header />
+    <p-header :user="user" />
     <p-sidebar />
 
     <router-view :key="$route.path"></router-view>
