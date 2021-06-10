@@ -15,7 +15,7 @@ class HttpErrorHandler {
       if (AuthService.isAuthenticated()) {
         window.localStorage.clear()
         window.location.replace(
-          `/sign-in?type=error&message=Your session expired&path=${path}&shop_id=${shop_id}`
+          `/sign-in?type=error&message=Phiên làm việc của bạn đã hết hạn !&path=${path}`
         )
       }
     }
