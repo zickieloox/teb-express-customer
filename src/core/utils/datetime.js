@@ -11,11 +11,11 @@ import { vi } from 'date-fns/esm/locale'
  * @param format
  * @returns {string}
  */
-export function date(val, format = 'MM-dd-yyyy') {
+export function date(val, format) {
   return datetime(val, format)
 }
 
-export function dateFormat(val, format = 'MM/dd/yyyy') {
+export function dateFormat(val, format = 'dd/MM/yyyy') {
   return datetime(val, format)
 }
 
