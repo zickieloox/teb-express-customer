@@ -3,7 +3,7 @@
     <div class="site-menubar-body">
       <ul class="site-menu">
         <li
-          v-for="(menu, i) in availableMenus"
+          v-for="(menu, i) in menus"
           class="site-menu-item  "
           :class="{
             active: isActive(menu.route) || childrenNameRoute(menu.title),
@@ -14,7 +14,7 @@
           <router-link :to="menu.route">
             <img class="site-menu-icon default" :src="menu.icon" />
             <img class="site-menu-icon active" :src="menu.iconActive" />
-            <span class="site-menu-title" @click="handleSub(i, menu.title)">{{
+            <span class="site-menu-title" @click="menu.isOpen = !menu.isOpen">{{
               menu.title
             }}</span>
             <div class="icon-sub">
@@ -29,8 +29,7 @@
           <div
             class="site-menu-sub"
             :class="{
-              'has-sub':
-                activeSubIndex == i && hadleActiveItem(menu.title) && isactive,
+              'has-sub': menu.isOpen,
             }"
             v-if="menu.sub"
           >
@@ -100,21 +99,35 @@ export default {
     shopName() {
       return this.shop.name
     },
-    menus() {
-      return [
-        {
+    availableMenus() {
+      return this.menus.filter((menu) => menu.disable !== true)
+    },
+  },
+  data() {
+    return {
+      hoverIndex: -1,
+      chooseShop: {
+        icon: require('@assets/img/shopping-bag.svg'),
+      },
+      isActiveSub: false,
+      activeSubIndex: 0,
+      isactive: false,
+      activeItem: '',
+      menus: {
+        q1: {
           title: 'Trang chủ',
           icon: require('@assets/img/HomeInactive.svg'),
           iconActive: require('@assets/img/Home.svg'),
           route: '/',
           class: '',
         },
-        {
+        q2: {
           title: 'Đơn hàng',
           icon: require('@assets/img/OrderInactive.svg'),
           iconActive: require('@assets/img/Order.svg'),
           route: '',
           class: '',
+          isOpen: false,
           sub: [
             {
               route: '',
@@ -130,26 +143,27 @@ export default {
             },
           ],
         },
-        {
+        q3: {
           title: 'Hóa đơn',
           icon: require('@assets/img/BillInactive.svg'),
           iconActive: require('@assets/img/Bill.svg'),
           route: '/bill',
           class: '',
         },
-        {
+        q4: {
           title: 'Ví',
           icon: require('@assets/img/WalletInactive.svg'),
           iconActive: require('@assets/img/Wallet.svg'),
           route: '/wallet',
           class: '',
         },
-        {
+        q5: {
           title: 'Cài đặt ',
           icon: require('@assets/img/SettingInactive.svg'),
           iconActive: require('@assets/img/Setting.svg'),
           route: { name: '' },
           class: '',
+          isOpen: false,
           sub: [
             {
               route: '',
@@ -169,22 +183,7 @@ export default {
             },
           ],
         },
-      ]
-    },
-    availableMenus() {
-      return this.menus.filter((menu) => menu.disable !== true)
-    },
-  },
-  data() {
-    return {
-      hoverIndex: -1,
-      chooseShop: {
-        icon: require('@assets/img/shopping-bag.svg'),
       },
-      isActiveSub: false,
-      activeSubIndex: 0,
-      isactive: false,
-      activeItem: '',
     }
   },
 
