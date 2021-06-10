@@ -20,23 +20,4 @@ export default {
       user: payload.user,
     })
   },
-  forgot(payload) {
-    return http.post('/fulfill/auth/forgot-password/seller', payload)
-  },
-  resetPass(payload) {
-    return http.post('/fulfill/auth/reset-password/seller', payload)
-  },
-  verifyEmail(payload) {
-    return http.post('/fulfill/auth/verify-email/seller', payload)
-  },
-  resendEmail(payload) {
-    return http.post('/fulfill/auth/resend-email/seller', payload)
-  },
-  accessShop(payload) {
-    return http.post(
-      '/fulfill/auth/sign-in-by-token/seller',
-      {},
-      { token: `Bearer ${payload.token}` }
-    )
-  },
 }

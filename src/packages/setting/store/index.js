@@ -1,4 +1,4 @@
-import { ROLE_SELLER } from '@core/constants'
+import { ROLE_CUSTOMER } from '@core/constants'
 import api from '../api'
 import AuthService from '@core/services/auth'
 import { HTTP_STATUS_FORBIDDEN } from '@core/constants/http'
@@ -39,48 +39,6 @@ export const actions = {
    * @param payload
    * @returns {Promise<{success: boolean}>}
    */
-  async accessShop({ commit }, payload) {
-    let response
-    response = await api.accessShop(payload)
-    if (response && response.access_token) {
-      const data = Object.assign({}, response.user, {
-        access_token: response.access_token,
-      })
-      handleAuthenticated(commit, transformerAuthenticate(data))
-
-      return {
-        success: true,
-        permission: data.role === ROLE_SELLER,
-        user: data,
-      }
-    }
-
-    if (
-      response &&
-      response.user &&
-      response.statusCode == HTTP_STATUS_FORBIDDEN
-    ) {
-      commit(CURRENT_USER, response.user)
-      return {
-        success: false,
-        message: response.errorMessage || '',
-        userInActive: true,
-      }
-    }
-
-    return {
-      success: false,
-      message: response.errorMessage || '',
-      number_incorrect: response.number_incorrect_password || 0,
-    }
-  },
-
-  /**
-   * Sign in
-   * @param commit
-   * @param payload
-   * @returns {Promise<{success: boolean}>}
-   */
   async signIn({ commit }, payload) {
     let response
 
@@ -93,7 +51,7 @@ export const actions = {
 
       return {
         success: true,
-        permission: data.role === ROLE_SELLER,
+        permission: data.role === ROLE_CUSTOMER,
         user: data,
       }
     }
@@ -172,27 +130,6 @@ export const actions = {
 
     return response
   },
-
-  async verifyEmail({ commit }, payload) {
-    let response
-    response = await api.verifyEmail(payload)
-
-    if (response && response.access_token) {
-      const data = Object.assign({}, response.user, {
-        access_token: response.access_token,
-      })
-      handleAuthenticated(commit, transformerAuthenticate(data))
-
-      return {
-        success: true,
-        permission: data.role === ROLE_SELLER,
-      }
-    }
-    return {
-      success: false,
-      message: response.errorMessage || '',
-    }
-  },
   // eslint-disable-next-line
   async resendEmail({ commit }, payload) {
     const response = await api.resendEmail(payload)
@@ -235,9 +172,6 @@ export const getters = {
   currentRole(state) {
     return state.user.role
   },
-  isSeller(state) {
-    return state.user.role === ROLE_SELLER
-  },
 }
 
 /**
@@ -246,7 +180,7 @@ export const getters = {
  * @param payload
  */
 const handleAuthenticated = (commit, payload) => {
-  if (payload.role !== ROLE_SELLER) {
+  if (payload.role !== ROLE_CUSTOMER) {
     return
   }
 

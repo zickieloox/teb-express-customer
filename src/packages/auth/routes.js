@@ -71,18 +71,4 @@ export const routes = [
         import(/* webpackChunkName: "forgot" */ './views/ResetPassword.vue')
       ),
   },
-  {
-    path: '/access-shop',
-    name: 'access-shop',
-    meta: {
-      title: 'Access Shop',
-      layout: 'full-page',
-      class: 'page-login-v3',
-      ...noAuthRequired(),
-    },
-    component: () =>
-      lazyLoadView(
-        import(/* webpackChunkName: "forgot" */ './views/AccessShop.vue')
-      ),
-  },
 ]
