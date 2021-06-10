@@ -151,7 +151,6 @@ export default {
     },
 
     setupContainer() {
-      console.log(window.location.pathname.split('/').includes('sign-up'))
       if (
         window.location.pathname.split('/').includes('sign-up') ||
         window.location.pathname.split('/').includes('sign-in')
