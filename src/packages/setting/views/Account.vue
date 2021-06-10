@@ -26,8 +26,8 @@
                 placeholder="Nhập họ tên"
                 type="fullname"
                 validate="on"
-                v-model="user.full_name"
-                :input="user.full_name"
+                v-model="data.full_name"
+                :input="data.full_name"
                 @input="onQueryChange"
                 @status="checkUsername($event)"
                 :required="requiredUsername"
@@ -48,7 +48,7 @@
                   class="clear ml-2"
                   type="default"
                   icon="close"
-                  v-if="user.birthday"
+                  v-if="data.birthday"
                   @click="clearDate"
               /></div>
             </div>
@@ -66,10 +66,10 @@
                 hiddenPass="on"
                 type="password"
                 validate="on"
-                v-model="user.current_password"
-                :input="user.current_password"
+                v-model="data.current_password"
+                :input="data.current_password"
                 @input="onQueryChange"
-                :required="requiredPassword"
+                :required="requiredCurrentPassword"
                 @status="checkPassword($event)"
               />
             </div>
@@ -82,10 +82,10 @@
                 hiddenPass="on"
                 type="password"
                 validate="on"
-                v-model="user.new_password"
-                :input="user.new_password"
+                v-model="data.new_password"
+                :input="data.new_password"
                 @input="onQueryChange"
-                :required="requiredPassword"
+                :required="requiredNewPassword"
                 @status="checkPassword($event)"
               />
             </div>
@@ -102,7 +102,11 @@
           >
         </div>
         <div class="save">
-          <a href="javascript:void(0)" class="btn btn-primary">
+          <a
+            href="javascript:void(0)"
+            class="btn btn-primary"
+            @click="handleSave"
+          >
             <span>Lưu</span>
           </a>
         </div>
@@ -113,11 +117,19 @@
 <script>
 // import { mapActions } from 'vuex'
 import { date } from '@core/utils/datetime'
+import { mapState, mapActions } from 'vuex'
+import { UPDATE_USER } from '@/packages/setting/store/index'
 
 export default {
+  name: 'Account',
+  computed: {
+    ...mapState('auth', {
+      user: (state) => state.user,
+    }),
+  },
   data() {
     return {
-      user: {
+      data: {
         full_name: '',
         current_password: '',
         new_password: '',
@@ -125,55 +137,97 @@ export default {
       },
       isLoading: false,
       label: 'dd/mm/yyyy',
-      requiredPassword: false,
+      requiredCurrentPassword: false,
+      requiredNewPassword: false,
       requiredUsername: false,
     }
   },
-  created() {},
+  mounted() {
+    this.data.full_name = this.user.full_name
+    this.data.birthday = this.user.birthday
+  },
 
   methods: {
+    ...mapActions('setting', [UPDATE_USER]),
+
     checkRequired() {
       let result = true
-      if (this.user.full_name == '') {
+      if (this.data.full_name == '') {
         this.requiredUsername = true
         result = false
       } else {
         this.requiredUsername = false
       }
 
-      if (this.user.current_password == '' || this.user.new_password == '') {
-        this.requiredPassword = true
+      if (this.data.current_password == '') {
+        this.requiredCurrentPassword = true
         result = false
       } else {
-        this.requiredPassword = false
+        this.requiredCurrentPassword = false
+      }
+
+      if (this.data.new_password == '') {
+        this.requiredNewPassword = true
+        result = false
+      } else {
+        this.requiredNewPassword = false
       }
 
       return result
     },
+
     checkUsername(e) {
       if (e) {
         return (this.correctUsername = true)
       }
       return (this.correctUsername = false)
     },
+
     checkPassword(e) {
       if (e) {
         return (this.correctPassword = true)
       }
       return (this.correctPassword = false)
     },
+
+    async handleSave() {
+      if (!this.checkRequired()) {
+        return
+      }
+
+      if (this.correctUsername == false || this.correctPassword == false) {
+        return
+      }
+
+      const result = await this.updateUser(this.data)
+      if (result.error) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+        })
+        return
+      }
+
+      this.$toast.open({
+        type: 'success',
+        message: 'Cập nhật thành công!',
+      })
+    },
+
     selectDate(v) {
-      this.user.birthday = date(v.startDate, 'yyyy-MM-dd')
-      if (this.user.birthday == '') {
+      this.data.birthday = date(v.startDate, 'yyyy-MM-dd')
+      if (this.data.birthday == '') {
         return (this.label = 'dd/mm/yyyy')
       }
-      this.label = this.user.birthday
+      this.label = this.data.birthday
     },
+
     onQueryChange() {
       this.checkRequired()
     },
+
     clearDate() {
-      this.user.birthday = ''
+      this.data.birthday = ''
       this.label = 'dd/mm/yyyy'
     },
   },

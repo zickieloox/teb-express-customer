@@ -9,6 +9,7 @@
     <p-header
       @toggleShowSidebar="toggleShowSidebar"
       :isSidebarOpen="isSidebarOpen"
+      :user="user"
     />
     <p-sidebar :isSidebarOpen="isSidebarOpen" />
     <router-view :key="$route.path"></router-view>
@@ -17,6 +18,7 @@
 
 <script>
 import isMobile from 'ismobilejs'
+import { mapState } from 'vuex'
 import '@assets/scss/main.scss'
 import '@assets/fonts/material-design/material-design.min.css'
 import '@assets/fonts/web-icons/web-icons.min.css'
@@ -29,6 +31,11 @@ export default {
   components: {
     PHeader,
     PSidebar,
+  },
+  computed: {
+    ...mapState('auth', {
+      user: (state) => state.user,
+    }),
   },
   data() {
     return {
