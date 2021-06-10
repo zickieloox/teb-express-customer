@@ -30,7 +30,7 @@
             </p-dropdown-item>
             <p-dropdown-item>
               <img src="@/assets/img/Logout.svg" class="navbar__header-icon" />
-              <router-link :to="{ name: '' }" class="">
+              <router-link to="/logout" class="nav-item">
                 Đăng xuất
               </router-link>
             </p-dropdown-item>

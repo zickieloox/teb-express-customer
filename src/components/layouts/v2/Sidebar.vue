@@ -18,12 +18,12 @@
           <router-link :to="menu.route">
             <img class="site-menu-icon default" :src="menu.icon" />
             <img class="site-menu-icon active" :src="menu.iconActive" />
-            <span class="site-menu-title" @click="handleSub(i)">{{
+            <span class="site-menu-title" @click="handleSub(i, menu.title)">{{
               menu.title
             }}</span>
             <div class="icon-sub">
               <img
-                :class="{ 'is-active': activeSubIndex == i }"
+                :class="{ 'is-active': activeSubIndex == i && isactive }"
                 class=""
                 v-if="menu.sub"
                 src="@/assets/img/dropdown.svg"
@@ -32,7 +32,10 @@
           </router-link>
           <div
             class="site-menu-sub"
-            :class="{ 'has-sub': activeSubIndex == i }"
+            :class="{
+              'has-sub':
+                activeSubIndex == i && hadleActiveItem(menu.title) && isactive,
+            }"
             v-if="menu.sub"
           >
             <div
@@ -184,6 +187,8 @@ export default {
       },
       isActiveSub: false,
       activeSubIndex: 0,
+      isactive: false,
+      activeItem: '',
     }
   },
 
@@ -195,9 +200,13 @@ export default {
 
       return this.$route.path === route || this.$route.fullPath === route
     },
-    handleSub(index) {
+    handleSub(index, item) {
       this.activeSubIndex = index
-      console.log(index)
+      this.activeItem = item
+      this.isactive = !this.isactive
+    },
+    hadleActiveItem(item) {
+      return this.activeItem == item
     },
     childrenNameRoute(title) {
       let fullPath = this.$route.fullPath
