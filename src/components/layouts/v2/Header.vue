@@ -16,7 +16,7 @@
         <div class="navbar__header-drop">
           <p-dropdown>
             <div class="nav-link  pointer" slot="trigger">
-              username@yourdomain.com
+              {{ user.full_name }}
               <img src="@/assets/img/dropdown.svg" />
             </div>
             <p-dropdown-item>
@@ -30,7 +30,7 @@
             </p-dropdown-item>
             <p-dropdown-item>
               <img src="@/assets/img/Logout.svg" class="navbar__header-icon" />
-              <router-link :to="{ name: '' }" class="">
+              <router-link to="/logout" class="nav-item">
                 Đăng xuất
               </router-link>
             </p-dropdown-item>
@@ -48,13 +48,9 @@ export default {
   mixins: [mixinDownload],
   name: 'Header',
   props: {
-    shop: {
+    user: {
       type: Object,
       default: () => {},
-    },
-    shops: {
-      type: Array,
-      default: () => [],
     },
     isSidebarOpen: {
       type: Boolean,

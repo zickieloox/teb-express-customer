@@ -6,17 +6,16 @@
       'site-menubar-hide': !isSidebarOpen,
     }"
   >
-    <p-header
-      @toggleShowSidebar="toggleShowSidebar"
-      :isSidebarOpen="isSidebarOpen"
-    />
-    <p-sidebar :isSidebarOpen="isSidebarOpen" />
+    <p-header />
+    <p-sidebar />
+
     <router-view :key="$route.path"></router-view>
   </div>
 </template>
 
 <script>
 import isMobile from 'ismobilejs'
+import { mapState } from 'vuex'
 import '@assets/scss/main.scss'
 import '@assets/fonts/material-design/material-design.min.css'
 import '@assets/fonts/web-icons/web-icons.min.css'
@@ -29,6 +28,11 @@ export default {
   components: {
     PHeader,
     PSidebar,
+  },
+  computed: {
+    ...mapState('auth', {
+      user: (state) => state.user,
+    }),
   },
   data() {
     return {
@@ -51,28 +55,3 @@ export default {
   },
 }
 </script>
-<style lang="scss">
-.icon-messenger {
-  width: 64px;
-  position: fixed;
-  height: 64px;
-  z-index: 101;
-  bottom: 99px;
-  right: 26px;
-  cursor: pointer;
-  &.onClaim {
-    display: none;
-  }
-}
-@media (max-width: 1366px) {
-  .icon-messenger {
-    width: 64px;
-    position: fixed;
-    height: 64px;
-    z-index: 101;
-    bottom: 90px;
-    right: 26px;
-    cursor: pointer;
-  }
-}
-</style>

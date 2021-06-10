@@ -223,11 +223,8 @@ const transformerAuthenticate = (response) => {
     accessToken: response.access_token,
     email: response.email,
     username: response.username,
+    full_name: response.full_name,
+    birthday: response.birthday,
     role: response.role,
-    canReferent: response.can_refer,
-    refCode: response.ref_code || '',
-    packageId: response.package_id,
-    packageVnId: response.package_vn_id,
-    vip: response.vip,
   }
 }
