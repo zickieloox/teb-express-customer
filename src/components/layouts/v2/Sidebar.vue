@@ -11,7 +11,7 @@
           }"
           :key="i"
         >
-          <router-link :to="menu.route">
+          <router-link :to="handelRouter(menu)">
             <img class="site-menu-icon default" :src="menu.icon" />
             <img class="site-menu-icon active" :src="menu.iconActive" />
             <span class="site-menu-title" @click="menu.isOpen = !menu.isOpen">{{
@@ -19,7 +19,7 @@
             }}</span>
             <div class="icon-sub">
               <img
-                :class="{ 'is-active': activeSubIndex == i && isactive }"
+                :class="{ 'is-active': menu.isOpen }"
                 class=""
                 v-if="menu.sub"
                 src="@/assets/img/dropdown.svg"
@@ -39,7 +39,13 @@
               :key="j"
             >
               <router-link :to="sub.route" class="animsition-link">
-                <span class="site-menu-sub-title">{{ sub.title }}</span>
+                <span
+                  :class="{
+                    active: isActive(sub.route) || childrenNameRoute(sub.title),
+                  }"
+                  class="site-menu-sub-title"
+                  >{{ sub.title }}</span
+                >
               </router-link>
             </div>
           </div>
@@ -49,28 +55,7 @@
   </div>
 </template>
 
-<style>
-.dropdown-toggle:after {
-  content: none;
-}
-
-.package-user {
-  margin-left: 15px;
-  font-size: 12px;
-  line-height: 160%;
-  color: #b0b3b9;
-}
-
-.focus {
-  font-weight: 500;
-  color: #0554f2;
-  background: rgb(244, 246, 248, 0.6);
-  border-radius: 4px;
-}
-.shop-name {
-  padding: 9px 0px 9px 16px;
-}
-</style>
+<style></style>
 
 <script>
 import { isObject } from '@core/utils/type'
@@ -161,12 +146,12 @@ export default {
           title: 'Cài đặt ',
           icon: require('@assets/img/SettingInactive.svg'),
           iconActive: require('@assets/img/Setting.svg'),
-          route: { name: '' },
+          route: { name: 'account' },
           class: '',
           isOpen: false,
           sub: [
             {
-              route: '',
+              route: '/setting/account',
               title: 'Thông tin tài khoản',
             },
             {
@@ -195,17 +180,11 @@ export default {
 
       return this.$route.path === route || this.$route.fullPath === route
     },
-    handleSub(index, item) {
-      this.activeSubIndex = index
-      this.activeItem = item
-      this.isactive = !this.isactive
-    },
-    hadleActiveItem(item) {
-      return this.activeItem == item
-    },
     childrenNameRoute(title) {
       let fullPath = this.$route.fullPath
+
       let title1 = title
+
       if (title1 != null) {
         title1 = title1.toLowerCase()
         if (fullPath.includes(title1)) {
@@ -214,11 +193,11 @@ export default {
       }
       return false
     },
-    onHover(i) {
-      this.hoverIndex = i
-    },
-    handleSelectShop(shop) {
-      this.$emit('selectShop', shop)
+    handelRouter(menu) {
+      if (menu.sub) {
+        return ''
+      }
+      return menu.route
     },
   },
 }
