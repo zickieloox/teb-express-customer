@@ -143,30 +143,10 @@ export default {
       isSelectDate: false,
     }
   },
-  created() {
-    this.init()
-  },
 
   methods: {
     ...mapActions('setting', [UPDATE_USER]),
     ...mapActions('shared', [GET_USER]),
-
-    async init() {
-      const result = await this.getUser()
-      if (result.error) {
-        this.$toast.open({
-          type: 'error',
-          message: result.message,
-          duration: 3000,
-        })
-        return
-      }
-
-      this.data.full_name = this.user.full_name
-      this.data.birthday = this.user.birthday
-      this.label = this.data.birthday ? this.data.birthday : 'dd/mm/yyyy'
-      console.log(this.label)
-    },
 
     checkRequired() {
       let result = true
@@ -251,6 +231,16 @@ export default {
     clearDate() {
       this.data.birthday = ''
       this.label = 'dd/mm/yyyy'
+    },
+  },
+  watch: {
+    user: {
+      handler: function(newVal) {
+        this.data.full_name = newVal.full_name
+        this.data.birthday = newVal.birthday
+        this.label = this.data.birthday ? this.data.birthday : 'dd/mm/yyyy'
+      },
+      deep: true,
     },
   },
 }
