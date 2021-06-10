@@ -16,7 +16,7 @@
         <div class="navbar__header-drop">
           <p-dropdown>
             <div class="nav-link  pointer" slot="trigger">
-              username@yourdomain.com
+              {{ user.full_name }}
               <img src="@/assets/img/dropdown.svg" />
             </div>
             <p-dropdown-item>
@@ -48,13 +48,9 @@ export default {
   mixins: [mixinDownload],
   name: 'Header',
   props: {
-    shop: {
+    user: {
       type: Object,
       default: () => {},
-    },
-    shops: {
-      type: Array,
-      default: () => [],
     },
     isSidebarOpen: {
       type: Boolean,

@@ -32,11 +32,4 @@ export default {
   resendEmail(payload) {
     return http.post('/fulfill/auth/resend-email/seller', payload)
   },
-  accessShop(payload) {
-    return http.post(
-      '/fulfill/auth/sign-in-by-token/seller',
-      {},
-      { token: `Bearer ${payload.token}` }
-    )
-  },
 }

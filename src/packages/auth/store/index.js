@@ -39,48 +39,6 @@ export const actions = {
    * @param payload
    * @returns {Promise<{success: boolean}>}
    */
-  async accessShop({ commit }, payload) {
-    let response
-    response = await api.accessShop(payload)
-    if (response && response.access_token) {
-      const data = Object.assign({}, response.user, {
-        access_token: response.access_token,
-      })
-      handleAuthenticated(commit, transformerAuthenticate(data))
-
-      return {
-        success: true,
-        permission: data.role === ROLE_CUSTOMER,
-        user: data,
-      }
-    }
-
-    if (
-      response &&
-      response.user &&
-      response.statusCode == HTTP_STATUS_FORBIDDEN
-    ) {
-      commit(CURRENT_USER, response.user)
-      return {
-        success: false,
-        message: response.errorMessage || '',
-        userInActive: true,
-      }
-    }
-
-    return {
-      success: false,
-      message: response.errorMessage || '',
-      number_incorrect: response.number_incorrect_password || 0,
-    }
-  },
-
-  /**
-   * Sign in
-   * @param commit
-   * @param payload
-   * @returns {Promise<{success: boolean}>}
-   */
   async signIn({ commit }, payload) {
     let response
 
@@ -265,11 +223,8 @@ const transformerAuthenticate = (response) => {
     accessToken: response.access_token,
     email: response.email,
     username: response.username,
+    full_name: response.full_name,
+    birthday: response.birthday,
     role: response.role,
-    canReferent: response.can_refer,
-    refCode: response.ref_code || '',
-    packageId: response.package_id,
-    packageVnId: response.package_vn_id,
-    vip: response.vip,
   }
 }
