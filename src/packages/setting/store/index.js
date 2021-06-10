@@ -1,6 +1,6 @@
+import { ROLE_CUSTOMER } from '@core/constants'
 import api from '../api'
 import AuthService from '@core/services/auth'
-import ROLE_CUSTOMER from '@packages/auth/constants'
 /**
  * Type
  */
