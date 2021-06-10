@@ -237,7 +237,9 @@ export default {
       this.form.checkCaptcha = false
       this.$toast.open({
         type: 'error',
-        message: this.result.errors.join(','),
+        message: this.result.errors
+          ? this.result.errors.join(',')
+          : this.result.error,
         duration: 3000,
       })
     },

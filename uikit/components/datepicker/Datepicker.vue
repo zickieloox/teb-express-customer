@@ -26,7 +26,8 @@
             picker.endDate &&
             picker.startDate != picker.endDate &&
             label != 'Date' &&
-            label != 'Choose date'
+            label != 'Choose date' &&
+            !singleDatePicker
         "
       >
         {{ picker.startDate | date('dd/MM/yyyy') }} ~
@@ -36,11 +37,19 @@
         v-else-if="
           dateRange.startDate &&
             dateRange.endDate &&
-            picker.startDate != picker.endDate
+            picker.startDate != picker.endDate &&
+            !singleDatePicker
         "
       >
         {{ dateRange.startDate | date('dd/MM/yyyy') }} ~
         {{ dateRange.endDate | date('dd/MM/yyyy') }}
+      </span>
+      <span
+        v-else-if="
+          singleDatePicker && dateRange.startDate && label != 'dd/mm/yyyy'
+        "
+      >
+        {{ dateRange.startDate | date('dd/MM/yyyy') }}
       </span>
 
       <span v-else>{{ label }}</span>
