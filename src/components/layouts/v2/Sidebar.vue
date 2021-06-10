@@ -7,13 +7,9 @@
           class="site-menu-item  "
           :class="{
             active: isActive(menu.route) || childrenNameRoute(menu.title),
-            hover: hoverIndex === i,
-            open: isActive(menu.route) && menu.sub,
             vstep2: menu.class == 'vstep2',
           }"
           :key="i"
-          @mouseover="onHover(i)"
-          @mouseout="onHover(-1)"
         >
           <router-link :to="menu.route">
             <img class="site-menu-icon default" :src="menu.icon" />
@@ -149,7 +145,7 @@ export default {
           class: '',
         },
         {
-          title: 'Setting',
+          title: 'Cài đặt ',
           icon: require('@assets/img/SettingInactive.svg'),
           iconActive: require('@assets/img/Setting.svg'),
           route: { name: '' },
