@@ -37,7 +37,11 @@
       font-size: 13px;
       transition: .3s;
     }
-
+    &-title{
+      &.active{
+        color: $color-java-blue-5;
+      }
+    }
 
   }
   .icon-sub{
@@ -140,7 +144,7 @@
 // -----------------
 .site-menubar .site-menu >.site-menu-item.active {
   a {
-    span {
+    .site-menu-title {
       color: $color-neutral-10;
       font-weight: bold;
     }
