@@ -115,7 +115,7 @@
             :aria-label="ariaNextLabel"
           >
             <span aria-hidden="true"
-              >Next&nbsp;&nbsp;<i class="fas fa-chevron-right"></i
+              >Next&nbsp;&nbsp;<i class="fa md-arrow-right"></i
             ></span>
           </a>
         </li>

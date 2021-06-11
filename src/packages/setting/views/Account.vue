@@ -165,7 +165,6 @@ export default {
       this.data.full_name = this.user.full_name
       this.data.birthday = this.user.birthday
       this.label = this.data.birthday ? this.data.birthday : 'dd/mm/yyyy'
-      console.log(this.label)
     },
 
     checkRequired() {

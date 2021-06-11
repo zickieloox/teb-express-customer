@@ -197,7 +197,6 @@ export default {
     },
     handleSub(index) {
       this.activeSubIndex = index
-      console.log(index)
     },
     childrenNameRoute(title) {
       let fullPath = this.$route.fullPath
