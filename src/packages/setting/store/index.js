@@ -1,6 +1,4 @@
-import { ROLE_CUSTOMER } from '@core/constants'
 import api from '../api'
-import AuthService from '@core/services/auth'
 /**
  * Type
  */
@@ -32,15 +30,6 @@ export const actions = {
       return { error: true, message: res.errorMessage || '' }
     }
 
-    const data = Object.assign({}, res.user, {
-      access_token: res.access_token,
-    })
-    if (data.role !== ROLE_CUSTOMER) {
-      return
-    }
-
-    AuthService.set(data)
-    commit(UPDATE_USER, data)
     return { error: false }
   },
 }

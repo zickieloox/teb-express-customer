@@ -42,13 +42,16 @@
                   :label="label"
                   @update="selectDate"
                   :single-date-picker="true"
+                  :showDropdowns="true"
+                  :autoApply="true"
+                  :maxDate="maxDate"
                 >
                 </p-datepicker>
                 <p-button
                   class="clear ml-2"
                   type="default"
                   icon="close"
-                  v-if="data.birthday"
+                  v-if="this.isSelectDate"
                   @click="clearDate"
               /></div>
             </div>
@@ -119,13 +122,22 @@
 import { date } from '@core/utils/datetime'
 import { mapState, mapActions } from 'vuex'
 import { UPDATE_USER } from '@/packages/setting/store/index'
-
+import { GET_USER } from '../../../packages/shared/store'
 export default {
   name: 'Account',
   computed: {
-    ...mapState('auth', {
+    ...mapState('shared', {
       user: (state) => state.user,
     }),
+
+    maxDate() {
+      return new Date()
+    },
+  },
+  mounted() {
+    this.data.full_name = this.user.full_name
+    this.data.birthday = this.user.birthday
+    this.label = this.data.birthday ? this.data.birthday : 'dd/mm/yyyy'
   },
   data() {
     return {
@@ -140,15 +152,13 @@ export default {
       requiredCurrentPassword: false,
       requiredNewPassword: false,
       requiredUsername: false,
+      isSelectDate: false,
     }
-  },
-  mounted() {
-    this.data.full_name = this.user.full_name
-    this.data.birthday = this.user.birthday
   },
 
   methods: {
     ...mapActions('setting', [UPDATE_USER]),
+    ...mapActions('shared', [GET_USER]),
 
     checkRequired() {
       let result = true
@@ -159,14 +169,14 @@ export default {
         this.requiredUsername = false
       }
 
-      if (this.data.current_password == '') {
+      if (this.data.current_password == '' && this.data.new_password != '') {
         this.requiredCurrentPassword = true
         result = false
       } else {
         this.requiredCurrentPassword = false
       }
 
-      if (this.data.new_password == '') {
+      if (this.data.new_password == '' && this.data.current_password != '') {
         this.requiredNewPassword = true
         result = false
       } else {
@@ -199,27 +209,33 @@ export default {
         return
       }
 
+      this.data.full_name = this.data.full_name.trim()
       const result = await this.updateUser(this.data)
+
       if (result.error) {
         this.$toast.open({
           type: 'error',
           message: result.message,
+          duration: 3000,
         })
         return
       }
 
+      location.reload()
       this.$toast.open({
         type: 'success',
         message: 'Cập nhật thành công!',
+        duration: 3000,
       })
     },
 
     selectDate(v) {
-      this.data.birthday = date(v.startDate, 'yyyy-MM-dd')
+      this.data.birthday = date(v.startDate, 'dd/MM/yyyy')
       if (this.data.birthday == '') {
         return (this.label = 'dd/mm/yyyy')
       }
       this.label = this.data.birthday
+      this.isSelectDate = true
     },
 
     onQueryChange() {
@@ -229,6 +245,18 @@ export default {
     clearDate() {
       this.data.birthday = ''
       this.label = 'dd/mm/yyyy'
+      this.isSelectDate = false
+    },
+  },
+  watch: {
+    user: {
+      handler: function(newVal) {
+        this.data.full_name = newVal.full_name
+        this.data.birthday = newVal.birthday
+        this.label = this.data.birthday ? this.data.birthday : 'dd/mm/yyyy'
+        console.log(newVal)
+      },
+      deep: true,
     },
   },
 }
