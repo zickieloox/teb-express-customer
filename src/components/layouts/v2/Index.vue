@@ -1,11 +1,5 @@
 <template>
-  <div
-    class="animsition dashboard"
-    :class="{
-      'site-menubar-unfold': isSidebarOpen,
-      'site-menubar-hide': !isSidebarOpen,
-    }"
-  >
+  <div class="animsition dashboard site-menubar-unfold">
     <p-header :user="user" />
     <p-sidebar />
 
@@ -14,7 +8,6 @@
 </template>
 
 <script>
-import isMobile from 'ismobilejs'
 import { mapState, mapActions } from 'vuex'
 import '@assets/scss/main.scss'
 import '@assets/fonts/material-design/material-design.min.css'
@@ -41,11 +34,7 @@ export default {
       isTicketOpen: false,
     }
   },
-  mounted() {
-    if (isMobile.phone) {
-      this.isSidebarOpen = false
-    }
-  },
+  mounted() {},
   created() {
     this.init()
   },
@@ -53,12 +42,6 @@ export default {
     ...mapActions('shared', [GET_USER]),
     async init() {
       await this.getUser()
-    },
-    toggleShowSidebar() {
-      this.isSidebarOpen = !this.isSidebarOpen
-    },
-    toggleShowTicket() {
-      this.isTicketOpen = !this.isTicketOpen
     },
   },
 }

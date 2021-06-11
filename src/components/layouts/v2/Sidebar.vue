@@ -7,7 +7,6 @@
           class="site-menu-item  "
           :class="{
             active: isActive(menu.route) || childrenNameRoute(menu.title),
-            vstep2: menu.class == 'vstep2',
           }"
           :key="i"
         >
