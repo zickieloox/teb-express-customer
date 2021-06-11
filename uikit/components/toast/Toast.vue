@@ -155,7 +155,6 @@ export default {
         window.location.pathname.split('/').includes('sign-up') ||
         window.location.pathname.split('/').includes('sign-in')
       ) {
-        console.log(1)
         this.parentTop = document.querySelector('.p-notices.is-top.is-home')
         this.parentBottom = document.querySelector(
           '.p-notices.is-bottom.is-home'
@@ -209,6 +208,9 @@ export default {
   mounted() {
     this.setupContainer()
     this.showNotice()
+  },
+  created() {
+    this.setupContainer()
   },
 }
 </script>

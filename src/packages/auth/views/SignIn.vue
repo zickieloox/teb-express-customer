@@ -13,7 +13,7 @@
               >Số điện thoại / Email</label
             >
             <p-input
-              placeholder="you@example.com"
+              placeholder="Nhập số điện thoại hoặc email"
               v-model="email"
               @keyup.enter="onSignIn"
               :required="requiredEmail"
@@ -22,12 +22,9 @@
           <div class="mb-16">
             <div class="label">
               <label class=" color-newtral-10 font-weight-600">Mật khẩu</label>
-              <span class="font-size-12 redirect" @click="redirect()">
-                Quên mật khẩu?
-              </span>
             </div>
             <p-input
-              placeholder="Password"
+              placeholder="Nhập mật khẩu của bạn"
               type="password"
               hiddenPass="on"
               v-model="password"
