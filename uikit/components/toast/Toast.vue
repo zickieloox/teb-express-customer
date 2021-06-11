@@ -155,7 +155,6 @@ export default {
         window.location.pathname.split('/').includes('sign-up') ||
         window.location.pathname.split('/').includes('sign-in')
       ) {
-        console.log(1)
         this.parentTop = document.querySelector('.p-notices.is-top.is-home')
         this.parentBottom = document.querySelector(
           '.p-notices.is-bottom.is-home'
@@ -174,20 +173,23 @@ export default {
           this.parentBottom.className = 'p-notices is-bottom is-home'
         }
       } else {
-        this.parentTop = document.querySelector('.p-notices.is-top')
-        this.parentBottom = document.querySelector('.p-notices.is-bottom')
+        console.log(2)
+        this.parentTop = document.querySelector('.p-notices.is-top.is-dash')
+        this.parentBottom = document.querySelector(
+          '.p-notices.is-bottom.is-dash'
+        )
 
         if (this.parentTop && this.parentBottom) {
           return
         }
         if (!this.parentTop) {
           this.parentTop = document.createElement('div')
-          this.parentTop.className = 'p-notices is-top'
+          this.parentTop.className = 'p-notices is-top is-dash'
         }
 
         if (!this.parentBottom) {
           this.parentBottom = document.createElement('div')
-          this.parentBottom.className = 'p-notices is-bottom'
+          this.parentBottom.className = 'p-notices is-bottom is-dash'
         }
       }
 
@@ -209,6 +211,9 @@ export default {
   mounted() {
     this.setupContainer()
     this.showNotice()
+  },
+  created() {
+    this.setupContainer()
   },
 }
 </script>
