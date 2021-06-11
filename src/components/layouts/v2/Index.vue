@@ -6,12 +6,9 @@
       'site-menubar-hide': !isSidebarOpen,
     }"
   >
-    <p-header
-      @toggleShowSidebar="toggleShowSidebar"
-      :isSidebarOpen="isSidebarOpen"
-      :user="user"
-    />
-    <p-sidebar :isSidebarOpen="isSidebarOpen" />
+    <p-header :user="user" />
+    <p-sidebar />
+
     <router-view :key="$route.path"></router-view>
   </div>
 </template>
@@ -66,28 +63,3 @@ export default {
   },
 }
 </script>
-<style lang="scss">
-.icon-messenger {
-  width: 64px;
-  position: fixed;
-  height: 64px;
-  z-index: 101;
-  bottom: 99px;
-  right: 26px;
-  cursor: pointer;
-  &.onClaim {
-    display: none;
-  }
-}
-@media (max-width: 1366px) {
-  .icon-messenger {
-    width: 64px;
-    position: fixed;
-    height: 64px;
-    z-index: 101;
-    bottom: 90px;
-    right: 26px;
-    cursor: pointer;
-  }
-}
-</style>

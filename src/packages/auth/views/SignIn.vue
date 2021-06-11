@@ -13,7 +13,7 @@
               >Số điện thoại / Email</label
             >
             <p-input
-              placeholder="you@example.com"
+              placeholder="Nhập số điện thoại hoặc email"
               v-model="email"
               @keyup.enter="onSignIn"
               :required="requiredEmail"
@@ -22,12 +22,9 @@
           <div class="mb-16">
             <div class="label">
               <label class=" color-newtral-10 font-weight-600">Mật khẩu</label>
-              <span class="font-size-12 redirect" @click="redirect()">
-                Quên mật khẩu?
-              </span>
             </div>
             <p-input
-              placeholder="Password"
+              placeholder="Nhập mật khẩu của bạn"
               type="password"
               hiddenPass="on"
               v-model="password"
@@ -73,7 +70,6 @@ import VueRecaptcha from 'vue-recaptcha'
 import mixinRoute from '@core/mixins/route'
 
 import { SHOW_NOTIFICATION_MESSAGE } from '@/packages/shared/store'
-import Storage from '@core/helpers/storage'
 
 export default {
   components: { VueRecaptcha },
@@ -188,26 +184,10 @@ export default {
           this.$router.push(path)
         }, 1000)
       } else {
-        if (this.result.userInActive) {
-          Storage.set('userEmail', this.currentUser.email)
-          setTimeout(() => {
-            this.$router.push('/verify-email')
-          }, 1000)
-          this.$toast.open({
-            type: 'error',
-            message: this.result.message,
-          })
-          return
-        }
-        if (this.$refs.recapcha) {
-          this.$refs.recapcha.reset()
-          this.form.checkCaptcha = false
-        }
-
         this.$toast.open({
           type: 'error',
           message: this.result.message,
-          duration: 500000,
+          duration: 3000,
         })
       }
     },
