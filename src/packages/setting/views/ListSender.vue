@@ -58,7 +58,7 @@
                       <td
                         ><span
                           @click="showModalEditSender(item.id)"
-                          class="reset store-action"
+                          class="edit-sender"
                           ><img src="~@/assets/img/EditSquare.svg" alt="" />
                         </span>
                       </td>
@@ -219,5 +219,8 @@ export default {
 .list-sender .btn {
   min-width: 150px;
   margin-left: 10px;
+}
+.edit-sender {
+  cursor: pointer;
 }
 </style>

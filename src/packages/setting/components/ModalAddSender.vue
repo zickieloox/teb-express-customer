@@ -10,7 +10,7 @@
               class="form-control"
               v-model="senderEditing.name"
               placeholder="Nhập Tên"
-              v-validate="'required'"
+              v-validate="'required|fullName'"
               name="name"
               data-vv-as="Tên"
               :class="{ 'error-color': errors.has('name') }"
@@ -262,6 +262,12 @@ export default {
 .modal-add-sender label span {
   color: red;
 }
+.modal-add-sender span {
+  color: red;
+}
+input:invalid {
+  border-color: red;
+}
 .default-sender {
   position: relative;
 }
@@ -281,6 +287,7 @@ export default {
   left: 12px !important;
 }
 .default-sender span {
+  color: #37393e;
   position: absolute;
   top: 0;
   left: 40px;
