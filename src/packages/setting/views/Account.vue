@@ -216,16 +216,16 @@ export default {
         this.$toast.open({
           type: 'error',
           message: result.message,
-          duration: 500000,
+          duration: 3000,
         })
         return
       }
 
-      // location.reload()
+      location.reload()
       this.$toast.open({
         type: 'success',
         message: 'Cập nhật thành công!',
-        duration: 500000,
+        duration: 3000,
       })
     },
 
