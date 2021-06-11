@@ -49,9 +49,24 @@
                       </td>
                       <td>
                         {{ item.name }}
+                        <i
+                          v-if="item.is_default"
+                          style="color: #075027"
+                          class="icon md-check-circle"
+                        ></i>
                       </td>
                       <td>{{ item.phone_number }}</td>
-                      <td>{{ truncate(item.address || '-'[0], 20) }}</td>
+                      <td>
+                        <p-tooltip
+                          :label="item.address"
+                          size="large"
+                          position="top"
+                          type="dark"
+                          :active="item.address.length > 20"
+                        >
+                          {{ truncate(item.address || '-'[0], 20) }}
+                        </p-tooltip>
+                      </td>
                       <td>{{ item.city }}</td>
                       <td>{{ item.district }}</td>
                       <td>{{ item.wards }}</td>
@@ -89,6 +104,7 @@
       :sender="selectedSender"
       :cities="addresses"
       @saveSender="saveSender"
+      @close="closeModal"
     >
     </modal-add-sender>
   </div>
@@ -103,6 +119,7 @@ import mixinTable from '@core/mixins/table'
 import { truncate } from '@core/utils/string'
 import ModalAddSender from '../components/ModalAddSender'
 import { FETCH_ADDRESSES } from '@/packages/shared/store'
+import { cloneDeep } from '@core/utils'
 export default {
   name: 'ListSender',
   mixins: [mixinRoute, mixinTable],
@@ -134,7 +151,7 @@ export default {
       addresses: (state) => state.addresses,
     }),
     displaySenders() {
-      return this.senders
+      return cloneDeep(this.senders)
     },
   },
   created() {
@@ -155,6 +172,10 @@ export default {
       this.isFetching = false
     },
 
+    closeModal() {
+      this.init()
+    },
+
     visibleModalAddSender() {
       this.isVisibleModalAddSender = true
       this.titleModal = 'Thêm người gửi'
@@ -162,7 +183,7 @@ export default {
     },
     showModalEditSender(sender_id) {
       this.isVisibleModalAddSender = true
-      this.selectedSender = this.senders.find((e) => e.id === sender_id)
+      this.selectedSender = this.displaySenders.find((e) => e.id === sender_id)
       this.titleModal = 'Cập nhật thông tin người gửi'
     },
     async saveSender(sender) {

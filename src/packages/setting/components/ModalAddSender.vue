@@ -54,7 +54,7 @@
           <div class="col-4 form-group">
             <label>Tỉnh/Thành phố: <span>*</span></label>
             <p-select
-              placeholder="Tỉnh/Thành phố:"
+              placeholder="Tỉnh/Thành phố"
               v-model="senderEditing.city"
               v-validate="'required'"
               name="city_code"
@@ -76,7 +76,7 @@
           <div class="col-4 form-group">
             <label>Quận/Huyện: <span>*</span></label>
             <p-select
-              placeholder="Quận/Huyện:"
+              placeholder="Quận/Huyện"
               v-model="senderEditing.district"
               v-validate="'required'"
               name="district_code"
@@ -98,7 +98,7 @@
           <div class="col-4 form-group">
             <label>Phường/Xã: <span>*</span></label>
             <p-select
-              placeholder="Phường/Xã:"
+              placeholder="Phường/Xã"
               v-model="senderEditing.wards"
               v-validate="'required'"
               name="ward_code"
@@ -118,7 +118,6 @@
           <p-checkbox
             class="tracking-checkbox"
             v-model="senderEditing.is_default"
-            @change.native="chooseSenderDefault"
           ></p-checkbox>
           <span> Đặt làm mặc định</span>
         </div>
@@ -127,7 +126,7 @@
       <template slot="footer">
         <div>
           <img src="~@/assets/img/InfoCircle.svg" alt="" />
-          Lưu ý: (*) Là các trường bắt buộc nhập.
+          <b>Lưu ý:</b> (<span>*</span>) Là các trường bắt buộc nhập.
         </div>
         <div class="d-flex">
           <div>
@@ -216,11 +215,16 @@ export default {
         return
       }
 
+      this.senderEditing.name = this.senderEditing.name.trim()
+      this.senderEditing.phone_number = this.senderEditing.phone_number.trim()
+      this.senderEditing.address = this.senderEditing.address.trim()
+
       this.$emit('saveSender', this.senderEditing)
       this.$emit('update:visible', false)
     },
     handleClose() {
       this.$emit('update:visible', false)
+      this.$emit('close', true)
     },
   },
   watch: {
@@ -252,7 +256,12 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+select {
+  option:disabled {
+    color: #d100e6 !important;
+  }
+}
 .modal-add-sender label {
   margin-bottom: 4px;
   font-weight: 700;

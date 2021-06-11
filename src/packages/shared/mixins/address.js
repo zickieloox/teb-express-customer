@@ -9,6 +9,11 @@ export default {
         ({ Name }) => Name === this.senderEditing.city
       )
 
+      if (!cityFound) {
+        this.senderEditing.district = ''
+        this.senderEditing.wards = ''
+      }
+
       return cityFound || {}
     },
     districts() {
@@ -21,6 +26,10 @@ export default {
       const districtFound = this.districts.find(
         (element) => element.Name === this.senderEditing.district
       )
+      if (!districtFound) {
+        this.senderEditing.district = ''
+        this.senderEditing.wards = ''
+      }
       return districtFound || {}
     },
     wards() {
