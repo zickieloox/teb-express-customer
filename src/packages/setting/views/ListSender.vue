@@ -2,16 +2,6 @@
   <div class="setting list-sender pages">
     <div class="page-content">
       <div class="page-header">
-        <div class="page-header_back">
-          <router-link :to="{ name: 'setting' }" class="text">
-            <img
-              src="@/assets/img/chevron-left.svg"
-              alt=""
-              class="page-header_back_icon"
-            />
-            <span>Setting</span>
-          </router-link>
-        </div>
         <div class="page-header_title header-2">Danh sách người gửi</div>
       </div>
       <div class="page-content">

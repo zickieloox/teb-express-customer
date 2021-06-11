@@ -155,7 +155,7 @@ export default {
               title: 'Thông tin tài khoản',
             },
             {
-              route: '',
+              route: '/setting/list-sender',
               title: 'Danh sách người gửi',
             },
             {
