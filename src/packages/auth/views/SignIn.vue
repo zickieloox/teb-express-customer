@@ -65,11 +65,9 @@
   </div>
 </template>
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import VueRecaptcha from 'vue-recaptcha'
 import mixinRoute from '@core/mixins/route'
-
-import { SHOW_NOTIFICATION_MESSAGE } from '@/packages/shared/store'
 
 export default {
   components: { VueRecaptcha },
@@ -109,7 +107,6 @@ export default {
   },
   methods: {
     ...mapActions('auth', ['signIn']),
-    ...mapMutations('shared', [SHOW_NOTIFICATION_MESSAGE]),
 
     redirect() {
       return this.$router.push('/forgot')

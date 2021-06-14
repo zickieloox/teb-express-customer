@@ -1,7 +1,7 @@
 <template>
   <div class="pagination-box">
     <div class="select_limit_box">
-      <span>Show</span>
+      <span class="title">Bản ghi mỗi trang:</span>
       <div
         class="select_limit"
         :options="limitPage"
@@ -30,7 +30,7 @@
         </nav>
       </div>
 
-      <span>of {{ this.total }}</span>
+      <!--      <span>{{ this.total }}</span>-->
     </div>
 
     <nav>
@@ -39,7 +39,7 @@
         :class="rootClasses"
         v-if="!simple"
       >
-        <li class="page-item">
+        <li class="page-item button-page" :class="{ disabled: !hasPrev }">
           <a
             role="button"
             href="#"
@@ -49,9 +49,7 @@
             @click.prevent="prev"
             :aria-label="ariaPreviousLabel"
           >
-            <span aria-hidden="true"
-              ><i class="fas fa-chevron-left"></i>&nbsp;&nbsp;Prev</span
-            >
+            <i class="fa md-arrow-left"></i>
           </a>
         </li>
         <!--First-->
@@ -104,7 +102,7 @@
             {{ pageCount }}
           </a>
         </li>
-        <li class="page-item">
+        <li class="page-item button-page" :class="{ disabled: !hasNext }">
           <a
             role="button"
             href="#"
@@ -114,9 +112,7 @@
             @click.prevent="next"
             :aria-label="ariaNextLabel"
           >
-            <span aria-hidden="true"
-              >Next&nbsp;&nbsp;<i class="fa md-arrow-right"></i
-            ></span>
+            <i class="fa md-arrow-right"></i>
           </a>
         </li>
       </ul>
