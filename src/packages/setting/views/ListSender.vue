@@ -137,9 +137,6 @@ export default {
         limit: 50,
         search: '',
       },
-      cityCode: '',
-      districtCode: '',
-      wardsCode: '',
     }
   },
   computed: {
