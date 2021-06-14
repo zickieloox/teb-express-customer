@@ -23,7 +23,7 @@
     ></div>
     <slot name="caret" :toggle="toggle">
       <div @mousedown.prevent.stop="toggle()" class="multiselect__select">
-        <img src="@assets/img/Frame.svg" style="margin-top: 10px;" />
+        <img src="@assets/img/Frame.svg" />
       </div>
     </slot>
     <slot name="clear" :search="search"></slot>
@@ -595,7 +595,7 @@ fieldset[disabled] .multiselect {
 .multiselect__tags {
   min-height: 40px;
   display: block;
-  padding: 8px 40px 0 8px;
+  padding: 3px 40px 0 12px;
   border-radius: 5px;
   border: 1px solid #e8e8e8;
   background: #fff;

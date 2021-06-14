@@ -173,7 +173,6 @@ export default {
           this.parentBottom.className = 'p-notices is-bottom is-home'
         }
       } else {
-        console.log(2)
         this.parentTop = document.querySelector('.p-notices.is-top.is-dash')
         this.parentBottom = document.querySelector(
           '.p-notices.is-bottom.is-dash'

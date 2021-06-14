@@ -13,18 +13,23 @@ import initGlobalDirectives from '@core/vue/directives'
 import router from './core/router'
 import store from './core/store'
 import '../uikit'
-//import validationMessagesVi from 'vee-validate/dist/locale/vi'
-import validationMessagesEn from 'vee-validate/dist/locale/en'
+import { VclTable } from 'vue-content-loading'
+import validationMessagesVi from 'vee-validate/dist/locale/vi'
+// import validationMessagesEn from 'vee-validate/dist/locale/en'
 
 Vue.use(VueClipboard)
-//Vue.use(VeeValidate, { locale: 'vi', dictionary: { vi: validationMessagesVi } })
-Vue.use(VeeValidate, { locale: 'en', dictionary: { en: validationMessagesEn } })
+Vue.use(VeeValidate, {
+  locale: 'vi',
+  dictionary: { vi: validationMessagesVi },
+  aria: true,
+})
+// Vue.use(VeeValidate, { locale: 'en', dictionary: { en: validationMessagesEn } })
 Vue.use(Notifications)
 Vue.use(MainPlugin)
 Vue.use(VueCarousel)
 Vue.use(VueLazyLoad)
 Vue.use(VueTour)
-
+Vue.component('VclTable', VclTable)
 // Vue.use(DashboardPlugin)
 initGlobalDirectives()
 
@@ -74,7 +79,7 @@ VeeValidate.Validator.extend('shop_email', {
 })
 
 VeeValidate.Validator.extend('fullName', {
-  getMessage: () => `Invalid Full Name`,
+  getMessage: () => `Tên không hợp lệ`,
   validate: (value) => {
     const regex = new RegExp(
       /^([^0-9!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]*){0,150}$/
@@ -90,7 +95,7 @@ VeeValidate.Validator.extend('shopName', {
   },
 })
 VeeValidate.Validator.extend('phoneAddress', {
-  getMessage: () => `Invalid phone`,
+  getMessage: () => `Số điện thoại không hợp lệ`,
   validate: (value) => {
     /* eslint-disable */
     const regex = new RegExp(
