@@ -40,7 +40,7 @@
               v-model="senderEditing.address"
               class="form-control"
               placeholder="Nhập Địa chỉ"
-              v-validate="'required'"
+              v-validate="'required|max:200'"
               name="address"
               data-vv-as="Địa chỉ"
               :class="{ 'error-color': errors.has('address') }"
