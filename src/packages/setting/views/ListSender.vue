@@ -45,7 +45,11 @@
                   <tbody>
                     <tr v-for="(item, i) in displaySenders" :key="i">
                       <td>
-                        {{ item.id }}
+                        <span
+                          @click="showModalEditSender(item.id)"
+                          class="edit-sender"
+                          >{{ item.code }}
+                        </span>
                       </td>
                       <td>
                         {{ item.name }}
@@ -137,9 +141,6 @@ export default {
         limit: 50,
         search: '',
       },
-      cityCode: '',
-      districtCode: '',
-      wardsCode: '',
     }
   },
   computed: {

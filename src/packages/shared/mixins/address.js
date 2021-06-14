@@ -1,6 +1,5 @@
 export default {
   computed: {
-    cityCode() {},
     city() {
       if (!this.senderEditing.city) {
         return {}
