@@ -15,7 +15,6 @@ import '@assets/fonts/web-icons/web-icons.min.css'
 import PHeader from './Header'
 import PSidebar from './Sidebar'
 import { GET_USER } from '../../../packages/shared/store'
-require('vue-image-lightbox/dist/vue-image-lightbox.min.css')
 
 export default {
   name: 'Version2',
