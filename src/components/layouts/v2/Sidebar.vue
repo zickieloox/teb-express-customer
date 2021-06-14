@@ -4,9 +4,9 @@
       <ul class="site-menu">
         <li
           v-for="(menu, i) in menus"
-          class="site-menu-item  "
+          class="site-menu-item"
           :class="{
-            active: isActive(menu.route) || childrenNameRoute(menu.title),
+            active: isActive(menu.route) || childrenNameRoute(menu.route.name),
           }"
           :key="i"
         >
@@ -109,7 +109,7 @@ export default {
           title: 'Đơn hàng',
           icon: require('@assets/img/OrderInactive.svg'),
           iconActive: require('@assets/img/Order.svg'),
-          route: '',
+          route: { name: 'orders' },
           class: '',
           isOpen: false,
           sub: [
@@ -122,7 +122,7 @@ export default {
               title: 'Quản lý đơn hàng',
             },
             {
-              route: '',
+              route: '/orders/claims',
               title: 'Đơn khiếu nại',
             },
           ],
@@ -145,7 +145,7 @@ export default {
           title: 'Cài đặt ',
           icon: require('@assets/img/SettingInactive.svg'),
           iconActive: require('@assets/img/Setting.svg'),
-          route: { name: 'account' },
+          route: { name: 'setting' },
           class: '',
           isOpen: false,
           sub: [
@@ -181,9 +181,7 @@ export default {
     },
     childrenNameRoute(title) {
       let fullPath = this.$route.fullPath
-
       let title1 = title
-
       if (title1 != null) {
         title1 = title1.toLowerCase()
         if (fullPath.includes(title1)) {

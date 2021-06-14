@@ -87,7 +87,7 @@
         </div>
       </div>
       <div
-        class="d-flex justify-content-between align-items-center"
+        class="d-flex justify-content-between align-items-center mb-16"
         v-if="count_senders > 0"
       >
         <p-pagination
@@ -213,13 +213,13 @@ export default {
         this.$toast.open({
           type: 'success',
           message: 'Tạo người gửi thành công',
-          duration: 4000,
+          duration: 3000,
         })
       } else {
         this.$toast.open({
           type: 'success',
           message: 'Cập nhật thành công',
-          duration: 4000,
+          duration: 3000,
         })
       }
       await this.init()
