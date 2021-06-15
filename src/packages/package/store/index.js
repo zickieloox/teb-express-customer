@@ -9,7 +9,12 @@ export const FETCH_PACKAGE_DETAIL = 'fetchPackges'
  * State
  */
 export const state = {
-  package: [],
+  package_detail: {
+    package: {},
+    deliver_logs: {},
+    price: 0.0,
+    extra_fee: {},
+  },
 }
 
 /**
@@ -17,7 +22,7 @@ export const state = {
  */
 export const mutations = {
   [FETCH_PACKAGE_DETAIL]: (state, payload) => {
-    state.package = payload
+    state.package_detail = payload
   },
 }
 

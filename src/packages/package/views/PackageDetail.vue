@@ -72,7 +72,7 @@ export default {
   },
   computed: {
     ...mapState('package', {
-      package: (state) => state.package,
+      package_detail: (state) => state.package_detail,
     }),
   },
 }
