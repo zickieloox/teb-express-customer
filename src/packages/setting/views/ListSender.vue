@@ -244,7 +244,7 @@ export default {
 }
 .edit-sender {
   cursor: pointer;
-  font-weight: bold;
+  font-weight: bolder;
   color: #015858;
 }
 </style>
