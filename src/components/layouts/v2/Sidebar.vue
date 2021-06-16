@@ -114,7 +114,7 @@ export default {
           isOpen: false,
           sub: [
             {
-              route: '',
+              route: '/packages/create',
               title: 'Tạo đơn lẻ',
             },
             {
@@ -122,7 +122,7 @@ export default {
               title: 'Quản lý đơn hàng',
             },
             {
-              route: '/orders/claims',
+              route: '/packages/claims',
               title: 'Đơn khiếu nại',
             },
           ],
