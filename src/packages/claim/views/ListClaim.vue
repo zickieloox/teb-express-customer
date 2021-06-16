@@ -21,7 +21,7 @@
           <div class="list__claim-list">
             <status-tab v-model="filter.status" :status="claimStatus" />
             <vcl-table class=" md-20" v-if="isFetching"></vcl-table>
-            <template v-else-if="claim.length > 0">
+            <template v-else-if="listclaim.length > 0">
               <div class="table-responsive">
                 <table class="table">
                   <thead>
@@ -36,9 +36,9 @@
                   </thead>
 
                   <tbody>
-                    <tr v-for="(item, i) in claim" :key="i">
+                    <tr v-for="(item, i) in listclaim" :key="i">
                       <td>{{ item.id }}</td>
-                      <td>{{ item.code }}</td>
+                      <td>{{ item.package.code }}</td>
                       <td width="235">
                         <p-tooltip
                           :label="item.title"
@@ -50,9 +50,13 @@
                           {{ truncate(item.title, 15) }}
                         </p-tooltip>
                       </td>
-                      <td>{{ item.created_at }}</td>
-                      <td>{{ item.updated_at }}</td>
-                      <td>{{ item.status }}</td>
+                      <td>{{
+                        item.created_at | datetime('dd-MM-yyyy HH:mm:ss')
+                      }}</td>
+                      <td>{{
+                        item.updated_at | datetime('dd-MM-yyyy HH:mm:ss')
+                      }}</td>
+                      <td>{{ converStatus(item.status) }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -65,16 +69,20 @@
     </div>
     <div
       class="d-flex justify-content-between align-items-center mb-16"
-      v-if="claim.length > 0"
+      v-if="count > 0"
     >
       <p-pagination
-        :total="3"
+        :total="count"
         :perPage.sync="filter.limit"
         :current.sync="filter.page"
         size="sm"
       ></p-pagination>
     </div>
-    <modal-add-claim :visible.sync="visibleModal" :title="`Khiếu nại`">
+    <modal-add-claim
+      :visible.sync="visibleModal"
+      :title="`Khiếu nại`"
+      @create="init"
+    >
     </modal-add-claim>
   </div>
 </template>
@@ -85,6 +93,9 @@ import { truncate } from '@core/utils/string'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import ModalAddClaim from '../components/ModalAddClaim'
+import { FETCH_CLAIMS } from '../store'
+import { mapActions, mapState } from 'vuex'
+
 export default {
   name: 'ListClaim',
   mixins: [mixinRoute, mixinTable],
@@ -95,39 +106,13 @@ export default {
   data() {
     return {
       filter: {
-        limit: 1,
+        limit: 20,
         search: '',
         status: '',
       },
       visibleModal: false,
       isFetching: false,
       claimStatus: CLAIM_STATUS,
-      claim: [
-        {
-          id: 'MKN123456',
-          code: 'MVD012345',
-          title: 'Giao hàng chậm',
-          created_at: '29/5/2021',
-          updated_at: '29/5/2021',
-          status: 'Đang xử lý',
-        },
-        {
-          id: 'MKN123456',
-          code: 'MVD012345',
-          title: 'Giao hàng chậm',
-          created_at: '29/5/2021',
-          updated_at: '29/5/2021',
-          status: 'Đang xử lý',
-        },
-        {
-          id: 'MKN123456',
-          code: 'MVD012345',
-          title: 'Giao hàng chậm',
-          created_at: '29/5/2021',
-          updated_at: '29/5/2021',
-          status: 'Đang xử lý',
-        },
-      ],
     }
   },
   created() {
@@ -136,15 +121,35 @@ export default {
   mounted() {
     this.init()
   },
+  computed: {
+    ...mapState('claim', {
+      count: (state) => state.count,
+      listclaim: (state) => state.claims,
+    }),
+  },
   methods: {
+    ...mapActions('claim', [FETCH_CLAIMS]),
     truncate,
     async init() {
       this.isFetching = true
       this.handleUpdateRouteQuery()
+      let result = await this[FETCH_CLAIMS](this.filter)
+      if (result.error) {
+        this.$toast.open({ type: 'danger', message: result.message })
+        return
+      }
       this.isFetching = false
     },
     handleModal() {
       this.visibleModal = true
+    },
+    converStatus(status) {
+      switch (status) {
+        case 1:
+          return 'Đang xử lý'
+        case 2:
+          return 'Đã xử lý'
+      }
     },
   },
   watch: {
