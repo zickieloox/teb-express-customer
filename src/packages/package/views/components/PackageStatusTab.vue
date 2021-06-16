@@ -1,5 +1,5 @@
 <template>
-  <div id="nav_container" class="p-tabs nav-tabs-horizontal">
+  <div id="nav_container" class="p-tabs nav-tabs-horizontal mt-24">
     <button class="icon-nav next" @click="clickLeftNav">
       <img src="~@/assets/img/left_nav.png" />
     </button>
