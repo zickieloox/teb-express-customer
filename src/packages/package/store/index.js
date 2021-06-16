@@ -19,6 +19,7 @@ export const state = {
   },
   packages: [],
   countPackages: 0,
+  count_status: [],
 }
 
 /**
@@ -32,7 +33,8 @@ export const mutations = {
     state.packages = payload
   },
   [COUNT_LIST_PACKAGES]: (state, payload) => {
-    state.countPackages = payload
+    state.countPackages = payload.count
+    state.count_status = payload.status_count
   },
 }
 
@@ -65,7 +67,7 @@ export const actions = {
       }
     }
     commit(FETCH_LIST_PACKAGES, list.packages)
-    commit(COUNT_LIST_PACKAGES, count.count)
+    commit(COUNT_LIST_PACKAGES, count)
     return result
   },
 }

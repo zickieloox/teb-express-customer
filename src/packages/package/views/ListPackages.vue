@@ -36,7 +36,12 @@
               >
               </p-datepicker>
             </div>
-            <package-status-tab :status="statusTab" v-model="filter.status" />
+            <package-status-tab
+              :has-all="false"
+              :status="statusTab"
+              v-model="filter.status"
+              :count-status="count_status"
+            />
             <VclTable class="mt-20" v-if="isFetching"></VclTable>
             <template v-else-if="packages.length">
               <div class="table-responsive">
@@ -131,10 +136,8 @@ export default {
     ...mapState('package', {
       packages: (state) => state.packages,
       count: (state) => state.countPackages,
+      count_status: (state) => state.count_status,
     }),
-    count_senders() {
-      return 155
-    },
     statusTab() {
       return PACKAGE_STATUS_TAB
     },
