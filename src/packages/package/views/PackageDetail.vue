@@ -15,7 +15,10 @@
             </div>
             <div>
               <div>Ngày tạo </div>
-              <div>26/05/2021 - 19:34:30</div>
+              <div>{{
+                package_detail.package.created_at
+                  | datetime('dd-MM-yyyy HH:mm:ss')
+              }}</div>
             </div>
             <div>
               <div>Trạng thái</div>
@@ -46,7 +49,7 @@
                   </div>
                   <div class="card-content">
                     <div class="row">
-                      <div class="col-4">Họ và tên:</div>
+                      <div class="col-4 mb-8">Họ và tên:</div>
                       <div class="col-8"
                         ><div>{{
                           $evaluate('package_detail.package.sender_full_name')
@@ -54,7 +57,7 @@
                       >
                     </div>
                     <div class="row">
-                      <div class="col-4">Điện thoại:</div>
+                      <div class="col-4 mb-8">Điện thoại:</div>
                       <div class="col-8"
                         ><div>{{
                           $evaluate(
@@ -64,7 +67,7 @@
                       >
                     </div>
                     <div class="row">
-                      <div class="col-4">Địa chỉ:</div>
+                      <div class="col-4 mb-8">Địa chỉ:</div>
                       <div class="col-8"
                         ><div>{{
                           $evaluate('package_detail.package.sender_address')
@@ -79,7 +82,7 @@
                   </div>
                   <div class="card-content">
                     <div class="row">
-                      <div class="col-4">Họ và tên:</div>
+                      <div class="col-4 mb-8">Họ và tên:</div>
                       <div class="col-8"
                         ><div>{{
                           $evaluate('package_detail.package.recipient')
@@ -87,7 +90,7 @@
                       >
                     </div>
                     <div class="row">
-                      <div class="col-4">Điện thoại:</div>
+                      <div class="col-4 mb-8">Điện thoại:</div>
                       <div class="col-8"
                         ><div>{{
                           $evaluate('package_detail.package.phone_number')
@@ -95,7 +98,7 @@
                       >
                     </div>
                     <div class="row">
-                      <div class="col-4">Địa chỉ:</div>
+                      <div class="col-4 mb-8">Địa chỉ:</div>
                       <div class="col-8"
                         ><div>{{
                           $evaluate('package_detail.package.address_1')
@@ -103,7 +106,7 @@
                       >
                     </div>
                     <div class="row">
-                      <div class="col-4">Thành phố:</div>
+                      <div class="col-4 mb-8">Thành phố:</div>
                       <div class="col-8"
                         ><div>{{
                           $evaluate('package_detail.package.city')
@@ -111,7 +114,7 @@
                       >
                     </div>
                     <div class="row">
-                      <div class="col-4">Mã vùng:</div>
+                      <div class="col-4 mb-8">Mã vùng:</div>
                       <div class="col-8"
                         ><div>{{
                           $evaluate('package_detail.package.state_code')
@@ -149,7 +152,7 @@
                       </div>
                       <div class="card-content">
                         <div class="row">
-                          <div class="col-4">Mã đơn hàng:</div>
+                          <div class="col-4 mb-8">Mã đơn hàng:</div>
                           <div class="col-8"
                             ><div>{{
                               $evaluate('package_detail.package.code')
@@ -157,7 +160,7 @@
                           >
                         </div>
                         <div class="row">
-                          <div class="col-4">Tên hàng:</div>
+                          <div class="col-4 mb-8">Tên hàng:</div>
                           <div class="col-8"
                             ><div>{{
                               $evaluate('package_detail.package.phone_number')
@@ -165,7 +168,7 @@
                           >
                         </div>
                         <div class="row">
-                          <div class="col-4">Trọng lượng:</div>
+                          <div class="col-4 mb-8">Trọng lượng:</div>
                           <div class="col-8"
                             ><div>{{
                               $evaluate('package_detail.package.weight')
@@ -173,7 +176,7 @@
                           >
                         </div>
                         <div class="row">
-                          <div class="col-4">Dài:</div>
+                          <div class="col-4 mb-8">Dài:</div>
                           <div class="col-8"
                             ><div>{{
                               $evaluate('package_detail.package.length')
@@ -181,7 +184,7 @@
                           >
                         </div>
                         <div class="row">
-                          <div class="col-4">Rộng:</div>
+                          <div class="col-4 mb-8">Rộng:</div>
                           <div class="col-8"
                             ><div>{{
                               $evaluate('package_detail.package.width')
@@ -189,7 +192,7 @@
                           >
                         </div>
                         <div class="row">
-                          <div class="col-4">Cao:</div>
+                          <div class="col-4 mb-8">Cao:</div>
                           <div class="col-8"
                             ><div>{{
                               $evaluate('package_detail.package.height')
@@ -204,24 +207,24 @@
                       </div>
                       <div class="card-content">
                         <div class="row">
-                          <div class="col-4">Phí giao hàng:</div>
-                          <div class="col-8"
+                          <div class="col-8 mb-8">Phí giao hàng:</div>
+                          <div class="col-4"
                             ><div>{{
                               $evaluate('package_detail.package.code')
                             }}</div></div
                           >
                         </div>
                         <div class="row">
-                          <div class="col-4">Phí phát sinh:</div>
-                          <div class="col-8"
+                          <div class="col-8 mb-8">Phí phát sinh:</div>
+                          <div class="col-4"
                             ><div>{{
                               $evaluate('package_detail.package.phone_number')
                             }}</div></div
                           >
                         </div>
                         <div class="row">
-                          <div class="col-4">Khuyến mãi:</div>
-                          <div class="col-8"
+                          <div class="col-8 mb-8">Khuyến mãi:</div>
+                          <div class="col-4"
                             ><div>{{
                               $evaluate('package_detail.package.weight')
                             }}</div></div
@@ -245,31 +248,21 @@
                       </div>
                       <div class="card-content deliver-log">
                         <div class="timeline">
-                          <div class="timeline-item">
+                          <div
+                            v-for="(item, i) in package_detail.deliver_logs"
+                            :key="i"
+                            class="timeline-item"
+                          >
                             <div class="timeline-item__left">
-                              <div>Apr 28, 2021</div>
-                              <div>03:05 pm</div>
+                              <div>{{
+                                item.ship_time | datetime('dd/MM/yyyy')
+                              }}</div>
+                              <div>{{
+                                item.ship_time | datetime('HH:mm')
+                              }}</div>
                             </div>
                             <div class="timeline-item__right">
                               <div>Hàng đến kho</div>
-                            </div>
-                          </div>
-                          <div class="timeline-item">
-                            <div class="timeline-item__left">
-                              <div>Apr 28, 2021</div>
-                              <div>03:05 pm</div>
-                            </div>
-                            <div class="timeline-item__right">
-                              <div>Nhận hàng</div>
-                            </div>
-                          </div>
-                          <div class="timeline-item">
-                            <div class="timeline-item__left">
-                              <div>Apr 28, 2021</div>
-                              <div>03:05 pm</div>
-                            </div>
-                            <div class="timeline-item__right">
-                              <div>Tiếp nhận đơn hàng</div>
                             </div>
                           </div>
                         </div>
