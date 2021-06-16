@@ -23,6 +23,9 @@
                 placeholder="Tìm theo đơn hàng..."
                 suffixIcon="search"
                 type="search"
+                v-model="searchCode"
+                :suffix-func="handleSearchCode"
+                @keyup.enter="handleSearchCode"
               >
               </p-input>
               <p-datepicker
@@ -124,12 +127,16 @@ export default {
         limit: 50,
         status: '',
         search: '',
+        code: '',
       },
+      searchCode: '',
+      allowSearch: true,
       isFetching: false,
     }
   },
   created() {
     this.filter = this.getRouteQuery()
+    this.searchCode = this.filter.code
     this.init()
   },
   computed: {
@@ -149,11 +156,16 @@ export default {
     ...mapActions('package', [FETCH_LIST_PACKAGES]),
     async init() {
       this.isFetching = true
+      this.handleUpdateRouteQuery()
       const result = await this.fetchListPackages(this.filter)
       this.isFetching = false
       if (!result.success) {
         this.$toast.open({ message: result.message, type: 'error' })
       }
+    },
+    handleSearchCode() {
+      this.filter.page = 1
+      this.$set(this.filter, 'code', this.searchCode.trim())
     },
   },
   watch: {

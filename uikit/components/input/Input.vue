@@ -149,6 +149,8 @@
         class="form-control-icon form-control-icon-right"
         v-if="suffixIcon"
         src="@assets/img/search.svg"
+        style="cursor: pointer"
+        @click="suffixFunc"
       />
 
       <i
@@ -294,6 +296,10 @@ export default {
     suffixIcon: {
       type: String,
       default: '',
+    },
+    suffixFunc: {
+      type: Function,
+      default: () => {},
     },
     prefixIcon: {
       type: String,
