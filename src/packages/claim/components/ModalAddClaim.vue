@@ -12,11 +12,15 @@
               class="form-control"
               placeholder="Nhập mã vận đơn"
               v-validate="'required'"
-              name="name"
-              data-vv-as="Tên"
-              :class="{ 'error-color': errors.has('name') }"
+              name="code"
+              v-model="code"
+              key="code"
+              data-vv-as="Mã vận đơn"
+              :class="{ 'error-color': errors.has('code') }"
             />
-            <span v-if="errors.has('name')">{{ errors.first('name') }}</span>
+            <span class="err-span" v-if="errors.has('code')">{{
+              errors.first('code')
+            }}</span>
           </div>
           <div class="col-6">
             <label class="modal__add-claim-label">Lý do:<span>*</span></label>
@@ -24,11 +28,14 @@
               class="multiselect-custom dropdown-reason"
               v-model="reason"
               :options="reasons"
-              placeholder="Choose one of  reasons"
+              placeholder="Chọn một lý do"
               @select="handleSelect"
               :custom-label="customLabel"
               :class="{ required: requiredReason }"
             ></multiselect>
+            <div v-if="requiredReason" class="err-span">
+              Hãy chọn một lý do
+            </div>
           </div>
         </div>
         <div class="row mb-20">
@@ -41,12 +48,14 @@
               class="form-control"
               placeholder="Nhập tiêu đề"
               v-validate="'required'"
-              name="address"
-              data-vv-as="Địa chỉ"
-              :class="{ 'error-color': errors.has('address') }"
+              name="title"
+              v-model="title"
+              data-vv-as="Tiêu đề"
+              key="title"
+              :class="{ 'error-color': errors.has('title') }"
             />
-            <span v-if="errors.has('address')">{{
-              errors.first('address')
+            <span class="err-span" v-if="errors.has('title')">{{
+              errors.first('title')
             }}</span>
           </div>
         </div>
@@ -66,17 +75,23 @@
               placeholder="Nhập nội dung "
               class="text__aria-content"
               v-model="content"
+              v-validate="'required'"
+              name="content"
+              key="content"
+              data-vv-as="Nội dung"
               :class="{
-                required: requiredContent,
+                'error-color': errors.has('content'),
                 require: lengthContent,
               }"
-              @input="adjustIconsInTextarea"
               @keyup="countText(content)"
             ></textarea>
+            <span class="err-span" v-if="errors.has('content')">{{
+              errors.first('content')
+            }}</span>
           </div>
         </div>
         <div class="row mb-20">
-          <div class="modal__add-upload">
+          <div class="modal__add-claim-upload col-12">
             <upload
               class="file-uploader"
               :action="uploadFileEndpoint"
@@ -89,9 +104,56 @@
               :max-file-size="100000000"
             >
               <div class="el-upload__text">
-                Drop files to upload, or <em>browser</em>
+                Thả tệp hoặc hình ảnh để tải lên
               </div>
             </upload>
+          </div>
+        </div>
+        <div class="row mb-20">
+          <div v-if="errMessage.length > 0" class="ticket__error">
+            <div class="ticket__error-title">
+              <img
+                src="~@/assets/img/alert.svg"
+                alt=""
+                class="ticket__error-icon"
+              />
+              <span>This media couldn’t be added:</span>
+            </div>
+            <ul class="ticket__error-list">
+              <li
+                v-for="(item, i) in errMessage"
+                :key="i"
+                class="ticket__error-item"
+              >
+                {{ item }}</li
+              >
+            </ul>
+          </div>
+
+          <div class="col-12" v-if="files != null">
+            <div
+              class="el-before-upload__filename d-flex  justify-content-between"
+              v-for="(item, i) in files"
+              :key="i"
+            >
+              <div style="margin-top: 5px" class="filename">{{
+                item.name
+              }}</div>
+              <div :class="{ isUpload: isUploading }" class="remove-file">
+                <img
+                  src="~@/assets/img/x-sm.svg"
+                  alt="remove"
+                  class="icon-remove"
+                  @click.prevent="actionDeletefile(item.url)"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-20">
+          <div class="rule col-md-12">
+            Chúng tôi chỉ chấp nhận file dưới 5Mb và có các định dạng: CSV, PNG,
+            JPG, JPEG.
           </div>
         </div>
       </template>
@@ -106,23 +168,41 @@
         </div>
         <div class="d-flex">
           <div>
-            <p-button @click="handleClose" type="default" :disabled="loading">
+            <p-button @click="handleClose" type="default">
               Bỏ qua
             </p-button>
           </div>
           <div class="ml-7">
-            <p-button type="primary" @click="handleSave" :loading="loading">
+            <p-button type="primary" @click="handleSave">
               Tạo khiếu nại
             </p-button>
           </div>
         </div>
       </template>
     </p-modal>
+    <modal-confirm
+      :visible.sync="isVisibleConfirmDelete"
+      v-if="isVisibleConfirmDelete"
+      :actionConfirm="actions.delete.button"
+      :description="actions.delete.Description"
+      :title="actions.delete.title"
+      :type="actions.delete.type"
+      @action="handleDeletefile(deleteFile)"
+    >
+    </modal-confirm>
   </div>
 </template>
 <script>
+import mixinUpload from '../../../core/mixins/upload'
+import { Upload } from '@kit/index'
+import { mapActions } from 'vuex'
+import { UPLOAD_FILE_CLAIM, CREATE_CLAIM } from '../store'
+import ModalConfirm from '@components/shared/modal/ModalConfirm'
+
 export default {
   name: 'ModalAddClaim',
+  mixins: [mixinUpload],
+  components: { Upload, ModalConfirm },
   props: {
     visible: {
       type: Boolean,
@@ -132,44 +212,80 @@ export default {
   data() {
     return {
       content: '',
+      isVisibleConfirmDelete: false,
       reason: null,
+      isUploading: false,
       lengthContent: false,
+      actions: {
+        delete: {
+          title: 'Remove files',
+          button: 'Delete',
+          Description: `Are you sure you want to remove this attach file?`,
+          type: 'danger',
+        },
+      },
       reasons: [
         {
           key: 1,
-          name: 'Order Modification',
+          name: 'Sủa đơn',
         },
         {
           key: 2,
-          name: 'Order Cancel',
+          name: 'Chất lượng đơn hàng',
         },
         {
           key: 3,
-          name: 'Production time & tracking issues',
+          name: 'Phí hóa đơn',
         },
         {
           key: 4,
-          name: ' Labelling',
+          name: ' Không cập nhật trạng thái ',
         },
         {
           key: 5,
-          name: 'Post-delivery problem (wrong product, quality issues,...)',
-        },
-        {
-          key: 6,
-          name: 'Others',
+          name: 'Khác',
         },
       ],
       requiredReason: false,
       selectReason: false,
       requiredContent: false,
+      title: '',
       TicketNote: 0,
+      code: '',
+      files: [],
+      allowedTypes: [
+        'image/png',
+        'image/jpeg',
+        'image/jpg',
+        'text/csv',
+        'text/x-csv',
+        'application/csv',
+        'application/x-csv',
+      ],
+      allowedExtensions: /(\.jpg|\.jpeg|\.png|\.csv)$/i,
+      errMessage: [],
+      url: [],
     }
   },
   methods: {
+    ...mapActions('claim', [UPLOAD_FILE_CLAIM, CREATE_CLAIM]),
+
     handleClose() {
+      this.code = ''
+      this.title = ''
+      this.content = ''
+      this.files = []
+      this.reason = null
+      this.$validator.pause()
+      this.$nextTick(() => {
+        this.$validator.errors.clear()
+        this.$validator.fields.items.forEach((field) => field.reset())
+        this.$validator.fields.items.forEach((field) =>
+          this.errors.remove(field)
+        )
+        this.$validator.resume()
+      })
       this.$emit('update:visible', false)
-      this.$emit('close', true)
     },
     customLabel(reasons) {
       return reasons.name || this.formatReason(this.reason)
@@ -179,8 +295,120 @@ export default {
       this.requiredReason = false
       this.selectReason = true
     },
-    adjustIconsInTextarea() {
-      this.requiredContent = false
+    checkRequired() {
+      let result = true
+      if (!this.reason) {
+        this.requiredReason = true
+        result = false
+        return result
+      } else {
+        this.requiredReason = false
+      }
+      if (this.reason == null) {
+        this.requiredReason = true
+        result = false
+      } else {
+        this.requiredReason = false
+      }
+      return result
+    },
+    actionDeletefile(file) {
+      this.isVisibleConfirmDelete = true
+      this.deleteFile = file
+    },
+    handleDeletefile(file) {
+      this.isVisibleConfirmDelete = false
+      this.files = this.files.filter((x) => x.url !== file)
+    },
+    handleChangeFile(file) {
+      let filename = file.name
+      const index = this.files.findIndex(({ uid }) => uid === file.uid)
+      if (index != -1) {
+        this.$set(this.files, index, file)
+      }
+
+      if (!this.validateSizeFile(file)) {
+        this.errMessage.push(` "${filename}" is less than 5Mb.`)
+        this.errMessage = [...new Set(this.errMessage)]
+        return
+      }
+
+      if (!this.validateTypeFile(file)) {
+        this.errMessage.push(
+          ` "${filename}" định dạng không đúng.Tệp phải có định dạng:  *CSV, *PNG, *JPG, *JPEG.`
+        )
+        this.errMessage = [...new Set(this.errMessage)]
+        return
+      }
+      this.handleUploadfile(file)
+      this.isUploading = true
+    },
+    validateSizeFile(file) {
+      if (file.size > 5000000) {
+        return false
+      } else {
+        return true
+      }
+    },
+    async handleUploadfile(file) {
+      let params = {
+        file: file.raw,
+      }
+
+      const result = await this[UPLOAD_FILE_CLAIM](params)
+      if (result.error) {
+        this.isUploading = false
+        this.errMessage.push(result.message)
+        return
+      }
+      this.files.push({
+        url: result.urls,
+        uid: file.uid,
+        name: file.name,
+      })
+      this.isUploading = false
+    },
+    validateTypeFile(file) {
+      if (this.allowedExtensions.exec(file.name)) {
+        return true
+      }
+
+      if (this.allowedTypes.includes(file.raw.type)) {
+        return true
+      } else {
+        return false
+      }
+    },
+    async handleSave() {
+      const validate = await this.$validator.validateAll()
+      if (!validate || !this.checkRequired()) {
+        return
+      }
+      if (this.lengthContent) return
+
+      this.urls = this.files.map((item) => item.url)
+      let params = {
+        reason: this.selectReason ? this.reason.key : 5,
+        title: this.title,
+        content: this.content,
+        files: this.urls,
+        code: this.code,
+      }
+      let result = await this[CREATE_CLAIM](params)
+      if (result.error) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 3000,
+        })
+        return
+      }
+      this.$toast.open({
+        type: 'error',
+        message: 'Tạo thành công',
+        duration: 3000,
+      })
+      this.$emit('create', true)
     },
     countText(val) {
       var len = val.length
@@ -197,18 +425,15 @@ export default {
     formatReason(reason) {
       switch (reason) {
         case 1:
-          return 'Order Modification'
+          return 'Sửa đơn'
         case 2:
-          return 'Order Cancel'
+          return 'Chất lượng đơn hàng'
         case 3:
-          return 'Production time & tracking issues'
+          return 'Phí hóa đơn'
         case 4:
-          return 'Labelling'
+          return 'Không cập nhật trạng thái'
         case 5:
-          return 'Post-delivery problem (wrong product, quality issues,...)'
-
-        case 6:
-          return 'Others'
+          return 'Khác'
       }
     },
   },
