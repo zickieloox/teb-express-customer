@@ -3,7 +3,7 @@ import api from '../api'
 /**
  * Type
  */
-export const FETCH_PACKAGE_DETAIL = 'fetchPackges'
+export const FETCH_PACKAGE_DETAIL = 'fetchPackage'
 
 /**
  * State
@@ -38,6 +38,6 @@ export const actions = {
       return { error: true, message: res.errorMessage || '' }
     }
 
-    commit(FETCH_PACKAGE_DETAIL, res.package)
+    commit(FETCH_PACKAGE_DETAIL, res)
   },
 }
