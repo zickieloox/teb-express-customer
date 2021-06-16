@@ -29,15 +29,16 @@
               >
               </p-input>
               <p-datepicker
-                class="date birthday p-input-group input-group"
-                id="date-search"
                 :format="'dd/mm/yyyy'"
-                :label="`Chon Ngay`"
-                :single-date-picker="true"
-                :showDropdowns="true"
-                :autoApply="true"
-              >
-              </p-datepicker>
+                class="p-input-group input-group"
+                @update="selectDate"
+                :label="`Tìm theo ngày`"
+                id="date-search"
+                :value="{
+                  start_date: filter.start_date,
+                  end_date: filter.end_date,
+                }"
+              ></p-datepicker>
             </div>
             <package-status-tab
               :has-all="false"
@@ -117,6 +118,7 @@ import { FETCH_LIST_PACKAGES } from '@/packages/package/store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
+import { date } from '@core/utils/datetime'
 export default {
   name: 'ListPackages',
   mixins: [mixinRoute, mixinTable],
@@ -127,6 +129,8 @@ export default {
         limit: 50,
         status: '',
         search: '',
+        start_date: '',
+        end_date: '',
         code: '',
       },
       searchCode: '',
@@ -162,6 +166,10 @@ export default {
       if (!result.success) {
         this.$toast.open({ message: result.message, type: 'error' })
       }
+    },
+    selectDate(v) {
+      this.filter.start_date = date(v.startDate, 'yyyy-MM-dd')
+      this.filter.end_date = date(v.endDate, 'yyyy-MM-dd')
     },
     handleSearchCode() {
       this.filter.page = 1
