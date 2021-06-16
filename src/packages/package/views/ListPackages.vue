@@ -73,7 +73,7 @@
                       </td>
                       <td>{{ item.items }}</td>
                       <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
-                      <td>{{ statusTab[item.status].text }}</td>
+                      <td>{{ mapStatus[item.status].value }}</td>
                       <td>dsa</td>
                     </tr>
                   </tbody>
@@ -101,7 +101,10 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import PackageStatusTab from '@/packages/package/views/components/PackageStatusTab'
-import { PACKAGE_STATUS_TAB } from '@/packages/package/constants'
+import {
+  PACKAGE_STATUS_TAB,
+  MAP_NAME_STATUS_PACKAGE,
+} from '@/packages/package/constants'
 import { FETCH_LIST_PACKAGES } from '@/packages/package/store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
@@ -134,6 +137,9 @@ export default {
     },
     statusTab() {
       return PACKAGE_STATUS_TAB
+    },
+    mapStatus() {
+      return MAP_NAME_STATUS_PACKAGE
     },
   },
   methods: {
