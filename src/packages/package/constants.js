@@ -10,6 +10,10 @@ export const PackageStatusReturn = 9
 export const PackageStatusCancel = 10
 export const PACKAGE_STATUS_TAB = [
   {
+    value: '',
+    text: 'Tất cả',
+  },
+  {
     value: PackageStatusInit,
     text: 'Tạo mới',
   },
