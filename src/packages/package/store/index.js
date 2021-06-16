@@ -13,7 +13,7 @@ export const COUNT_LIST_PACKAGES = 'countListPackages'
 export const state = {
   package_detail: {
     package: {},
-    deliver_logs: {},
+    deliver_logs: [],
     price: 0.0,
     extra_fee: {},
   },

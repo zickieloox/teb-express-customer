@@ -249,8 +249,12 @@
                       <div class="card-content deliver-log">
                         <div class="timeline">
                           <div
-                            v-for="(item, i) in package_detail.deliver_logs"
+                            v-for="(item, i) in displayDeliverLogs"
                             :key="i"
+                            :class="{
+                              'first-item':
+                                i === 0 && timelinePagination.currentPage === 1,
+                            }"
                             class="timeline-item"
                           >
                             <div class="timeline-item__left">
@@ -262,9 +266,28 @@
                               }}</div>
                             </div>
                             <div class="timeline-item__right">
-                              <div>Hàng đến kho</div>
+                              <div>{{ item.location }}</div>
                             </div>
                           </div>
+                        </div>
+                        <div class="timeline__next-page">
+                          <div
+                            :class="{
+                              'disable-next-page':
+                                timelinePagination.currentPage <= 1,
+                            }"
+                            @click="previousTimeLinePage"
+                            >Trước</div
+                          ><div
+                            :class="{
+                              'disable-next-page':
+                                timelinePagination.currentPage >=
+                                  timelinePagination.numberPage ||
+                                timelinePagination.numberPage <= 1,
+                            }"
+                            @click="nextTimeLinePage"
+                            >Sau</div
+                          >
                         </div>
                       </div>
                     </div>
@@ -325,12 +348,26 @@ export default {
       isFetching: true,
       packageID: 0,
       displayDeliverDetail: false,
+      timelinePagination: {
+        numberPage: 0,
+        itemsPerPage: 5,
+        currentPage: 1,
+      },
     }
   },
   computed: {
     ...mapState('package', {
       package_detail: (state) => state.package_detail,
     }),
+    displayDeliverLogs() {
+      const start =
+        (this.timelinePagination.currentPage - 1) *
+        this.timelinePagination.itemsPerPage
+      return this.package_detail.deliver_logs.slice(
+        start,
+        start + this.timelinePagination.itemsPerPage
+      )
+    },
   },
   created() {
     this.packageID = parseInt(this.$route.params.id, 10)
@@ -347,6 +384,31 @@ export default {
     },
     changeDisplayDeliverDetail() {
       this.displayDeliverDetail = !this.displayDeliverDetail
+    },
+    previousTimeLinePage() {
+      this.timelinePagination.currentPage <= 1
+        ? (this.timelinePagination.currentPage = 1)
+        : (this.timelinePagination.currentPage -= 1)
+    },
+    nextTimeLinePage() {
+      this.timelinePagination.currentPage =
+        this.timelinePagination.currentPage >=
+        this.timelinePagination.numberPage
+          ? this.timelinePagination.numberPage
+          : this.timelinePagination.currentPage + 1
+    },
+  },
+
+  watch: {
+    package_detail: {
+      handler: function(val) {
+        if (val.deliver_logs && val.deliver_logs.length > 0) {
+          this.timelinePagination.numberPage = Math.ceil(
+            val.deliver_logs.length / this.timelinePagination.itemsPerPage
+          )
+        }
+      },
+      deep: true,
     },
   },
 }
