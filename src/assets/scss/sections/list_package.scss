@@ -1,0 +1,54 @@
+.list-packages{
+  .page-header__title{
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: bold;
+    color: $color-neutral-10;
+    .btn-excel{
+      border: none;
+      background-color: inherit;
+      display: flex;
+      align-items: center;
+      border-radius: 8px;
+      padding: 10px 19.5px 10px 16px;
+      margin-left: 8px;
+      span{
+        font-size: 14px;
+        line-height: 22px;
+        font-weight: bold;
+      }
+      img{
+        margin-right: 7px;
+      }
+    }
+    .btn-import{
+      color: #fff;
+      background-color: $color-java-blue-6;
+    }
+    .btn-export{
+      color: $color-java-blue-6;
+    }
+  }
+  #date-search{
+    max-width: 300px;
+    margin-left: 8px;
+    .calendars{
+      min-width: 400px;
+    }
+  }
+    #nav_packages{
+      li a{
+        line-height: 22px;
+        color: $color-neutral-7;
+      }
+    }
+    #tbl-packages{
+      th{
+        color: $color-neutral-5;
+        font-size: 12px;
+        line-height: 16px;
+        text-transform: uppercase;
+        letter-spacing: 0.75px;
+      }
+    }
+}

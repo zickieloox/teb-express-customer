@@ -145,11 +145,11 @@
         src="@assets/img/search.svg"
       />
 
-      <i
+      <img
         class="form-control-icon form-control-icon-right"
         v-if="suffixIcon"
-        :class="`wb-${suffixIcon}`"
-      ></i>
+        src="@assets/img/search.svg"
+      />
 
       <i
         class="form-control-icon form-control-icon-right wb-close"

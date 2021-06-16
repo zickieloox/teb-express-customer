@@ -142,7 +142,7 @@ export default {
           class: '',
         },
         q5: {
-          title: 'Cài đặt ',
+          title: 'Cài đặt tài khoản',
           icon: require('@assets/img/SettingInactive.svg'),
           iconActive: require('@assets/img/Setting.svg'),
           route: { name: 'setting' },

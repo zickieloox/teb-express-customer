@@ -1,10 +1,10 @@
 .pages {
   position: absolute;
   margin-top: 56px;
-  margin-left: 15vw;
-  background: #F6F7F7;
+  margin-left: 200px;
+  background: #F9FAFB;
   padding-top: 18px;
-  width: calc(100% - 15vw);
+  width: calc(100% - 200px);
   min-height: calc(100% - 56px);
   .page-header-group {
     display: flex;
@@ -40,8 +40,7 @@
 
   }
   .page-header{
-    padding: 0 32px 16px 32px;
-    min-height: 64px;
+    padding: 0 32px 18px 32px;
   }
   .page-content{
     .card-body {
