@@ -109,7 +109,7 @@ export default {
           title: 'Đơn hàng',
           icon: require('@assets/img/OrderInactive.svg'),
           iconActive: require('@assets/img/Order.svg'),
-          route: { name: 'orders' },
+          route: { name: 'packages' },
           class: '',
           isOpen: false,
           sub: [

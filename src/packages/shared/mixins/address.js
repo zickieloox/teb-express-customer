@@ -35,7 +35,18 @@ export default {
       if (!this.senderEditing.district || !this.district) {
         return {}
       }
-      return this.district !== {} ? this.district['Wards'] : []
+
+      if (this.district === {}) {
+        return []
+      }
+      let wardArr = this.district['Wards']
+      const wardsFound = wardArr.find(
+        (element) => element.Name === this.senderEditing.wards
+      )
+      if (!wardsFound) {
+        this.senderEditing.wards = ''
+      }
+      return this.district['Wards']
     },
   },
 }
