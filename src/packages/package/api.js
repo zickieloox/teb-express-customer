@@ -1,5 +1,4 @@
 import http from '@core/services/http'
-import { buildQueryString } from '@core/utils/url'
 export default {
   /**
    * fetch package
@@ -7,7 +6,7 @@ export default {
    * @return {*}
    */
   fetchPackage(payload) {
-    return http.get(`/packages/${payload.id}?${buildQueryString(payload.body)}`)
+    return http.get(`/packages/${payload}`)
   },
   fetchListPackages(payload) {
     return http.get(`/packages?${buildQueryString(payload.body)}`)

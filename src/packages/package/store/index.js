@@ -3,7 +3,7 @@ import api from '../api'
 /**
  * Type
  */
-export const FETCH_PACKAGE_DETAIL = 'fetchPackges'
+export const FETCH_PACKAGE_DETAIL = 'fetchPackage'
 
 export const FETCH_LIST_PACKAGES = 'fetchListPackages'
 export const COUNT_LIST_PACKAGES = 'countListPackages'
@@ -48,7 +48,7 @@ export const actions = {
       return { error: true, message: res.errorMessage || '' }
     }
 
-    commit(FETCH_PACKAGE_DETAIL, res.package)
+    commit(FETCH_PACKAGE_DETAIL, res)
   },
   // eslint-disable-next-line no-unused-vars
   async fetchListPackages({ commit }, payload) {
