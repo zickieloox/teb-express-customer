@@ -108,22 +108,12 @@
     <modal-import
       :visible.sync="isVisibleImport"
       :uploading="isUploading"
-      :error="importDataErrors.file"
       accept=".csv"
       title="Nhập Excel"
       @close="handleCloseImportFile"
       @selected="handleImportPackage"
       v-if="isVisibleImport"
     >
-      <p class="font-weight-700">
-        Yêu cầu: Upload file *.CSV theo
-        <a
-          href="https://static.lionnix.net/file-templates/lionnix-template-fulfill.csv"
-          target="_blank"
-        >
-          <u>mẫu của hệ thống</u>
-        </a>
-      </p>
     </modal-import>
     <modal-import-preview-package
       :visible.sync="isVisiblePreview"
@@ -222,26 +212,18 @@ export default {
     },
     handleImport() {
       this.isVisibleImport = true
-      console.log(1)
     },
     async handleImportPackage(file) {
-      this.importData.file = file
-
-      // if (!this.validateImportData()) {
-      //   return
-      // }
-
       this.importData.file = file
       this.isUploading = true
       this.resultImport = await this[IMPORT_PACKAGE]({
         file: this.importData.file.raw,
       })
-
+      this.isUploading = false
       this.isVisibleImport = false
       this.isVisiblePreview = true
 
       if (this.resultImport && this.resultImport.success) {
-        this.isUploading = false
         return
       }
 
@@ -249,7 +231,6 @@ export default {
         type: 'error',
         message: this.resultImport.message || 'File không đúng định dạng',
       })
-      this.isUploading = false
     },
     handleCloseImportFile() {},
     handleImportFile() {},

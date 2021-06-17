@@ -77,13 +77,16 @@
       }
     }
 
-    p {
-      letter-spacing: 0.2px;
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 22px;
-      color: $color-neutral-10;
-      margin-bottom: 17px;
+    .detail {
+      span {
+        letter-spacing: 0.2px;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 22px;
+        color: $color-neutral-10;
+        margin-bottom: 17px;
+
+      }
     }
 
     .success-import {
@@ -93,6 +96,7 @@
       background-image: url("~@/assets/img/import_sucess.svg");
       margin-right: 6px;
       margin-bottom: -3px;
+
       & + span {
         color: #48BE78;
       }
@@ -111,9 +115,11 @@
       }
     }
   }
-  #preview .modal-footer{
+
+  #preview .modal-footer {
     display: none;
   }
+
   #date-search {
     max-width: 300px;
     margin-left: 8px;
