@@ -7,18 +7,20 @@ export const FETCH_PACKAGE_DETAIL = 'fetchPackage'
 
 export const FETCH_LIST_PACKAGES = 'fetchListPackages'
 export const COUNT_LIST_PACKAGES = 'countListPackages'
+export const IMPORT_PACKAGE = 'importPackage'
 /**
  * State
  */
 export const state = {
   package_detail: {
     package: {},
-    deliver_logs: {},
+    deliver_logs: [],
     price: 0.0,
     extra_fee: {},
   },
   packages: [],
   countPackages: 0,
+  count_status: [],
 }
 
 /**
@@ -32,7 +34,8 @@ export const mutations = {
     state.packages = payload
   },
   [COUNT_LIST_PACKAGES]: (state, payload) => {
-    state.countPackages = payload
+    state.countPackages = payload.count
+    state.count_status = payload.status_count
   },
 }
 
@@ -65,7 +68,29 @@ export const actions = {
       }
     }
     commit(FETCH_LIST_PACKAGES, list.packages)
-    commit(COUNT_LIST_PACKAGES, count.count)
+    commit(COUNT_LIST_PACKAGES, count)
     return result
+  },
+
+  // eslint-disable-next-line no-unused-vars
+  async [IMPORT_PACKAGE]({ commit }, payload) {
+    const response = await api.importPackage(payload)
+
+    if (
+      response &&
+      typeof response.errors !== 'undefined' &&
+      typeof response.total !== 'undefined' &&
+      (response.errors.length || response.total > 0)
+    ) {
+      return {
+        success: true,
+        ...response,
+      }
+    }
+
+    return {
+      success: false,
+      message: response.errorMessage || '',
+    }
   },
 }

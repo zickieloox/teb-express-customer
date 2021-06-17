@@ -4,7 +4,7 @@
       <div class="page-header">
         <div class="page-header__title">
           <span class="pull-left">Quản lý vận đơn</span>
-          <button class="pull-right btn-excel btn-import">
+          <button class="pull-right btn-excel btn-import" @click="handleImport">
             <img src="~@/assets/img/import-excel.svg" />
             <span>Nhập Excel</span>
           </button>
@@ -23,20 +23,29 @@
                 placeholder="Tìm theo đơn hàng..."
                 suffixIcon="search"
                 type="search"
+                v-model="searchCode"
+                :suffix-func="handleSearchCode"
+                @keyup.enter="handleSearchCode"
               >
               </p-input>
               <p-datepicker
-                class="date birthday p-input-group input-group"
-                id="date-search"
                 :format="'dd/mm/yyyy'"
-                :label="`Chon Ngay`"
-                :single-date-picker="true"
-                :showDropdowns="true"
-                :autoApply="true"
-              >
-              </p-datepicker>
+                class="p-input-group input-group"
+                @update="selectDate"
+                :label="`Tìm theo ngày`"
+                id="date-search"
+                :value="{
+                  start_date: filter.start_date,
+                  end_date: filter.end_date,
+                }"
+              ></p-datepicker>
             </div>
-            <package-status-tab :status="statusTab" v-model="filter.status" />
+            <package-status-tab
+              :has-all="false"
+              :status="statusTab"
+              v-model="filter.status"
+              :count-status="count_status"
+            />
             <VclTable class="mt-20" v-if="isFetching"></VclTable>
             <template v-else-if="packages.length">
               <div class="table-responsive">
@@ -73,7 +82,7 @@
                       </td>
                       <td>{{ item.items }}</td>
                       <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
-                      <td>{{ statusTab[item.status].text }}</td>
+                      <td>{{ mapStatus[item.status].value }}</td>
                       <td>dsa</td>
                     </tr>
                   </tbody>
@@ -96,56 +105,135 @@
         </div>
       </div>
     </div>
+    <modal-import
+      :visible.sync="isVisibleImport"
+      :uploading="isUploading"
+      accept=".csv"
+      title="Nhập Excel"
+      @close="handleCloseImportFile"
+      @selected="handleImportPackage"
+      v-if="isVisibleImport"
+    >
+    </modal-import>
+    <modal-import-preview-package
+      :visible.sync="isVisiblePreview"
+      :import-errors="resultImport.errors"
+      :import-sucess="resultImport.import_sucess"
+      :total="resultImport.total"
+      :importing="isImporting"
+      @import="handleImportFile"
+      v-if="isVisiblePreview"
+    ></modal-import-preview-package>
   </div>
 </template>
 <script>
+import ModalImport from '@components/shared/modal/ModalImport'
+import ModalImportPreviewPackage from '@/packages/package/views/components/ModalImportPreviewPackage'
 import { mapState, mapActions } from 'vuex'
 import PackageStatusTab from '@/packages/package/views/components/PackageStatusTab'
-import { PACKAGE_STATUS_TAB } from '@/packages/package/constants'
-import { FETCH_LIST_PACKAGES } from '@/packages/package/store'
+import {
+  PACKAGE_STATUS_TAB,
+  MAP_NAME_STATUS_PACKAGE,
+} from '@/packages/package/constants'
+import { FETCH_LIST_PACKAGES, IMPORT_PACKAGE } from '@/packages/package/store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
+import { date } from '@core/utils/datetime'
 export default {
   name: 'ListPackages',
   mixins: [mixinRoute, mixinTable],
-  components: { EmptySearchResult, PackageStatusTab },
+  components: {
+    ModalImport,
+    ModalImportPreviewPackage,
+    EmptySearchResult,
+    PackageStatusTab,
+  },
   data() {
     return {
       filter: {
         limit: 50,
         status: '',
         search: '',
+        start_date: '',
+        end_date: '',
+        code: '',
       },
+      isUploading: false,
+      isImporting: false,
+      isVisiblePreview: false,
+      isVisibleImport: false,
+      importData: {
+        file: null,
+      },
+      importDataErrors: {},
+      resultImport: {},
+      searchCode: '',
+      allowSearch: true,
       isFetching: false,
     }
   },
   created() {
     this.filter = this.getRouteQuery()
+    this.searchCode = this.filter.code
     this.init()
   },
   computed: {
     ...mapState('package', {
       packages: (state) => state.packages,
       count: (state) => state.countPackages,
+      count_status: (state) => state.count_status,
     }),
-    count_senders() {
-      return 155
-    },
     statusTab() {
       return PACKAGE_STATUS_TAB
     },
+    mapStatus() {
+      return MAP_NAME_STATUS_PACKAGE
+    },
   },
   methods: {
-    ...mapActions('package', [FETCH_LIST_PACKAGES]),
+    ...mapActions('package', [FETCH_LIST_PACKAGES, IMPORT_PACKAGE]),
     async init() {
       this.isFetching = true
+      this.handleUpdateRouteQuery()
       const result = await this.fetchListPackages(this.filter)
       this.isFetching = false
       if (!result.success) {
         this.$toast.open({ message: result.message, type: 'error' })
       }
     },
+    selectDate(v) {
+      this.filter.start_date = date(v.startDate, 'yyyy-MM-dd')
+      this.filter.end_date = date(v.endDate, 'yyyy-MM-dd')
+    },
+    handleSearchCode() {
+      this.filter.page = 1
+      this.$set(this.filter, 'code', this.searchCode.trim())
+    },
+    handleImport() {
+      this.isVisibleImport = true
+    },
+    async handleImportPackage(file) {
+      this.importData.file = file
+      this.isUploading = true
+      this.resultImport = await this[IMPORT_PACKAGE]({
+        file: this.importData.file.raw,
+      })
+      this.isUploading = false
+      this.isVisibleImport = false
+      this.isVisiblePreview = true
+
+      if (this.resultImport && this.resultImport.success) {
+        return
+      }
+
+      this.$toast.open({
+        type: 'error',
+        message: this.resultImport.message || 'File không đúng định dạng',
+      })
+    },
+    handleCloseImportFile() {},
+    handleImportFile() {},
   },
   watch: {
     filter: {

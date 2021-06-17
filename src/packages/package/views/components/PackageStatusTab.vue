@@ -1,5 +1,5 @@
 <template>
-  <div id="nav_container" class="p-tabs nav-tabs-horizontal">
+  <div id="nav_container" class="p-tabs nav-tabs-horizontal mt-24">
     <button class="icon-nav next" @click="clickLeftNav">
       <img src="~@/assets/img/left_nav.png" />
     </button>
@@ -41,6 +41,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    countStatus: {
+      type: Array,
+      default: () => [],
+    },
     value: {
       type: String,
       default: '',
@@ -58,10 +62,26 @@ export default {
   computed: {
     cleanStatus() {
       const status = this.hasAll ? [{ value: '', text: 'All' }] : []
-
       this.status.forEach((item) => {
         if (typeof item === 'object') {
-          status.push({ value: item.value, text: capitalize(item.text) })
+          let count
+          let total = 0
+          this.countStatus.forEach((obj) => {
+            total += parseInt(obj.count)
+            if (obj.status === item.value) {
+              count = obj.count
+            }
+          })
+
+          let countText = count ? ' (' + count + ')' : ' (0)'
+          if (item.value === '') {
+            countText = ' (' + total + ')'
+          }
+
+          status.push({
+            value: item.value,
+            text: capitalize(item.text) + countText,
+          })
         } else {
           status.push({ value: item, text: capitalize(item) })
         }
@@ -85,6 +105,7 @@ export default {
       this.right -= 10
     },
     clickRightNav() {
+      if (this.right >= 100) return
       this.right += 10
     },
   },
