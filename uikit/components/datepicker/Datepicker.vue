@@ -2,25 +2,7 @@
   <date-range-picker
     ref="picker"
     :opens="opens"
-    :locale-data="{
-      firstDay: 1,
-      format: 'DD/MM/YYYY',
-      monthNames: [
-        'Tháng 1',
-        'Tháng 2',
-        'Tháng 3',
-        'Tháng 4',
-        'Tháng 5',
-        'Tháng 6',
-        'Tháng 7',
-        'Tháng 8',
-        'Tháng 9',
-        'Tháng 10',
-        'Tháng 11',
-        'Tháng 12',
-      ],
-      daysOfWeek: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
-    }"
+    :locale-data="localeData"
     :minDate="minDate"
     :maxDate="maxDate"
     :maxSpan="maxSpan"
@@ -35,6 +17,7 @@
     @toggle="checkOpen"
     :linkedCalendars="linkedCalendars"
     :dateFormat="dateFormat"
+    :close-on-esc="true"
   >
     <div slot="input" slot-scope="picker" style="width: 100%;">
       <img src="@assets/img/date.svg" style="float: right; margin-left: 2px;" />
@@ -135,6 +118,12 @@ export default {
     dateFormat: {
       type: Function,
       default: null,
+    },
+    localeData: {
+      type: [Object, Array],
+      default() {
+        return {}
+      },
     },
   },
   data() {
