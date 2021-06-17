@@ -35,6 +35,14 @@
     .calendars{
       min-width: 400px;
     }
+    .show-ranges{
+      min-width: 712px;
+    }
+    .reportrange-text > div{
+      line-height: 28px;
+      font-weight: normal;
+      color: $color-neutral-4;
+    }
   }
     #nav_packages{
       padding-bottom: 4px;

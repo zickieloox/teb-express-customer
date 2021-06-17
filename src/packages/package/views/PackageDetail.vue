@@ -210,29 +210,23 @@
                           <div class="col-8 mb-8">Phí giao hàng:</div>
                           <div class="col-4"
                             ><div>{{
-                              $evaluate('package_detail.package.code')
+                              $evaluate('package_detail.package?.shipping_fee')
+                                | formatPrice
                             }}</div></div
                           >
                         </div>
                         <div class="row">
                           <div class="col-8 mb-8">Phí phát sinh:</div>
                           <div class="col-4"
-                            ><div>{{
-                              $evaluate('package_detail.package.phone_number')
-                            }}</div></div
+                            ><div>{{ sumExtraFee | formatPrice }}</div></div
                           >
                         </div>
-                        <div class="row">
-                          <div class="col-8 mb-8">Khuyến mãi:</div>
+                        <div class="row sum-price">
+                          <div class="col-8">Tổng cước:</div>
                           <div class="col-4"
-                            ><div>{{
-                              $evaluate('package_detail.package.weight')
-                            }}</div></div
+                            ><div>{{ sumFee | formatPrice }}</div></div
                           >
                         </div>
-                      </div>
-                      <div class="card-footer">
-                        <div class="card-title">Tổng cước:</div>
                       </div>
                     </div>
                   </div>
@@ -249,8 +243,12 @@
                       <div class="card-content deliver-log">
                         <div class="timeline">
                           <div
-                            v-for="(item, i) in package_detail.deliver_logs"
+                            v-for="(item, i) in displayDeliverLogs"
                             :key="i"
+                            :class="{
+                              'first-item':
+                                i === 0 && timelinePagination.currentPage === 1,
+                            }"
                             class="timeline-item"
                           >
                             <div class="timeline-item__left">
@@ -262,9 +260,28 @@
                               }}</div>
                             </div>
                             <div class="timeline-item__right">
-                              <div>Hàng đến kho</div>
+                              <div>{{ item.location }}</div>
                             </div>
                           </div>
+                        </div>
+                        <div class="timeline__next-page">
+                          <div
+                            :class="{
+                              'disable-next-page':
+                                timelinePagination.currentPage <= 1,
+                            }"
+                            @click="previousTimeLinePage"
+                            >Trước</div
+                          ><div
+                            :class="{
+                              'disable-next-page':
+                                timelinePagination.currentPage >=
+                                  timelinePagination.numberPage ||
+                                timelinePagination.numberPage <= 1,
+                            }"
+                            @click="nextTimeLinePage"
+                            >Sau</div
+                          >
                         </div>
                       </div>
                     </div>
@@ -302,19 +319,17 @@
 </template>
 
 <style>
-.deliver-log ul:before {
-  position: absolute;
-  content: ' ';
-  background: #d4d9df;
-  display: inline-block;
-  left: 25.8px;
-  width: 4px;
-  height: 100%;
-  z-index: 400;
-  border-radius: 20px;
-  -moz-border-radius: 20px;
-  -webkit-border-radius: 20px;
-  margin-top: 7px;
+.sum-price {
+  border-top: 1px solid #cfd0d0;
+  margin-top: 16px;
+  padding-top: 16px;
+}
+
+.sum-price:last-child {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 22px;
+  color: #313232;
 }
 </style>
 <script>
@@ -333,12 +348,40 @@ export default {
       packageID: 0,
       displayDeliverDetail: false,
       isVisibleModal: false,
+      timelinePagination: {
+        numberPage: 0,
+        itemsPerPage: 5,
+        currentPage: 1,
+      },
     }
   },
   computed: {
     ...mapState('package', {
       package_detail: (state) => state.package_detail,
     }),
+    displayDeliverLogs() {
+      const start =
+        (this.timelinePagination.currentPage - 1) *
+        this.timelinePagination.itemsPerPage
+      return this.package_detail.deliver_logs.slice(
+        start,
+        start + this.timelinePagination.itemsPerPage
+      )
+    },
+    sumExtraFee() {
+      if (
+        !this.package_detail.extra_fee ||
+        this.package_detail.extra_fee.length <= 0
+      ) {
+        return 0
+      }
+      return this.package_detail.extra_fee.reduce((accu, curr) => ({
+        amount: accu.amount + curr.amount,
+      })).amount
+    },
+    sumFee() {
+      return this.package_detail.package.shipping_fee + this.sumExtraFee
+    },
   },
   created() {
     this.packageID = parseInt(this.$route.params.id, 10)
@@ -358,6 +401,31 @@ export default {
     },
     handleModal() {
       this.isVisibleModal = true
+    },
+    previousTimeLinePage() {
+      this.timelinePagination.currentPage <= 1
+        ? (this.timelinePagination.currentPage = 1)
+        : (this.timelinePagination.currentPage -= 1)
+    },
+    nextTimeLinePage() {
+      this.timelinePagination.currentPage =
+        this.timelinePagination.currentPage >=
+        this.timelinePagination.numberPage
+          ? this.timelinePagination.numberPage
+          : this.timelinePagination.currentPage + 1
+    },
+  },
+
+  watch: {
+    package_detail: {
+      handler: function(val) {
+        if (val.deliver_logs && val.deliver_logs.length > 0) {
+          this.timelinePagination.numberPage = Math.ceil(
+            val.deliver_logs.length / this.timelinePagination.itemsPerPage
+          )
+        }
+      },
+      deep: true,
     },
   },
 }
