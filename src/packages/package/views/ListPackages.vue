@@ -51,24 +51,54 @@
               <div class="table-responsive">
                 <table class="table table-hover" id="tbl-packages">
                   <thead>
+                    <div
+                      class="bulk-actions d-flex align-items-center"
+                      v-if="totalSelected > 0"
+                    >
+                      <div class="bulk-actions__main-bar">
+                        <span class="bulk-actions__selection-count">{{
+                          selectionCountText
+                        }}</span>
+                        <p-button class="bulk-actions__selection-status"
+                          >Vận đơn</p-button
+                        >
+                        <p-button class="bulk-actions__selection-status"
+                          >In đơn</p-button
+                        >
+                        <p-button class="bulk-actions__selection-status"
+                          >Hủy đơn</p-button
+                        >
+                      </div>
+                    </div>
                     <tr>
                       <th width="40">
-                        <p-checkbox></p-checkbox>
+                        <p-checkbox
+                          :class="{ checkAll: totalSelected > 0 }"
+                          :style="totalSelected > 0 && { width: 0 }"
+                          :value="isAllChecked"
+                          @change.native="toggleSelectAll"
+                          :indeterminate="isIndeterminate"
+                        ></p-checkbox>
                       </th>
-                      <th>Mã vận đơn</th>
-                      <th>Mã hàng hoá</th>
-                      <th>Người gửi</th>
-                      <th>Người nhận</th>
-                      <th>Hàng hóa</th>
-                      <th>Ngày tạo </th>
-                      <th>Trạng thái</th>
-                      <th>Tổng cước</th>
+                      <template>
+                        <th :class="{ hidden: hiddenClass }">Mã vận đơn</th>
+                        <th :class="{ hidden: hiddenClass }">Mã hàng hoá</th>
+                        <th :class="{ hidden: hiddenClass }">Người gửi</th>
+                        <th :class="{ hidden: hiddenClass }">Người nhận</th>
+                        <th :class="{ hidden: hiddenClass }">Hàng hóa</th>
+                        <th :class="{ hidden: hiddenClass }">Ngày tạo </th>
+                        <th :class="{ hidden: hiddenClass }">Trạng thái</th>
+                        <th :class="{ hidden: hiddenClass }">Tổng cước</th>
+                      </template>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="(item, i) in packages" :key="i">
                       <td width="40">
-                        <p-checkbox></p-checkbox>
+                        <p-checkbox
+                          v-model="action.selected"
+                          :native-value="item"
+                        ></p-checkbox>
                       </td>
                       <td>
                         <router-link
@@ -203,6 +233,9 @@ export default {
       packages: (state) => state.packages,
       count: (state) => state.countPackages,
       count_status: (state) => state.count_status,
+      hiddenClass() {
+        return this.action.selected.length > 0 || this.isAllChecked
+      },
     }),
     statusTab() {
       return PACKAGE_STATUS_TAB
@@ -257,10 +290,9 @@ export default {
       })
     },
     async handleExport() {
-      let allIds = [2]
       this.isVisibleExport = true
       const result = await this[EXPORT_PACKAGE]({
-        ids: allIds,
+        ids: this.selectedIds,
       })
       if (!result.success) {
         this.$toast.open({
