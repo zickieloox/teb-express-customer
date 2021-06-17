@@ -35,6 +35,7 @@
                   :showDropdowns="true"
                   :autoApply="true"
                   :maxDate="maxDate"
+                  :localeData="localeData"
                 >
                 </p-datepicker>
                 <p-button
@@ -108,7 +109,6 @@
   </div>
 </template>
 <script>
-// import { mapActions } from 'vuex'
 import { date } from '@core/utils/datetime'
 import { mapState, mapActions } from 'vuex'
 import { UPDATE_USER } from '@/packages/setting/store/index'
@@ -143,6 +143,25 @@ export default {
       requiredNewPassword: false,
       requiredUsername: false,
       isSelectDate: false,
+      localeData: {
+        firstDay: 1,
+        format: 'dd/MM/YYYY',
+        monthNames: [
+          'Tháng 1',
+          'Tháng 2',
+          'Tháng 3',
+          'Tháng 4',
+          'Tháng 5',
+          'Tháng 6',
+          'Tháng 7',
+          'Tháng 8',
+          'Tháng 9',
+          'Tháng 10',
+          'Tháng 11',
+          'Tháng 12',
+        ],
+        daysOfWeek: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+      },
     }
   },
 
@@ -244,7 +263,6 @@ export default {
         this.data.full_name = newVal.full_name
         this.data.birthday = newVal.birthday
         this.label = this.data.birthday ? this.data.birthday : 'dd/mm/yyyy'
-        console.log(newVal)
       },
       deep: true,
     },
