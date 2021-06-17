@@ -73,6 +73,7 @@
                     <tr>
                       <th width="40">
                         <p-checkbox
+                          class="order-select-checkbox"
                           :class="{ checkAll: totalSelected > 0 }"
                           :style="totalSelected > 0 && { width: 0 }"
                           :value="isAllChecked"
@@ -236,6 +237,9 @@ export default {
       hiddenClass() {
         return this.action.selected.length > 0 || this.isAllChecked
       },
+      items() {
+        return this.packages
+      },
     }),
     statusTab() {
       return PACKAGE_STATUS_TAB
@@ -300,6 +304,7 @@ export default {
           message: result.message,
           duration: 3000,
         })
+        this.isVisibleExport = false
         return
       }
       this.downloadFile(
