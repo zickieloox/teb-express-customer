@@ -4,7 +4,7 @@
       <div class="page-header">
         <div class="page-header__title">
           <span class="pull-left">Quản lý vận đơn</span>
-          <button class="pull-right btn-excel btn-import">
+          <button class="pull-right btn-excel btn-import" @click="handleImport">
             <img src="~@/assets/img/import-excel.svg" />
             <span>Nhập Excel</span>
           </button>
@@ -105,16 +105,47 @@
         </div>
       </div>
     </div>
+    <modal-import
+      :visible.sync="isVisibleImport"
+      :uploading="isUploading"
+      :error="importDataErrors.file"
+      accept=".csv"
+      title="Nhập Excel"
+      @close="handleCloseImportFile"
+      @selected="handleImportPackage"
+      v-if="isVisibleImport"
+    >
+      <p class="font-weight-700">
+        Yêu cầu: Upload file *.CSV theo
+        <a
+          href="https://static.lionnix.net/file-templates/lionnix-template-fulfill.csv"
+          target="_blank"
+        >
+          <u>mẫu của hệ thống</u>
+        </a>
+      </p>
+    </modal-import>
+    <modal-import-preview-package
+      :visible.sync="isVisiblePreview"
+      :import-errors="resultImport.errors"
+      :import-sucess="resultImport.import_sucess"
+      :total="resultImport.total"
+      :importing="isImporting"
+      @import="handleImportFile"
+      v-if="isVisiblePreview"
+    ></modal-import-preview-package>
   </div>
 </template>
 <script>
+import ModalImport from '@components/shared/modal/ModalImport'
+import ModalImportPreviewPackage from '@/packages/package/views/components/ModalImportPreviewPackage'
 import { mapState, mapActions } from 'vuex'
 import PackageStatusTab from '@/packages/package/views/components/PackageStatusTab'
 import {
   PACKAGE_STATUS_TAB,
   MAP_NAME_STATUS_PACKAGE,
 } from '@/packages/package/constants'
-import { FETCH_LIST_PACKAGES } from '@/packages/package/store'
+import { FETCH_LIST_PACKAGES, IMPORT_PACKAGE } from '@/packages/package/store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
@@ -122,7 +153,12 @@ import { date } from '@core/utils/datetime'
 export default {
   name: 'ListPackages',
   mixins: [mixinRoute, mixinTable],
-  components: { EmptySearchResult, PackageStatusTab },
+  components: {
+    ModalImport,
+    ModalImportPreviewPackage,
+    EmptySearchResult,
+    PackageStatusTab,
+  },
   data() {
     return {
       filter: {
@@ -133,6 +169,15 @@ export default {
         end_date: '',
         code: '',
       },
+      isUploading: false,
+      isImporting: false,
+      isVisiblePreview: false,
+      isVisibleImport: false,
+      importData: {
+        file: null,
+      },
+      importDataErrors: {},
+      resultImport: {},
       searchCode: '',
       allowSearch: true,
       isFetching: false,
@@ -157,7 +202,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions('package', [FETCH_LIST_PACKAGES]),
+    ...mapActions('package', [FETCH_LIST_PACKAGES, IMPORT_PACKAGE]),
     async init() {
       this.isFetching = true
       this.handleUpdateRouteQuery()
@@ -175,6 +220,39 @@ export default {
       this.filter.page = 1
       this.$set(this.filter, 'code', this.searchCode.trim())
     },
+    handleImport() {
+      this.isVisibleImport = true
+      console.log(1)
+    },
+    async handleImportPackage(file) {
+      this.importData.file = file
+
+      // if (!this.validateImportData()) {
+      //   return
+      // }
+
+      this.importData.file = file
+      this.isUploading = true
+      this.resultImport = await this[IMPORT_PACKAGE]({
+        file: this.importData.file.raw,
+      })
+
+      this.isVisibleImport = false
+      this.isVisiblePreview = true
+
+      if (this.resultImport && this.resultImport.success) {
+        this.isUploading = false
+        return
+      }
+
+      this.$toast.open({
+        type: 'error',
+        message: this.resultImport.message || 'File không đúng định dạng',
+      })
+      this.isUploading = false
+    },
+    handleCloseImportFile() {},
+    handleImportFile() {},
   },
   watch: {
     filter: {

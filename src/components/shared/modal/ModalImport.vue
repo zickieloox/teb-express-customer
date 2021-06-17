@@ -1,26 +1,11 @@
 <template>
-  <p-modal :active="visible" title="Import Orders" @close="handleClose">
+  <p-modal :active="visible" :title="title" @close="handleClose">
     <template>
       <div align="center">
         <span class="example">
           Download a
           <a :href="csvTemplate" target="_blank">sample CSV template</a>
-          to see an example of the format required and see
-          <a href="https://lionnix.com/products" target="_blank"
-            >list products</a
-          >
-          and
-          <a
-            href="https://help.lionnix.com/orders/danh-sach-country-codes/"
-            target="_blank"
-            >country codes</a
-          >
-          /
-          <a
-            href="https://help.lionnix.com/orders/danh-sach-state-codes/"
-            target="_blank"
-            >state codes</a
-          >
+          to see an example of the format required
         </span>
         <div class="center-error">
           <div
@@ -103,7 +88,7 @@
 
         <upload
           class="order-uploader"
-          :action="createEndpoint(`orders/preview-import`)"
+          :action="createEndpoint(`packages/import`)"
           drag
           :auto-upload="false"
           :headers="uploadHeaders"
@@ -121,18 +106,11 @@
             {{ lastItem.name }}
           </div>
         </upload>
-        <span class="overwrite">
-          Overwrite any current orders that have the same sku and order number.
-        </span>
       </div>
     </template>
 
     <template slot="footer">
-      <a
-        href="https://help.lionnix.com/orders/cach-tao-don-thong-qua-file-csv"
-        target="_blank"
-        >Need help importing orders?</a
-      >
+      <a></a>
       <div class="group-button">
         <p-button type="default" @click="handleClose" :disabled="loading">
           Cancel
@@ -161,6 +139,10 @@ export default {
   mixins: [mixinRoute, mixinTable, mixinUpload],
   components: { Upload },
   props: {
+    title: {
+      type: String,
+      default: 'Import Orders',
+    },
     visible: {
       type: Boolean,
       default: false,
@@ -186,11 +168,11 @@ export default {
       uploadedIds: [],
       lastItem: null,
       filteredArr: [],
-      importOrder: {
+      importData: {
         file: null,
         shop_id: null,
       },
-      importOrderErrors: {},
+      importDataErrors: {},
       isVisiblePreview: false,
       isUploading: false,
       isVisibleImport: false,
@@ -206,14 +188,14 @@ export default {
   },
   methods: {
     handleClose() {
-      if (this.isLoading == true) {
+      if (this.isLoading === true) {
         return
       }
       this.$emit('update:visible', false)
       this.$emit('reset', true)
     },
     handleSave() {
-      if (this.loading == true) {
+      if (this.loading === true) {
         return
       }
       this.$emit('selected', this.lastItem)
