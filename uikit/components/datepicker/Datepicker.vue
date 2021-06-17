@@ -20,7 +20,10 @@
     :close-on-esc="true"
   >
     <div slot="input" slot-scope="picker" style="width: 100%;">
-      <img src="@assets/img/date.svg" style="float: right; margin-left: 2px;" />
+      <img
+        src="@assets/img/calendar.svg"
+        style="float: right; margin-left: 2px; margin-top: 6px;"
+      />
       <span
         v-if="
           picker.startDate &&

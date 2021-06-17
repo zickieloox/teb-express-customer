@@ -109,7 +109,7 @@ export default {
           title: 'Đơn hàng',
           icon: require('@assets/img/OrderInactive.svg'),
           iconActive: require('@assets/img/Order.svg'),
-          route: { name: 'orders' },
+          route: { name: 'packages' },
           class: '',
           isOpen: false,
           sub: [
@@ -142,7 +142,7 @@ export default {
           class: '',
         },
         q5: {
-          title: 'Cài đặt ',
+          title: 'Cài đặt tài khoản',
           icon: require('@assets/img/SettingInactive.svg'),
           iconActive: require('@assets/img/Setting.svg'),
           route: { name: 'setting' },

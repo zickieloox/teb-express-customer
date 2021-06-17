@@ -13,7 +13,6 @@
   .select_limit_box {
     width: 33.33%;
     float: left;
-    margin-left: 25px;
     span {
       float: left;
       color: $color-neutral-7;
@@ -31,7 +30,7 @@
       box-sizing: border-box;
       font-size: 14px;
       line-height: 22.4px;
-      width: 53px;
+      width: auto;
       height: 40px;
       font-weight: 500;
       position: relative;
@@ -112,7 +111,6 @@
     display: flex;
     padding-left: 0;
     list-style: none;
-    margin-right: 40px;
 
     .page-item{
       .page-link{

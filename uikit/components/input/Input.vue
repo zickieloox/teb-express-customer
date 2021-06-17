@@ -145,11 +145,13 @@
         src="@assets/img/search.svg"
       />
 
-      <i
+      <img
         class="form-control-icon form-control-icon-right"
         v-if="suffixIcon"
-        :class="`wb-${suffixIcon}`"
-      ></i>
+        src="@assets/img/search.svg"
+        style="cursor: pointer"
+        @click="suffixFunc"
+      />
 
       <i
         class="form-control-icon form-control-icon-right wb-close"
@@ -294,6 +296,10 @@ export default {
     suffixIcon: {
       type: String,
       default: '',
+    },
+    suffixFunc: {
+      type: Function,
+      default: () => {},
     },
     prefixIcon: {
       type: String,

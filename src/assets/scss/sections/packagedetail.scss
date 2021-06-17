@@ -1,0 +1,35 @@
+.package-detail {
+  .page-header {
+    margin-bottom: 20px;
+  }
+  .page-header__subtitle {
+    display: flex;
+    justify-content: space-between;
+
+    .page-header__info {
+      display: flex;
+    }
+
+    .page-header__info > {
+      div {
+        margin-right: 32px;
+        div:first-child {
+          color: $color-neutral-7;
+          font-size: 12px;
+        }
+        div:last-child {
+          color: $color-neutral-10;
+        }
+      }
+    }
+  }
+
+  //.card-body {
+  //  column-count: 3;
+  //  column-gap: 10px;
+  //
+  //  .card-block {
+  //    break-inside: avoid;
+  //  }
+  //}
+}

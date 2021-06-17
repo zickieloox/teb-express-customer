@@ -3,10 +3,10 @@
   z-index: 99;
 }
 .site-menu{
-  padding:0 10px ;
+  padding:0 5px ;
   &-sub{
-    margin: 30px 0  0 36px;
-   max-height: 0;
+    margin: 30px 0  0 28px;
+    max-height: 0;
     opacity: 0;
     transition: max-height .3s  ease-out;
     &.has-sub{
@@ -18,7 +18,7 @@
       position: relative;
 
       &:before{
-        margin-left: -25px;
+        margin-left: -18px;
         position: absolute;
         content: '';
         width: 1px;
@@ -36,6 +36,8 @@
       color: $color-neutral-9;
       font-size: 13px;
       transition: .3s;
+      font-weight: 500;
+      line-height: 22px;
     }
     &-title{
       &.active{
@@ -56,10 +58,10 @@
   }
 }
 .site-menubar{
-  top: 56px;
-  padding-top: 32px;
+  top: 44px;
+  padding-top: 28px;
   position: fixed;
-  width: 15vw ;
+  width: 200px ;
   background: #FFFFFF ;
   transition: width 0.2s;
   height: 100%;
@@ -68,7 +70,7 @@
 }
 
 .site-menu-item{
-  padding: 7px;
+  padding: 7px 0 7px 7px;
   height: auto;
   min-height: 40px;
   margin-top: 4px;
@@ -104,9 +106,9 @@
 }
 .site-menu-title{
   position: absolute;
-  left: 44px !important;
+  left: 36px !important;
   width: 10vw;
-  height: 40px;
+  height: auto;
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
