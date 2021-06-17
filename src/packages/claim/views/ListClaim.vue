@@ -8,10 +8,12 @@
         <div class="card-body">
           <div class="d-flex list__claim-search">
             <p-input
-              placeholder="Tìm kiếm theo đơn hàng khiếu nại "
+              placeholder="Tìm kiếm theo mã vận đơn  "
               prefixIcon="search"
               class="mb-2"
               type="search"
+              :value="filter.search"
+              @keyup.enter="handleSearch"
             >
             </p-input>
             <a href="#" class="btn btn-primary ml-10" @click="handleModal">
@@ -148,6 +150,11 @@ export default {
     },
     handleModal() {
       this.visibleModal = true
+    },
+    handleSearch(e) {
+      // Default result after search in page 1
+      this.filter.page = 1
+      this.$set(this.filter, 'search', e.target.value.trim())
     },
     converStatus(status) {
       switch (status) {
