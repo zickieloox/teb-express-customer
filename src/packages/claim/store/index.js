@@ -3,6 +3,16 @@ export const UPLOAD_FILE_CLAIM = 'uploadFileClaim'
 export const COUNT_CLAIMS = 'countClaims'
 export const FETCH_CLAIMS = 'fetchClaims'
 export const CREATE_CLAIM = 'createClaim'
+export const FETCH_TICKET = 'fetchTicket'
+export const UPDATE_TICKET = 'updateTicket'
+export const UPDATE_FILE_TICKET = 'updateFileTicket'
+export const CANCEL_TICKET = 'cancelTicket'
+export const FETCH_MESSAGE = 'fetchMessage'
+export const GET_FILE_TICKET = 'getFileTicket'
+export const UPDATE_MESSAGE_TICKET = 'updateTicketMessage'
+export const PUSH_MESSAGE = 'pushMessage'
+export const APPEND_MESSAGE = 'appendMessage'
+export const SET_MESSAGES = 'setMessages'
 export const state = {
   claims: [],
   count: 0,
@@ -15,6 +25,27 @@ export const mutations = {
   },
   [COUNT_CLAIMS]: (state, payload) => {
     state.count = payload
+  },
+  [FETCH_TICKET]: (state, payload) => {
+    state.ticket = payload.ticket
+  },
+  [UPDATE_TICKET]: (state, payload) => {
+    state.ticket = payload.ticket
+  },
+  [FETCH_MESSAGE]: (state, payload) => {
+    state.message = payload || []
+  },
+  [UPDATE_MESSAGE_TICKET]: (state, payload) => {
+    state.message = payload
+  },
+  [PUSH_MESSAGE]: (state, payload) => {
+    state.message = [payload, ...state.message]
+  },
+  [APPEND_MESSAGE]: (state, payload) => {
+    state.message.push(...payload)
+  },
+  [SET_MESSAGES]: (state) => {
+    state.message = []
   },
 }
 
@@ -59,5 +90,83 @@ export const actions = {
       return { error: true, message: response.errorMessage || '' }
     }
     return { error: false }
+  },
+
+  async [FETCH_TICKET]({ commit }, payload) {
+    const res = await api.fetchTicket(payload)
+    if (!res || res.error) {
+      return { error: true, message: res.errorMessage || '' }
+    }
+    commit(FETCH_TICKET, res)
+    return {
+      error: false,
+      status: res.ticket.status,
+      id: res.ticket.id,
+      // create_at:res.ticket.create_at
+    }
+  },
+  // eslint-disable-next-line no-unused-vars
+  async updateTicket({ commit }, payload) {
+    const res = await api.updateTicket(payload)
+    if (!res || res.error) {
+      return { error: true, message: res.errorMessage || '' }
+    }
+    commit(UPDATE_TICKET, res)
+    commit(FETCH_TICKET, res)
+    return {
+      error: false,
+    }
+  },
+  // eslint-disable-next-line
+  async updateFileTicket({ commit }, payload) {
+    let res = await api.updateFileTicket(payload)
+
+    if (!res || res.error) {
+      return { error: true, message: res.errorMessage || '' }
+    }
+    return { error: false, urls: res.url }
+  },
+  // eslint-disable-next-line
+  async [CANCEL_TICKET]({ commit }, payload) {
+    const res = await api.cancelTicket(payload)
+    if (!res || res.error) {
+      return { error: true, message: res.errorMessage || '' }
+    }
+    return { error: false }
+  },
+  async [FETCH_MESSAGE]({ commit }, payload) {
+    const res = await api.fetchMessageTickets(payload)
+    if (!res || res.error) {
+      commit(APPEND_MESSAGE, [])
+      return { error: true, message: res.errorMessage || '' }
+    }
+
+    commit(APPEND_MESSAGE, res.messages)
+    return { error: false, ...res }
+  },
+
+  // eslint-disable-next-line no-empty-pattern
+  async getFileTicket({}, payload) {
+    let result = { success: true }
+    let response = await api.fetchTicketFile(payload)
+
+    if (!response || response.error) {
+      result = {
+        success: false,
+        message: response.errorMessage || '',
+      }
+    }
+    result.blob = response
+    return result
+  },
+
+  async [PUSH_MESSAGE]({ commit }, payload) {
+    const res = await api.reply(payload.ticket_id, payload)
+    if (!res || res.error) {
+      return { success: false, message: res.errorMessage || '' }
+    }
+
+    commit(PUSH_MESSAGE, res.message)
+    return { success: true, reply: res.message }
   },
 }

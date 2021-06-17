@@ -37,7 +37,7 @@
     .page-header {
       .page-header_back {
         .text {
-          color: #686b70;
+          color: #626363;
         }
         .page-header_back_icon {
           margin-bottom: 2px;
@@ -45,8 +45,18 @@
       }
 
       .page-header_title {
+        margin-top: 11px;
         margin-bottom: 0;
-        line-height: 40px;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 28px;
+        /* identical to box height, or 140% */
+
+
+        /* Neutral / Neutral 10 */
+
+        color: #111212;
         .edit-ticket {
           position: relative;
           left: 16px;
@@ -57,6 +67,7 @@
     }
     .page-content {
       display: flex;
+      margin: 0 32px 18px 32px;
 
       .card {
         box-shadow: 0px 4px 32px -14px rgba(0, 0, 0, 0.12);
@@ -157,8 +168,10 @@
             line-height: 24px;
             margin-bottom: 8px;
             .item-title {
-              color: #37393e;
+              font-style: normal;
               font-weight: 600;
+              font-size: 14px;
+              line-height: 22px;
               margin-right: 5px;
             }
           }
@@ -168,7 +181,7 @@
         padding: 24px;
       }
       .card {
-        padding: 24px;
+        padding: 18px;
       }
     }
   }
@@ -213,20 +226,32 @@
 }
 
 .modal-reply-ticket {
+
+  background: #FFFFFF;
+  border-radius: 4px;
+  .modal-header{ 
+    padding: 12px 16px 12px 16px;
+
+  }
+  .modal-body{
+    padding: 16px;
+  }
+  .page-content{
+    margin: 0 !important;
+  }
+  .rule {
+    margin-top: 8px;
+    flex: 0 0 60%;
+    text-align: left;
+    font-size: 12px;
+    line-height: 18px;
+    color: #b0b3b9;
+  }
   .form-control {
     position: relative;
   }
 
   .footer {
-    display: flex;
-
-    .rule {
-      flex: 0 0 60%;
-      text-align: left;
-      font-size: 12px;
-      line-height: 18px;
-      color: #b0b3b9;
-    }
     .group-button {
       flex: 0 0 40%;
       text-align: right;
@@ -282,4 +307,9 @@
     top: 56px;
     width: 100%;
   }
+}
+
+.err-span{
+  color: red;
+  font-size: 12px;
 }

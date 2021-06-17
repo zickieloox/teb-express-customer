@@ -8,4 +8,13 @@ export const routes = [
     component: () =>
       import(/* webpackChunkName: "settings" */ './views/ListClaim.vue'),
   },
+  {
+    path: '/orders/claims/:id',
+    name: 'claim-detail',
+    meta: {
+      title: 'Claim Detail',
+    },
+    component: () =>
+      import(/* webpackChunkName: "settings" */ './views/ClaimDetail.vue'),
+  },
 ]
