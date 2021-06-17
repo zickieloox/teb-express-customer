@@ -83,7 +83,7 @@ export default {
     caculateTotal() {
       const arr = this.count.map((ele) => ele.count)
       const reducer = (accumulator, currentValue) => accumulator + currentValue
-      const total = arr.reduce(reducer)
+      const total = arr.reduce(reducer, 0)
       return total
     },
     mapCount() {
