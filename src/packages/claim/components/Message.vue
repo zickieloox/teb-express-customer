@@ -45,7 +45,7 @@ export default {
   },
   computed: {
     files() {
-      return this.current.attach_files || []
+      return this.current.attachment || []
     },
     hasFiles() {
       return this.files.length

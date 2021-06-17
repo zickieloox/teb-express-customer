@@ -227,7 +227,7 @@ export default {
       reasons: [
         {
           key: 1,
-          name: 'Sủa đơn',
+          name: 'Sửa đơn',
         },
         {
           key: 2,
@@ -239,7 +239,7 @@ export default {
         },
         {
           key: 4,
-          name: ' Không cập nhật trạng thái ',
+          name: 'Không cập nhật trạng thái',
         },
         {
           key: 5,

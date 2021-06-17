@@ -25,7 +25,7 @@
             </div>
             <div
               class="page-header-group-actions__right"
-              v-if="claim.status != 3"
+              v-if="claim.status != 2"
             >
               <a href="#" class="btn btn-primary" @click="showModalReply">
                 <span>Trả lời</span>
@@ -46,7 +46,7 @@
                     ></span>
                   </li>
                   <li class="item-note">
-                    <span class="item-title">Lý do:: </span>
+                    <span class="item-title">Lý do: </span>
                     {{ formatReason(claim.category) }}
                   </li>
                   <li class="item-note">
@@ -119,14 +119,16 @@
               </div>
 
               <Message v-for="(mes, i) in messages" :key="i" :current="mes" />
-              <div class="text-center">
-                <button
-                  class="btn btn-primary"
-                  @click="handlerFetchTicketMessages"
-                  :disabled="isMessageLoading"
-                  v-if="isNextpage === 1"
-                  >Load more</button
-                >
+              <div
+                class="d-flex justify-content-between align-items-center mb-16"
+                v-if="count > 0"
+              >
+                <p-pagination
+                  :total="count"
+                  :perPage.sync="filter.limit"
+                  :current.sync="filter.page"
+                  size="sm"
+                ></p-pagination>
               </div>
             </div>
           </div>
@@ -150,6 +152,7 @@
 
 <script>
 import mixinUpload from '@core/mixins/upload'
+import mixinRoute from '@core/mixins/route'
 import File from '../components/File'
 import Browser from '@core/helpers/browser'
 import ModalReply from '../components/ModalReply'
@@ -166,7 +169,7 @@ import { FETCH_TICKET } from '@/packages/claim/store'
 
 export default {
   name: 'ClaimDetail',
-  mixins: [mixinUpload],
+  mixins: [mixinUpload, mixinRoute],
   components: {
     File,
     ModalReply,
@@ -223,7 +226,6 @@ export default {
       isNextpage: 0,
       filter: {
         limit: 20,
-        page_id: '',
       },
       styleObject: {},
       styleInfoObject: {},
@@ -232,11 +234,11 @@ export default {
   computed: {
     ...mapState('claim', {
       claim: (state) => state.ticket,
-      count: (state) => state.count,
+      count: (state) => state.countMess,
     }),
   },
   created() {
-    this.init()
+    ;(this.filter = this.getRouteQuery()), this.init()
   },
   mounted() {
     this.scrollHandle()
@@ -252,6 +254,8 @@ export default {
     ]),
     ...mapMutations(['updateTicketMessage']),
     async init() {
+      this.handleUpdateRouteQuery()
+      window.scrollTo(0, 0)
       const { id } = this.$route.params
       await this[FETCH_TICKET](id)
       await this.handlerFetchTicketMessages()
@@ -396,11 +400,6 @@ export default {
       })
     },
     async handlerFetchTicketMessages() {
-      if (!this.isNextpage === 2) return
-
-      const { id } = this.$route.params
-      this.filter.ticket_id = id
-
       this.isMessageLoading = true
       const res = await this[FETCH_MESSAGE](this.filter)
       this.isMessageLoading = false
@@ -410,42 +409,21 @@ export default {
         return
       }
 
-      this.isNextpage = 1
-      if (!res.messages || res.messages.length < 1) {
-        this.isNextpage = 2
-        return
-      }
-
-      this.filter.page_id = res.page_id
-      if (
-        res.messages.length < this.filter.limit ||
-        this.filter.limit == res.count
-      ) {
-        this.isNextpage = 2
-      }
-
-      for (const msg of res.messages) {
-        if (this.messages.every(({ id }) => id != msg.id)) {
-          this.messages.push(msg)
-        }
-      }
+      this.messages = res.messages
     },
 
     formatReason(reason) {
       switch (reason) {
         case 1:
-          return 'Order Modification'
+          return 'Sửa đơn'
         case 2:
-          return 'Order Cancel'
+          return 'Chất lượng đơn hàng'
         case 3:
-          return 'Production time & tracking issues'
+          return 'Phí hóa đơn'
         case 4:
-          return 'Labelling'
+          return 'Không cập nhật trạng thái'
         case 5:
-          return 'Post-delivery problem (wrong product, quality issues,...)'
-
-        case 6:
-          return 'Others'
+          return 'Khác'
       }
     },
     formatStatus(status) {
@@ -453,15 +431,7 @@ export default {
         case 1:
           return 'pending'
         case 2:
-          return 'in-review'
-        case 3:
           return 'resolved'
-        case 4:
-          return 'refunded'
-        case 5:
-          return 'rejected'
-        case 6:
-          return 'canceled'
       }
     },
 
@@ -474,6 +444,13 @@ export default {
       this.messages.unshift(reply)
     },
   },
-  watch: {},
+  watch: {
+    filter: {
+      handler: function() {
+        this.init()
+      },
+      deep: true,
+    },
+  },
 }
 </script>

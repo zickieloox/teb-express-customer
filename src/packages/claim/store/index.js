@@ -8,6 +8,7 @@ export const UPDATE_TICKET = 'updateTicket'
 export const UPDATE_FILE_TICKET = 'updateFileTicket'
 export const CANCEL_TICKET = 'cancelTicket'
 export const FETCH_MESSAGE = 'fetchMessage'
+export const COUNT_MESSAGE = 'countMessage'
 export const GET_FILE_TICKET = 'getFileTicket'
 export const UPDATE_MESSAGE_TICKET = 'updateTicketMessage'
 export const PUSH_MESSAGE = 'pushMessage'
@@ -18,6 +19,7 @@ export const state = {
   count: 0,
   ticket: {},
   message: [],
+  countMess: 0,
 }
 export const mutations = {
   [FETCH_CLAIMS]: (state, payload) => {
@@ -34,6 +36,9 @@ export const mutations = {
   },
   [FETCH_MESSAGE]: (state, payload) => {
     state.message = payload || []
+  },
+  [COUNT_MESSAGE]: (state, payload) => {
+    state.countMess = payload
   },
   [UPDATE_MESSAGE_TICKET]: (state, payload) => {
     state.message = payload
@@ -135,13 +140,17 @@ export const actions = {
     return { error: false }
   },
   async [FETCH_MESSAGE]({ commit }, payload) {
-    const res = await api.fetchMessageTickets(payload)
-    if (!res || res.error) {
-      commit(APPEND_MESSAGE, [])
+    const [res, count] = await Promise.all([
+      api.fetchMessageTickets(payload),
+      api.countMessage(payload),
+    ])
+    if (!res || res.error || count.error) {
       return { error: true, message: res.errorMessage || '' }
     }
+    console.log(count)
 
     commit(APPEND_MESSAGE, res.messages)
+    commit(COUNT_MESSAGE, count.count)
     return { error: false, ...res }
   },
 

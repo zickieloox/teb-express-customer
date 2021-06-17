@@ -57,6 +57,13 @@ export default {
       `/tickets/${payload.ticket_id}/messages?${buildQueryString(payload)}`
     )
   },
+  countMessage(payload) {
+    return http.get(
+      `/tickets/${payload.ticket_id}/messages/count?${buildQueryString(
+        payload
+      )}`
+    )
+  },
   fetchTicketFile(payload) {
     return http.get(
       `/uploads/file-export/download?${buildQueryString(payload)}`,
