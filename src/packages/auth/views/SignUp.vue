@@ -31,7 +31,7 @@
             validate="on"
             ref="email"
             v-model="user.email"
-            :input="user.email"
+            :input="user.email.trim()"
             @status="checkEmail($event)"
             @keyup.enter="onSignUp"
             :required="requiredEmail"
