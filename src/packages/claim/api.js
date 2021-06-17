@@ -29,6 +29,15 @@ export default {
   countClaim(payload) {
     return http.get(`/tickets/count?${buildQueryString(payload)}`)
   },
+
+  /**
+   * count list claim by status
+   * @param payload
+   * @return {*}
+   */
+  countClaimByStatus(payload) {
+    return http.get(`/tickets/count-by-status?${buildQueryString(payload)}`)
+  },
   /**
    * count list claim
    * @param payload

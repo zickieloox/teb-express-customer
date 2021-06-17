@@ -29,7 +29,7 @@
             <a href="#" class="btn btn-danger">
               <span>Hủy đơn</span>
             </a>
-            <a href="#" class="btn btn-default ml-7">
+            <a @click="handleModal" href="#" class="btn btn-default ml-7">
               <span>Sửa đơn</span>
             </a>
             <a href="#" class="btn btn-primary ml-7">
@@ -293,6 +293,11 @@
         </div>
       </div>
     </div>
+    <modal-edit-order
+      :visible.sync="isVisibleModal"
+      :info_user="package_detail"
+    >
+    </modal-edit-order>
   </div>
 </template>
 
@@ -316,15 +321,18 @@
 import { mapState, mapActions } from 'vuex'
 import { FETCH_PACKAGE_DETAIL } from '../store/index'
 import mixinChaining from '@/packages/shared/mixins/chaining'
+import ModalEditOrder from './components/ModalEditOrder'
 
 export default {
   name: 'PackageDetail',
   mixins: [mixinChaining],
+  components: { ModalEditOrder },
   data() {
     return {
       isFetching: true,
       packageID: 0,
       displayDeliverDetail: false,
+      isVisibleModal: false,
     }
   },
   computed: {
@@ -347,6 +355,9 @@ export default {
     },
     changeDisplayDeliverDetail() {
       this.displayDeliverDetail = !this.displayDeliverDetail
+    },
+    handleModal() {
+      this.isVisibleModal = true
     },
   },
 }
