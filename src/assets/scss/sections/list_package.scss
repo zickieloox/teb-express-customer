@@ -58,7 +58,7 @@
       &.table-error {
         border-collapse: collapse;
         border: 1px solid $color-neutral-5;
-
+        width: 100%;
         td, th {
           padding: 7px 14px;
           height: 44px;
@@ -78,14 +78,13 @@
     }
 
     .detail {
-      span {
+      p {
         letter-spacing: 0.2px;
         font-weight: 500;
         font-size: 14px;
         line-height: 22px;
         color: $color-neutral-10;
         margin-bottom: 17px;
-
       }
     }
 
