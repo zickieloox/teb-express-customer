@@ -8,7 +8,7 @@
             <img src="~@/assets/img/import-excel.svg" />
             <span>Nhập Excel</span>
           </button>
-          <button class="pull-right btn-excel btn-export">
+          <button class="pull-right btn-excel btn-export" @click="handleExport">
             <img src="~@/assets/img/export-excel.svg" />
             <span>Xuất Excel</span>
           </button>
@@ -51,24 +51,55 @@
               <div class="table-responsive">
                 <table class="table table-hover" id="tbl-packages">
                   <thead>
+                    <div
+                      class="bulk-actions d-flex align-items-center"
+                      v-if="totalSelected > 0"
+                    >
+                      <div class="bulk-actions__main-bar">
+                        <span class="bulk-actions__selection-count">{{
+                          selectionCountText
+                        }}</span>
+                        <p-button class="bulk-actions__selection-status"
+                          >Vận đơn</p-button
+                        >
+                        <p-button class="bulk-actions__selection-status"
+                          >In đơn</p-button
+                        >
+                        <p-button class="bulk-actions__selection-status"
+                          >Hủy đơn</p-button
+                        >
+                      </div>
+                    </div>
                     <tr>
                       <th width="40">
-                        <p-checkbox></p-checkbox>
+                        <p-checkbox
+                          class="order-select-checkbox"
+                          :class="{ checkAll: totalSelected > 0 }"
+                          :style="totalSelected > 0 && { width: 0 }"
+                          :value="isAllChecked"
+                          @change.native="toggleSelectAll"
+                          :indeterminate="isIndeterminate"
+                        ></p-checkbox>
                       </th>
-                      <th>Mã vận đơn</th>
-                      <th>Mã hàng hoá</th>
-                      <th>Người gửi</th>
-                      <th>Người nhận</th>
-                      <th>Hàng hóa</th>
-                      <th>Ngày tạo </th>
-                      <th>Trạng thái</th>
-                      <th>Tổng cước</th>
+                      <template>
+                        <th :class="{ hidden: hiddenClass }">Mã vận đơn</th>
+                        <th :class="{ hidden: hiddenClass }">Mã hàng hoá</th>
+                        <th :class="{ hidden: hiddenClass }">Người gửi</th>
+                        <th :class="{ hidden: hiddenClass }">Người nhận</th>
+                        <th :class="{ hidden: hiddenClass }">Hàng hóa</th>
+                        <th :class="{ hidden: hiddenClass }">Ngày tạo </th>
+                        <th :class="{ hidden: hiddenClass }">Trạng thái</th>
+                        <th :class="{ hidden: hiddenClass }">Tổng cước</th>
+                      </template>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="(item, i) in packages" :key="i">
                       <td width="40">
-                        <p-checkbox></p-checkbox>
+                        <p-checkbox
+                          v-model="action.selected"
+                          :native-value="item"
+                        ></p-checkbox>
                       </td>
                       <td>
                         <router-link
@@ -94,7 +125,7 @@
                       <td>{{ item.items }}</td>
                       <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
                       <td>{{ mapStatus[item.status].value }}</td>
-                      <td>dsa</td>
+                      <td>{{ item.shipping_fee }} $</td>
                     </tr>
                   </tbody>
                 </table>
@@ -135,30 +166,38 @@
       @import="handleImportFile"
       v-if="isVisiblePreview"
     ></modal-import-preview-package>
+    <modal-export :visible="isVisibleExport"> </modal-export>
   </div>
 </template>
 <script>
+import ModalExport from './components/ModalExport'
+import PackageStatusTab from './components/PackageStatusTab'
+import ModalImportPreviewPackage from './components/ModalImportPreviewPackage'
 import ModalImport from '@components/shared/modal/ModalImport'
-import ModalImportPreviewPackage from '@/packages/package/views/components/ModalImportPreviewPackage'
 import { mapState, mapActions } from 'vuex'
-import PackageStatusTab from '@/packages/package/views/components/PackageStatusTab'
+import mixinDownload from '@/packages/shared/mixins/download'
 import {
   PACKAGE_STATUS_TAB,
   MAP_NAME_STATUS_PACKAGE,
 } from '@/packages/package/constants'
-import { FETCH_LIST_PACKAGES, IMPORT_PACKAGE } from '@/packages/package/store'
+import {
+  FETCH_LIST_PACKAGES,
+  IMPORT_PACKAGE,
+  EXPORT_PACKAGE,
+} from '@/packages/package/store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import { date } from '@core/utils/datetime'
 export default {
   name: 'ListPackages',
-  mixins: [mixinRoute, mixinTable],
+  mixins: [mixinRoute, mixinTable, mixinDownload],
   components: {
     ModalImport,
     ModalImportPreviewPackage,
     EmptySearchResult,
     PackageStatusTab,
+    ModalExport,
   },
   data() {
     return {
@@ -172,6 +211,7 @@ export default {
       },
       isUploading: false,
       isImporting: false,
+      isVisibleExport: false,
       isVisiblePreview: false,
       isVisibleImport: false,
       importData: {
@@ -194,6 +234,12 @@ export default {
       packages: (state) => state.packages,
       count: (state) => state.countPackages,
       count_status: (state) => state.count_status,
+      hiddenClass() {
+        return this.action.selected.length > 0 || this.isAllChecked
+      },
+      items() {
+        return this.packages
+      },
     }),
     statusTab() {
       return PACKAGE_STATUS_TAB
@@ -203,7 +249,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions('package', [FETCH_LIST_PACKAGES, IMPORT_PACKAGE]),
+    ...mapActions('package', [
+      FETCH_LIST_PACKAGES,
+      IMPORT_PACKAGE,
+      EXPORT_PACKAGE,
+    ]),
     async init() {
       this.isFetching = true
       this.handleUpdateRouteQuery()
@@ -242,6 +292,28 @@ export default {
         type: 'error',
         message: this.resultImport.message || 'File không đúng định dạng',
       })
+    },
+    async handleExport() {
+      this.isVisibleExport = true
+      const result = await this[EXPORT_PACKAGE]({
+        ids: this.selectedIds,
+      })
+      if (!result.success) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 3000,
+        })
+        this.isVisibleExport = false
+        return
+      }
+      this.downloadFile(
+        result.url,
+        'packages',
+        result.url.split('/'),
+        'danh_sach_van_don_'
+      )
+      this.isVisibleExport = false
     },
     handleCloseImportFile() {},
     handleImportFile() {},

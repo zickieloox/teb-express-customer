@@ -36,7 +36,7 @@
     </table>
 
     <div class="detail" v-if="importErrors && importErrors.length">
-      <span>Chi tiết:</span>
+      <p>Chi tiết:</p>
       <table class="table-error">
         <thead>
           <tr>

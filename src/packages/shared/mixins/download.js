@@ -3,24 +3,20 @@ import Browser from '@core/helpers/browser'
 
 export default {
   methods: {
-    async downloadFile(url, type, filename, prefix = 'Orders-') {
-      if (!filename || filename == '') {
+    async downloadFile(url, type, filename, prefix) {
+      if (!filename || filename === '') {
         const arr = url.split('/')
         arr.shift()
         filename = arr.join('_')
       }
 
       const buckets = {
-        orders: 'export_orders',
-        export_orders: 'export_orders',
-        fulfillments: 'export_fulfill',
-        export_fulfill: 'export_fulfill',
-        export: 'export_orders',
+        packages: 'export_packages',
       }
 
-      const bucket = buckets[type] || 'export_orders'
+      const bucket = buckets[type]
       const data = await http.get(
-        `/admin/fulfill/uploads/file-export/download?type=${bucket}&url=${url}`,
+        `/uploads/file-export/download?type=${bucket}&url=${url}`,
         {
           type: 'blob',
         }
@@ -30,7 +26,7 @@ export default {
         Browser.downloadBlob(
           data,
           prefix +
-            new Date().toLocaleDateString() +
+            new Date().toLocaleDateString('de-DE').replaceAll('.', '_') +
             '.' +
             `${filename}`.split('.')[1]
         )

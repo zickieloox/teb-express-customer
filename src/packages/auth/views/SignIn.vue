@@ -1,5 +1,5 @@
 <template>
-  <div class="page vertical-align ">
+  <div class="page vertical-align sign-in">
     <div class="vertical-align-middle">
       <div class="mb-16">
         <div class="header-2">

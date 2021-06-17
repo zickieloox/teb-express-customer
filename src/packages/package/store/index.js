@@ -10,6 +10,7 @@ export const COUNT_LIST_PACKAGES = 'countListPackages'
 export const FETCH_LIST_PRODUCTS = 'fetchListProducts'
 export const IMPORT_PACKAGE = 'importPackage'
 
+export const EXPORT_PACKAGE = 'exportPackage'
 /**
  * State
  */
@@ -106,5 +107,21 @@ export const actions = {
       success: false,
       message: response.errorMessage || '',
     }
+  },
+  // eslint-disable-next-line no-unused-vars
+  async [EXPORT_PACKAGE]({ commit }, payload) {
+    let result = { success: true }
+    const response = await api.exportPackage(payload)
+
+    if (response.error || response.message) {
+      result = {
+        success: false,
+        message: response.errorMessage || response.error || response.message,
+      }
+    } else {
+      result.url = response.download
+    }
+
+    return result
   },
 }
