@@ -21,4 +21,7 @@ export default {
     formData.append('file', payload.file)
     return http.post('/packages/import', formData)
   },
+  exportPackage(payload) {
+    return http.post('/packages/export', payload)
+  },
 }

@@ -8,7 +8,7 @@
             <img src="~@/assets/img/import-excel.svg" />
             <span>Nhập Excel</span>
           </button>
-          <button class="pull-right btn-excel btn-export">
+          <button class="pull-right btn-excel btn-export" @click="handleExport">
             <img src="~@/assets/img/export-excel.svg" />
             <span>Xuất Excel</span>
           </button>
@@ -124,30 +124,38 @@
       @import="handleImportFile"
       v-if="isVisiblePreview"
     ></modal-import-preview-package>
+    <modal-export :visible="isVisibleExport"> </modal-export>
   </div>
 </template>
 <script>
+import ModalExport from './components/ModalExport'
+import PackageStatusTab from './components/PackageStatusTab'
+import ModalImportPreviewPackage from './components/ModalImportPreviewPackage'
 import ModalImport from '@components/shared/modal/ModalImport'
-import ModalImportPreviewPackage from '@/packages/package/views/components/ModalImportPreviewPackage'
 import { mapState, mapActions } from 'vuex'
-import PackageStatusTab from '@/packages/package/views/components/PackageStatusTab'
+import mixinDownload from '@/packages/shared/mixins/download'
 import {
   PACKAGE_STATUS_TAB,
   MAP_NAME_STATUS_PACKAGE,
 } from '@/packages/package/constants'
-import { FETCH_LIST_PACKAGES, IMPORT_PACKAGE } from '@/packages/package/store'
+import {
+  FETCH_LIST_PACKAGES,
+  IMPORT_PACKAGE,
+  EXPORT_PACKAGE,
+} from '@/packages/package/store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import { date } from '@core/utils/datetime'
 export default {
   name: 'ListPackages',
-  mixins: [mixinRoute, mixinTable],
+  mixins: [mixinRoute, mixinTable, mixinDownload],
   components: {
     ModalImport,
     ModalImportPreviewPackage,
     EmptySearchResult,
     PackageStatusTab,
+    ModalExport,
   },
   data() {
     return {
@@ -161,6 +169,7 @@ export default {
       },
       isUploading: false,
       isImporting: false,
+      isVisibleExport: false,
       isVisiblePreview: false,
       isVisibleImport: false,
       importData: {
@@ -192,7 +201,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions('package', [FETCH_LIST_PACKAGES, IMPORT_PACKAGE]),
+    ...mapActions('package', [
+      FETCH_LIST_PACKAGES,
+      IMPORT_PACKAGE,
+      EXPORT_PACKAGE,
+    ]),
     async init() {
       this.isFetching = true
       this.handleUpdateRouteQuery()
@@ -231,6 +244,28 @@ export default {
         type: 'error',
         message: this.resultImport.message || 'File không đúng định dạng',
       })
+    },
+    async handleExport() {
+      let allIds = [2]
+      this.isVisibleExport = true
+      const result = await this[EXPORT_PACKAGE]({
+        ids: allIds,
+      })
+      if (!result.success) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 3000,
+        })
+        return
+      }
+      this.downloadFile(
+        result.url,
+        'packages',
+        result.url.split('/'),
+        'danh_sach_van_don_'
+      )
+      this.isVisibleExport = false
     },
     handleCloseImportFile() {},
     handleImportFile() {},
