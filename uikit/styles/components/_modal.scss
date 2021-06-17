@@ -360,17 +360,17 @@ $modal-card-body-padding: 20px !default;
 
 
 .modal-header {
-  padding: 16px 24px;
+  padding: 12px 16px;
   .modal-title {
     font-weight: 500;
-    font-size: 18px;
-    line-height: 160%;
+    font-size: 16px;
+    line-height: 150%;
     letter-spacing: 0.2px;
     color: #17191D;
   }
 }
 .modal-body {
-  padding: 24px;
+  padding: 16px;
   max-height: 70vh;
   overflow-y: auto;
   .order-info {
@@ -418,7 +418,7 @@ $modal-card-body-padding: 20px !default;
   }
 }
 .modal-footer {
-  padding: 24px;
+  padding: 16px;
   justify-content: space-between;
   .group-button {
     .p-button {

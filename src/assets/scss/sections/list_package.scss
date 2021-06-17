@@ -1,10 +1,11 @@
-.list-packages{
-  .page-header__title{
+.list-packages {
+  .page-header__title {
     font-size: 20px;
     line-height: 28px;
     font-weight: bold;
     color: $color-neutral-10;
-    .btn-excel{
+
+    .btn-excel {
       border: none;
       background-color: inherit;
       display: flex;
@@ -12,52 +13,148 @@
       border-radius: 8px;
       padding: 10px 19.5px 10px 16px;
       margin-left: 8px;
-      span{
+
+      span {
         font-size: 14px;
         line-height: 22px;
         font-weight: bold;
       }
-      img{
+
+      img {
         margin-right: 7px;
       }
     }
-    .btn-import{
+
+    .btn-import {
       color: #fff;
       background-color: $color-java-blue-6;
     }
-    .btn-export{
+
+    .btn-export {
       color: $color-java-blue-6;
     }
   }
-  #date-search{
+
+  .p-modal {
+    table {
+      &.table-result {
+        min-width: 230px;
+
+        tr {
+          td {
+            padding: 4px 0px;
+            font-size: 14px;
+            line-height: 22px;
+            color: $color-neutral-9;
+
+            &:first-child {
+              font-weight: 500;
+              color: $color-neutral-10;
+            }
+          }
+        }
+      }
+
+      &.table-error {
+        border-collapse: collapse;
+        border: 1px solid $color-neutral-5;
+
+        td, th {
+          padding: 7px 14px;
+          height: 44px;
+          border: 1px solid $color-neutral-4;
+        }
+
+        th {
+          color: $color-neutral-10;
+          font-weight: bold;
+        }
+
+        td {
+          color: $color-neutral-9;
+        }
+
+      }
+    }
+
+    .detail {
+      span {
+        letter-spacing: 0.2px;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 22px;
+        color: $color-neutral-10;
+        margin-bottom: 17px;
+
+      }
+    }
+
+    .success-import {
+      display: inline-block;
+      width: 18.5px;
+      height: 18.5px;
+      background-image: url("~@/assets/img/import_sucess.svg");
+      margin-right: 6px;
+      margin-bottom: -3px;
+
+      & + span {
+        color: #48BE78;
+      }
+    }
+
+    .fail-import {
+      display: inline-block;
+      width: 18.5px;
+      height: 18.5px;
+      background-image: url("~@/assets/img/import_fail.svg");
+      margin-right: 6px;
+      margin-bottom: -3px;
+
+      & + span {
+        color: #F5222D;
+      }
+    }
+  }
+
+  #preview .modal-footer {
+    display: none;
+  }
+
+  #date-search {
     max-width: 300px;
     margin-left: 8px;
-    .calendars{
+
+    .calendars {
       min-width: 400px;
     }
-    .show-ranges{
+
+    .show-ranges {
       min-width: 712px;
     }
-    .reportrange-text > div{
+
+    .reportrange-text > div {
       line-height: 28px;
       font-weight: normal;
       color: $color-neutral-4;
     }
   }
-    #nav_packages{
-      padding-bottom: 4px;
-      li a{
-        line-height: 22px;
-        color: $color-neutral-7;
-      }
+
+  #nav_packages {
+    padding-bottom: 4px;
+
+    li a {
+      line-height: 22px;
+      color: $color-neutral-7;
     }
-    #tbl-packages{
-      th{
-        color: $color-neutral-5;
-        font-size: 12px;
-        line-height: 16px;
-        text-transform: uppercase;
-        letter-spacing: 0.75px;
-      }
+  }
+
+  #tbl-packages {
+    th {
+      color: $color-neutral-5;
+      font-size: 12px;
+      line-height: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.75px;
     }
+  }
 }

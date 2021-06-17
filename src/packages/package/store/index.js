@@ -7,6 +7,7 @@ export const FETCH_PACKAGE_DETAIL = 'fetchPackage'
 
 export const FETCH_LIST_PACKAGES = 'fetchListPackages'
 export const COUNT_LIST_PACKAGES = 'countListPackages'
+export const IMPORT_PACKAGE = 'importPackage'
 /**
  * State
  */
@@ -69,5 +70,27 @@ export const actions = {
     commit(FETCH_LIST_PACKAGES, list.packages)
     commit(COUNT_LIST_PACKAGES, count)
     return result
+  },
+
+  // eslint-disable-next-line no-unused-vars
+  async [IMPORT_PACKAGE]({ commit }, payload) {
+    const response = await api.importPackage(payload)
+
+    if (
+      response &&
+      typeof response.errors !== 'undefined' &&
+      typeof response.total !== 'undefined' &&
+      (response.errors.length || response.total > 0)
+    ) {
+      return {
+        success: true,
+        ...response,
+      }
+    }
+
+    return {
+      success: false,
+      message: response.errorMessage || '',
+    }
   },
 }

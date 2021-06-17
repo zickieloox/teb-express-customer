@@ -1,109 +1,21 @@
 <template>
-  <p-modal :active="visible" title="Import Orders" @close="handleClose">
-    <template>
+  <p-modal :active="visible" :title="title" @close="handleClose">
+    <template v-if="uploading">
+      <div class="text-center processing">
+        <p>Quá trình nhập file excel có thể sẽ mất một vài phút ...</p>
+        <img src="~@/assets/img/loading.gif" />
+      </div>
+    </template>
+    <template v-else>
       <div align="center">
         <span class="example">
           Download a
           <a :href="csvTemplate" target="_blank">sample CSV template</a>
-          to see an example of the format required and see
-          <a href="https://lionnix.com/products" target="_blank"
-            >list products</a
-          >
-          and
-          <a
-            href="https://help.lionnix.com/orders/danh-sach-country-codes/"
-            target="_blank"
-            >country codes</a
-          >
-          /
-          <a
-            href="https://help.lionnix.com/orders/danh-sach-state-codes/"
-            target="_blank"
-            >state codes</a
-          >
+          to see an example of the format required
         </span>
-        <div class="center-error">
-          <div
-            v-if="Array.isArray(error) && error.length > 0"
-            class="center-block-error"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M10 12.5V12.5083M10 7.5V9.16667V7.5Z"
-                stroke="#DB1802"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M4.16666 15.8334H15.8333C16.1053 15.8315 16.3726 15.7631 16.612 15.6342C16.8514 15.5052 17.0556 15.3196 17.2068 15.0936C17.3581 14.8676 17.4517 14.608 17.4795 14.3375C17.5074 14.067 17.4686 13.7938 17.3667 13.5418L11.45 3.33343C11.3059 3.07293 11.0946 2.85579 10.8381 2.70458C10.5817 2.55338 10.2894 2.47363 9.99166 2.47363C9.69395 2.47363 9.40166 2.55338 9.1452 2.70458C8.88874 2.85579 8.67746 3.07293 8.53333 3.33343L2.61666 13.5418C2.51661 13.7881 2.47694 14.0547 2.50095 14.3195C2.52497 14.5843 2.61197 14.8395 2.75471 15.0638C2.89744 15.2881 3.09175 15.475 3.32143 15.6088C3.55111 15.7427 3.80949 15.8197 4.075 15.8334"
-                stroke="#DB1802"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-            <div v-if="Array.isArray(error) && error.length > 1" class="example"
-              >There were errors importing your csv file. After you fix the
-              error, try importing the CSV file again.
-            </div>
-            <div v-else class="example"
-              >There was an error importing your csv file. After you fix the
-              error, try importing the CSV file again.
-            </div>
-            <div v-if="Array.isArray(error) && error.length > 0">
-              <ul v-for="(item, i) in error" :key="i" class="center-error-list">
-                <li class="error-item">{{ item }}</li>
-              </ul>
-            </div>
-          </div>
-
-          <div
-            v-if="Array.isArray(error1) && error1.length > 0"
-            class="center-block-error1"
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M10 12.5V12.5083M10 7.5V9.16667V7.5Z"
-                stroke="#DB1802"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M4.16666 15.8334H15.8333C16.1053 15.8315 16.3726 15.7631 16.612 15.6342C16.8514 15.5052 17.0556 15.3196 17.2068 15.0936C17.3581 14.8676 17.4517 14.608 17.4795 14.3375C17.5074 14.067 17.4686 13.7938 17.3667 13.5418L11.45 3.33343C11.3059 3.07293 11.0946 2.85579 10.8381 2.70458C10.5817 2.55338 10.2894 2.47363 9.99166 2.47363C9.69395 2.47363 9.40166 2.55338 9.1452 2.70458C8.88874 2.85579 8.67746 3.07293 8.53333 3.33343L2.61666 13.5418C2.51661 13.7881 2.47694 14.0547 2.50095 14.3195C2.52497 14.5843 2.61197 14.8395 2.75471 15.0638C2.89744 15.2881 3.09175 15.475 3.32143 15.6088C3.55111 15.7427 3.80949 15.8197 4.075 15.8334"
-                stroke="#DB1802"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-            <div
-              class="example1"
-              v-if="Array.isArray(error1) && error1.length > 0"
-            >
-              <div v-for="(item, i) in error1" :key="i">
-                <div class="error-item">{{ item }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <upload
           class="order-uploader"
-          :action="createEndpoint(`orders/preview-import`)"
+          :action="createEndpoint(`packages/import`)"
           drag
           :auto-upload="false"
           :headers="uploadHeaders"
@@ -121,18 +33,11 @@
             {{ lastItem.name }}
           </div>
         </upload>
-        <span class="overwrite">
-          Overwrite any current orders that have the same sku and order number.
-        </span>
       </div>
     </template>
 
     <template slot="footer">
-      <a
-        href="https://help.lionnix.com/orders/cach-tao-don-thong-qua-file-csv"
-        target="_blank"
-        >Need help importing orders?</a
-      >
+      <a></a>
       <div class="group-button">
         <p-button type="default" @click="handleClose" :disabled="loading">
           Cancel
@@ -161,15 +66,13 @@ export default {
   mixins: [mixinRoute, mixinTable, mixinUpload],
   components: { Upload },
   props: {
+    title: {
+      type: String,
+      default: 'Import Orders',
+    },
     visible: {
       type: Boolean,
       default: false,
-    },
-    error: {
-      type: Array,
-    },
-    error1: {
-      type: Array,
     },
     uploading: {
       type: Boolean,
@@ -186,11 +89,11 @@ export default {
       uploadedIds: [],
       lastItem: null,
       filteredArr: [],
-      importOrder: {
+      importData: {
         file: null,
         shop_id: null,
       },
-      importOrderErrors: {},
+      importDataErrors: {},
       isVisiblePreview: false,
       isUploading: false,
       isVisibleImport: false,
@@ -206,14 +109,14 @@ export default {
   },
   methods: {
     handleClose() {
-      if (this.isLoading == true) {
+      if (this.isLoading === true) {
         return
       }
       this.$emit('update:visible', false)
       this.$emit('reset', true)
     },
     handleSave() {
-      if (this.loading == true) {
+      if (this.loading === true) {
         return
       }
       this.$emit('selected', this.lastItem)
