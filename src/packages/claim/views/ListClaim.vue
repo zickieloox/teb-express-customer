@@ -8,7 +8,7 @@
         <div class="card-body">
           <div class="d-flex list__claim-search">
             <p-input
-              placeholder="Tìm kiếm theo đơn hàng"
+              placeholder="Tìm kiếm theo đơn hàng khiếu nại "
               prefixIcon="search"
               class="mb-2"
               type="search"

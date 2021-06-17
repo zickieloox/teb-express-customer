@@ -14,7 +14,7 @@
           @click.prevent="handleClick(item.value)"
           v-if="i == 0"
         >
-          {{ item.text }}
+          {{ item.text }}({{ caculateTotal }})
         </a>
         <a
           href="#"
@@ -80,6 +80,12 @@ export default {
 
       return status
     },
+    caculateTotal() {
+      const arr = this.count.map((ele) => ele.count)
+      const reducer = (accumulator, currentValue) => accumulator + currentValue
+      const total = arr.reduce(reducer)
+      return total
+    },
     mapCount() {
       if (this.count.length < 1) {
         return []
@@ -87,7 +93,6 @@ export default {
       const listValuesOfStatus = Object.values(this.status)
 
       const count = [...listValuesOfStatus]
-      console.log(listValuesOfStatus)
       for (let i = 0; i < listValuesOfStatus.length; i++) {
         for (let j = 0; j < this.count.length; j++) {
           if (listValuesOfStatus[i] == this.count[j].status) {
