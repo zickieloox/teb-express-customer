@@ -106,16 +106,72 @@ VeeValidate.Validator.extend('phoneAddress', {
   },
 })
 VeeValidate.Validator.extend('city', {
-  getMessage: () => `Invalid city`,
+  getMessage: () => `Thành phố không hợp lệ`,
   validate: (value) => {
-    const regex = new RegExp(/^[\s+a-zA-Z0-9_.,\-\u00A1-\uFFFF]{0,50}$/)
+    const regex = new RegExp(/^[\s+a-zA-Z0-9_.,\-\u00A1-\uFFFF]{1,50}$/)
+    return regex.test(value)
+  },
+})
+VeeValidate.Validator.extend('state', {
+  getMessage: () => `Mã vùng không hợp lệ`,
+  validate: (value) => {
+    const regex = new RegExp(/^[\s+a-zA-Z0-9_.,\-\u00A1-\uFFFF]{1,15}$/)
     return regex.test(value)
   },
 })
 VeeValidate.Validator.extend('postcode', {
-  getMessage: () => `Invalid postcode`,
+  getMessage: () => `Mã bưu điện không hợp lệ`,
   validate: (value) => {
-    const regex = new RegExp(/^[a-zA-Z0-9\-\_\ ]{0,11}$/)
+    const regex = new RegExp(/^[a-zA-Z0-9\-\_\ ]{1,15}$/)
+    return regex.test(value)
+  },
+})
+VeeValidate.Validator.extend('countrycode', {
+  getMessage: () => `Mã quốc gia không hợp lệ `,
+  validate: (value) => {
+    const regex = new RegExp(/^[a-zA-Z0-9\-\_\ ]{1,3}$/)
+    return regex.test(value)
+  },
+})
+VeeValidate.Validator.extend('note', {
+  getMessage: () => `Ghi chú không hợp lệ `,
+  validate: (value) => {
+    const regex = new RegExp(/^[\s+a-zA-Z0-9_.,\-\u00A1-\uFFFF]{1,1000}$/)
+    return regex.test(value)
+  },
+})
+VeeValidate.Validator.extend('detail', {
+  getMessage: () => `Tên hàng không hợp lệ `,
+  validate: (value) => {
+    const regex = new RegExp(/^[\s+a-zA-Z0-9_.,\-\u00A1-\uFFFF]{1,1000}$/)
+    return regex.test(value)
+  },
+})
+VeeValidate.Validator.extend('weight', {
+  getMessage: () => `Số đo  không hợp lệ `,
+  validate: (value) => {
+    const regex = new RegExp(/^[0-9]+([,.][0-9]{1,2})?$/)
+    return regex.test(value)
+  },
+})
+VeeValidate.Validator.extend('length', {
+  getMessage: () => `Số đo  không hợp lệ `,
+  validate: (value) => {
+    const regex = new RegExp(/^[0-9]+([,.][0-9]{1,2})?$/)
+    return regex.test(value)
+  },
+})
+VeeValidate.Validator.extend('height', {
+  getMessage: () => `Số đo  không hợp lệ `,
+  validate: (value) => {
+    const regex = new RegExp(/^[0-9]+([,.][0-9]{1,2})?$/)
+    return regex.test(value)
+  },
+})
+VeeValidate.Validator.extend('width', {
+  getMessage: () => `Số đo  không hợp lệ `,
+  validate: (value) => {
+    const regex = new RegExp(/^[0-9]+([,.][0-9]{1,2})?$/)
     return regex.test(value)
   },
 })

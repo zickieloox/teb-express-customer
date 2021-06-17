@@ -9,28 +9,28 @@
         <div class="modal__edit-order-content">
           <div class="row sm-gutters  flex-nowrap">
             <div class="col-lg-6 col-xl-6 item-gutters ">
-              <div class="card__w">
-                <div class="card__w-header">
-                  Người gửi
-                </div>
-                <div class="card__w-content">
-                  <div class="card__w-item">
-                    <label class="card__w-label">
-                      Họ và tên: <span>*</span>
-                    </label>
-                    <div class="card__w-input">
-                      <multiselect
-                        class="multiselect-custom dropdown-reason"
-                        v-model="sender"
-                        :options="senders"
-                        placeholder="Chọn một "
-                        @select="handleSelect"
-                        :custom-label="customLabel"
-                      ></multiselect>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <!--              <div class="card__w">-->
+              <!--                <div class="card__w-header">-->
+              <!--                  Người gửi-->
+              <!--                </div>-->
+              <!--                <div class="card__w-content">-->
+              <!--                  <div class="card__w-item">-->
+              <!--                    <label class="card__w-label">-->
+              <!--                      Họ và tên: <span>*</span>-->
+              <!--                    </label>-->
+              <!--                    <div class="card__w-input">-->
+              <!--                      <multiselect-->
+              <!--                        class="multiselect-custom dropdown-reason"-->
+              <!--                        v-model="sender"-->
+              <!--                        :options="senders"-->
+              <!--                        placeholder="Chọn một "-->
+              <!--                        @select="handleSelect"-->
+              <!--                        :custom-label="customLabel"-->
+              <!--                      ></multiselect>-->
+              <!--                    </div>-->
+              <!--                  </div>-->
+              <!--                </div>-->
+              <!--              </div>-->
 
               <div class="card__w">
                 <div class="card__w-header">
@@ -45,7 +45,6 @@
                       <input
                         placeholder="vd. Nguyen Van A"
                         type="fullname"
-                        validate="on"
                         v-model="fullname"
                         :input="fullname"
                         class="form-control"
@@ -57,14 +56,13 @@
                       Điện thoại: <span>*</span>
                     </label>
                     <div class="card__w-input">
-                      <p-input
+                      <input
                         placeholder="Nhập số điện thoại"
                         type="phonenumber"
-                        validate="on"
                         ref="email"
                         v-model="phone"
                         :input="phone"
-                        :required="requiredPhone"
+                        class="form-control"
                       />
                     </div>
                   </div>
@@ -73,13 +71,12 @@
                       Thành phố: <span>*</span>
                     </label>
                     <div class="card__w-input">
-                      <p-input
+                      <input
                         placeholder="Nhập thành phố"
                         type="text"
-                        validate="on"
                         v-model="city"
                         :input="city"
-                        :required="requiredCity"
+                        class="form-control"
                       />
                     </div>
                   </div>
@@ -89,13 +86,12 @@
                       (state): <span>*</span>
                     </label>
                     <div class="card__w-input">
-                      <p-input
+                      <input
                         placeholder="Nhập mã vùng"
                         type="text"
-                        validate="on"
                         v-model="state"
                         :input="state"
-                        :required="requiredState"
+                        class="form-control"
                       />
                     </div>
                   </div>
@@ -104,13 +100,12 @@
                       Mã bưu điện: <span>*</span>
                     </label>
                     <div class="card__w-input">
-                      <p-input
+                      <input
                         placeholder="Nhập mã bưu điện"
                         type="text"
-                        validate="on"
                         v-model="postcode"
                         :input="postcode"
-                        :required="requiredCity"
+                        class="form-control"
                       />
                     </div>
                   </div>
@@ -121,7 +116,14 @@
                 <div class="card__w-header">
                   Yêu cầu
                 </div>
-                <div class="card__w-content"> </div>
+                <div class="card__w-content">
+                  <textarea
+                    class="card__w-area"
+                    placeholder="Nhập yêu cầu khi giao ..."
+                    v-model="note"
+                    :input="note"
+                  ></textarea>
+                </div>
               </div>
             </div>
             <div class="col-lg-6 col-xl-6 item-gutters">
@@ -137,8 +139,8 @@
                     <div class="card__w-input">
                       <multiselect
                         class="multiselect-custom dropdown-reason"
-                        v-model="order"
-                        :options="orders"
+                        v-model="products"
+                        :options="products"
                         placeholder="Chọn một "
                         @select="handleSelect"
                         :custom-label="customLabel"
@@ -150,13 +152,12 @@
                       Loại hàng: <span>*</span>
                     </label>
                     <div class="card__w-input">
-                      <p-input
+                      <input
                         placeholder="Nhập  loại hàng"
                         type="text"
-                        validate="on"
-                        v-model="city"
-                        :input="city"
-                        :required="requiredCity"
+                        class="form-control"
+                        v-model="items"
+                        :input="items"
                       />
                     </div>
                   </div>
@@ -165,13 +166,26 @@
                       Tên hàng: <span>*</span>
                     </label>
                     <div class="card__w-input">
-                      <p-input
+                      <input
+                        placeholder="Nhập  tên hàng"
+                        type="text"
+                        class="form-control"
+                        v-model="name"
+                        :input="name"
+                      />
+                    </div>
+                  </div>
+                  <div class="card__w-item">
+                    <label class="card__w-label">
+                      Tên hàng: <span>*</span>
+                    </label>
+                    <div class="card__w-input">
+                      <input
                         placeholder="Nhập Tên hàng"
                         type="text"
-                        validate="on"
-                        v-model="state"
-                        :input="state"
-                        :required="requiredState"
+                        class="form-control"
+                        v-model="items"
+                        :input="items"
                       />
                     </div>
                   </div>
@@ -180,13 +194,12 @@
                       Trọng lượng: <span>*</span>
                     </label>
                     <div class="card__w-input">
-                      <p-input
+                      <input
                         placeholder="Nhập trọng lượng"
                         type="text"
-                        validate="on"
-                        v-model="postcode"
-                        :input="postcode"
-                        :required="requiredCity"
+                        class="form-control"
+                        v-model="weight"
+                        :input="weight"
                       />
                       <div class="card__w-unit">gram</div>
                     </div>
@@ -194,13 +207,12 @@
                   <div class="card__w-item">
                     <label class="card__w-label"> Dài: <span>*</span> </label>
                     <div class="card__w-input">
-                      <p-input
+                      <input
                         placeholder="Nhập chiều dài "
                         type="text"
-                        validate="on"
-                        v-model="postcode"
-                        :input="postcode"
-                        :required="requiredCity"
+                        class="form-control"
+                        v-model="length"
+                        :input="length"
                       />
                       <div class="card__w-unit">cm</div>
                     </div>
@@ -208,13 +220,12 @@
                   <div class="card__w-item">
                     <label class="card__w-label"> Rộng: <span>*</span> </label>
                     <div class="card__w-input">
-                      <p-input
+                      <input
                         placeholder="Nhập chiều rộng "
                         type="text"
-                        validate="on"
-                        v-model="postcode"
-                        :input="postcode"
-                        :required="requiredCity"
+                        class="form-control"
+                        v-model="width"
+                        :input="width"
                       />
                       <div class="card__w-unit">cm</div>
                     </div>
@@ -222,13 +233,12 @@
                   <div class="card__w-item">
                     <label class="card__w-label"> Cao: <span>*</span> </label>
                     <div class="card__w-input">
-                      <p-input
+                      <input
                         placeholder="Nhập chiều cao "
                         type="text"
-                        validate="on"
-                        v-model="postcode"
-                        :input="postcode"
-                        :required="requiredCity"
+                        v-model="height"
+                        :input="height"
+                        class="form-control"
                       />
                       <div class="card__w-unit">cm</div>
                     </div>
@@ -276,6 +286,7 @@
 </template>
 <script>
 import { mapState } from 'vuex'
+// import {GET_SENDER, LIST_SENDER} from "../../../setting/store";
 
 export default {
   name: 'ModalEditOrder',
@@ -292,41 +303,29 @@ export default {
   computed: {
     ...mapState('package', {
       package_detail: (state) => state.package_detail,
+      products: (state) => state.products,
     }),
+    // ...mapGetters('setting',{
+    //   senders:GET_SENDER
+    // })
   },
   data() {
     return {
-      senders: [
-        {
-          key: 1,
-          name: 'xxxx',
-        },
-        {
-          key: 2,
-          name: 'xxxxx',
-        },
-      ],
-      orders: [
-        {
-          key: 1,
-          name: 'xxxx',
-        },
-        {
-          key: 2,
-          name: 'xxxxx',
-        },
-      ],
       order: null,
       sender: null,
-      requiredUsername: false,
-      requiredPhone: false,
-      requiredCity: false,
-      requiredState: false,
       fullname: '',
       phone: '',
       city: '',
       state: '',
       postcode: '',
+      note: '',
+      code: '',
+      items: '',
+      weight: '',
+      length: '',
+      width: '',
+      height: '',
+      name: '',
     }
   },
   created() {
@@ -335,6 +334,17 @@ export default {
   methods: {
     async init() {
       this.fullname = this.package_detail.package.recipient
+      this.phone = this.package_detail.package.phone_number
+      this.city = this.package_detail.package.city
+      this.state = this.package_detail.package.state_code
+      this.postcode = this.package_detail.package.zipcode
+      this.note = this.package_detail.package.note || 'Không có yêu cầu'
+      this.code = this.package_detail.package.code
+      this.items = this.package_detail.package.items
+      this.weight = this.package_detail.package.weight
+      this.length = this.package_detail.package.length
+      this.width = this.package_detail.package.width
+      this.height = this.package_detail.package.height
     },
     handleClose() {
       this.$emit('update:visible', false)

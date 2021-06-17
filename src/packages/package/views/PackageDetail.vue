@@ -163,7 +163,7 @@
                           <div class="col-4 mb-8">Tên hàng:</div>
                           <div class="col-8"
                             ><div>{{
-                              $evaluate('package_detail.package.phone_number')
+                              $evaluate('package_detail.package.name')
                             }}</div></div
                           >
                         </div>
@@ -334,9 +334,10 @@
 </style>
 <script>
 import { mapState, mapActions } from 'vuex'
-import { FETCH_PACKAGE_DETAIL } from '../store/index'
+import { FETCH_PACKAGE_DETAIL, FETCH_LIST_PRODUCTS } from '../store/index'
 import mixinChaining from '@/packages/shared/mixins/chaining'
 import ModalEditOrder from './components/ModalEditOrder'
+import { LIST_SENDER } from '../../setting/store'
 
 export default {
   name: 'PackageDetail',
@@ -390,10 +391,13 @@ export default {
     this.init()
   },
   methods: {
-    ...mapActions('package', [FETCH_PACKAGE_DETAIL]),
+    ...mapActions('package', [FETCH_PACKAGE_DETAIL, FETCH_LIST_PRODUCTS]),
+    ...mapActions('setting', [LIST_SENDER]),
     async init() {
       this.isFetching = true
       await this.fetchPackage(this.packageID)
+      // await this.listSender({})
+      // await this[FETCH_LIST_PRODUCTS]()
       this.isFetching = false
     },
     changeDisplayDeliverDetail() {

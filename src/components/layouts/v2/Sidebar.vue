@@ -118,7 +118,7 @@ export default {
               title: 'Tạo đơn lẻ',
             },
             {
-              route: '',
+              route: '/packages',
               title: 'Quản lý đơn hàng',
             },
             {
