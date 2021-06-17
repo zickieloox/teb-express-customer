@@ -19,7 +19,11 @@
             </a>
           </div>
           <div class="list__claim-list">
-            <status-tab v-model="filter.status" :status="claimStatus" />
+            <status-tab
+              v-model="filter.status"
+              :status="claimStatus"
+              :count="totalCount"
+            />
             <vcl-table class=" md-20" v-if="isFetching"></vcl-table>
             <template v-else-if="listclaim.length > 0">
               <div class="table-responsive">
@@ -64,20 +68,21 @@
             </template>
             <EmptySearchResult v-else></EmptySearchResult>
           </div>
+          <div
+            class="d-flex justify-content-between align-items-center mb-16"
+            v-if="count > 0"
+          >
+            <p-pagination
+              :total="count"
+              :perPage.sync="filter.limit"
+              :current.sync="filter.page"
+              size="sm"
+            ></p-pagination>
+          </div>
         </div>
       </div>
     </div>
-    <div
-      class="d-flex justify-content-between align-items-center mb-16"
-      v-if="count > 0"
-    >
-      <p-pagination
-        :total="count"
-        :perPage.sync="filter.limit"
-        :current.sync="filter.page"
-        size="sm"
-      ></p-pagination>
-    </div>
+
     <modal-add-claim
       :visible.sync="visibleModal"
       :title="`Khiếu nại`"
@@ -125,6 +130,7 @@ export default {
     ...mapState('claim', {
       count: (state) => state.count,
       listclaim: (state) => state.claims,
+      totalCount: (state) => state.totalCount,
     }),
   },
   methods: {

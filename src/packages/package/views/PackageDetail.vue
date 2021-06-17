@@ -29,7 +29,7 @@
             <a href="#" class="btn btn-danger">
               <span>Hủy đơn</span>
             </a>
-            <a href="#" class="btn btn-default ml-7">
+            <a @click="handleModal" href="#" class="btn btn-default ml-7">
               <span>Sửa đơn</span>
             </a>
             <a href="#" class="btn btn-primary ml-7">
@@ -163,7 +163,7 @@
                           <div class="col-4 mb-8">Tên hàng:</div>
                           <div class="col-8"
                             ><div>{{
-                              $evaluate('package_detail.package.phone_number')
+                              $evaluate('package_detail.package.name')
                             }}</div></div
                           >
                         </div>
@@ -310,6 +310,11 @@
         </div>
       </div>
     </div>
+    <modal-edit-order
+      :visible.sync="isVisibleModal"
+      :info_user="package_detail"
+    >
+    </modal-edit-order>
   </div>
 </template>
 
@@ -329,17 +334,21 @@
 </style>
 <script>
 import { mapState, mapActions } from 'vuex'
-import { FETCH_PACKAGE_DETAIL } from '../store/index'
+import { FETCH_PACKAGE_DETAIL, FETCH_LIST_PRODUCTS } from '../store/index'
 import mixinChaining from '@/packages/shared/mixins/chaining'
+import ModalEditOrder from './components/ModalEditOrder'
+import { LIST_SENDER } from '../../setting/store'
 
 export default {
   name: 'PackageDetail',
   mixins: [mixinChaining],
+  components: { ModalEditOrder },
   data() {
     return {
       isFetching: true,
       packageID: 0,
       displayDeliverDetail: false,
+      isVisibleModal: false,
       timelinePagination: {
         numberPage: 0,
         itemsPerPage: 5,
@@ -382,14 +391,20 @@ export default {
     this.init()
   },
   methods: {
-    ...mapActions('package', [FETCH_PACKAGE_DETAIL]),
+    ...mapActions('package', [FETCH_PACKAGE_DETAIL, FETCH_LIST_PRODUCTS]),
+    ...mapActions('setting', [LIST_SENDER]),
     async init() {
       this.isFetching = true
       await this.fetchPackage(this.packageID)
+      // await this.listSender({})
+      // await this[FETCH_LIST_PRODUCTS]()
       this.isFetching = false
     },
     changeDisplayDeliverDetail() {
       this.displayDeliverDetail = !this.displayDeliverDetail
+    },
+    handleModal() {
+      this.isVisibleModal = true
     },
     previousTimeLinePage() {
       this.timelinePagination.currentPage <= 1

@@ -1,6 +1,6 @@
 export const routes = [
   {
-    path: '/orders/claims',
+    path: '/packages/claims',
     name: 'list-claim',
     meta: {
       title: 'Claim',
