@@ -41,4 +41,8 @@
 .card-footer {
 	background-color: transparent;
 	margin-bottom: 16px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	vertical-align: middle;
 }

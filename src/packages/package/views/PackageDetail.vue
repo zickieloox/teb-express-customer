@@ -210,29 +210,23 @@
                           <div class="col-8 mb-8">Phí giao hàng:</div>
                           <div class="col-4"
                             ><div>{{
-                              $evaluate('package_detail.package.code')
+                              $evaluate('package_detail.package?.shipping_fee')
+                                | formatPrice
                             }}</div></div
                           >
                         </div>
                         <div class="row">
                           <div class="col-8 mb-8">Phí phát sinh:</div>
                           <div class="col-4"
-                            ><div>{{
-                              $evaluate('package_detail.package.phone_number')
-                            }}</div></div
+                            ><div>{{ sumExtraFee | formatPrice }}</div></div
                           >
                         </div>
-                        <div class="row">
-                          <div class="col-8 mb-8">Khuyến mãi:</div>
+                        <div class="row sum-price">
+                          <div class="col-8">Tổng cước:</div>
                           <div class="col-4"
-                            ><div>{{
-                              $evaluate('package_detail.package.weight')
-                            }}</div></div
+                            ><div>{{ sumFee | formatPrice }}</div></div
                           >
                         </div>
-                      </div>
-                      <div class="card-footer">
-                        <div class="card-title">Tổng cước:</div>
                       </div>
                     </div>
                   </div>
@@ -320,19 +314,17 @@
 </template>
 
 <style>
-.deliver-log ul:before {
-  position: absolute;
-  content: ' ';
-  background: #d4d9df;
-  display: inline-block;
-  left: 25.8px;
-  width: 4px;
-  height: 100%;
-  z-index: 400;
-  border-radius: 20px;
-  -moz-border-radius: 20px;
-  -webkit-border-radius: 20px;
-  margin-top: 7px;
+.sum-price {
+  border-top: 1px solid #cfd0d0;
+  margin-top: 16px;
+  padding-top: 16px;
+}
+
+.sum-price:last-child {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 22px;
+  color: #313232;
 }
 </style>
 <script>
@@ -367,6 +359,20 @@ export default {
         start,
         start + this.timelinePagination.itemsPerPage
       )
+    },
+    sumExtraFee() {
+      if (
+        !this.package_detail.extra_fee ||
+        this.package_detail.extra_fee.length <= 0
+      ) {
+        return 0
+      }
+      return this.package_detail.extra_fee.reduce((accu, curr) => ({
+        amount: accu.amount + curr.amount,
+      })).amount
+    },
+    sumFee() {
+      return this.package_detail.package.shipping_fee + this.sumExtraFee
     },
   },
   created() {
