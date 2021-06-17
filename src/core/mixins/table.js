@@ -50,10 +50,7 @@ export default {
         : false
     },
     selectionCountText() {
-      if (this.totalSelected == 1) {
-        return '1 order selected'
-      }
-      return `${this.totalSelected} orders selected`
+      return `${this.totalSelected} đơn hàng đang được chọn`
     },
     isChecked() {
       return function(value) {

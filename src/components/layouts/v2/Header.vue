@@ -57,9 +57,7 @@ export default {
       default: true,
     },
   },
-  mounted() {
-    console.log(this.user)
-  },
+  mounted() {},
   created() {},
   data() {
     return {

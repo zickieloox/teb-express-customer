@@ -8,6 +8,7 @@ export const LIST_SENDER = 'listSender'
 export const COUNT_SENDER = 'countSender'
 export const CREATE_SENDER = 'createSender'
 export const UPDATE_SENDER = 'updateSender'
+export const GET_SENDER = 'getSender'
 /**
  * State
  */
@@ -17,6 +18,17 @@ export const state = {
   count_sender: 0,
 }
 
+/**
+ * Getters
+ */
+export const getters = {
+  [GET_SENDER](state) {
+    let senders = state.senders.map((item) => {
+      return { sender_id: item.id, name: item.name }
+    })
+    return senders
+  },
+}
 /**
  * Mutation
  */

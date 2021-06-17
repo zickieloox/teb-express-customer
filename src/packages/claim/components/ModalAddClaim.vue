@@ -31,11 +31,17 @@
               placeholder="Chọn một lý do"
               @select="handleSelect"
               :custom-label="customLabel"
+              v-validate="'required'"
               :class="{ required: requiredReason }"
+              name="reason"
+              data-vv-as="Mã vận đơn"
             ></multiselect>
             <div v-if="requiredReason" class="err-span">
               Hãy chọn một lý do
             </div>
+            <span class="err-span" v-if="errors.has('reason')">{{
+              errors.first('reason')
+            }}</span>
           </div>
         </div>
         <div class="row mb-20">
@@ -47,8 +53,9 @@
               type="text"
               class="form-control"
               placeholder="Nhập tiêu đề"
-              v-validate="'required'"
+              v-validate="'required|max:200'"
               name="title"
+              maxlength="201"
               v-model="title"
               data-vv-as="Tiêu đề"
               key="title"
@@ -75,9 +82,10 @@
               placeholder="Nhập nội dung "
               class="text__aria-content"
               v-model="content"
-              v-validate="'required'"
+              v-validate="'max:1000'"
               name="content"
               key="content"
+              maxlength="1000"
               data-vv-as="Nội dung"
               :class="{
                 'error-color': errors.has('content'),
@@ -117,7 +125,7 @@
                 alt=""
                 class="ticket__error-icon"
               />
-              <span>This media couldn’t be added:</span>
+              <span>Tệp tin chưa được thêm vào:</span>
             </div>
             <ul class="ticket__error-list">
               <li
@@ -164,7 +172,8 @@
             src="~@/assets/img/InfoCircle.svg"
             alt=""
           />
-          <b>Lưu ý:</b> (<span>*</span>) <i>Là các trường bắt buộc nhập.</i>
+          <b>Lưu ý:</b> (<span style="color: red">*</span>)
+          <i>Là các trường bắt buộc nhập.</i>
         </div>
         <div class="d-flex">
           <div>
@@ -231,18 +240,14 @@ export default {
         },
         {
           key: 2,
-          name: 'Chất lượng đơn hàng',
-        },
-        {
-          key: 3,
           name: 'Phí hóa đơn',
         },
         {
-          key: 4,
-          name: 'Không cập nhật trạng thái',
+          key: 3,
+          name: ' Không cập nhật trạng thái ',
         },
         {
-          key: 5,
+          key: 4,
           name: 'Khác',
         },
       ],
@@ -380,19 +385,19 @@ export default {
       }
     },
     async handleSave() {
+      const validate2 = this.$validator.validate('reason', this.reason)
       const validate = await this.$validator.validateAll()
-      if (!validate || !this.checkRequired()) {
+      if (!validate || !validate2) {
         return
       }
-      if (this.lengthContent) return
 
       this.urls = this.files.map((item) => item.url)
       let params = {
         reason: this.selectReason ? this.reason.key : 5,
-        title: this.title,
+        title: this.title.trim(),
         content: this.content,
         files: this.urls,
-        code: this.code,
+        code: this.code.trim(),
       }
       let result = await this[CREATE_CLAIM](params)
       if (result.error) {
@@ -404,21 +409,25 @@ export default {
         return
       }
       this.$toast.open({
-        type: 'error',
+        type: 'success',
         message: 'Tạo thành công',
         duration: 3000,
       })
+      this.code = ''
+      this.title = ''
+      this.content = ''
+      this.files = []
+      this.reason = null
       this.$emit('create', true)
+      this.$emit('update:visible', false)
     },
     countText(val) {
       var len = val.length
       if (len > 1000) {
         this.TicketNote = len
-        this.lengthContent = true
         return 'note_danger'
       } else {
         this.TicketNote = len
-        this.lengthContent = false
         return 'note_success'
       }
     },
@@ -427,12 +436,10 @@ export default {
         case 1:
           return 'Sửa đơn'
         case 2:
-          return 'Chất lượng đơn hàng'
-        case 3:
           return 'Phí hóa đơn'
-        case 4:
+        case 3:
           return 'Không cập nhật trạng thái'
-        case 5:
+        case 4:
           return 'Khác'
       }
     },

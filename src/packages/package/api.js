@@ -9,6 +9,15 @@ export default {
   fetchPackage(payload) {
     return http.get(`/packages/${payload}`)
   },
+
+  /**
+   * fetch package
+   * @param payload
+   * @return {*}
+   */
+  fetchListProduct() {
+    return http.get(`/products`)
+  },
   fetchListPackages(payload) {
     return http.get(`/packages?${buildQueryString(payload)}`)
   },
@@ -20,5 +29,8 @@ export default {
 
     formData.append('file', payload.file)
     return http.post('/packages/import', formData)
+  },
+  exportPackage(payload) {
+    return http.post('/packages/export', payload)
   },
 }

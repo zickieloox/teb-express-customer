@@ -12,6 +12,27 @@
           class="nav-link"
           :class="{ active: item.value === value }"
           @click.prevent="handleClick(item.value)"
+          v-if="i == 0"
+        >
+          {{ item.text }}({{ caculateTotal }})
+        </a>
+        <a
+          href="#"
+          class="nav-link"
+          :class="{ active: item.value === value }"
+          @click.prevent="handleClick(item.value)"
+          v-else-if="mapCount.length != 0"
+        >
+          {{ item.text }} ({{
+            mapCount[i - 1].count != null ? mapCount[i - 1].count : 0
+          }})
+        </a>
+        <a
+          href="#"
+          class="nav-link"
+          :class="{ active: item.value === value }"
+          @click.prevent="handleClick(item.value)"
+          v-else
         >
           {{ item.text }}
         </a>
@@ -38,6 +59,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    count: {
+      type: Array,
+      default: () => [],
+    },
   },
   computed: {
     cleanStatus() {
@@ -54,6 +79,29 @@ export default {
       }
 
       return status
+    },
+    caculateTotal() {
+      const arr = this.count.map((ele) => ele.count)
+      const reducer = (accumulator, currentValue) => accumulator + currentValue
+      const total = arr.reduce(reducer, 0)
+      return total
+    },
+    mapCount() {
+      if (this.count.length < 1) {
+        return []
+      }
+      const listValuesOfStatus = Object.values(this.status)
+
+      const count = [...listValuesOfStatus]
+      for (let i = 0; i < listValuesOfStatus.length; i++) {
+        for (let j = 0; j < this.count.length; j++) {
+          if (listValuesOfStatus[i] == this.count[j].status) {
+            count[i] = this.count[j]
+            break
+          }
+        }
+      }
+      return count
     },
   },
   methods: {

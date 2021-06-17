@@ -8,10 +8,12 @@
         <div class="card-body">
           <div class="d-flex list__claim-search">
             <p-input
-              placeholder="Tìm kiếm theo đơn hàng"
+              placeholder="Tìm kiếm theo mã vận đơn  "
               prefixIcon="search"
               class="mb-2"
               type="search"
+              :value="filter.search"
+              @keyup.enter="handleSearch"
             >
             </p-input>
             <a href="#" class="btn btn-primary ml-10" @click="handleModal">
@@ -19,7 +21,11 @@
             </a>
           </div>
           <div class="list__claim-list">
-            <status-tab v-model="filter.status" :status="claimStatus" />
+            <status-tab
+              v-model="filter.status"
+              :status="claimStatus"
+              :count="totalCount"
+            />
             <vcl-table class=" md-20" v-if="isFetching"></vcl-table>
             <template v-else-if="listclaim.length > 0">
               <div class="table-responsive">
@@ -74,20 +80,21 @@
             </template>
             <EmptySearchResult v-else></EmptySearchResult>
           </div>
+          <div
+            class="d-flex justify-content-between align-items-center mb-16"
+            v-if="count > 0"
+          >
+            <p-pagination
+              :total="count"
+              :perPage.sync="filter.limit"
+              :current.sync="filter.page"
+              size="sm"
+            ></p-pagination>
+          </div>
         </div>
       </div>
     </div>
-    <div
-      class="d-flex justify-content-between align-items-center mb-16"
-      v-if="count > 0"
-    >
-      <p-pagination
-        :total="count"
-        :perPage.sync="filter.limit"
-        :current.sync="filter.page"
-        size="sm"
-      ></p-pagination>
-    </div>
+
     <modal-add-claim
       :visible.sync="visibleModal"
       :title="`Khiếu nại`"
@@ -135,6 +142,7 @@ export default {
     ...mapState('claim', {
       count: (state) => state.count,
       listclaim: (state) => state.claims,
+      totalCount: (state) => state.totalCount,
     }),
   },
   methods: {
@@ -152,6 +160,11 @@ export default {
     },
     handleModal() {
       this.visibleModal = true
+    },
+    handleSearch(e) {
+      // Default result after search in page 1
+      this.filter.page = 1
+      this.$set(this.filter, 'search', e.target.value.trim())
     },
     converStatus(status) {
       switch (status) {

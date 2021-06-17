@@ -258,7 +258,7 @@ export default {
       window.scrollTo(0, 0)
       const { id } = this.$route.params
       await this[FETCH_TICKET](id)
-      await this.handlerFetchTicketMessages()
+      await this.handlerFetchTicketMessages(id)
       this.reason = this.claim.category
       this.orderId = this.claim.object_id
       this.title = this.claim.subject
@@ -399,9 +399,11 @@ export default {
         }
       })
     },
-    async handlerFetchTicketMessages() {
+    async handlerFetchTicketMessages(id) {
       this.isMessageLoading = true
-      const res = await this[FETCH_MESSAGE](this.filter)
+      let payload = this.filter
+      payload.ticket_id = id
+      const res = await this[FETCH_MESSAGE](payload)
       this.isMessageLoading = false
 
       if (!res || res.error) {

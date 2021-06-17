@@ -1,5 +1,5 @@
 <template>
-  <div class="page vertical-align">
+  <div class="page vertical-align sign-up">
     <div class="vertical-align-middle">
       <div class="header mb-16">
         <div class="header-2">
@@ -31,7 +31,7 @@
             validate="on"
             ref="email"
             v-model="user.email"
-            :input="user.email"
+            :input="user.email.trim()"
             @status="checkEmail($event)"
             @keyup.enter="onSignUp"
             :required="requiredEmail"
