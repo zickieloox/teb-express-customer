@@ -404,11 +404,12 @@ export default {
         return
       }
       this.$toast.open({
-        type: 'error',
+        type: 'success',
         message: 'Tạo thành công',
         duration: 3000,
       })
       this.$emit('create', true)
+      this.$emit('update:visible', false)
     },
     countText(val) {
       var len = val.length

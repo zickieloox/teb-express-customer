@@ -618,7 +618,9 @@ fieldset[disabled] .multiselect {
   max-width: 100%;
   text-overflow: ellipsis;
 }
-
+.multiselect__select img {
+  margin-bottom: 3px;
+}
 .multiselect__tag-icon {
   cursor: pointer;
   margin-left: 7px;

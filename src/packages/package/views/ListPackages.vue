@@ -70,7 +70,18 @@
                       <td width="40">
                         <p-checkbox></p-checkbox>
                       </td>
-                      <td>{{ item.code }}</td>
+                      <td>
+                        <router-link
+                          :to="{
+                            name: 'package-detail',
+                            params: {
+                              id: item.id,
+                            },
+                          }"
+                        >
+                          {{ item.code }}
+                        </router-link>
+                      </td>
                       <td>{{ item.sku }}</td>
                       <td>
                         {{
