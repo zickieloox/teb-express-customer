@@ -202,6 +202,14 @@
                           >
                         </div>
                         <div class="row">
+                          <div class="col-4 mb-8">SKU:</div>
+                          <div class="col-8"
+                            ><div>{{
+                              $evaluate('package_detail.package.sku')
+                            }}</div></div
+                          >
+                        </div>
+                        <div class="row">
                           <div class="col-4 mb-8">Trọng lượng:</div>
                           <div class="col-8"
                             ><div>{{
