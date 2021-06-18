@@ -152,7 +152,6 @@
       :uploading="isUploading"
       accept=".csv"
       title="Nhập Excel"
-      @close="handleCloseImportFile"
       @selected="handleImportPackage"
       v-if="isVisibleImport"
     >
@@ -162,8 +161,6 @@
       :import-errors="resultImport.errors"
       :import-sucess="resultImport.import_sucess"
       :total="resultImport.total"
-      :importing="isImporting"
-      @import="handleImportFile"
       v-if="isVisiblePreview"
     ></modal-import-preview-package>
     <modal-export :visible="isVisibleExport"> </modal-export>
@@ -210,7 +207,6 @@ export default {
         code: '',
       },
       isUploading: false,
-      isImporting: false,
       isVisibleExport: false,
       isVisiblePreview: false,
       isVisibleImport: false,
@@ -282,9 +278,9 @@ export default {
       })
       this.isUploading = false
       this.isVisibleImport = false
-      this.isVisiblePreview = true
 
       if (this.resultImport && this.resultImport.success) {
+        this.isVisiblePreview = true
         return
       }
 
@@ -315,8 +311,6 @@ export default {
       )
       this.isVisibleExport = false
     },
-    handleCloseImportFile() {},
-    handleImportFile() {},
   },
   watch: {
     filter: {
