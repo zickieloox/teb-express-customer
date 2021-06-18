@@ -7,10 +7,15 @@
   text-decoration: none !important;
   outline: none;
   font-weight: $font-weight-bold;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 8px 20px;
   height: 40px;
   font-size: 14px;
+  line-height: 22px;
+  /* identical to box height, or 157% */
+
+  align-items: center;
+
 
   &:disabled, &.disabled {
     background: #DFE3E8;
@@ -91,8 +96,17 @@
 }
 
 .btn-danger {
-  background: #DB1802;
+  background: #FFFFFF;
+  border: 1px solid #FFA39E;
+  color: #F5222D;
 }
+
+.btn-primary-custom {
+  background: #FFFFFF;
+  border: 1px solid $color-java-blue-6;
+  color: $color-java-blue-6 !important;
+}
+
 .p-button.btn-loading::after{
   border: 2px solid white;
   border-right-color: transparent;
