@@ -282,16 +282,14 @@ export default {
       })
       this.isUploading = false
       this.isVisibleImport = false
-      this.isVisiblePreview = true
 
       if (this.resultImport && this.resultImport.success) {
-        return
+        return this.$toast.open({
+          type: 'error',
+          message: this.resultImport.message,
+        })
       }
-
-      this.$toast.open({
-        type: 'error',
-        message: this.resultImport.message || 'File không đúng định dạng',
-      })
+      this.isVisiblePreview = true
     },
     async handleExport() {
       this.isVisibleExport = true
