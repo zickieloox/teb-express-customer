@@ -14,7 +14,6 @@
               v-validate="'required'"
               name="code"
               v-model="code"
-              key="code"
               data-vv-as="Mã vận đơn"
               :class="{ 'error-color': errors.has('code') }"
             />
@@ -34,7 +33,7 @@
               v-validate="'required'"
               :class="{ required: requiredReason }"
               name="reason"
-              data-vv-as="Mã vận đơn"
+              data-vv-as="Lý do "
             ></multiselect>
             <div v-if="requiredReason" class="err-span">
               Hãy chọn một lý do
@@ -58,7 +57,6 @@
               maxlength="201"
               v-model="title"
               data-vv-as="Tiêu đề"
-              key="title"
               :class="{ 'error-color': errors.has('title') }"
             />
             <span class="err-span" v-if="errors.has('title')">{{
@@ -71,9 +69,7 @@
             <div
               class="text__aria-title d-flex justify-content-between align-items-center"
             >
-              <label class="modal__add-claim-label"
-                >Nội dung: <span>*</span></label
-              >
+              <label class="modal__add-claim-label">Nội dung:</label>
               <span class="countText" :class="[countText(content)]"
                 >{{ this.TicketNote }}/1000</span
               >
@@ -84,7 +80,6 @@
               v-model="content"
               v-validate="'max:1000'"
               name="content"
-              key="content"
               maxlength="1000"
               data-vv-as="Nội dung"
               :class="{
@@ -109,7 +104,8 @@
               :on-change="handleChangeFile"
               multiple
               :auto-upload="false"
-              :max-file-size="100000000"
+              :on-max-size="errorMaximum"
+              :max-file-size="maximumSize"
             >
               <div class="el-upload__text">
                 Thả tệp hoặc hình ảnh để tải lên
@@ -134,6 +130,21 @@
                 class="ticket__error-item"
               >
                 {{ item }}</li
+              >
+            </ul>
+          </div>
+          <div v-if="this.validateSize" class="ticket__error">
+            <div class="ticket__error-title">
+              <img
+                src="~@/assets/img/alert.svg"
+                alt=""
+                class="ticket__error-icon"
+              />
+              <span>Tệp tin chưa được thêm vào:</span>
+            </div>
+            <ul class="ticket__error-list">
+              <li class="ticket__error-item">
+                {{ this.name }} đang lớn hơn 5Mb.Vui lòng chọn tệp nhỏ hơn.</li
               >
             </ul>
           </div>
@@ -207,6 +218,7 @@ import { Upload } from '@kit/index'
 import { mapActions } from 'vuex'
 import { UPLOAD_FILE_CLAIM, CREATE_CLAIM } from '../store'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
+const MAXIMUM_SIZE = 5
 
 export default {
   name: 'ModalAddClaim',
@@ -220,6 +232,7 @@ export default {
   },
   data() {
     return {
+      maximumSize: MAXIMUM_SIZE * 2 ** 20,
       content: '',
       isVisibleConfirmDelete: false,
       reason: null,
@@ -270,6 +283,8 @@ export default {
       allowedExtensions: /(\.jpg|\.jpeg|\.png|\.csv)$/i,
       errMessage: [],
       url: [],
+      validateSize: false,
+      name: '',
     }
   },
   methods: {
@@ -281,6 +296,7 @@ export default {
       this.content = ''
       this.files = []
       this.reason = null
+      this.validateSize = false
       this.$validator.pause()
       this.$nextTick(() => {
         this.$validator.errors.clear()
@@ -300,23 +316,6 @@ export default {
       this.requiredReason = false
       this.selectReason = true
     },
-    checkRequired() {
-      let result = true
-      if (!this.reason) {
-        this.requiredReason = true
-        result = false
-        return result
-      } else {
-        this.requiredReason = false
-      }
-      if (this.reason == null) {
-        this.requiredReason = true
-        result = false
-      } else {
-        this.requiredReason = false
-      }
-      return result
-    },
     actionDeletefile(file) {
       this.isVisibleConfirmDelete = true
       this.deleteFile = file
@@ -327,17 +326,16 @@ export default {
     },
     handleChangeFile(file) {
       let filename = file.name
+      this.validateSize = false
       const index = this.files.findIndex(({ uid }) => uid === file.uid)
       if (index != -1) {
         this.$set(this.files, index, file)
       }
-
-      if (!this.validateSizeFile(file)) {
-        this.errMessage.push(` "${filename}" is less than 5Mb.`)
-        this.errMessage = [...new Set(this.errMessage)]
-        return
-      }
-
+      // if (!this.validateSizeFile(file)  ) {
+      //   this.errMessage.push(` "${filename}" đang lớn hơn 5Mb.Vui lòng chọn tệp nhỏ hơn`)
+      //   this.errMessage = [...new Set(this.errMessage)]
+      //   return
+      // }
       if (!this.validateTypeFile(file)) {
         this.errMessage.push(
           ` "${filename}" định dạng không đúng.Tệp phải có định dạng:  *CSV, *PNG, *JPG, *JPEG.`
@@ -384,6 +382,10 @@ export default {
         return false
       }
     },
+    errorMaximum({ name }) {
+      this.validateSize = true
+      this.name = name
+    },
     async handleSave() {
       const validate2 = this.$validator.validate('reason', this.reason)
       const validate = await this.$validator.validateAll()
@@ -413,13 +415,8 @@ export default {
         message: 'Tạo thành công',
         duration: 3000,
       })
-      this.code = ''
-      this.title = ''
-      this.content = ''
-      this.files = []
-      this.reason = null
+      this.handleClose()
       this.$emit('create', true)
-      this.$emit('update:visible', false)
     },
     countText(val) {
       var len = val.length

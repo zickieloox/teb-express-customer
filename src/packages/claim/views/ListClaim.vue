@@ -1,7 +1,7 @@
 <template>
   <div class="pages list__claim">
     <div class="page-header">
-      <div class="page-header_title header-2">Danh sách khiếu nại</div>
+      <div class="page-header_title header-2">Đơn khiếu nại</div>
     </div>
     <div class="page-content">
       <div class="card">
