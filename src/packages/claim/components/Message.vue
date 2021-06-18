@@ -55,15 +55,15 @@ export default {
         return this.current.user_name || 'Me'
       }
 
-      if (this.user_role != 'support') {
+      if (this.user_role == 'support') {
         return this.current.user_name || 'Support'
       }
 
       return this.current.user_name || 'Undefined'
     },
     roleName() {
-      if (this.current.user_role != 'support') {
-        return 'CS Support'
+      if (this.current.user_role == 'support') {
+        return 'CSKH'
       }
 
       return ''
