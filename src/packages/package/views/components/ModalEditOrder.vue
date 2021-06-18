@@ -104,6 +104,28 @@
                   </div>
                   <div class="card__w-item">
                     <label class="card__w-label">
+                      Địa chỉ: <span>*</span>
+                    </label>
+                    <div class="card__w-input">
+                      <input
+                        placeholder="Nhập địa chỉ"
+                        type="text"
+                        v-model="address"
+                        :input="address"
+                        class="form-control"
+                        v-validate="'required|city'"
+                        name="address"
+                        data-vv-as="Địa chỉ"
+                        :class="{ 'error-color': errors.has('address') }"
+                      />
+                      <span class="err-span" v-if="errors.has('address')">{{
+                        errors.first('address')
+                      }}</span>
+                    </div>
+                  </div>
+
+                  <div class="card__w-item">
+                    <label class="card__w-label">
                       Mã vùng<br />
                       (state): <span>*</span>
                     </label>
@@ -206,6 +228,7 @@
                         placeholder="Chọn một "
                         @select="handleSelect"
                         :custom-label="customLabel"
+                        @remove="handleRemove"
                       ></multiselect>
                     </div>
                   </div>
@@ -222,7 +245,7 @@
                         class="form-control"
                         v-validate="'required|detail'"
                         name="detail"
-                        data-vv-as="Loại hàng"
+                        data-vv-as="Chi tiết hàng hóa"
                         :class="{ 'error-color': errors.has('detail') }"
                       />
                       <span class="err-span" v-if="errors.has('detail')">{{
@@ -244,6 +267,7 @@
                         v-validate="'required|weight'"
                         name="weight"
                         data-vv-as="Trọng lượng"
+                        :disabled="isDisable"
                         :class="{ 'error-color': errors.has('weight') }"
                       />
                       <span class="err-span" v-if="errors.has('weight')">{{
@@ -264,6 +288,7 @@
                         v-validate="'required|length'"
                         name="length"
                         data-vv-as="Chiều dài"
+                        :disabled="isDisable"
                         :class="{ 'error-color': errors.has('length') }"
                       />
                       <span class="err-span" v-if="errors.has('length')">{{
@@ -283,6 +308,7 @@
                         class="form-control"
                         v-validate="'required|width'"
                         name="width"
+                        :disabled="isDisable"
                         data-vv-as="Chiều rộng"
                         :class="{ 'error-color': errors.has('width') }"
                       />
@@ -303,6 +329,7 @@
                         class="form-control"
                         v-validate="'required|height'"
                         name="unit"
+                        :disabled="isDisable"
                         data-vv-as="Chiều cao"
                         :class="{ 'error-color': errors.has('height') }"
                       />
@@ -345,14 +372,15 @@
         </div>
         <div class="modal__edit-order-footer">
           <div class="total-title">
-            Tổng cước: <span class="total-number">$299.69</span>
+            Tổng cước:
+            <span class="total-number">{{ total | formatPrice }}</span>
           </div>
           <div class="divider">
             <div class="notch"></div>
             <div class="notch-bt"></div>
           </div>
           <div class="total-action">
-            <a href="#" class="btn btn-default">Hủy bỏ</a>
+            <a href="#" class="btn btn-default" @click="handleClose">Hủy bỏ</a>
             <a href="#" class="btn  btn-primary  " @click="handleUpdate"
               >Cập nhật</a
             >
@@ -378,6 +406,9 @@ export default {
       type: Object,
       default: () => {},
     },
+    total: {
+      type: Number,
+    },
   },
   computed: {
     ...mapState('package', {
@@ -393,7 +424,14 @@ export default {
     return {
       item: null,
       sender: null,
-      service: null,
+      service: {
+        code: '',
+        created_at: null,
+        domestic_carrier_id: 0,
+        id: 0,
+        name: '',
+        updated_at: null,
+      },
       fullname: '',
       phone: '',
       city: '',
@@ -407,6 +445,8 @@ export default {
       height: '',
       countrycode: '',
       detail: '',
+      address: '',
+      isDisable: false,
     }
   },
   created() {
@@ -429,39 +469,96 @@ export default {
       this.width = this.package_detail.package.width
       this.height = this.package_detail.package.height
       this.countrycode = this.package_detail.package.country_code
+      this.service = this.services.filter((element) => {
+        return element.name == this.package_detail.package.service.name
+      })
+      this.address = this.package_detail.package.address_1
     },
     handleClose() {
+      this.fullname = ''
+      this.phone = ''
+      this.city = ''
+      this.state = ''
+      this.postcode = ''
+      this.note = ''
+      this.code = ''
+      this.items = ''
+      this.weight = ''
+      this.length = ''
+      this.width = ''
+      this.height = ''
+      this.countrycode = ''
+      this.service = ''
+      this.address = ''
+      this.$validator.pause()
+      this.$nextTick(() => {
+        this.$validator.errors.clear()
+        this.$validator.fields.items.forEach((field) => field.reset())
+        this.$validator.fields.items.forEach((field) =>
+          this.errors.remove(field)
+        )
+        this.$validator.resume()
+      })
       this.$emit('update:visible', false)
     },
     customLabel(item) {
       return item.name
     },
     handleSelect(value) {
-      this.sender = value
+      this.width = value.width
+      this.height = value.height
+      this.weight = value.weight
+      this.length = value.length
+      this.isDisable = true
     },
     handleSelectService(value) {
       this.service = value
     },
-    handleUpdate() {
+    handleRemove() {
+      this.isDisable = false
+      this.weight = this.package_detail.package.weight
+      this.length = this.package_detail.package.length
+      this.width = this.package_detail.package.width
+      this.height = this.package_detail.package.height
+    },
+    async handleUpdate() {
+      const validate = await this.$validator.validateAll()
+      if (!validate) {
+        return
+      }
       const { id } = this.$route.params
       const params = {
         id: id,
         recipient: this.fullname,
         phone_number: this.phone,
-        address_1: '',
+        address_1: this.address,
         city: this.city,
         state_code: this.state,
         zipcode: this.postcode,
         country_code: this.countrycode,
-        items: this.item,
         detail: this.detail,
-        weight: this.weight,
-        width: this.width,
-        length: this.length,
-        height: this.height,
-        service: this.service.id,
+        weight: +this.weight,
+        width: +this.width,
+        length: +this.length,
+        height: +this.height,
+        service: this.service[0].name,
       }
-      console.log(params)
+      let result = await this[UPDATE_PACKAGE](params)
+      if (result.error) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 3000,
+        })
+        return
+      }
+      this.$toast.open({
+        type: 'success',
+        message: 'Sửa đơn thành công',
+        duration: 3000,
+      })
+      this.handleClose()
+      this.$emit('create', true)
     },
   },
   watch: {

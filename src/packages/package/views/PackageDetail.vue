@@ -395,6 +395,8 @@
     <modal-edit-order
       :visible.sync="isVisibleModal"
       :info_user="package_detail"
+      @create="init"
+      :total="sumFee"
     >
     </modal-edit-order>
   </div>

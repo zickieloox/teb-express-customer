@@ -296,7 +296,7 @@ export default {
       this.content = ''
       this.files = []
       this.reason = null
-      this.validateSize = false
+      ;(this.validateSize = false), (this.errMessage = [])
       this.$validator.pause()
       this.$nextTick(() => {
         this.$validator.errors.clear()
