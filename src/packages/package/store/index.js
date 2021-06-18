@@ -19,7 +19,7 @@ export const state = {
     package: {},
     deliver_logs: [],
     price: 0.0,
-    extra_fee: {},
+    extra_fee: [],
   },
   packages: [],
   countPackages: 0,

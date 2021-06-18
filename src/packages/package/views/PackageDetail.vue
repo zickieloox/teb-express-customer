@@ -2,12 +2,22 @@
   <div class="package-detail pages">
     <div class="page-content">
       <div class="page-header">
-        <div class="page-header__title header-2">Chi tiet</div>
+        <div class="page-header_back">
+          <router-link :to="{ name: 'list-packages' }" class="text">
+            <img
+              src="@/assets/img/chevron-left.svg"
+              alt=""
+              class="page-header_back_icon"
+            />
+            <span>Quản lý vận đơn</span>
+          </router-link>
+        </div>
+
         <div class="page-header__subtitle">
           <div class="page-header__info">
             <div>
               <div>Mã vận đơn</div>
-              <div>{{ package_detail.package.code }}</div>
+              <div class="package-code">{{ package_detail.package.code }}</div>
             </div>
             <div>
               <div>Dịch vụ </div>
@@ -22,7 +32,11 @@
             </div>
             <div>
               <div>Trạng thái</div>
-              <div>Đang vận chuyển</div>
+              <div>{{
+                $evaluate(
+                  `packageStatus[${package_detail.package.status}]?.text`
+                ) || ''
+              }}</div>
             </div>
           </div>
           <div class="page-header__action">
@@ -217,8 +231,25 @@
                         </div>
                         <div class="row">
                           <div class="col-8 mb-8">Phí phát sinh:</div>
-                          <div class="col-4"
-                            ><div>{{ sumExtraFee | formatPrice }}</div></div
+                          <div class="col-4 more-extra-fee"
+                            ><div>{{ sumExtraFee | formatPrice }}</div
+                            ><div v-if="extraFee.length" class="ml-2">
+                              <img
+                                @mouseover="showPopupMoreExtraFee"
+                                @mouseleave="hiddenPopupMoreExtraFee"
+                                src="~@/assets/img/InfoCircleGrey.svg"
+                                alt=""
+                              />
+                            </div>
+                            <div
+                              v-if="isVisiblePopupMoreExtraFee"
+                              class="pop-up-more-extra-fee"
+                            >
+                              <div v-for="(item, i) of extraFee" :key="i">
+                                <div>{{ item.extra_fee_types.name }}</div>
+                                <div>{{ item.amount | formatPrice }}</div>
+                              </div>
+                            </div></div
                           >
                         </div>
                         <div class="row sum-price">
@@ -300,7 +331,50 @@
                         >
                         <div class="card-title">Lịch sử phát sinh</div>
                       </div>
-                      <div class="card-content"> </div>
+                      <div class="card-content">
+                        <template>
+                          <div class="table-responsive">
+                            <table class="table table-hover" id="tbl-packages">
+                              <thead>
+                                <tr>
+                                  <th>Mã vận đơn</th>
+                                  <th>Mã hàng hoá</th>
+                                  <th>Người gửi</th>
+                                  <th>Người nhận</th>
+                                  <th>Hàng hóa</th>
+                                  <th>Ngày tạo </th>
+                                  <th>Trạng thái</th>
+                                  <th>Tổng cước</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr
+                                  v-for="(item, i) in displayDeliverLogs"
+                                  :key="i"
+                                >
+                                  <td>
+                                    {{
+                                      item.ship_time
+                                        | datetime('dd/MM/yyyy - HH:mm')
+                                    }}
+                                  </td>
+                                  <td>{{ item.ship_time }}</td>
+                                  <td>
+                                    {{ item.ship_time }}
+                                  </td>
+                                  <td>
+                                    {{ item.ship_time }}
+                                  </td>
+                                  <td>{{ item.ship_time }}</td>
+                                  <td>{{
+                                    item.created_at | date('dd/MM/yyyy')
+                                  }}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </template>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -318,7 +392,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .sum-price {
   border-top: 1px solid #cfd0d0;
   margin-top: 16px;
@@ -338,7 +412,7 @@ import { FETCH_PACKAGE_DETAIL, FETCH_LIST_PRODUCTS } from '../store/index'
 import mixinChaining from '@/packages/shared/mixins/chaining'
 import ModalEditOrder from './components/ModalEditOrder'
 import { LIST_SENDER } from '../../setting/store'
-
+import { PACKAGE_STATUS_TAB } from '@/packages/package/constants'
 export default {
   name: 'PackageDetail',
   mixins: [mixinChaining],
@@ -349,6 +423,7 @@ export default {
       packageID: 0,
       displayDeliverDetail: false,
       isVisibleModal: false,
+      isVisiblePopupMoreExtraFee: false,
       timelinePagination: {
         numberPage: 0,
         itemsPerPage: 5,
@@ -382,6 +457,12 @@ export default {
     },
     sumFee() {
       return this.package_detail.package.shipping_fee + this.sumExtraFee
+    },
+    extraFee() {
+      return this.package_detail.extra_fee ? this.package_detail.extra_fee : []
+    },
+    packageStatus() {
+      return PACKAGE_STATUS_TAB
     },
   },
   created() {
@@ -417,6 +498,12 @@ export default {
         this.timelinePagination.numberPage
           ? this.timelinePagination.numberPage
           : this.timelinePagination.currentPage + 1
+    },
+    showPopupMoreExtraFee() {
+      this.isVisiblePopupMoreExtraFee = true
+    },
+    hiddenPopupMoreExtraFee() {
+      this.isVisiblePopupMoreExtraFee = false
     },
   },
 

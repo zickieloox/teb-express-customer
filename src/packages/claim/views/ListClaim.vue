@@ -43,7 +43,17 @@
 
                   <tbody>
                     <tr v-for="(item, i) in listclaim" :key="i">
-                      <td>{{ item.id }}</td>
+                      <td>
+                        <router-link
+                          class="text-no-underline"
+                          :to="{
+                            name: 'claim-detail',
+                            params: { id: item.id },
+                          }"
+                        >
+                          {{ item.id }}
+                        </router-link>
+                      </td>
                       <td>{{ item.package.code }}</td>
                       <td width="235">
                         <p-tooltip
