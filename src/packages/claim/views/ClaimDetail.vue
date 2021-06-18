@@ -4,11 +4,12 @@
       <div class="content-page">
         <div class="page-header">
           <div class="page-header_back">
-            <img
-              src="@/assets/img/Arrow - Left Square 24px.png"
-              class="page-header_back_icon"
-            />
             <router-link :to="{ name: 'list-claim' }" class="text">
+              <img
+                src="@/assets/img/Arrow - Left Square 24px.png"
+                class="page-header_back_icon"
+              />
+
               Đơn hàng khiếu nại
             </router-link>
           </div>

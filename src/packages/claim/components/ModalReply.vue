@@ -251,7 +251,7 @@ export default {
         this.fileErrors.push(
           `"${
             file.name
-          }" is not a supported file type. File must be type *CSV, *PNG, *JPG, *JPEG.`
+          }" iđịnh dạng không đúng.Tệp phải có định dạng:  *CSV, *PNG, *JPG, *JPEG.`
         )
         this.fileErrors = [...new Set(this.fileErrors)]
         return
