@@ -52,7 +52,7 @@ export default {
     },
     displayName() {
       if (this.current.user_id == this.authId) {
-        return this.current.user_name || 'Me'
+        return this.current.full_name || 'Me'
       }
 
       if (this.user_role == 'support') {

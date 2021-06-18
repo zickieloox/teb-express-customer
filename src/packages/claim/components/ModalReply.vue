@@ -10,12 +10,16 @@
         <div class="menu_content ">
           <div class="page-content_drag card2">
             <div class="form-group">
-              <label class="text-bold"
-                >Nội dung<span class="text-danger">*</span></label
+              <div
+                class="text__aria-title d-flex justify-content-between align-items-center"
               >
-              <span class="countText" :class="[countText(message)]"
-                >{{ this.TicketNote }}/1000</span
-              >
+                <label class="text-bold"
+                  >Nội dung<span class="text-danger">*</span></label
+                >
+                <span class="countText" :class="[countText(message)]"
+                  >{{ this.TicketNote }}/1000</span
+                >
+              </div>
               <textarea
                 class="form-control"
                 v-model="message"
@@ -48,7 +52,7 @@
                 :max-file-size="maximumSize"
               >
                 <div class="el-upload__text">
-                  Thả tệp, hình ảnh hoặc <em>file</em> để tải lên
+                  Thả tệp hoặc hình ảnh để tải lên
                 </div>
               </upload>
 
@@ -125,7 +129,8 @@
           src="~@/assets/img/InfoCircle.svg"
           alt=""
         />
-        <b>Lưu ý:</b> (<span>*</span>) <i>Là các trường bắt buộc nhập.</i>
+        <b>Lưu ý:</b> (<span style="color: red">*</span>)
+        <i>Là các trường bắt buộc nhập.</i>
       </div>
       <div class="d-flex">
         <div>
@@ -207,9 +212,9 @@ export default {
       validateSize: false,
       actions: {
         delete: {
-          title: 'Remove files',
-          button: 'Delete',
-          Description: `Are you sure you want to remove this attach file?`,
+          title: 'Xóa files',
+          button: 'Xóa',
+          Description: `Bạn có thực sự muốn xóa file này ?`,
           type: 'danger',
         },
       },
@@ -246,7 +251,7 @@ export default {
         this.fileErrors.push(
           `"${
             file.name
-          }" is not a supported file type. File must be type *CSV, *PNG, *JPG, *JPEG.`
+          }" iđịnh dạng không đúng.Tệp phải có định dạng:  *CSV, *PNG, *JPG, *JPEG.`
         )
         this.fileErrors = [...new Set(this.fileErrors)]
         return
@@ -322,7 +327,7 @@ export default {
         return
       }
 
-      this.$toast.open({ type: 'success', message: 'Reply claim success' })
+      this.$toast.open({ type: 'success', message: 'Trả lời thành công' })
       this.files = []
       this.message = ''
       this.fileErrors = []

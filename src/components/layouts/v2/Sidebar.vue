@@ -128,6 +128,7 @@ export default {
             {
               route: '/packages/claims',
               title: 'Đơn khiếu nại',
+              alias: ['/packages/claims', '/packages/claims/:id'],
             },
           ],
         },
