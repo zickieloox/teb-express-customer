@@ -9,9 +9,7 @@
     <template v-else>
       <div align="center">
         <span class="example">
-          Download a
-          <a :href="csvTemplate" target="_blank">sample CSV template</a>
-          to see an example of the format required
+          Tải về file <a :href="csvTemplate" target="_blank">mẫu CSV</a>
         </span>
         <upload
           class="order-uploader"
@@ -24,10 +22,10 @@
         >
           <img class="el-icon-upload" src="~@/assets/img/upload.png" alt="" />
           <div class="el-upload__text">
-            Drop files to upload, or <em>browser</em>
+            Kéo thả file để upload hoặc <em>tải lên</em>
           </div>
           <div v-if="!lastItem" class="el-before-upload__text">
-            No file chosen
+            Chưa có file nào được chọn .
           </div>
           <div v-else class="el-before-upload__text">
             {{ lastItem.name }}
@@ -40,7 +38,7 @@
       <a></a>
       <div class="group-button">
         <p-button type="default" @click="handleClose" :disabled="loading">
-          Cancel
+          Bỏ qua
         </p-button>
         <p-button
           type="primary"
@@ -48,7 +46,7 @@
           :disabled="!lastItem || uploading"
           :loading="loading"
         >
-          Preview and Upload
+          Tải lên
         </p-button>
       </div>
     </template>
