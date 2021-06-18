@@ -193,7 +193,7 @@
             </p-button>
           </div>
           <div class="ml-7">
-            <p-button type="primary" @click="handleSave">
+            <p-button type="primary" @click="handleSave" :loading="isUploading">
               Tạo khiếu nại
             </p-button>
           </div>
@@ -240,9 +240,9 @@ export default {
       lengthContent: false,
       actions: {
         delete: {
-          title: 'Remove files',
-          button: 'Delete',
-          Description: `Are you sure you want to remove this attach file?`,
+          title: 'Xóa tệp tin',
+          button: 'Xóa',
+          Description: `Bạn có chắc chắn muốn xóa tệp tin này`,
           type: 'danger',
         },
       },
@@ -296,7 +296,7 @@ export default {
       this.content = ''
       this.files = []
       this.reason = null
-      this.validateSize = false
+      ;(this.validateSize = false), (this.errMessage = [])
       this.$validator.pause()
       this.$nextTick(() => {
         this.$validator.errors.clear()

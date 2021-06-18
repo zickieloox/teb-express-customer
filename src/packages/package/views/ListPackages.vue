@@ -8,7 +8,11 @@
             <img src="~@/assets/img/import-excel.svg" />
             <span>Nhập Excel</span>
           </button>
-          <button class="pull-right btn-excel btn-export" @click="handleExport">
+          <button
+            class="pull-right btn-excel btn-export"
+            @click="handleExport"
+            :disabled="!hiddenClass"
+          >
             <img src="~@/assets/img/export-excel.svg" />
             <span>Xuất Excel</span>
           </button>
@@ -83,10 +87,11 @@
                       </th>
                       <template>
                         <th :class="{ hidden: hiddenClass }">Mã vận đơn</th>
-                        <th :class="{ hidden: hiddenClass }">Mã hàng hoá</th>
-                        <th :class="{ hidden: hiddenClass }">Người gửi</th>
+                        <th :class="{ hidden: hiddenClass }">Sku</th>
                         <th :class="{ hidden: hiddenClass }">Người nhận</th>
-                        <th :class="{ hidden: hiddenClass }">Hàng hóa</th>
+                        <th :class="{ hidden: hiddenClass }"
+                          >Chi tiết hàng hóa</th
+                        >
                         <th :class="{ hidden: hiddenClass }">Ngày tạo </th>
                         <th :class="{ hidden: hiddenClass }">Trạng thái</th>
                         <th :class="{ hidden: hiddenClass }">Tổng cước</th>
@@ -115,14 +120,9 @@
                       </td>
                       <td>{{ item.sku }}</td>
                       <td>
-                        {{
-                          item.sender ? item.sender.name : item.sender_full_name
-                        }}
-                      </td>
-                      <td>
                         {{ item.recipient }}
                       </td>
-                      <td>{{ item.items }}</td>
+                      <td>{{ item.detail }}</td>
                       <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
                       <td>{{ mapStatus[item.status].value }}</td>
                       <td>{{ item.shipping_fee }} $</td>
@@ -162,6 +162,7 @@
       :import-sucess="resultImport.import_sucess"
       :total="resultImport.total"
       v-if="isVisiblePreview"
+      @close="handleClosePreview"
     ></modal-import-preview-package>
     <modal-export :visible="isVisibleExport"> </modal-export>
   </div>
@@ -265,7 +266,19 @@ export default {
     },
     handleSearchCode() {
       this.filter.page = 1
-      this.$set(this.filter, 'code', this.searchCode.trim())
+      this.searchCode = this.searchCode.trim()
+      this.$set(this.filter, 'code', this.searchCode)
+    },
+    handleClosePreview() {
+      this.filter = {
+        limit: 50,
+        status: '',
+        search: '',
+        start_date: '',
+        end_date: '',
+        code: '',
+      }
+      this.init()
     },
     handleImport() {
       this.isVisibleImport = true
@@ -280,12 +293,14 @@ export default {
       this.isVisibleImport = false
 
       if (this.resultImport && this.resultImport.success) {
-        return this.$toast.open({
-          type: 'error',
-          message: this.resultImport.message,
-        })
+        this.isVisiblePreview = true
+        return
       }
-      this.isVisiblePreview = true
+
+      this.$toast.open({
+        type: 'error',
+        message: this.resultImport.message || 'File không đúng định dạng',
+      })
     },
     async handleExport() {
       this.isVisibleExport = true

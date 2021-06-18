@@ -31,6 +31,9 @@
     }
 
     .btn-export {
+      &:disabled{
+        cursor: not-allowed;
+      }
       color: $color-java-blue-6;
     }
   }
@@ -138,7 +141,10 @@
         td {
           color: $color-neutral-9;
         }
-
+        pre{
+          white-space: pre-wrap;
+          line-height: 20px;
+        }
       }
     }
 
@@ -199,7 +205,9 @@
     .reportrange-text > div {
       line-height: 28px;
       font-weight: normal;
-      color: $color-neutral-4;
+      .label-date-picker{
+        color: $color-neutral-4;
+      }
     }
   }
 
