@@ -43,7 +43,11 @@
             <a href="#" class="btn btn-danger">
               <span>Hủy đơn</span>
             </a>
-            <a @click="handleModal" href="#" class="btn btn-default ml-7">
+            <a
+              @click="handleModal"
+              href="#"
+              class="btn btn-primary-custom ml-7"
+            >
               <span>Sửa đơn</span>
             </a>
             <a href="#" class="btn btn-primary ml-7">
@@ -119,6 +123,14 @@
                         }}</div></div
                       >
                     </div>
+                    <div v-if="package_detail.package.address_2" class="row">
+                      <div class="col-4 mb-8">Địa chỉ phụ:</div>
+                      <div class="col-8"
+                        ><div>{{
+                          $evaluate('package_detail.package.address_2')
+                        }}</div></div
+                      >
+                    </div>
                     <div class="row">
                       <div class="col-4 mb-8">Thành phố:</div>
                       <div class="col-8"
@@ -136,7 +148,7 @@
                       >
                     </div>
                     <div class="row">
-                      <div class="col-4">Mã bưu điện:</div>
+                      <div class="col-4 mb-8">Mã bưu điện:</div>
                       <div class="col-8"
                         ><div>{{
                           $evaluate('package_detail.package.zipcode')
@@ -182,10 +194,10 @@
                           >
                         </div>
                         <div class="row">
-                          <div class="col-4 mb-8">Tên hàng:</div>
+                          <div class="col-4 mb-8">Chi tiết hàng hóa:</div>
                           <div class="col-8"
                             ><div>{{
-                              $evaluate('package_detail.package.name')
+                              $evaluate('package_detail.package.detail')
                             }}</div></div
                           >
                         </div>
@@ -345,43 +357,62 @@
                             <table class="table table-hover" id="tbl-packages">
                               <thead>
                                 <tr>
-                                  <th>Mã vận đơn</th>
-                                  <th>Mã hàng hoá</th>
-                                  <th>Người gửi</th>
-                                  <th>Người nhận</th>
-                                  <th>Hàng hóa</th>
-                                  <th>Ngày tạo </th>
-                                  <th>Trạng thái</th>
-                                  <th>Tổng cước</th>
+                                  <th>Thời gian</th>
+                                  <th>Người thực hiện</th>
+                                  <th>Loại thay đổi</th>
+                                  <th>Nội dung cũ</th>
+                                  <th>Nội dung mới</th>
+                                  <th>Phí sửa đơn</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 <tr
-                                  v-for="(item, i) in displayDeliverLogs"
+                                  v-for="(item, i) in displayAuditLogs"
                                   :key="i"
                                 >
                                   <td>
                                     {{
-                                      item.ship_time
+                                      item.created_at
                                         | datetime('dd/MM/yyyy - HH:mm')
                                     }}
                                   </td>
-                                  <td>{{ item.ship_time }}</td>
+                                  <td>{{ item.updated_user_name }}</td>
                                   <td>
-                                    {{ item.ship_time }}
+                                    {{
+                                      $evaluate(
+                                        `changePackageType[${item.type}]`
+                                      ) || ''
+                                    }}
                                   </td>
                                   <td>
-                                    {{ item.ship_time }}
+                                    {{ item.old_value }}
                                   </td>
-                                  <td>{{ item.ship_time }}</td>
-                                  <td>{{
-                                    item.created_at | date('dd/MM/yyyy')
-                                  }}</td>
+                                  <td>{{ item.value }}</td>
+                                  <td>{{ item.fee | formatPrice }}</td>
                                 </tr>
                               </tbody>
                             </table>
                           </div>
                         </template>
+                        <div class="timeline__next-page">
+                          <div
+                            :class="{
+                              'disable-next-page':
+                                auditPagination.currentPage <= 1,
+                            }"
+                            @click="previousAuditLogPage"
+                            >Trước</div
+                          ><div
+                            :class="{
+                              'disable-next-page':
+                                auditPagination.currentPage >=
+                                  auditPagination.numberPage ||
+                                auditPagination.numberPage <= 1,
+                            }"
+                            @click="nextAuditLogPage"
+                            >Sau</div
+                          >
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -422,7 +453,10 @@ import { FETCH_PACKAGE_DETAIL, FETCH_LIST_SERVICE } from '../store/index'
 import mixinChaining from '@/packages/shared/mixins/chaining'
 import ModalEditOrder from './components/ModalEditOrder'
 import { LIST_SENDER } from '../../setting/store'
-import { PACKAGE_STATUS_TAB } from '@/packages/package/constants'
+import {
+  PACKAGE_STATUS_TAB,
+  CHANGE_PACKAGE_TYPE,
+} from '@/packages/package/constants'
 export default {
   name: 'PackageDetail',
   mixins: [mixinChaining],
@@ -436,7 +470,12 @@ export default {
       isVisiblePopupMoreExtraFee: false,
       timelinePagination: {
         numberPage: 0,
-        itemsPerPage: 5,
+        itemsPerPage: 10,
+        currentPage: 1,
+      },
+      auditPagination: {
+        numberPage: 0,
+        itemsPerPage: 10,
         currentPage: 1,
       },
     }
@@ -452,6 +491,15 @@ export default {
       return this.package_detail.deliver_logs.slice(
         start,
         start + this.timelinePagination.itemsPerPage
+      )
+    },
+    displayAuditLogs() {
+      const start =
+        (this.auditPagination.currentPage - 1) *
+        this.auditPagination.itemsPerPage
+      return this.package_detail.audit_logs.slice(
+        start,
+        start + this.auditPagination.itemsPerPage
       )
     },
     sumExtraFee() {
@@ -473,6 +521,9 @@ export default {
     },
     packageStatus() {
       return PACKAGE_STATUS_TAB
+    },
+    changePackageType() {
+      return CHANGE_PACKAGE_TYPE
     },
   },
   created() {
@@ -509,6 +560,17 @@ export default {
           ? this.timelinePagination.numberPage
           : this.timelinePagination.currentPage + 1
     },
+    previousAuditLogPage() {
+      this.auditPagination.currentPage <= 1
+        ? (this.auditPagination.currentPage = 1)
+        : (this.auditPagination.currentPage -= 1)
+    },
+    nextAuditLogPage() {
+      this.auditPagination.currentPage =
+        this.auditPagination.currentPage >= this.auditPagination.numberPage
+          ? this.auditPagination.numberPage
+          : this.auditPagination.currentPage + 1
+    },
     showPopupMoreExtraFee() {
       this.isVisiblePopupMoreExtraFee = true
     },
@@ -523,6 +585,11 @@ export default {
         if (val.deliver_logs && val.deliver_logs.length > 0) {
           this.timelinePagination.numberPage = Math.ceil(
             val.deliver_logs.length / this.timelinePagination.itemsPerPage
+          )
+        }
+        if (val.audit_logs && val.audit_logs.length > 0) {
+          this.auditPagination.numberPage = Math.ceil(
+            val.audit_logs.length / this.auditPagination.itemsPerPage
           )
         }
       },
