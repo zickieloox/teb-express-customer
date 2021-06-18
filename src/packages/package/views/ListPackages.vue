@@ -83,10 +83,11 @@
                       </th>
                       <template>
                         <th :class="{ hidden: hiddenClass }">Mã vận đơn</th>
-                        <th :class="{ hidden: hiddenClass }">Mã hàng hoá</th>
-                        <th :class="{ hidden: hiddenClass }">Người gửi</th>
+                        <th :class="{ hidden: hiddenClass }">Sku</th>
                         <th :class="{ hidden: hiddenClass }">Người nhận</th>
-                        <th :class="{ hidden: hiddenClass }">Hàng hóa</th>
+                        <th :class="{ hidden: hiddenClass }"
+                          >Chi tiết hành hóa</th
+                        >
                         <th :class="{ hidden: hiddenClass }">Ngày tạo </th>
                         <th :class="{ hidden: hiddenClass }">Trạng thái</th>
                         <th :class="{ hidden: hiddenClass }">Tổng cước</th>
@@ -114,11 +115,6 @@
                         </router-link>
                       </td>
                       <td>{{ item.sku }}</td>
-                      <td>
-                        {{
-                          item.sender ? item.sender.name : item.sender_full_name
-                        }}
-                      </td>
                       <td>
                         {{ item.recipient }}
                       </td>
@@ -266,7 +262,8 @@ export default {
     },
     handleSearchCode() {
       this.filter.page = 1
-      this.$set(this.filter, 'code', this.searchCode.trim())
+      this.searchCode = this.searchCode.trim()
+      this.$set(this.filter, 'code', this.searchCode)
     },
     handleClosePreview() {
       this.filter = {
