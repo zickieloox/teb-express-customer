@@ -14,7 +14,7 @@
           </div>
           <div class="page-header-group">
             <div class="page-header_title header-2">
-              <span style="font-weight: bold">Khách chưa nhận được hàng</span>
+              <span style="font-weight: bold">{{ claim.title }}</span>
               <!-- <span
                 v-if="claim.status == 1"
                 class="edit-ticket"
@@ -111,7 +111,7 @@
                   <div class="list-item">
                     <div
                       class="item"
-                      v-for="(file, i) in claim.attach_files"
+                      v-for="(file, i) in claim.attachment"
                       :key="i"
                     >
                       <div
@@ -247,7 +247,7 @@ export default {
       actions: {
         cancel: {
           title: 'Đóng khiếu nại',
-          button: 'Confirm',
+          button: 'Xác nhận',
           Description: `Bạn có chắc chắn đóng khiếu nại này ?`,
           type: 'danger',
         },
@@ -360,10 +360,7 @@ export default {
       this.init()
     },
     hasFiles() {
-      return this.claim.attach_files && this.claims.attach_files.length
-    },
-    hasFilesMes() {
-      return this.message.attach_files && this.message.attach_files.length
+      return this.claim.attachment && this.claims.attachment.length
     },
     extenionFileUrl(val) {
       const rex = /(?:\.([^.]+))?$/
@@ -381,6 +378,7 @@ export default {
       }
       return false
     },
+
     async getTicketFile(url, isFile) {
       let result = ''
 
@@ -407,6 +405,7 @@ export default {
         return window.URL.createObjectURL(result.blob)
       }
     },
+
     getTicketFiles() {
       if (!this.attach_files.length) return false
 
@@ -487,7 +486,7 @@ export default {
       }
       this.$toast.open({
         type: 'success',
-        message: ' Successfully',
+        message: ' Thành công',
       })
       this.files = []
       this.init()
