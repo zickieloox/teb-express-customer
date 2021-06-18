@@ -202,7 +202,9 @@
     .reportrange-text > div {
       line-height: 28px;
       font-weight: normal;
-      color: $color-neutral-4;
+      .label-date-picker{
+        color: $color-neutral-4;
+      }
     }
   }
 

@@ -38,7 +38,7 @@
       <a></a>
       <div class="group-button">
         <p-button type="default" @click="handleClose" :disabled="loading">
-          Cancel
+          Bỏ qua
         </p-button>
         <p-button
           type="primary"
@@ -46,7 +46,7 @@
           :disabled="!lastItem || uploading"
           :loading="loading"
         >
-          Upload
+          Tải lên
         </p-button>
       </div>
     </template>
