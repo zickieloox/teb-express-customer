@@ -8,10 +8,12 @@
         <div class="card-body">
           <div class="d-flex list__claim-search">
             <p-input
-              placeholder="Tìm kiếm theo đơn hàng"
+              placeholder="Tìm kiếm theo mã vận đơn  "
               prefixIcon="search"
               class="mb-2"
               type="search"
+              :value="filter.search"
+              @keyup.enter="handleSearch"
             >
             </p-input>
             <a href="#" class="btn btn-primary ml-10" @click="handleModal">
@@ -41,7 +43,17 @@
 
                   <tbody>
                     <tr v-for="(item, i) in listclaim" :key="i">
-                      <td>{{ item.id }}</td>
+                      <td>
+                        <router-link
+                          class="text-no-underline"
+                          :to="{
+                            name: 'claim-detail',
+                            params: { id: item.id },
+                          }"
+                        >
+                          {{ item.id }}
+                        </router-link>
+                      </td>
                       <td>{{ item.package.code }}</td>
                       <td width="235">
                         <p-tooltip
@@ -148,6 +160,11 @@ export default {
     },
     handleModal() {
       this.visibleModal = true
+    },
+    handleSearch(e) {
+      // Default result after search in page 1
+      this.filter.page = 1
+      this.$set(this.filter, 'search', e.target.value.trim())
     },
     converStatus(status) {
       switch (status) {
