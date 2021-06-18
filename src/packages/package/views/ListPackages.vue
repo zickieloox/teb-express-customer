@@ -86,7 +86,7 @@
                         <th :class="{ hidden: hiddenClass }">Sku</th>
                         <th :class="{ hidden: hiddenClass }">Người nhận</th>
                         <th :class="{ hidden: hiddenClass }"
-                          >Chi tiết hành hóa</th
+                          >Chi tiết hàng hóa</th
                         >
                         <th :class="{ hidden: hiddenClass }">Ngày tạo </th>
                         <th :class="{ hidden: hiddenClass }">Trạng thái</th>
