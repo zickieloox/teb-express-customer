@@ -162,6 +162,7 @@
       :import-sucess="resultImport.import_sucess"
       :total="resultImport.total"
       v-if="isVisiblePreview"
+      @close="handleClosePreview"
     ></modal-import-preview-package>
     <modal-export :visible="isVisibleExport"> </modal-export>
   </div>
@@ -266,6 +267,17 @@ export default {
     handleSearchCode() {
       this.filter.page = 1
       this.$set(this.filter, 'code', this.searchCode.trim())
+    },
+    handleClosePreview() {
+      this.filter = {
+        limit: 50,
+        status: '',
+        search: '',
+        start_date: '',
+        end_date: '',
+        code: '',
+      }
+      this.init()
     },
     handleImport() {
       this.isVisibleImport = true
