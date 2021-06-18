@@ -280,12 +280,14 @@ export default {
       this.isVisibleImport = false
 
       if (this.resultImport && this.resultImport.success) {
-        return this.$toast.open({
-          type: 'error',
-          message: this.resultImport.message,
-        })
+        this.isVisiblePreview = true
+        return
       }
-      this.isVisiblePreview = true
+
+      this.$toast.open({
+        type: 'error',
+        message: this.resultImport.message || 'File không đúng định dạng',
+      })
     },
     async handleExport() {
       this.isVisibleExport = true
