@@ -44,51 +44,74 @@
                 :on-change="handleChangeFile"
                 multiple
                 :auto-upload="false"
-                :max-file-size="100000000"
+                :on-max-size="errorMaximum"
+                :max-file-size="maximumSize"
               >
                 <div class="el-upload__text">
                   Thả tệp, hình ảnh hoặc <em>file</em> để tải lên
                 </div>
               </upload>
 
+              <div class="row mb-20">
+                <div v-if="fileErrors.length > 0" class="ticket__error">
+                  <div class="ticket__error-title">
+                    <img
+                      src="~@/assets/img/alert.svg"
+                      alt=""
+                      class="ticket__error-icon"
+                    />
+                    <span>Tệp tin chưa được thêm vào:</span>
+                  </div>
+                  <ul class="ticket__error-list">
+                    <li
+                      v-for="(item, i) in fileErrors"
+                      :key="i"
+                      class="ticket__error-item"
+                    >
+                      {{ item }}</li
+                    >
+                  </ul>
+                </div>
+
+                <div v-if="this.validateSize" class="ticket__error">
+                  <div class="ticket__error-title">
+                    <img
+                      src="~@/assets/img/alert.svg"
+                      alt=""
+                      class="ticket__error-icon"
+                    />
+                    <span>Tệp tin chưa được thêm vào:</span>
+                  </div>
+                  <ul class="ticket__error-list">
+                    <li class="ticket__error-item">
+                      {{ this.name }} đang lớn hơn 5Mb.Vui lòng chọn tệp nhỏ
+                      hơn.</li
+                    >
+                  </ul>
+                </div>
+
+                <div v-if="files != null" class="mt-3 ticket__reply-files">
+                  <div
+                    class="el-before-upload__filename d-flex justify-content-between"
+                    v-for="(item, i) in files"
+                    :key="i"
+                  >
+                    <div class="filename mr-3">{{ item.name }}</div>
+                    <div :class="{ isUpload: isUploading }" class="remove-file">
+                      <img
+                        src="~@/assets/img/x-sm.svg"
+                        alt=""
+                        class="icon-remove"
+                        @click.prevent="actionDeletefile(item)"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div class="rule">
                 Chúng tôi chỉ chấp nhận file dưới 5Mb và có các định dạng: CSV,
                 PNG, JPG, JPEG
-              </div>
-
-              <div v-if="fileErrors.length > 0" class="design-error-lg">
-                <div class="design-error-title">
-                  <img
-                    src="~@/assets/img/alert.svg"
-                    alt=""
-                    class="design-error-icon"
-                  />
-                  <span>This media couldn’t be added:</span>
-                </div>
-                <ul
-                  class="design-error-list"
-                  v-for="(item, i) in fileErrors"
-                  :key="i"
-                >
-                  <li class="design-error-item"> {{ item }}</li>
-                </ul>
-              </div>
-              <div v-if="files != null" class="mt-3">
-                <div
-                  class="el-before-upload__filename d-flex justify-content-start"
-                  v-for="(item, i) in files"
-                  :key="i"
-                >
-                  <div class="filename mr-3">{{ item.name }}</div>
-                  <div :class="{ isUpload: isUploading }" class="remove-file">
-                    <img
-                      src="~@/assets/img/x-sm.svg"
-                      alt=""
-                      class="icon-remove"
-                      @click.prevent="actionDeletefile(item)"
-                    />
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -117,6 +140,16 @@
         </div>
       </div>
     </template>
+    <modal-confirm
+      :visible.sync="isVisibleConfirmDelete"
+      v-if="isVisibleConfirmDelete"
+      :actionConfirm="actions.delete.button"
+      :description="actions.delete.Description"
+      :title="actions.delete.title"
+      :type="actions.delete.type"
+      @action="handleDeletefile(deleteFile)"
+    >
+    </modal-confirm>
   </p-modal>
 </template>
 
@@ -125,11 +158,13 @@ import mixinUpload from '@core/mixins/upload'
 import { Upload } from '@kit'
 import { mapActions } from 'vuex'
 import { UPDATE_FILE_TICKET, PUSH_MESSAGE } from '@/packages/claim/store'
+import { MAXIMUM_SIZE } from '../constants'
+import ModalConfirm from '@components/shared/modal/ModalConfirm'
 
 export default {
   name: 'ModalReply',
   mixins: [mixinUpload],
-  components: { Upload },
+  components: { Upload, ModalConfirm },
   props: {
     visible: {
       type: Boolean,
@@ -146,6 +181,8 @@ export default {
   },
   data() {
     return {
+      isVisibleConfirmDelete: false,
+      maximumSize: MAXIMUM_SIZE * 2 ** 20,
       allowedTypes: [
         'image/png',
         'image/jpeg',
@@ -167,6 +204,15 @@ export default {
       isUploading: false,
       TicketNote: 0,
       lengthContent: false,
+      validateSize: false,
+      actions: {
+        delete: {
+          title: 'Remove files',
+          button: 'Delete',
+          Description: `Are you sure you want to remove this attach file?`,
+          type: 'danger',
+        },
+      },
     }
   },
   methods: {
@@ -184,10 +230,16 @@ export default {
       this.fileErrors = []
     },
     handleChangeFile(file) {
-      if (!this.validateSizeFile(file)) {
-        this.fileErrors.push(`"${file.name}" is less than 5Mb.`)
-        this.fileErrors = [...new Set(this.fileErrors)]
-        return
+      // if (!this.validateSizeFile(file)) {
+      //   this.fileErrors.push(`"${file.name}" is less than 5Mb.`)
+      //   this.fileErrors = [...new Set(this.fileErrors)]
+      //   return
+      // }
+
+      this.validateSize = false
+      const index = this.files.findIndex(({ uid }) => uid === file.uid)
+      if (index != -1) {
+        this.$set(this.files, index, file)
       }
 
       if (!this.validateTypeFile(file)) {
@@ -239,13 +291,12 @@ export default {
       return true
     },
     actionDeletefile(file) {
-      this.$dialog.confirm({
-        title: `Remove file "${file.name}"`,
-        message: 'Are you sure you want to remove this attach file?',
-        onConfirm: () => {
-          this.files = this.files.filter(({ uid }) => uid != file.uid)
-        },
-      })
+      this.isVisibleConfirmDelete = true
+      this.deleteFile = file
+    },
+    handleDeletefile(file) {
+      this.isVisibleConfirmDelete = false
+      this.files = this.files.filter(({ uid }) => uid != file.uid)
     },
     async handleUpdate() {
       if (this.isUploading) return
@@ -290,6 +341,11 @@ export default {
         this.lengthContent = false
         return 'note_success'
       }
+    },
+
+    errorMaximum({ name }) {
+      this.validateSize = true
+      this.name = name
     },
   },
 }
