@@ -12,7 +12,7 @@
       <template slot="footer">
         <div class="group-button modal-confirm">
           <p-button type="default" @click="handleClose">
-            Cancel
+            {{ cancel }}
           </p-button>
           <p-button
             :type="type"
@@ -59,6 +59,10 @@ export default {
     },
     actionConfirm: {
       type: String,
+    },
+    cancel: {
+      type: String,
+      default: 'Hủy',
     },
     type: {
       type: String,
