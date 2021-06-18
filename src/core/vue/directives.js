@@ -136,6 +136,12 @@ const getFormatStatus = (status) => {
     case 'resolved':
       statusClass = 'resolved'
       break
+    case 'Đang xử lý':
+      statusClass = 'pending'
+      break
+    case 'Đã xử lý':
+      statusClass = 'done'
+      break
   }
 
   return {
