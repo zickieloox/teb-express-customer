@@ -63,39 +63,6 @@
               <div class="col-4 p-0">
                 <div class="card-block">
                   <div class="card-header">
-                    <div class="card-title">Người gửi</div>
-                  </div>
-                  <div class="card-content">
-                    <div class="row">
-                      <div class="col-4 mb-8">Họ và tên:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.sender_full_name')
-                        }}</div></div
-                      >
-                    </div>
-                    <div class="row">
-                      <div class="col-4 mb-8">Điện thoại:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate(
-                            'package_detail.package.sender_phone_number'
-                          )
-                        }}</div></div
-                      >
-                    </div>
-                    <div class="row">
-                      <div class="col-4 mb-8">Địa chỉ:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.sender_address')
-                        }}</div></div
-                      >
-                    </div>
-                  </div>
-                </div>
-                <div class="card-block">
-                  <div class="card-header">
                     <div class="card-title">Người nhận</div>
                   </div>
                   <div class="card-content">
