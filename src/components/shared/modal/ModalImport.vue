@@ -18,7 +18,7 @@
           :auto-upload="false"
           :headers="uploadHeaders"
           :on-change="handleChangeFile"
-          :max-file-size="100000000"
+          :max-file-size="20000"
         >
           <img class="el-icon-upload" src="~@/assets/img/upload.png" alt="" />
           <div class="el-upload__text">
