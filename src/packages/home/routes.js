@@ -3,11 +3,11 @@ import { lazyLoadView } from '@core/router/helpers'
 export const routes = [
   {
     path: '/',
-    name: 'dashboard',
+    name: 'home',
     meta: {
-      title: 'Dashboard',
+      title: 'Home',
     },
     component: () =>
-      lazyLoadView(import(/* webpackChunkName: "dashboard" */ './views/Index')),
+      lazyLoadView(import(/* webpackChunkName: "dashboard" */ './views/Home')),
   },
 ]
