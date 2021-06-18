@@ -106,7 +106,9 @@ export const actions = {
   // eslint-disable-next-line no-unused-vars
   async updatePackage({ commit }, payload) {
     const res = await api.updatePackage(payload)
-    console.log(res)
+    if (!res || !res.package) {
+      return { error: true, message: res.errorMessage || '' }
+    }
     return { error: false }
   },
   // eslint-disable-next-line no-unused-vars
