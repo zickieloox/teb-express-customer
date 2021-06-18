@@ -31,6 +31,9 @@
     }
 
     .btn-export {
+      &:disabled{
+        cursor: not-allowed;
+      }
       color: $color-java-blue-6;
     }
   }
