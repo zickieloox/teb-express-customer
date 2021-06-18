@@ -146,4 +146,9 @@ ul#nav_packages {
     padding-left: 35px !important;
   }
 }
+@media only screen and (min-width: 1280px) {
+  ul#nav_packages {
+    right: 0 !important;
+  }
+}
 </style>
