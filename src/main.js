@@ -99,7 +99,7 @@ VeeValidate.Validator.extend('phoneAddress', {
   validate: (value) => {
     /* eslint-disable */
     const regex = new RegExp(
-      /^[0-9+()-. ]+$/
+      /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im
       // /\(?([0-9]{2})\)?([ .-]?)([0-9]{2})+$/
     )
     return regex.test(value)
@@ -172,6 +172,13 @@ VeeValidate.Validator.extend('width', {
   getMessage: () => `Số đo  không hợp lệ `,
   validate: (value) => {
     const regex = new RegExp(/^[0-9]+([,.][0-9]{1,2})?$/)
+    return regex.test(value)
+  },
+})
+VeeValidate.Validator.extend('address', {
+  getMessage: () => `Địa chỉ  không hợp lệ `,
+  validate: (value) => {
+    const regex = new RegExp(/[A-Za-z0-9'\.\-\s\,]/)
     return regex.test(value)
   },
 })
