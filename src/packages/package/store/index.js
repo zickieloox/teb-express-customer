@@ -8,7 +8,9 @@ export const FETCH_PACKAGE_DETAIL = 'fetchPackage'
 export const FETCH_LIST_PACKAGES = 'fetchListPackages'
 export const COUNT_LIST_PACKAGES = 'countListPackages'
 export const FETCH_LIST_PRODUCTS = 'fetchListProducts'
+export const FETCH_LIST_SERVICE = 'fetchListService'
 export const IMPORT_PACKAGE = 'importPackage'
+export const UPDATE_PACKAGE = 'updatePackage'
 
 export const EXPORT_PACKAGE = 'exportPackage'
 /**
@@ -25,6 +27,7 @@ export const state = {
   countPackages: 0,
   count_status: [],
   products: [],
+  service: [],
 }
 
 /**
@@ -39,6 +42,9 @@ export const mutations = {
   },
   [FETCH_LIST_PRODUCTS]: (state, payload) => {
     state.products = payload
+  },
+  [FETCH_LIST_SERVICE]: (state, payload) => {
+    state.service = payload
   },
   [COUNT_LIST_PACKAGES]: (state, payload) => {
     state.countPackages = payload.count
@@ -85,6 +91,22 @@ export const actions = {
       return { error: true, message: res.errorMessage || '' }
     }
     commit(FETCH_LIST_PRODUCTS, res.products)
+    return { error: false }
+  },
+  // eslint-disable-next-line no-unused-vars
+  async fetchListService({ commit }, payload) {
+    const res = await api.fetchListService()
+
+    if (!res.services) {
+      return { error: true, message: res.errorMessage || '' }
+    }
+    commit(FETCH_LIST_SERVICE, res.services)
+    return { error: false }
+  },
+  // eslint-disable-next-line no-unused-vars
+  async updatePackage({ commit }, payload) {
+    const res = await api.updatePackage(payload)
+    console.log(res)
     return { error: false }
   },
   // eslint-disable-next-line no-unused-vars

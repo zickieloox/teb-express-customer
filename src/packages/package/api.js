@@ -11,12 +11,20 @@ export default {
   },
 
   /**
-   * fetch package
+   * fetch list product
    * @param payload
    * @return {*}
    */
   fetchListProduct() {
     return http.get(`/products`)
+  },
+  /**
+   * fetch list service
+   * @param payload
+   * @return {*}
+   */
+  fetchListService() {
+    return http.get(`/services`)
   },
   fetchListPackages(payload) {
     return http.get(`/packages?${buildQueryString(payload)}`)
@@ -32,5 +40,8 @@ export default {
   },
   exportPackage(payload) {
     return http.post('/packages/export', payload)
+  },
+  updatePackage(payload) {
+    return http.put(`/packages/${payload.id}`, payload)
   },
 }

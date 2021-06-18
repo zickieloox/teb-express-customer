@@ -143,6 +143,14 @@
                         }}</div></div
                       >
                     </div>
+                    <div class="row">
+                      <div class="col-4">Mã quốc gia:</div>
+                      <div class="col-8"
+                        ><div>{{
+                          $evaluate('package_detail.package.country_code')
+                        }}</div></div
+                      >
+                    </div>
                   </div>
                 </div>
                 <div class="card-block">
@@ -408,7 +416,7 @@
 </style>
 <script>
 import { mapState, mapActions } from 'vuex'
-import { FETCH_PACKAGE_DETAIL, FETCH_LIST_PRODUCTS } from '../store/index'
+import { FETCH_PACKAGE_DETAIL, FETCH_LIST_SERVICE } from '../store/index'
 import mixinChaining from '@/packages/shared/mixins/chaining'
 import ModalEditOrder from './components/ModalEditOrder'
 import { LIST_SENDER } from '../../setting/store'
@@ -472,13 +480,13 @@ export default {
     this.init()
   },
   methods: {
-    ...mapActions('package', [FETCH_PACKAGE_DETAIL, FETCH_LIST_PRODUCTS]),
+    ...mapActions('package', [FETCH_PACKAGE_DETAIL, FETCH_LIST_SERVICE]),
     ...mapActions('setting', [LIST_SENDER]),
     async init() {
       this.isFetching = true
       await this.fetchPackage(this.packageID)
       // await this.listSender({})
-      // await this[FETCH_LIST_PRODUCTS]()
+      await this[FETCH_LIST_SERVICE]()
       this.isFetching = false
     },
     changeDisplayDeliverDetail() {
