@@ -57,7 +57,7 @@
                     {{ formatReason(claim.category) }}
                   </li>
                   <li class="item-note">
-                    <span class="item-title">Mã đơn hàng: </span>
+                    <span class="item-title">Mã vận đơn: </span>
                     <router-link
                       v-if="claim.package"
                       :to="{
