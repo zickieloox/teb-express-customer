@@ -138,7 +138,7 @@ ul#nav_packages {
 .icon-nav.prev {
   right: 0;
 }
-@media only screen and (max-width: 1280px) {
+@media only screen and (max-width: 1366px) {
   .icon-nav {
     display: block !important;
   }
@@ -146,7 +146,7 @@ ul#nav_packages {
     padding-left: 35px !important;
   }
 }
-@media only screen and (min-width: 1280px) {
+@media only screen and (min-width: 1367px) {
   ul#nav_packages {
     right: 0 !important;
   }
