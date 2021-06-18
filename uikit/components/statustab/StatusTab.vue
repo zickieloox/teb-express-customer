@@ -14,7 +14,7 @@
           @click.prevent="handleClick(item.value)"
           v-if="i == 0"
         >
-          {{ item.text }}({{ caculateTotal }})
+          {{ item.text }} ({{ caculateTotal }})
         </a>
         <a
           href="#"

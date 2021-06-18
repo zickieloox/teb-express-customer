@@ -371,12 +371,10 @@ export default {
       accept: false,
       countrycode: '',
       detail: '',
-      unit: {
-        weight: '',
-        length: '',
-        width: '',
-        height: '',
-      },
+      weight: '',
+      length: '',
+      width: '',
+      height: '',
     }
   },
   computed: {
