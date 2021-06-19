@@ -87,7 +87,7 @@ export default {
       const ext = extension(src)
       if (ext === 'psd') return THUMBNAIL_PSD
       if (ext === 'csv') return THUMBNAIL_CSV
-      if (ext === 'xlsx') return THUMBNAIL_XLSX
+      if (ext === 'xlsx' || ext === 'xls') return THUMBNAIL_XLSX
 
       return `${URL_IMAGES}/${src}`
     },

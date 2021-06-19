@@ -99,7 +99,7 @@ VeeValidate.Validator.extend('phoneAddress', {
   validate: (value) => {
     /* eslint-disable */
     const regex = new RegExp(
-      /^[\+]?[(]?[0-9]{1,10}[)]?[-\s\.]?[0-9]{1,10}[-\s\.]?[0-9]{0,20}$/im
+      /^[\+]?[(]?[+]?[0-9]{1,10}[)]?[-\s\. ]?[0-9]{1,10}[-\s\. ]?[0-9]{0,20}$/im
       // /\(?([0-9]{2})\)?([ .-]?)([0-9]{2})+$/
     )
     return regex.test(value)
