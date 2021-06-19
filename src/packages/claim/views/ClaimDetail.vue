@@ -4,17 +4,20 @@
       <div class="content-page">
         <div class="page-header">
           <div class="page-header_back">
-            <img
-              src="@/assets/img/Arrow - Left Square 24px.png"
-              class="page-header_back_icon"
-            />
             <router-link :to="{ name: 'list-claim' }" class="text">
+              <img
+                src="@/assets/img/Arrow - Left Square 24px.png"
+                class="page-header_back_icon"
+              />
+
               Đơn hàng khiếu nại
             </router-link>
           </div>
           <div class="page-header-group">
             <div class="page-header_title header-2">
-              <span style="font-weight: bold">Khách chưa nhận được hàng</span>
+              <span style="font-weight: bold" v-if="claim.title">{{
+                truncate(claim.title, 50)
+              }}</span>
               <!-- <span
                 v-if="claim.status == 1"
                 class="edit-ticket"
@@ -111,7 +114,7 @@
                   <div class="list-item">
                     <div
                       class="item"
-                      v-for="(file, i) in claim.attach_files"
+                      v-for="(file, i) in claim.attachment"
                       :key="i"
                     >
                       <div
@@ -186,6 +189,7 @@ import {
 import { FETCH_TICKET } from '@/packages/claim/store'
 import { CLAIM_STATUS } from '../constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
+import { truncate } from '@core/utils/string'
 
 export default {
   name: 'ClaimDetail',
@@ -247,7 +251,7 @@ export default {
       actions: {
         cancel: {
           title: 'Đóng khiếu nại',
-          button: 'Confirm',
+          button: 'Xác nhận',
           Description: `Bạn có chắc chắn đóng khiếu nại này ?`,
           type: 'danger',
         },
@@ -276,12 +280,14 @@ export default {
       GET_FILE_TICKET,
     ]),
     ...mapMutations(['updateTicketMessage']),
+    truncate,
     async init() {
       this.handleUpdateRouteQuery()
       window.scrollTo(0, 0)
       const { id } = this.$route.params
       await this[FETCH_TICKET](id)
       await this.handlerFetchTicketMessages(id)
+      console.log(this.count)
       this.reason = this.claim.category
       this.orderId = this.claim.object_id
       this.title = this.claim.subject
@@ -360,10 +366,7 @@ export default {
       this.init()
     },
     hasFiles() {
-      return this.claim.attach_files && this.claims.attach_files.length
-    },
-    hasFilesMes() {
-      return this.message.attach_files && this.message.attach_files.length
+      return this.claim.attachment && this.claims.attachment.length
     },
     extenionFileUrl(val) {
       const rex = /(?:\.([^.]+))?$/
@@ -381,6 +384,7 @@ export default {
       }
       return false
     },
+
     async getTicketFile(url, isFile) {
       let result = ''
 
@@ -407,6 +411,7 @@ export default {
         return window.URL.createObjectURL(result.blob)
       }
     },
+
     getTicketFiles() {
       if (!this.attach_files.length) return false
 
@@ -466,6 +471,7 @@ export default {
       const { id } = this.$route.params
       this[FETCH_TICKET](id)
       this.messages.unshift(reply)
+      this.init()
     },
 
     actionCancelTicket() {
@@ -487,7 +493,7 @@ export default {
       }
       this.$toast.open({
         type: 'success',
-        message: ' Successfully',
+        message: ' Thành công',
       })
       this.files = []
       this.init()

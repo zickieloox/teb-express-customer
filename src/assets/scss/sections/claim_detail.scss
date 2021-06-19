@@ -77,6 +77,7 @@
       }
       .menu_content {
         flex: 1;
+        width: 60%;
         .page-content_drag {
           .user-content {
             &.card {
@@ -244,6 +245,16 @@
   }
 
   .footer {
+    i {
+      font-size: 12px;
+      line-height: 16px;
+      /* identical to box height, or 133% */
+
+
+      /* Neutral / Neutral 7 */
+
+      color: #626363;
+    }
     .group-button {
       flex: 0 0 40%;
       text-align: right;
@@ -254,9 +265,8 @@
     height: auto;
     padding: 13px 15px;
     .el-upload__text {
-      font-size: 14px;
-      line-height: 1.6;
-      color: #37393e;
+      line-height: 64px;
+      color:$color-java-blue-10;
       font-weight: normal;
     }
   }
@@ -309,6 +319,7 @@
 }
 
 .claim-messages {
+  width: calc(100%-500px);
   position: relative;
 
   .main-claim.fixed {
