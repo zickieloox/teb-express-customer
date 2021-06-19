@@ -365,10 +365,10 @@ export default {
       let params = {
         file: file.raw,
       }
-      const result = await this[UPLOAD_FILE_CLAIM](params).then((data) => {
+      await this[UPLOAD_FILE_CLAIM](params).then((data) => {
         if (data.error) {
           this.isUploading = false
-          this.errMessage.push(result.message)
+          this.errMessage.push(data.message)
           return
         }
         this.files.push({
