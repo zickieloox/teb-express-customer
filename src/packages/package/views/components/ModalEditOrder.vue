@@ -219,15 +219,8 @@
                   <textarea
                     class="card__w-area"
                     placeholder="Nhập yêu cầu khi giao ..."
-                    v-validate="'note'"
-                    name="note"
-                    data-vv-as="Ghi chú"
-                    :class="{ 'error-color': errors.has('note') }"
                     v-model="note"
                   ></textarea>
-                  <span class="err-span" v-if="errors.has('note')">{{
-                    errors.first('note')
-                  }}</span>
                 </div>
               </div>
             </div>
@@ -487,10 +480,13 @@ export default {
       this.height = this.package_detail.package.height
       this.countrycode = this.package_detail.package.country_code
       this.service = {
-        id: this.package_detail.package.service.id,
+        id: this.package_detail.package.service
+          ? this.package_detail.package.service.id
+          : 0,
         name: this.package_detail.package.service.name,
       }
       this.address = this.package_detail.package.address_1
+      this.address2 = this.package_detail.package.address_2
       this.detail = this.package_detail.package.detail
     },
     handleClose() {

@@ -133,13 +133,6 @@ VeeValidate.Validator.extend('countrycode', {
     return regex.test(value)
   },
 })
-VeeValidate.Validator.extend('note', {
-  getMessage: () => `Ghi chú không hợp lệ `,
-  validate: (value) => {
-    const regex = new RegExp(/^[\s+a-zA-Z0-9_.,\-\u00A1-\uFFFF]{1,1000}$/)
-    return regex.test(value)
-  },
-})
 VeeValidate.Validator.extend('detail', {
   getMessage: () => `Tên hàng không hợp lệ `,
   validate: (value) => {
