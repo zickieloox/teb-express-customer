@@ -219,7 +219,7 @@
                 <div class="card__w-content">
                   <div class="card__w-item">
                     <label class="card__w-label">
-                      Danh sách đơn hàng: <span>*</span>
+                      Danh sách đơn hàng:
                     </label>
                     <div class="card__w-input">
                       <multiselect
@@ -392,8 +392,8 @@
   </div>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex'
-import { FETCH_LIST_PRODUCTS, UPDATE_PACKAGE } from '../../store'
+import { mapActions, mapState, mapGetters } from 'vuex'
+import { FETCH_LIST_PRODUCTS, GET_SERVICE, UPDATE_PACKAGE } from '../../store'
 // import {GET_SENDER, LIST_SENDER} from "../../../setting/store";
 
 export default {
@@ -415,23 +415,18 @@ export default {
     ...mapState('package', {
       package_detail: (state) => state.package_detail,
       products: (state) => state.products,
-      services: (state) => state.service,
     }),
-    // ...mapGetters('setting',{
-    //   senders:GET_SENDER
-    // })
+    ...mapGetters('package', {
+      services: GET_SERVICE,
+    }),
   },
   data() {
     return {
       item: null,
       sender: null,
       service: {
-        code: '',
-        created_at: null,
-        domestic_carrier_id: 0,
         id: 0,
         name: '',
-        updated_at: null,
       },
       fullname: '',
       phone: '',
@@ -470,9 +465,10 @@ export default {
       this.width = this.package_detail.package.width
       this.height = this.package_detail.package.height
       this.countrycode = this.package_detail.package.country_code
-      this.service = this.services.filter((element) => {
-        return element.name == this.package_detail.package.service.name
-      })
+      this.service = {
+        id: this.package_detail.package.service.id,
+        name: this.package_detail.package.service.name,
+      }
       this.address = this.package_detail.package.address_1
       this.detail = this.package_detail.package.detail
     },
@@ -546,6 +542,7 @@ export default {
         service: this.service.name,
         note: this.note,
       }
+      console.log(params)
       let result = await this[UPDATE_PACKAGE](params)
       if (result.error) {
         this.$toast.open({

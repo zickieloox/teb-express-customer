@@ -69,7 +69,6 @@ export default {
       const files = ev.target.files
 
       if (!files) return
-
       this.eChange(files)
       this.uploadFiles(files)
     },
