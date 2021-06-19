@@ -255,7 +255,7 @@ export default {
       if (!this.validateTypeFile(file)) {
         this.number = this.number - 1
         this.fileErrors.push(
-          `"${file.name}" định dạng không đúng.Tệp phải có định dạng:  *CSV, *PNG, *JPG, *JPEG.`
+          `"${file.name}" định dạng không đúng.Tệp phải có định dạng:  *XLSX, *PNG, *JPG, *JPEG.`
         )
         this.fileErrors = [...new Set(this.fileErrors)]
         return

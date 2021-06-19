@@ -483,7 +483,9 @@ export default {
         id: this.package_detail.package.service
           ? this.package_detail.package.service.id
           : 0,
-        name: this.package_detail.package.service.name,
+        name: this.package_detail.package.service
+          ? this.package_detail.package.service.name
+          : '',
       }
       this.address = this.package_detail.package.address_1
       this.address2 = this.package_detail.package.address_2
