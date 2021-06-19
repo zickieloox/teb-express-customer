@@ -15,7 +15,9 @@
           </div>
           <div class="page-header-group">
             <div class="page-header_title header-2">
-              <span style="font-weight: bold">{{ claim.title }}</span>
+              <span style="font-weight: bold" v-if="claim.title">{{
+                truncate(claim.title, 50)
+              }}</span>
               <!-- <span
                 v-if="claim.status == 1"
                 class="edit-ticket"
@@ -187,6 +189,7 @@ import {
 import { FETCH_TICKET } from '@/packages/claim/store'
 import { CLAIM_STATUS } from '../constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
+import { truncate } from '@core/utils/string'
 
 export default {
   name: 'ClaimDetail',
@@ -277,12 +280,14 @@ export default {
       GET_FILE_TICKET,
     ]),
     ...mapMutations(['updateTicketMessage']),
+    truncate,
     async init() {
       this.handleUpdateRouteQuery()
       window.scrollTo(0, 0)
       const { id } = this.$route.params
       await this[FETCH_TICKET](id)
       await this.handlerFetchTicketMessages(id)
+      console.log(this.count)
       this.reason = this.claim.category
       this.orderId = this.claim.object_id
       this.title = this.claim.subject
@@ -466,6 +471,7 @@ export default {
       const { id } = this.$route.params
       this[FETCH_TICKET](id)
       this.messages.unshift(reply)
+      this.init()
     },
 
     actionCancelTicket() {

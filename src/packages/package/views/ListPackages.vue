@@ -36,13 +36,20 @@
                 :format="'dd/mm/yyyy'"
                 class="p-input-group input-group"
                 @update="selectDate"
-                :label="`Tìm theo ngày`"
+                :label="labelDate"
                 id="date-search"
                 :value="{
-                  start_date: filter.start_date,
-                  end_date: filter.end_date,
+                  startDate: filter.start_date,
+                  endDate: filter.end_date,
                 }"
               ></p-datepicker>
+              <p-button
+                class="close ml-2"
+                type="default"
+                icon="close"
+                @click="clearSearchDate"
+                v-if="filter.start_date && filter.end_date"
+              />
             </div>
             <package-status-tab
               :has-all="false"
@@ -207,6 +214,7 @@ export default {
         end_date: '',
         code: '',
       },
+      labelDate: `Tìm theo ngày`,
       isUploading: false,
       isVisibleExport: false,
       isVisiblePreview: false,
@@ -282,6 +290,11 @@ export default {
     },
     handleImport() {
       this.isVisibleImport = true
+    },
+    clearSearchDate() {
+      this.filter.end_date = ''
+      this.filter.start_date = ''
+      this.filter.page = 1
     },
     async handleImportPackage(file) {
       this.importData.file = file

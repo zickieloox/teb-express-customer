@@ -77,6 +77,7 @@
       }
       .menu_content {
         flex: 1;
+        width: 60%;
         .page-content_drag {
           .user-content {
             &.card {
@@ -240,7 +241,18 @@
     color: #b0b3b9;
   }
   .form-control {
+    margin-top: 8px;
     position: relative;
+    width: 100%;
+    border: 1px solid $color-neutral-4;
+    box-sizing: border-box;
+    border-radius: 8px;
+    min-height: 120px;
+    padding: 5px 0 0 16px;
+    color: $color-neutral-9;
+    &::placeholder{
+      color: $color-neutral-4
+    }
   }
 
   .footer {
@@ -262,7 +274,6 @@
 
   .el-upload-dragger {
     height: auto;
-    padding: 13px 15px;
     .el-upload__text {
       line-height: 64px;
       color:$color-java-blue-10;
@@ -318,6 +329,7 @@
 }
 
 .claim-messages {
+  width: calc(100%-500px);
   position: relative;
 
   .main-claim.fixed {
