@@ -129,7 +129,15 @@
                       <td>
                         {{ item.recipient }}
                       </td>
-                      <td>{{ item.detail }}</td>
+                      <td>
+                        <p-tooltip
+                          :label="item.detail"
+                          position="top"
+                          type="dark"
+                        >
+                          <div class="detail_product">{{ item.detail }}</div>
+                        </p-tooltip>
+                      </td>
                       <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
                       <td>{{ mapStatus[item.status].value }}</td>
                       <td>{{ item.shipping_fee }} $</td>
