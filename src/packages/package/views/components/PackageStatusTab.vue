@@ -16,6 +16,7 @@
         role="presentation"
         class="nav-item"
         v-for="(item, i) in cleanStatus"
+        :id="getClass(i)"
         :key="i"
       >
         <a
@@ -57,6 +58,7 @@ export default {
   data() {
     return {
       right: 0,
+      el: 0,
     }
   },
   computed: {
@@ -90,7 +92,7 @@ export default {
       return status
     },
     setRight() {
-      return 'right:' + this.right + '%;'
+      return 'right:' + this.right + 'px;'
     },
   },
   methods: {
@@ -100,13 +102,40 @@ export default {
         this.$emit('click', item)
       }
     },
+    getClass(i) {
+      return 'item_nav_' + i
+    },
     clickLeftNav() {
-      if (!this.right) return
-      this.right -= 10
+      if (!this.el) {
+        return
+      }
+      this.el--
+      let selector = 'item_nav_' + this.el
+      this.right = document.getElementById(selector).offsetLeft - 34
     },
     clickRightNav() {
-      if (this.right >= 100) return
-      this.right += 10
+      let width = 0
+      let stop = 0
+      for (
+        let index = document.getElementById('nav_packages').children.length - 1;
+        index >= 0;
+        index--
+      ) {
+        const el = 'item_nav_' + index
+        width += document.getElementById(el).offsetWidth
+        if (width > document.getElementById('nav_container').offsetWidth - 68) {
+          stop = index + 1
+          break
+        }
+      }
+      if (this.el === stop) {
+        return
+      }
+
+      this.el++
+      let selector = 'item_nav_' + this.el
+
+      this.right = document.getElementById(selector).offsetLeft - 34
     },
   },
 }
@@ -115,10 +144,10 @@ export default {
 ul#nav_packages {
   z-index: 1;
   width: 200%;
-  -webkit-transition: all 0.5s ease-in-out;
-  -moz-transition: all 0.5s ease-in-out;
-  -o-transition: all 0.5s ease-in-out;
-  transition: all 0.5s ease-in-out;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 #nav_container {
   position: relative;
@@ -128,7 +157,7 @@ ul#nav_packages {
   position: absolute;
   border: none;
   background-color: #fff;
-  z-index: 9999;
+  z-index: 999;
   bottom: 10px;
   display: none;
 }
@@ -138,15 +167,16 @@ ul#nav_packages {
 .icon-nav.prev {
   right: 0;
 }
-@media only screen and (max-width: 1280px) {
+@media only screen and (max-width: 1366px) {
   .icon-nav {
     display: block !important;
   }
   ul#nav_packages {
     padding-left: 35px !important;
+    width: 400%;
   }
 }
-@media only screen and (min-width: 1280px) {
+@media only screen and (min-width: 1367px) {
   ul#nav_packages {
     right: 0 !important;
   }

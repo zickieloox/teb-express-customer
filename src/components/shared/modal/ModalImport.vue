@@ -18,7 +18,8 @@
           :auto-upload="false"
           :headers="uploadHeaders"
           :on-change="handleChangeFile"
-          :max-file-size="100000000"
+          :on-max-size="errorSizeFileHandler"
+          :max-file-size="20000"
         >
           <img class="el-icon-upload" src="~@/assets/img/upload.png" alt="" />
           <div class="el-upload__text">
@@ -112,6 +113,12 @@ export default {
       }
       this.$emit('update:visible', false)
       this.$emit('reset', true)
+    },
+    errorSizeFileHandler() {
+      this.$toast.open({
+        type: 'error',
+        message: 'File upload vượt quá dung lượng cho phép',
+      })
     },
     handleSave() {
       if (this.loading === true) {

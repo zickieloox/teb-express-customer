@@ -4,17 +4,18 @@
       <div class="content-page">
         <div class="page-header">
           <div class="page-header_back">
-            <img
-              src="@/assets/img/Arrow - Left Square 24px.png"
-              class="page-header_back_icon"
-            />
             <router-link :to="{ name: 'list-claim' }" class="text">
+              <img
+                src="@/assets/img/Arrow - Left Square 24px.png"
+                class="page-header_back_icon"
+              />
+
               Đơn hàng khiếu nại
             </router-link>
           </div>
           <div class="page-header-group">
             <div class="page-header_title header-2">
-              <span style="font-weight: bold">Khách chưa nhận được hàng</span>
+              <span style="font-weight: bold">{{ claim.title }}</span>
               <!-- <span
                 v-if="claim.status == 1"
                 class="edit-ticket"
@@ -29,6 +30,13 @@
             >
               <a href="#" class="btn btn-primary" @click="showModalReply">
                 <span>Trả lời</span>
+              </a>
+              <a
+                href="#"
+                class="btn btn-danger ml-10"
+                @click="actionCancelTicket()"
+              >
+                <span>Đóng</span>
               </a>
             </div>
           </div>
@@ -50,24 +58,24 @@
                     {{ formatReason(claim.category) }}
                   </li>
                   <li class="item-note">
-                    <span class="item-title">Mã đơn hàng: </span>
+                    <span class="item-title">Mã vận đơn: </span>
                     <router-link
-                      v-if="claim.order_number"
+                      v-if="claim.package"
                       :to="{
-                        name: 'list-order-items',
-                        params: { id: claim.object_id },
+                        name: 'package-detail',
+                        params: { id: claim.package.code },
                       }"
                     >
-                      {{ claim.object_id }}
+                      {{ claim.package.code }}
                     </router-link>
                   </li>
                   <li class="item-note">
                     <span class="item-title">Ngày tạo: </span>
-                    {{ claim.created_at | datetime('dd-MM-yyyy HH:mm:ss') }}
+                    {{ claim.created_at | datetime('dd-MM-yyyy   HH:mm:ss') }}
                   </li>
                   <li class="item-note">
                     <span class="item-title">Ngày cập nhật gần nhất: </span>
-                    {{ claim.updated_at | datetime('dd-MM-yyyy HH:mm:ss') }}
+                    {{ claim.updated_at | datetime('dd-MM-yyyy   HH:mm:ss') }}
                   </li>
                 </ul>
               </div>
@@ -104,7 +112,7 @@
                   <div class="list-item">
                     <div
                       class="item"
-                      v-for="(file, i) in claim.attach_files"
+                      v-for="(file, i) in claim.attachment"
                       :key="i"
                     >
                       <div
@@ -147,6 +155,17 @@
       v-if="isVisibleModalReply"
       @success="replySuccess"
     ></modal-reply>
+
+    <modal-confirm
+      :visible.sync="isVisibleCancelClaim"
+      v-if="isVisibleCancelClaim"
+      :actionConfirm="actions.cancel.button"
+      :description="actions.cancel.Description"
+      :title="actions.cancel.title"
+      :type="actions.cancel.type"
+      @action="handleCancelTicket()"
+    >
+    </modal-confirm>
   </div>
 </template>
 
@@ -166,6 +185,8 @@ import {
   GET_FILE_TICKET,
 } from '../store'
 import { FETCH_TICKET } from '@/packages/claim/store'
+import { CLAIM_STATUS } from '../constants'
+import ModalConfirm from '@components/shared/modal/ModalConfirm'
 
 export default {
   name: 'ClaimDetail',
@@ -174,6 +195,7 @@ export default {
     File,
     ModalReply,
     Message,
+    ModalConfirm,
   },
   props: {
     visible: {
@@ -202,11 +224,8 @@ export default {
       content: '',
       reply: '',
       reason: null,
-      errMessage: [],
       files: [],
       isUploading: false,
-      requiredTitle: false,
-      requiredContent: false,
       title: '',
       urls: [],
       requiredReason: false,
@@ -214,21 +233,26 @@ export default {
       solution: null,
       isVisibleConfirmDelete: false,
       deleteFile: null,
-      orderId: null,
       validTitle: false,
-      requiredOrder: false,
-      correctOrderid: false,
       isTicketOpen: false,
       attach_files: [],
       isVisibleModalReply: false,
       messages: [],
       isMessageLoading: false,
-      isNextpage: 0,
       filter: {
         limit: 20,
       },
       styleObject: {},
       styleInfoObject: {},
+      claimStatus: CLAIM_STATUS,
+      actions: {
+        cancel: {
+          title: 'Đóng khiếu nại',
+          button: 'Xác nhận',
+          Description: `Bạn có chắc chắn đóng khiếu nại này ?`,
+          type: 'danger',
+        },
+      },
     }
   },
   computed: {
@@ -337,10 +361,7 @@ export default {
       this.init()
     },
     hasFiles() {
-      return this.claim.attach_files && this.claims.attach_files.length
-    },
-    hasFilesMes() {
-      return this.message.attach_files && this.message.attach_files.length
+      return this.claim.attachment && this.claims.attachment.length
     },
     extenionFileUrl(val) {
       const rex = /(?:\.([^.]+))?$/
@@ -358,6 +379,7 @@ export default {
       }
       return false
     },
+
     async getTicketFile(url, isFile) {
       let result = ''
 
@@ -384,6 +406,7 @@ export default {
         return window.URL.createObjectURL(result.blob)
       }
     },
+
     getTicketFiles() {
       if (!this.attach_files.length) return false
 
@@ -419,21 +442,20 @@ export default {
         case 1:
           return 'Sửa đơn'
         case 2:
-          return 'Chất lượng đơn hàng'
-        case 3:
           return 'Phí hóa đơn'
-        case 4:
+        case 3:
           return 'Không cập nhật trạng thái'
-        case 5:
+        case 4:
           return 'Khác'
       }
     },
+
     formatStatus(status) {
-      switch (status) {
-        case 1:
-          return 'pending'
-        case 2:
-          return 'resolved'
+      for (const [key, value] of Object.entries(this.claimStatus)) {
+        console.log(`${key}: ${value}`)
+        if (status == value) {
+          return key
+        }
       }
     },
 
@@ -444,6 +466,31 @@ export default {
       const { id } = this.$route.params
       this[FETCH_TICKET](id)
       this.messages.unshift(reply)
+    },
+
+    actionCancelTicket() {
+      this.isVisibleCancelClaim = true
+    },
+
+    async handleCancelTicket() {
+      this.isVisibleCancelClaim = false
+      let payload = {
+        id: this.claim.id,
+      }
+      const result = await this[CANCEL_TICKET](payload)
+      if (result.error) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+        })
+        return
+      }
+      this.$toast.open({
+        type: 'success',
+        message: ' Thành công',
+      })
+      this.files = []
+      this.init()
     },
   },
   watch: {

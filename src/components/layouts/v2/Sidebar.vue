@@ -40,7 +40,10 @@
               <router-link :to="sub.route" class="animsition-link">
                 <span
                   :class="{
-                    active: isActive(sub.route) || childrenNameRoute(sub.title),
+                    active:
+                      isActive(sub.route) ||
+                      isContainAlias(sub.alias) ||
+                      childrenNameRoute(sub.title),
                   }"
                   class="site-menu-sub-title"
                   >{{ sub.title }}</span
@@ -120,10 +123,12 @@ export default {
             {
               route: '/packages',
               title: 'Quản lý đơn hàng',
+              alias: ['/packages', '/packages/:id'],
             },
             {
               route: '/packages/claims',
               title: 'Đơn khiếu nại',
+              alias: ['/packages/claims', '/packages/claims/:id'],
             },
           ],
         },
@@ -179,12 +184,25 @@ export default {
 
       return this.$route.path === route || this.$route.fullPath === route
     },
+
+    isContainAlias(alias) {
+      if (!this.$route.matched || !this.$route.matched.length || !alias) {
+        return false
+      }
+
+      for (let item of this.$route.matched) {
+        if (alias.includes(item.path)) {
+          return true
+        }
+      }
+      return false
+    },
+
     childrenNameRoute(title) {
       let fullPath = this.$route.fullPath
-      let title1 = title
-      if (title1 != null) {
-        title1 = title1.toLowerCase()
-        if (fullPath.includes(title1)) {
+      if (title != null) {
+        title = title.toLowerCase()
+        if (fullPath.includes(title)) {
           return true
         }
       }

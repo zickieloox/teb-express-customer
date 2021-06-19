@@ -8,7 +8,11 @@
             <img src="~@/assets/img/import-excel.svg" />
             <span>Nhập Excel</span>
           </button>
-          <button class="pull-right btn-excel btn-export" @click="handleExport">
+          <button
+            class="pull-right btn-excel btn-export"
+            @click="handleExport"
+            :disabled="!hiddenClass"
+          >
             <img src="~@/assets/img/export-excel.svg" />
             <span>Xuất Excel</span>
           </button>

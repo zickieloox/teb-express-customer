@@ -97,3 +97,21 @@ export const MAP_NAME_STATUS_PACKAGE = {
     class: 'badge-success',
   },
 }
+
+export const CHANGE_PACKAGE_TYPE = [
+  '',
+  'Người gửi',
+  'Số điện thoại người nhận',
+  'Địa chỉ người nhận',
+  'Thành phố',
+  'Mã vùng',
+  'Mã bưu điện',
+  'Mã quốc gia',
+  'Trọng lượng',
+  'Độ dài',
+  'Độ rộng',
+  'Chiều cao',
+  'Yêu cầu khi giao',
+  'Dịch vụ',
+  'Chi tiết hàng hóa',
+]
