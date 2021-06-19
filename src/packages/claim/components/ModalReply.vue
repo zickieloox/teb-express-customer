@@ -23,7 +23,7 @@
               <textarea
                 class="form-control"
                 v-model="message"
-                v-validate="'required, max:1000'"
+                v-validate="'required'"
                 data-vv-as="Nội dung"
                 name="message"
                 key="message"
@@ -31,7 +31,6 @@
                   'error-color': errors.has('message'),
                   require: lengthContent,
                 }"
-                @keyup="countText(content)"
                 maxlength="1000"
               ></textarea>
               <span class="err-span" v-if="errors.has('message')">{{
