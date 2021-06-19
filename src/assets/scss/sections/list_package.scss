@@ -185,7 +185,13 @@
       }
     }
   }
-
+  .detail_product {
+    max-width: 350px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
   #preview .modal-footer {
     display: none;
   }
