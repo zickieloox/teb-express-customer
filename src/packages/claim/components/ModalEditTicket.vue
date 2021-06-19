@@ -124,8 +124,8 @@
                     </div>
                   </div>
                   <div class="rule">
-                    We accept the following files, under 5Mb size: *CSV, *PNG,
-                    *JPG, *JPEG.
+                    Định dạng file hợp lệ : XLSX, PNG, JPG, JPEG.Và có dung
+                    lượng dưới 5Mb.
                   </div>
                 </div>
               </div>
@@ -283,16 +283,10 @@ export default {
         'image/png',
         'image/jpeg',
         'image/jpg',
-        'text/csv',
-        'text/plain',
-        'text/x-csv',
-        'application/csv',
-        'application/x-csv',
-        'text/comma-separated-values',
-        'text/x-comma-separated-values',
-        'text/tab-separated-values',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'application/vnd.ms-excel',
       ],
-      allowedExtensions: /(\.jpg|\.jpeg|\.png|\.csv)$/i,
+      allowedExtensions: /(\.jpg|\.jpeg|\.png|\.xlsx)$/i,
       errMessage: [],
       files: [],
       isUploading: false,
@@ -362,14 +356,16 @@ export default {
       }
 
       if (!this.validateSizeFile(file)) {
-        this.errMessage.push(` "${filename}" is less than 5Mb.`)
+        this.errMessage.push(
+          ` "${filename}" dung lượng đang lớn hơn 5Mb.Vui lòng chọn tệp nhỏ hơn`
+        )
         this.errMessage = [...new Set(this.errMessage)]
         return
       }
 
       if (!this.validateTypeFile(file)) {
         this.errMessage.push(
-          ` "${filename}" is not a supported file type. File must be type *CSV, *PNG, *JPG, *JPEG.`
+          ` "${filename}" định dạng không đúng.Tệp phải có định dạng:  *XLSX, *PNG, *JPG, *JPEG.`
         )
         this.errMessage = [...new Set(this.errMessage)]
         return
