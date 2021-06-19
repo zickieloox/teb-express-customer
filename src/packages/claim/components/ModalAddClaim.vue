@@ -286,7 +286,7 @@ export default {
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         'application/vnd.ms-excel',
       ],
-      allowedExtensions: /(\.jpg|\.jpeg|\.png|\.xlsx)$/i,
+      allowedExtensions: /(\.jpg|\.jpeg|\.png|\.xlsx|\.xls)$/i,
       errMessage: [],
       url: [],
       validateSize: false,

@@ -113,7 +113,7 @@
                         v-model="address"
                         :input="address"
                         class="form-control"
-                        v-validate="'required|city'"
+                        v-validate="'required|address'"
                         name="address"
                         data-vv-as="Địa chỉ"
                         :class="{ 'error-color': errors.has('address') }"
@@ -123,7 +123,27 @@
                       }}</span>
                     </div>
                   </div>
-
+                  <div class="card__w-item">
+                    <label class="card__w-label">
+                      Địa chỉ phụ:
+                    </label>
+                    <div class="card__w-input">
+                      <input
+                        placeholder="Nhập địa chỉ phụ"
+                        type="text"
+                        v-model="address2"
+                        :input="address2"
+                        class="form-control"
+                        v-validate="'address'"
+                        name="address2"
+                        data-vv-as="Địa chỉ phụ"
+                        :class="{ 'error-color': errors.has('address2') }"
+                      />
+                      <span class="err-span" v-if="errors.has('address2')">{{
+                        errors.first('address2')
+                      }}</span>
+                    </div>
+                  </div>
                   <div class="card__w-item">
                     <label class="card__w-label">
                       Mã vùng<br />
@@ -329,7 +349,7 @@
                         :input="height"
                         class="form-control"
                         v-validate="'required|height'"
-                        name="unit"
+                        name="height"
                         :disabled="isDisable"
                         data-vv-as="Chiều cao"
                         :class="{ 'error-color': errors.has('height') }"
@@ -443,6 +463,7 @@ export default {
       detail: '',
       address: '',
       isDisable: false,
+      address2: '',
     }
   },
   created() {
@@ -528,7 +549,7 @@ export default {
       const params = {
         id: id,
         recipient: this.fullname,
-        phone_number: this.phone,
+        phone_number: this.phone.trim(),
         address_1: this.address,
         city: this.city,
         state_code: this.state,
@@ -541,8 +562,8 @@ export default {
         height: +this.height,
         service: this.service.name,
         note: this.note,
+        address_2: this.address2,
       }
-      console.log(params)
       let result = await this[UPDATE_PACKAGE](params)
       if (result.error) {
         this.$toast.open({
