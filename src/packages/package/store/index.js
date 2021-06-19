@@ -13,6 +13,7 @@ export const IMPORT_PACKAGE = 'importPackage'
 export const UPDATE_PACKAGE = 'updatePackage'
 
 export const EXPORT_PACKAGE = 'exportPackage'
+export const GET_SERVICE = 'getService'
 /**
  * State
  */
@@ -30,7 +31,17 @@ export const state = {
   products: [],
   service: [],
 }
-
+/**
+ * Getters
+ */
+export const getters = {
+  [GET_SERVICE](state) {
+    let sv = state.service.map((item) => {
+      return { id: item.id, name: item.name }
+    })
+    return sv
+  },
+}
 /**
  * Mutation
  */

@@ -31,7 +31,7 @@
                   'error-color': errors.has('message'),
                   require: lengthContent,
                 }"
-                :required="true"
+                maxlength="1000"
               ></textarea>
               <span class="err-span" v-if="errors.has('message')">{{
                 errors.first('message')
