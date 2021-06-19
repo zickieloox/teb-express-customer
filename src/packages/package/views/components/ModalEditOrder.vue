@@ -49,7 +49,7 @@
                         v-model="fullname"
                         :input="fullname"
                         class="form-control"
-                        v-validate="'required|fullName'"
+                        v-validate="'required'"
                         name="name"
                         data-vv-as="Tên"
                         :class="{ 'error-color': errors.has('name') }"
@@ -203,6 +203,7 @@
                     name="note"
                     data-vv-as="Ghi chú"
                     :class="{ 'error-color': errors.has('note') }"
+                    v-model="note"
                   ></textarea>
                   <span class="err-span" v-if="errors.has('note')">{{
                     errors.first('note')
@@ -473,6 +474,7 @@ export default {
         return element.name == this.package_detail.package.service.name
       })
       this.address = this.package_detail.package.address_1
+      this.detail = this.package_detail.package.detail
     },
     handleClose() {
       this.fullname = ''
@@ -541,7 +543,8 @@ export default {
         width: +this.width,
         length: +this.length,
         height: +this.height,
-        service: this.service[0].name,
+        service: this.service.name,
+        note: this.note,
       }
       let result = await this[UPDATE_PACKAGE](params)
       if (result.error) {

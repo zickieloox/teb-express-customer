@@ -171,8 +171,8 @@
         </div>
         <div class="row mb-20">
           <div class="rule col-md-12">
-            Chúng tôi chỉ chấp nhận file dưới 5Mb và có các định dạng: CSV, PNG,
-            JPG, JPEG.
+            Định dạng file hợp lệ : CSV, PNG, JPG, JPEG.Và có dung lượng dưới
+            5Mb
           </div>
         </div>
       </template>
@@ -344,7 +344,6 @@ export default {
         return
       }
       this.handleUploadfile(file)
-      this.isUploading = true
     },
     validateSizeFile(file) {
       if (file.size > 5000000) {
@@ -357,7 +356,7 @@ export default {
       let params = {
         file: file.raw,
       }
-
+      this.isUploading = true
       const result = await this[UPLOAD_FILE_CLAIM](params)
       if (result.error) {
         this.isUploading = false
