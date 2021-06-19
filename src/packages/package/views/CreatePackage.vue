@@ -70,7 +70,7 @@
                         v-model="phone"
                         :input="phone"
                         class="form-control"
-                        v-validate="'required|max:20|phoneAddress'"
+                        v-validate="'required|phoneAddress'"
                         name="phone"
                         data-vv-as="Số điện thoại"
                         :class="{ 'error-color': errors.has('phone') }"

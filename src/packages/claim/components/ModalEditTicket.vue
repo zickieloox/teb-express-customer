@@ -188,6 +188,7 @@ import {
   CANCEL_TICKET,
 } from '@/packages/claim/store'
 import { FETCH_TICKET } from '@/packages/claim/store'
+import evenBus from '../../../core/utils/evenBus'
 
 export default {
   name: 'ModalEditTicket',
@@ -286,7 +287,7 @@ export default {
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         'application/vnd.ms-excel',
       ],
-      allowedExtensions: /(\.jpg|\.jpeg|\.png|\.xlsx)$/i,
+      allowedExtensions: /(\.jpg|\.jpeg|\.png|\.xlsx|\.xls)$/i,
       errMessage: [],
       files: [],
       isUploading: false,
@@ -304,7 +305,11 @@ export default {
       requiredOrder: false,
       TicketNote: 0,
       lengthContent: false,
+      number: 0,
     }
+  },
+  destroyed() {
+    evenBus.$on('my', this.handleF)
   },
   computed: {
     ...mapState('claim', {
@@ -313,6 +318,7 @@ export default {
     }),
   },
   created() {
+    evenBus.$on('my', this.handleF)
     this.init()
   },
   mounted() {
@@ -325,7 +331,9 @@ export default {
       UPDATE_TICKET,
       CANCEL_TICKET,
     ]),
-
+    handleF(e) {
+      this.number += e
+    },
     handleClose() {
       this.$emit('update:visible', false)
     },
@@ -352,10 +360,11 @@ export default {
       let filename = file.name
       const index = this.files.findIndex(({ uid }) => uid === file.uid)
       if (index != -1) {
-        this.$set(this.designFiles, index, file)
+        this.$set(this.files, index, file)
       }
 
       if (!this.validateSizeFile(file)) {
+        this.number = this.number - 1
         this.errMessage.push(
           ` "${filename}" dung lượng đang lớn hơn 5Mb.Vui lòng chọn tệp nhỏ hơn`
         )
@@ -363,13 +372,6 @@ export default {
         return
       }
 
-      if (!this.validateTypeFile(file)) {
-        this.errMessage.push(
-          ` "${filename}" định dạng không đúng.Tệp phải có định dạng:  *XLSX, *PNG, *JPG, *JPEG.`
-        )
-        this.errMessage = [...new Set(this.errMessage)]
-        return
-      }
       this.handleUploadfile(file)
       this.isUploading = true
     },
@@ -438,6 +440,7 @@ export default {
       }
     },
     handleDeletefile(file) {
+      this.number = this.number - 1
       this.isVisibleConfirmDelete = false
       this.files = this.files.filter((x) => x.url !== file)
     },
@@ -517,7 +520,9 @@ export default {
         uid: file.uid,
         name: file.name,
       })
-      this.isUploading = false
+      if (this.files.length == this.number) {
+        this.isUploading = false
+      }
     },
     async handleCancelClaim() {
       this.isVisibleCancelClaim = false
