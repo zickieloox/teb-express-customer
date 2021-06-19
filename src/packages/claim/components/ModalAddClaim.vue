@@ -286,7 +286,7 @@ export default {
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         'application/vnd.ms-excel',
       ],
-      allowedExtensions: /(\.jpg|\.jpeg|\.png|\.xlsx)$/i,
+      allowedExtensions: /(\.jpg|\.jpeg|\.png|\.xlsx|\.xls)$/i,
       errMessage: [],
       url: [],
       validateSize: false,
@@ -365,10 +365,10 @@ export default {
       let params = {
         file: file.raw,
       }
-      const result = await this[UPLOAD_FILE_CLAIM](params).then((data) => {
+      await this[UPLOAD_FILE_CLAIM](params).then((data) => {
         if (data.error) {
           this.isUploading = false
-          this.errMessage.push(result.message)
+          this.errMessage.push(data.message)
           return
         }
         this.files.push({

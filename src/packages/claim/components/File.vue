@@ -24,6 +24,7 @@ const URL_IMAGES = process.env.VUE_APP_BASE_IMAGE_URL.replace(re, '')
 
 const THUMBNAIL_PSD = `${URL_ASSETS}/psd-default.png`
 const THUMBNAIL_CSV = `${URL_ASSETS}/csv-default.png`
+const THUMBNAIL_XLSX = `${URL_ASSETS}/xlsx-default.png`
 
 export default {
   name: 'TicketFile',
@@ -86,6 +87,7 @@ export default {
       const ext = extension(src)
       if (ext === 'psd') return THUMBNAIL_PSD
       if (ext === 'csv') return THUMBNAIL_CSV
+      if (ext === 'xlsx') return THUMBNAIL_XLSX
 
       return `${URL_IMAGES}/${src}`
     },
