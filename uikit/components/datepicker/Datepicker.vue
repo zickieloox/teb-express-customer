@@ -25,12 +25,19 @@
         style="float: right; margin-left: 2px; margin-top: 6px;"
       />
       <span
+        class="label-date-picker"
         v-if="
+          dateRange.startDate === dateRange.endDate &&
+            dateRange.startDate === ''
+        "
+      >
+        {{ label }}
+      </span>
+      <span
+        v-else-if="
           picker.startDate &&
             picker.endDate &&
             picker.startDate != picker.endDate &&
-            label != 'Date' &&
-            label != 'Choose date' &&
             !singleDatePicker
         "
       >
@@ -39,24 +46,11 @@
       </span>
       <span
         v-else-if="
-          dateRange.startDate &&
-            dateRange.endDate &&
-            picker.startDate != picker.endDate &&
-            !singleDatePicker
-        "
-      >
-        {{ dateRange.startDate | date('dd/MM/yyyy') }} ~
-        {{ dateRange.endDate | date('dd/MM/yyyy') }}
-      </span>
-      <span
-        v-else-if="
           singleDatePicker && dateRange.startDate && label != 'dd/mm/yyyy'
         "
       >
         {{ dateRange.startDate | date('dd/MM/yyyy') }}
       </span>
-
-      <span class="label-date-picker" v-else>{{ label }}</span>
     </div>
   </date-range-picker>
 </template>
@@ -137,7 +131,6 @@ export default {
   computed: {
     textValue() {
       let text = ''
-
       if (!this.picker) {
         return ''
       }
