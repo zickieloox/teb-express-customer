@@ -144,7 +144,8 @@
             </div>
             <ul class="ticket__error-list">
               <li class="ticket__error-item">
-                {{ this.name }} đang lớn hơn 5Mb.Vui lòng chọn tệp nhỏ hơn.</li
+                {{ this.name }} dung lượng đang lớn hơn 5Mb.Vui lòng chọn tệp
+                nhỏ hơn.</li
               >
             </ul>
           </div>
@@ -171,7 +172,7 @@
         </div>
         <div class="row mb-20">
           <div class="rule col-md-12">
-            Định dạng file hợp lệ : CSV, PNG, JPG, JPEG.Và có dung lượng dưới
+            Định dạng file hợp lệ : XLSX, PNG, JPG, JPEG.Và có dung lượng dưới
             5Mb
           </div>
         </div>
@@ -224,6 +225,7 @@ import { mapActions } from 'vuex'
 import { UPLOAD_FILE_CLAIM, CREATE_CLAIM } from '../store'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 const MAXIMUM_SIZE = 5
+import evenBus from '../../../core/utils/evenBus'
 
 export default {
   name: 'ModalAddClaim',
@@ -281,12 +283,10 @@ export default {
         'image/png',
         'image/jpeg',
         'image/jpg',
-        'text/csv',
-        'text/x-csv',
-        'application/csv',
-        'application/x-csv',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'application/vnd.ms-excel',
       ],
-      allowedExtensions: /(\.jpg|\.jpeg|\.png|\.csv)$/i,
+      allowedExtensions: /(\.jpg|\.jpeg|\.png|\.xlsx)$/i,
       errMessage: [],
       url: [],
       validateSize: false,
@@ -295,10 +295,19 @@ export default {
       number: 0,
     }
   },
+  created() {
+    evenBus.$on('my', this.handleF)
+  },
+  destroyed() {
+    evenBus.$on('my', this.handleF)
+  },
   methods: {
     ...mapActions('claim', [UPLOAD_FILE_CLAIM, CREATE_CLAIM]),
-
+    handleF(e) {
+      this.number += e
+    },
     handleClose() {
+      this.number = 0
       this.code = ''
       this.title = ''
       this.content = ''
@@ -331,6 +340,7 @@ export default {
     handleDeletefile(file) {
       this.isVisibleConfirmDelete = false
       this.files = this.files.filter((x) => x.url !== file)
+      this.number = this.number - 1
     },
     handleChangeFile(file) {
       let filename = file.name
@@ -340,21 +350,15 @@ export default {
         this.$set(this.files, index, file)
       }
       if (!this.validateTypeFile(file)) {
+        this.number = this.number - 1
         this.errMessage.push(
-          ` "${filename}" định dạng không đúng.Tệp phải có định dạng:  *CSV, *PNG, *JPG, *JPEG.`
+          ` "${filename}" định dạng không đúng.Tệp phải có định dạng:  *XLSX, *PNG, *JPG, *JPEG.`
         )
         this.errMessage = [...new Set(this.errMessage)]
         return
       }
       this.handleUploadfile(file)
       this.isUploading = true
-    },
-    validateSizeFile(file) {
-      if (file.size > 5000000) {
-        return false
-      } else {
-        return true
-      }
     },
 
     async handleUploadfile(file) {
@@ -372,7 +376,9 @@ export default {
           uid: file.uid,
           name: file.name,
         })
-        this.isUploading = false
+        if (this.files.length == this.number) {
+          this.isUploading = false
+        }
       })
     },
     validateTypeFile(file) {
@@ -387,6 +393,7 @@ export default {
       }
     },
     errorMaximum({ name }) {
+      this.number = this.number - 1
       this.validateSize = true
       this.name = name
     },

@@ -1,7 +1,7 @@
 <script>
 import ajax from './ajax'
 import UploadDragger from './UploadDragger'
-
+import evenBus from '../../core/utils/evenBus'
 export default {
   inject: ['uploader'],
   components: {
@@ -69,6 +69,7 @@ export default {
       const files = ev.target.files
 
       if (!files) return
+      evenBus.$emit('my', files.length)
       this.eChange(files)
       this.uploadFiles(files)
     },
