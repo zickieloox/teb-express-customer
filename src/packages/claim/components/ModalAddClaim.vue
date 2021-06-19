@@ -193,7 +193,12 @@
             </p-button>
           </div>
           <div class="ml-7">
-            <p-button type="primary" @click="handleSave" :loading="isUploading">
+            <p-button
+              type="primary"
+              @click="handleSave"
+              :disabled="isDisable"
+              :loading="isUploading"
+            >
               Tạo khiếu nại
             </p-button>
           </div>
@@ -230,6 +235,7 @@ export default {
       default: false,
     },
   },
+
   data() {
     return {
       maximumSize: MAXIMUM_SIZE * 2 ** 20,
@@ -285,6 +291,8 @@ export default {
       url: [],
       validateSize: false,
       name: '',
+      isDisable: false,
+      number: 0,
     }
   },
   methods: {
@@ -331,11 +339,6 @@ export default {
       if (index != -1) {
         this.$set(this.files, index, file)
       }
-      // if (!this.validateSizeFile(file)  ) {
-      //   this.errMessage.push(` "${filename}" đang lớn hơn 5Mb.Vui lòng chọn tệp nhỏ hơn`)
-      //   this.errMessage = [...new Set(this.errMessage)]
-      //   return
-      // }
       if (!this.validateTypeFile(file)) {
         this.errMessage.push(
           ` "${filename}" định dạng không đúng.Tệp phải có định dạng:  *CSV, *PNG, *JPG, *JPEG.`
@@ -344,6 +347,7 @@ export default {
         return
       }
       this.handleUploadfile(file)
+      this.isUploading = true
     },
     validateSizeFile(file) {
       if (file.size > 5000000) {
@@ -352,23 +356,24 @@ export default {
         return true
       }
     },
+
     async handleUploadfile(file) {
       let params = {
         file: file.raw,
       }
-      this.isUploading = true
-      const result = await this[UPLOAD_FILE_CLAIM](params)
-      if (result.error) {
+      const result = await this[UPLOAD_FILE_CLAIM](params).then((data) => {
+        if (data.error) {
+          this.isUploading = false
+          this.errMessage.push(result.message)
+          return
+        }
+        this.files.push({
+          url: data.urls,
+          uid: file.uid,
+          name: file.name,
+        })
         this.isUploading = false
-        this.errMessage.push(result.message)
-        return
-      }
-      this.files.push({
-        url: result.urls,
-        uid: file.uid,
-        name: file.name,
       })
-      this.isUploading = false
     },
     validateTypeFile(file) {
       if (this.allowedExtensions.exec(file.name)) {
@@ -391,7 +396,7 @@ export default {
       if (!validate || !validate2) {
         return
       }
-
+      this.isDisable = true
       this.urls = this.files.map((item) => item.url)
       let params = {
         reason: this.selectReason ? this.reason.key : 5,
@@ -407,6 +412,7 @@ export default {
           message: result.message,
           duration: 3000,
         })
+        this.isDisable = false
         return
       }
       this.$toast.open({
@@ -414,6 +420,7 @@ export default {
         message: 'Tạo thành công',
         duration: 3000,
       })
+      this.isDisable = false
       this.handleClose()
       this.$emit('create', true)
     },
