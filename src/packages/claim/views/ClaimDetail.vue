@@ -283,6 +283,7 @@ export default {
       const { id } = this.$route.params
       await this[FETCH_TICKET](id)
       await this.handlerFetchTicketMessages(id)
+      console.log(this.count)
       this.reason = this.claim.category
       this.orderId = this.claim.object_id
       this.title = this.claim.subject
@@ -466,6 +467,7 @@ export default {
       const { id } = this.$route.params
       this[FETCH_TICKET](id)
       this.messages.unshift(reply)
+      this.init()
     },
 
     actionCancelTicket() {

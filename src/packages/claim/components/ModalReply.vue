@@ -2,7 +2,7 @@
   <p-modal
     class="modal-reply-ticket"
     :active="visible"
-    title="Reply"
+    title="Trả lời"
     @close="handleClose"
   >
     <div class="content-page">
@@ -140,7 +140,7 @@
         </div>
         <div class="ml-7">
           <p-button type="primary" @click="handleUpdate" :loading="isUploading">
-            Tạo khiếu nại
+            Gửi trả lời
           </p-button>
         </div>
       </div>
@@ -193,13 +193,9 @@ export default {
         'image/jpeg',
         'image/jpg',
         'text/csv',
-        'text/plain',
         'text/x-csv',
         'application/csv',
         'application/x-csv',
-        'text/comma-separated-values',
-        'text/x-comma-separated-values',
-        'text/tab-separated-values',
       ],
       allowedExtensions: /(\.jpg|\.jpeg|\.png|\.csv)$/i,
       files: [],
@@ -251,7 +247,7 @@ export default {
         this.fileErrors.push(
           `"${
             file.name
-          }" iđịnh dạng không đúng.Tệp phải có định dạng:  *CSV, *PNG, *JPG, *JPEG.`
+          }" định dạng không đúng.Tệp phải có định dạng:  *CSV, *PNG, *JPG, *JPEG.`
         )
         this.fileErrors = [...new Set(this.fileErrors)]
         return
