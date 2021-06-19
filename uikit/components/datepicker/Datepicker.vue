@@ -46,6 +46,17 @@
       </span>
       <span
         v-else-if="
+          dateRange.startDate &&
+            dateRange.endDate &&
+            picker.startDate != picker.endDate &&
+            !singleDatePicker
+        "
+      >
+        {{ dateRange.startDate | date('dd/MM/yyyy') }} ~
+        {{ dateRange.endDate | date('dd/MM/yyyy') }}
+      </span>
+      <span
+        v-else-if="
           singleDatePicker && dateRange.startDate && label != 'dd/mm/yyyy'
         "
       >
