@@ -31,12 +31,14 @@
     }
 
     .btn-export {
-      &:disabled{
+      &:disabled {
         cursor: not-allowed;
       }
+
       color: $color-java-blue-6;
     }
   }
+
   .bulk-actions {
     position: absolute;
     top: 153px;
@@ -103,6 +105,7 @@
       margin-left: 1rem;
     }
   }
+
   .p-modal {
     table {
       &.table-result {
@@ -127,6 +130,7 @@
         border-collapse: collapse;
         border: 1px solid $color-neutral-5;
         width: 100%;
+
         td, th {
           padding: 7px 14px;
           height: 44px;
@@ -141,7 +145,8 @@
         td {
           color: $color-neutral-9;
         }
-        pre{
+
+        pre {
           white-space: pre-wrap;
           line-height: 20px;
         }
@@ -185,6 +190,7 @@
       }
     }
   }
+
   .detail_product {
     max-width: 350px;
     display: -webkit-box;
@@ -192,6 +198,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+
   #preview .modal-footer {
     display: none;
   }
@@ -199,12 +206,14 @@
   #date-search {
     max-width: 300px;
     margin-left: 8px;
-    &+.close{
+
+    & + .close {
       width: 50px;
       height: 40px;
       border: 1px solid #ccc;
       border-radius: 8px;
     }
+
     .calendars {
       min-width: 400px;
     }
@@ -216,20 +225,78 @@
     .reportrange-text > div {
       line-height: 28px;
       font-weight: normal;
-      .label-date-picker{
+
+      .label-date-picker {
         color: $color-neutral-4;
       }
     }
   }
 
-  #nav_packages {
-    padding-bottom: 4px;
+  #nav_container {
+    position: relative;
+    overflow: hidden;
 
-    li a {
-      line-height: 22px;
-      color: $color-neutral-7;
+    .icon-nav {
+      position: absolute;
+      border: none;
+      background-color: #fff;
+      z-index: 999;
+      bottom: 10px;
+      display: none;
+    }
+
+    .icon-nav.next {
+      left: 0;
+      cursor: not-allowed;
+      i{
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        background-image: url("~@/assets/img/left_nav.png");
+        vertical-align: middle;
+      }
+      &.active{
+        cursor: pointer !important;
+        i{
+          background-image: url("~@/assets/img/left_nav_active.svg") !important;
+        }
+      }
+    }
+
+    .icon-nav.prev{
+      right: 0;
+      cursor: not-allowed;
+      i{
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        background-image: url("~@/assets/img/right_nav.svg");
+        vertical-align: middle;
+      }
+      &.active{
+        cursor: pointer !important;
+        i{
+          background-image: url("~@/assets/img/right_nav_active.svg") !important;
+        }
+      }
+    }
+
+    #nav_packages {
+      padding-bottom: 4px;
+      z-index: 1;
+      width: 200%;
+      -webkit-transition: all 0.3s ease-in-out;
+      -moz-transition: all 0.3s ease-in-out;
+      -o-transition: all 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out;
+
+      li a {
+        line-height: 22px;
+        color: $color-neutral-7;
+      }
     }
   }
+
 
   #tbl-packages {
     th {
