@@ -1,7 +1,7 @@
 import LocalStorage from '@core/helpers/localstorage'
 import Cookie from '@core/helpers/cookie'
 
-const getKey = (key) => `lionnix_$_$_${key}`
+const getKey = (key) => `shipping_$_$_${key}`
 const isSupportStorage =
   typeof window !== 'undefined' && typeof window.localStorage !== 'undefined'
 const store = isSupportStorage ? LocalStorage : Cookie

@@ -20,7 +20,7 @@
             </li>
             <li> <router-link to="/sign-in"> Sign in</router-link></li>
             <li>
-              <a target="_blank" href="https://help.lionnix.com/">FAQ</a>
+              <a target="_blank" href="#">FAQ</a>
             </li>
           </ul>
         </div>

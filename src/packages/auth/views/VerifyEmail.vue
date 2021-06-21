@@ -1,6 +1,6 @@
 <template>
   <div class="page vertical-align verify-email ">
-    <h2>Thank you for using Lionnix</h2>
+    <h2>Thank you for using</h2>
     <p
       >A verification mail has been sent to your email account. Please check
       your inbox to verify.</p
