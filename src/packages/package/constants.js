@@ -82,7 +82,7 @@ export const MAP_NAME_STATUS_PACKAGE = {
 
 export const CHANGE_PACKAGE_TYPE = [
   '',
-  'Người gửi',
+  'Người nhận',
   'Số điện thoại người nhận',
   'Địa chỉ người nhận',
   'Thành phố',
