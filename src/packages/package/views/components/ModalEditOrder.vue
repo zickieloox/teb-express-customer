@@ -71,7 +71,7 @@
                         v-model="phone"
                         :input="phone"
                         class="form-control"
-                        v-validate="'required|max:20|phoneAddress'"
+                        v-validate="'required|phoneAddress'"
                         name="phone"
                         data-vv-as="Số điện thoại"
                         :class="{ 'error-color': errors.has('phone') }"
@@ -113,7 +113,7 @@
                         v-model="address"
                         :input="address"
                         class="form-control"
-                        v-validate="'required|city'"
+                        v-validate="'required|address'"
                         name="address"
                         data-vv-as="Địa chỉ"
                         :class="{ 'error-color': errors.has('address') }"
@@ -123,7 +123,27 @@
                       }}</span>
                     </div>
                   </div>
-
+                  <div class="card__w-item">
+                    <label class="card__w-label">
+                      Địa chỉ phụ:
+                    </label>
+                    <div class="card__w-input">
+                      <input
+                        placeholder="Nhập địa chỉ phụ"
+                        type="text"
+                        v-model="address2"
+                        :input="address2"
+                        class="form-control"
+                        v-validate="'address'"
+                        name="address2"
+                        data-vv-as="Địa chỉ phụ"
+                        :class="{ 'error-color': errors.has('address2') }"
+                      />
+                      <span class="err-span" v-if="errors.has('address2')">{{
+                        errors.first('address2')
+                      }}</span>
+                    </div>
+                  </div>
                   <div class="card__w-item">
                     <label class="card__w-label">
                       Mã vùng<br />
@@ -199,15 +219,8 @@
                   <textarea
                     class="card__w-area"
                     placeholder="Nhập yêu cầu khi giao ..."
-                    v-validate="'note'"
-                    name="note"
-                    data-vv-as="Ghi chú"
-                    :class="{ 'error-color': errors.has('note') }"
                     v-model="note"
                   ></textarea>
-                  <span class="err-span" v-if="errors.has('note')">{{
-                    errors.first('note')
-                  }}</span>
                 </div>
               </div>
             </div>
@@ -329,7 +342,7 @@
                         :input="height"
                         class="form-control"
                         v-validate="'required|height'"
-                        name="unit"
+                        name="height"
                         :disabled="isDisable"
                         data-vv-as="Chiều cao"
                         :class="{ 'error-color': errors.has('height') }"
@@ -361,9 +374,6 @@
                         @select="handleSelectService"
                         :custom-label="customLabel"
                       ></multiselect>
-                      <span class="err-span" v-if="errors.has('height')">{{
-                        errors.first('height')
-                      }}</span>
                     </div>
                   </div>
                 </div>
@@ -443,6 +453,7 @@ export default {
       detail: '',
       address: '',
       isDisable: false,
+      address2: '',
     }
   },
   created() {
@@ -466,10 +477,15 @@ export default {
       this.height = this.package_detail.package.height
       this.countrycode = this.package_detail.package.country_code
       this.service = {
-        id: this.package_detail.package.service.id,
-        name: this.package_detail.package.service.name,
+        id: this.package_detail.package.service
+          ? this.package_detail.package.service.id
+          : 0,
+        name: this.package_detail.package.service
+          ? this.package_detail.package.service.name
+          : '',
       }
       this.address = this.package_detail.package.address_1
+      this.address2 = this.package_detail.package.address_2
       this.detail = this.package_detail.package.detail
     },
     handleClose() {
@@ -528,7 +544,7 @@ export default {
       const params = {
         id: id,
         recipient: this.fullname,
-        phone_number: this.phone,
+        phone_number: this.phone.trim(),
         address_1: this.address,
         city: this.city,
         state_code: this.state,
@@ -541,8 +557,8 @@ export default {
         height: +this.height,
         service: this.service.name,
         note: this.note,
+        address_2: this.address2,
       }
-      console.log(params)
       let result = await this[UPDATE_PACKAGE](params)
       if (result.error) {
         this.$toast.open({

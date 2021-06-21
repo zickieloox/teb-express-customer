@@ -165,6 +165,7 @@ import { mapActions } from 'vuex'
 import { UPDATE_FILE_TICKET, PUSH_MESSAGE } from '@/packages/claim/store'
 import { MAXIMUM_SIZE } from '../constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
+import evenBus from '../../../core/utils/evenBus'
 
 export default {
   name: 'ModalReply',
@@ -192,12 +193,10 @@ export default {
         'image/png',
         'image/jpeg',
         'image/jpg',
-        'text/csv',
-        'text/x-csv',
-        'application/csv',
-        'application/x-csv',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'application/vnd.ms-excel',
       ],
-      allowedExtensions: /(\.jpg|\.jpeg|\.png|\.csv)$/i,
+      allowedExtensions: /(\.jpg|\.jpeg|\.png|\.xlsx|\.xls)$/i,
       files: [],
       fileErrors: [],
       message: '',
@@ -214,7 +213,14 @@ export default {
           type: 'danger',
         },
       },
+      number: 0,
     }
+  },
+  destroyed() {
+    evenBus.$on('my', this.handleF)
+  },
+  created() {
+    evenBus.$on('my', this.handleF)
   },
   methods: {
     ...mapActions('claim', {
@@ -223,6 +229,9 @@ export default {
     }),
     handleClose() {
       this.$emit('update:visible', false)
+    },
+    handleF(e) {
+      this.number += e
     },
     handleAction() {
       this.$emit('action')
@@ -244,10 +253,9 @@ export default {
       }
 
       if (!this.validateTypeFile(file)) {
+        this.number = this.number - 1
         this.fileErrors.push(
-          `"${
-            file.name
-          }" định dạng không đúng.Tệp phải có định dạng:  *CSV, *PNG, *JPG, *JPEG.`
+          `"${file.name}" định dạng không đúng.Tệp phải có định dạng:  *XLSX, *PNG, *JPG, *JPEG.`
         )
         this.fileErrors = [...new Set(this.fileErrors)]
         return
@@ -260,9 +268,9 @@ export default {
 
       this.isUploading = true
       const res = await this.ticketUpload(body)
-      this.isUploading = false
 
       if (res.error) {
+        this.isUploading = false
         this.fileErrors.push(res.message)
         return
       }
@@ -272,6 +280,9 @@ export default {
         uid: file.uid,
         name: file.name,
       })
+      if (this.files.length == this.number) {
+        this.isUploading = false
+      }
     },
     validateTypeFile(file) {
       if (this.allowedExtensions.exec(file.name)) {
@@ -296,6 +307,7 @@ export default {
       this.deleteFile = file
     },
     handleDeletefile(file) {
+      this.number = this.number - 1
       this.isVisibleConfirmDelete = false
       this.files = this.files.filter(({ uid }) => uid != file.uid)
     },
@@ -345,6 +357,7 @@ export default {
     },
 
     errorMaximum({ name }) {
+      this.number = this.number - 1
       this.validateSize = true
       this.name = name
     },

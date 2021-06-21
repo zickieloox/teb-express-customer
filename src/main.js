@@ -99,7 +99,7 @@ VeeValidate.Validator.extend('phoneAddress', {
   validate: (value) => {
     /* eslint-disable */
     const regex = new RegExp(
-      /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{1,6}$/im
+      /^[\+]*[(]?[0-9]{1,10}[)]?[\s]?[-\s\.]?[\s]?[0-9]{1,10}[\s]?[-\s\. ]?[\s]?[0-9]{0,20}|^[(][+]?[0-9]{1,10}[)]?[\s]?[-\s\.]?[\s]?[0-9]{1,10}[\s]?[-\s\. ]?[\s]?[0-9]{0,20}$/im
       // /\(?([0-9]{2})\)?([ .-]?)([0-9]{2})+$/
     )
     return regex.test(value)
@@ -122,7 +122,7 @@ VeeValidate.Validator.extend('state', {
 VeeValidate.Validator.extend('postcode', {
   getMessage: () => `Mã bưu điện không hợp lệ`,
   validate: (value) => {
-    const regex = new RegExp(/^[a-zA-Z0-9\-\_\ ]{1,15}$/)
+    const regex = new RegExp(/^[0-9\-\_\ ]{1,15}$/)
     return regex.test(value)
   },
 })
@@ -130,13 +130,6 @@ VeeValidate.Validator.extend('countrycode', {
   getMessage: () => `Mã quốc gia không hợp lệ `,
   validate: (value) => {
     const regex = new RegExp(/^[a-zA-Z0-9\-\_\ ]{1,3}$/)
-    return regex.test(value)
-  },
-})
-VeeValidate.Validator.extend('note', {
-  getMessage: () => `Ghi chú không hợp lệ `,
-  validate: (value) => {
-    const regex = new RegExp(/^[\s+a-zA-Z0-9_.,\-\u00A1-\uFFFF]{1,1000}$/)
     return regex.test(value)
   },
 })
@@ -150,28 +143,28 @@ VeeValidate.Validator.extend('detail', {
 VeeValidate.Validator.extend('weight', {
   getMessage: () => `Số đo  không hợp lệ `,
   validate: (value) => {
-    const regex = new RegExp(/^[0-9]+([,.][0-9]{1,2})?$/)
+    const regex = new RegExp(/^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/)
     return regex.test(value)
   },
 })
 VeeValidate.Validator.extend('length', {
   getMessage: () => `Số đo  không hợp lệ `,
   validate: (value) => {
-    const regex = new RegExp(/^[0-9]+([,.][0-9]{1,2})?$/)
+    const regex = new RegExp(/^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/)
     return regex.test(value)
   },
 })
 VeeValidate.Validator.extend('height', {
   getMessage: () => `Số đo  không hợp lệ `,
   validate: (value) => {
-    const regex = new RegExp(/^[0-9]+([,.][0-9]{1,2})?$/)
+    const regex = new RegExp(/^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/)
     return regex.test(value)
   },
 })
 VeeValidate.Validator.extend('width', {
   getMessage: () => `Số đo  không hợp lệ `,
   validate: (value) => {
-    const regex = new RegExp(/^[0-9]+([,.][0-9]{1,2})?$/)
+    const regex = new RegExp(/^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/)
     return regex.test(value)
   },
 })
