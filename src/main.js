@@ -132,14 +132,14 @@ VeeValidate.Validator.extend('countrycode', {
 })
 
 VeeValidate.Validator.extend('weight', {
-  getMessage: () => `Số đo cân nặng  không hợp lệ `,
+  getMessage: () => `Số  cân nặng  không hợp lệ `,
   validate: (value) => {
     const regex = new RegExp(/^\s*(?=.*[1-9])\d*(?:\.\d{1,20})?\s*$/)
     return regex.test(value)
   },
 })
 VeeValidate.Validator.extend('length', {
-  getMessage: () => `Số chiều dài  không hợp lệ `,
+  getMessage: () => `Số đo chiều dài  không hợp lệ `,
   validate: (value) => {
     const regex = new RegExp(/^\s*(?=.*[1-9])\d*(?:\.\d{1,20})?\s*$/)
     return regex.test(value)
