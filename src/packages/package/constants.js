@@ -1,13 +1,11 @@
 export const PackageStatusInit = 1
-export const PackageStatusWaitingPaid = 2
-export const PackageStatusWattingTransport = 3
-export const PackageStatusTransporting = 4
-export const PackageStatusTransported = 5
-export const PackageStatusWatingProcess = 6
-export const PackageStatusShipping = 7
-export const PackageStatusShipSuccess = 8
-export const PackageStatusReturn = 9
-export const PackageStatusCancel = 10
+export const PackageStatusWattingTransport = 2
+export const PackageStatusTransported = 3
+export const PackageStatusProcessing = 4
+export const PackageStatusShipping = 5
+export const PackageStatusShipSuccess = 6
+export const PackageStatusReturn = 7
+export const PackageStatusCancel = 8
 export const PACKAGE_STATUS_TAB = [
   {
     value: '',
@@ -18,24 +16,16 @@ export const PACKAGE_STATUS_TAB = [
     text: 'Tạo mới',
   },
   {
-    value: PackageStatusWaitingPaid,
-    text: 'Chờ thanh toán',
-  },
-  {
     value: PackageStatusWattingTransport,
     text: 'Chờ lấy',
-  },
-  {
-    value: PackageStatusTransporting,
-    text: 'Đang vận chuyển',
   },
   {
     value: PackageStatusTransported,
     text: 'Đã lấy',
   },
   {
-    value: PackageStatusWatingProcess,
-    text: 'Chờ xử lý',
+    value: PackageStatusProcessing,
+    text: 'Đang xử lý',
   },
   {
     value: PackageStatusShipping,
@@ -60,24 +50,16 @@ export const MAP_NAME_STATUS_PACKAGE = {
     value: 'Tạo mới',
     class: 'badge-primary',
   },
-  [PackageStatusWaitingPaid]: {
-    value: 'Chờ thanh toán',
-    class: 'badge-success',
-  },
   [PackageStatusWattingTransport]: {
     value: 'Chờ lấy',
-    class: 'badge-success',
-  },
-  [PackageStatusTransporting]: {
-    value: 'Đang vận chuyển',
     class: 'badge-success',
   },
   [PackageStatusTransported]: {
     value: 'Đã lấy',
     class: 'badge-success',
   },
-  [PackageStatusWatingProcess]: {
-    value: 'Chờ xử lý',
+  [PackageStatusProcessing]: {
+    value: 'Đang xử lý',
     class: 'badge-success',
   },
   [PackageStatusShipping]: {
