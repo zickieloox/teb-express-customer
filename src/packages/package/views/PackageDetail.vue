@@ -132,17 +132,6 @@
                     </div>
                   </div>
                 </div>
-                <div class="card-block">
-                  <div class="card-header">
-                    <div class="card-title">Yêu cầu khi giao</div>
-                  </div>
-                  <div class="card-content">
-                    {{
-                      $evaluate('package_detail.package.note') ||
-                        'Không có yêu cầu'
-                    }}
-                  </div>
-                </div>
               </div>
               <div v-if="!displayDeliverDetail" class="col-8 p-0">
                 <div class="row">

@@ -210,19 +210,6 @@
                   </div>
                 </div>
               </div>
-
-              <div class="card__w">
-                <div class="card__w-header">
-                  Yêu cầu
-                </div>
-                <div class="card__w-content">
-                  <textarea
-                    class="card__w-area"
-                    placeholder="Nhập yêu cầu khi giao ..."
-                    v-model="note"
-                  ></textarea>
-                </div>
-              </div>
             </div>
             <div class="col-lg-6 col-xl-6 item-gutters">
               <div class="card__w">
@@ -248,7 +235,7 @@
                   </div>
                   <div class="card__w-item">
                     <label class="card__w-label">
-                      Chi tiết : <span>*</span>
+                      Chi tiết hàng hóa : <span>*</span>
                     </label>
                     <div class="card__w-input">
                       <input
@@ -257,7 +244,7 @@
                         v-model="detail"
                         :input="detail"
                         class="form-control"
-                        v-validate="'required|detail'"
+                        v-validate="'required'"
                         name="detail"
                         data-vv-as="Chi tiết hàng hóa"
                         :class="{ 'error-color': errors.has('detail') }"
