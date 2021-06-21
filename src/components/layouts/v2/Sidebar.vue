@@ -117,10 +117,6 @@ export default {
           isOpen: false,
           sub: [
             {
-              route: '/packages/create',
-              title: 'Tạo đơn lẻ',
-            },
-            {
               route: '/packages',
               title: 'Quản lý đơn hàng',
               alias: ['/packages', '/packages/:id'],
@@ -159,16 +155,8 @@ export default {
               title: 'Thông tin tài khoản',
             },
             {
-              route: '/setting/list-sender',
-              title: 'Danh sách người gửi',
-            },
-            {
               route: '',
               title: 'Danh sách hàng hóa',
-            },
-            {
-              route: '',
-              title: 'Quản lý khuyến mãi',
             },
           ],
         },

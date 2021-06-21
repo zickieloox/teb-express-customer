@@ -2,7 +2,7 @@ module.exports = {
   publicPath: process.env.PUBLIC_PATH || '/',
   productionSourceMap: false,
   configureWebpack: {
-    name: 'Lionnix',
+    name: 'Shipping',
     resolve: {
       alias: require('./aliases.config').webpack,
     },

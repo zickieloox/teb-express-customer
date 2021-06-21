@@ -1,10 +1,10 @@
 <template>
   <div id="nav_container" class="p-tabs nav-tabs-horizontal mt-24">
     <button class="icon-nav next" @click="clickLeftNav">
-      <img src="~@/assets/img/left_nav.png" />
+      <i class="left-nav"></i>
     </button>
-    <button class="icon-nav prev" @click="clickRightNav">
-      <img src="~@/assets/img/right_nav.svg" />
+    <button class="icon-nav prev active" @click="clickRightNav">
+      <i class="right-nav"></i>
     </button>
     <ul
       role="tablist"
@@ -109,11 +109,17 @@ export default {
       if (!this.el) {
         return
       }
+      if (this.el === 1) {
+        document.getElementsByClassName('next')[0].classList.remove('active')
+      } else {
+        document.getElementsByClassName('prev')[0].classList.add('active')
+        document.getElementsByClassName('next')[0].classList.add('active')
+      }
       this.el--
       let selector = 'item_nav_' + this.el
       this.right = document.getElementById(selector).offsetLeft - 34
     },
-    clickRightNav() {
+    getStop() {
       let width = 0
       let stop = 0
       for (
@@ -128,10 +134,20 @@ export default {
           break
         }
       }
+      return stop
+    },
+    clickRightNav() {
+      const stop = this.getStop()
+
       if (this.el === stop) {
         return
       }
-
+      if (this.el + 1 === stop) {
+        document.getElementsByClassName('prev')[0].classList.remove('active')
+      } else {
+        document.getElementsByClassName('prev')[0].classList.add('active')
+        document.getElementsByClassName('next')[0].classList.add('active')
+      }
       this.el++
       let selector = 'item_nav_' + this.el
 
@@ -141,32 +157,6 @@ export default {
 }
 </script>
 <style>
-ul#nav_packages {
-  z-index: 1;
-  width: 200%;
-  -webkit-transition: all 0.3s ease-in-out;
-  -moz-transition: all 0.3s ease-in-out;
-  -o-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
-}
-#nav_container {
-  position: relative;
-  overflow: hidden;
-}
-.icon-nav {
-  position: absolute;
-  border: none;
-  background-color: #fff;
-  z-index: 999;
-  bottom: 10px;
-  display: none;
-}
-.icon-nav.next {
-  left: 0;
-}
-.icon-nav.prev {
-  right: 0;
-}
 @media only screen and (max-width: 1366px) {
   .icon-nav {
     display: block !important;

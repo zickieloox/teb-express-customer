@@ -31,7 +31,7 @@ export default {
   metaInfo() {
     return {
       title: this.$route.meta.title || '',
-      titleTemplate: '%s - Lionnix',
+      titleTemplate: '%s - Shipping',
     }
   },
   created() {
