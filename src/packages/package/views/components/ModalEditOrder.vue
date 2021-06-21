@@ -3,7 +3,11 @@
     <p-modal :active="visible" @close="handleClose" :title="`Sửa đơn`">
       <template>
         <div class="modal__edit-order-header">
-          <img src="@/assets/img/InfoCircle.svg" alt="" />
+          <img
+            style="margin-bottom: 3px"
+            src="@/assets/img/InfoCircle.svg"
+            alt="alert"
+          />
           <b>Lưu ý:</b> <i>(<span>*</span>) Là các trường bắt buộc nhập.</i>
         </div>
         <div class="modal__edit-order-content">
