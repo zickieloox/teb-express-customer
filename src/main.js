@@ -98,10 +98,7 @@ VeeValidate.Validator.extend('phoneAddress', {
   getMessage: () => `Số điện thoại không hợp lệ`,
   validate: (value) => {
     /* eslint-disable */
-    const regex = new RegExp(
-      /^[\+]*[(]?[0-9]{1,10}[)]?[\s]?[-\s\.]?[\s]?[0-9]{1,10}[\s]?[-\s\. ]?[\s]?[0-9]{0,20}|^[(][+]?[0-9]{1,10}[)]?[\s]?[-\s\.]?[\s]?[0-9]{1,10}[\s]?[-\s\. ]?[\s]?[0-9]{0,20}$/im
-      // /\(?([0-9]{2})\)?([ .-]?)([0-9]{2})+$/
-    )
+    const regex = new RegExp(/^[0-9+\-() ]*$/)
     return regex.test(value)
   },
 })
@@ -133,38 +130,32 @@ VeeValidate.Validator.extend('countrycode', {
     return regex.test(value)
   },
 })
-VeeValidate.Validator.extend('detail', {
-  getMessage: () => `Tên hàng không hợp lệ `,
-  validate: (value) => {
-    const regex = new RegExp(/^[\s+a-zA-Z0-9_.,\-\u00A1-\uFFFF]{1,1000}$/)
-    return regex.test(value)
-  },
-})
+
 VeeValidate.Validator.extend('weight', {
-  getMessage: () => `Số đo  không hợp lệ `,
+  getMessage: () => `Số đo cân nặng  không hợp lệ `,
   validate: (value) => {
-    const regex = new RegExp(/^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/)
+    const regex = new RegExp(/^\s*(?=.*[1-9])\d*(?:\.\d{1,20})?\s*$/)
     return regex.test(value)
   },
 })
 VeeValidate.Validator.extend('length', {
-  getMessage: () => `Số đo  không hợp lệ `,
+  getMessage: () => `Số chiều dài  không hợp lệ `,
   validate: (value) => {
-    const regex = new RegExp(/^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/)
+    const regex = new RegExp(/^\s*(?=.*[1-9])\d*(?:\.\d{1,20})?\s*$/)
     return regex.test(value)
   },
 })
 VeeValidate.Validator.extend('height', {
-  getMessage: () => `Số đo  không hợp lệ `,
+  getMessage: () => `Số đo chiều cao  không hợp lệ `,
   validate: (value) => {
-    const regex = new RegExp(/^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/)
+    const regex = new RegExp(/^\s*(?=.*[1-9])\d*(?:\.\d{1,20})?\s*$/)
     return regex.test(value)
   },
 })
 VeeValidate.Validator.extend('width', {
-  getMessage: () => `Số đo  không hợp lệ `,
+  getMessage: () => `Số đo chiều rộng  không hợp lệ `,
   validate: (value) => {
-    const regex = new RegExp(/^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$/)
+    const regex = new RegExp(/^\s*(?=.*[1-9])\d*(?:\.\d{1,20})?\s*$/)
     return regex.test(value)
   },
 })
