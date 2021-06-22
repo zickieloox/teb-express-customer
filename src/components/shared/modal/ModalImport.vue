@@ -1,5 +1,10 @@
 <template>
-  <p-modal :active="visible" :title="title" @close="handleClose">
+  <p-modal
+    :active="visible"
+    :title="title"
+    @close="handleClose"
+    :disable-close="uploading"
+  >
     <template v-if="uploading">
       <div class="text-center processing">
         <p>Quá trình nhập file excel có thể sẽ mất một vài phút ...</p>
@@ -38,7 +43,11 @@
     <template slot="footer">
       <a></a>
       <div class="group-button">
-        <p-button type="default" @click="handleClose" :disabled="loading">
+        <p-button
+          type="default"
+          @click="handleClose"
+          :disabled="loading || uploading"
+        >
           Bỏ qua
         </p-button>
         <p-button
@@ -108,7 +117,7 @@ export default {
   },
   methods: {
     handleClose() {
-      if (this.isLoading === true) {
+      if (this.isLoading === true || this.uploading) {
         return
       }
       this.$emit('update:visible', false)

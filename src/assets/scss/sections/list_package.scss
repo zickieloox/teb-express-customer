@@ -189,6 +189,11 @@
         color: #F5222D;
       }
     }
+
+    span[disabled="disabled"] {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
   }
 
   .detail_product {
@@ -248,34 +253,40 @@
     .icon-nav.next {
       left: 0;
       cursor: not-allowed;
-      i{
+
+      i {
         display: inline-block;
         width: 22px;
         height: 22px;
         background-image: url("~@/assets/img/left_nav.png");
         vertical-align: middle;
       }
-      &.active{
+
+      &.active {
         cursor: pointer !important;
-        i{
+
+        i {
           background-image: url("~@/assets/img/left_nav_active.svg") !important;
         }
       }
     }
 
-    .icon-nav.prev{
+    .icon-nav.prev {
       right: 0;
       cursor: not-allowed;
-      i{
+
+      i {
         display: inline-block;
         width: 22px;
         height: 22px;
         background-image: url("~@/assets/img/right_nav.svg");
         vertical-align: middle;
       }
-      &.active{
+
+      &.active {
         cursor: pointer !important;
-        i{
+
+        i {
           background-image: url("~@/assets/img/right_nav_active.svg") !important;
         }
       }

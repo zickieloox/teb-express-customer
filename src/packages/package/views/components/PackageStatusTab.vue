@@ -111,6 +111,7 @@ export default {
       }
       if (this.el === 1) {
         document.getElementsByClassName('next')[0].classList.remove('active')
+        document.getElementsByClassName('prev')[0].classList.add('active')
       } else {
         document.getElementsByClassName('prev')[0].classList.add('active')
         document.getElementsByClassName('next')[0].classList.add('active')
@@ -144,6 +145,7 @@ export default {
       }
       if (this.el + 1 === stop) {
         document.getElementsByClassName('prev')[0].classList.remove('active')
+        document.getElementsByClassName('next')[0].classList.add('active')
       } else {
         document.getElementsByClassName('prev')[0].classList.add('active')
         document.getElementsByClassName('next')[0].classList.add('active')
