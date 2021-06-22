@@ -3,7 +3,11 @@
     <p-modal :active="visible" @close="handleClose" :title="`Sửa đơn`">
       <template>
         <div class="modal__edit-order-header">
-          <img src="@/assets/img/InfoCircle.svg" alt="" />
+          <img
+            style="margin-bottom: 3px"
+            src="@/assets/img/InfoCircle.svg"
+            alt="alert"
+          />
           <b>Lưu ý:</b> <i>(<span>*</span>) Là các trường bắt buộc nhập.</i>
         </div>
         <div class="modal__edit-order-content">
@@ -378,9 +382,14 @@
             <div class="notch-bt"></div>
           </div>
           <div class="total-action">
-            <a href="#" class="btn btn-default" @click="handleClose">Hủy bỏ</a>
-            <a href="#" class="btn  btn-primary  " @click="handleUpdate"
-              >Cập nhật</a
+            <p-button :type="`default`" class="btn" @click="handleClose"
+              >Hủy bỏ</p-button
+            >
+            <p-button
+              class="btn  btn-primary "
+              :disabled="isUpdate"
+              @click="handleUpdate"
+              >Cập nhật</p-button
             >
           </div>
         </div>
@@ -391,10 +400,12 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 import { FETCH_LIST_PRODUCTS, GET_SERVICE, UPDATE_PACKAGE } from '../../store'
+import PButton from '../../../../../uikit/components/button/Button'
 // import {GET_SENDER, LIST_SENDER} from "../../../setting/store";
 
 export default {
   name: 'ModalEditOrder',
+  components: { PButton },
   props: {
     visible: {
       type: Boolean,
@@ -441,6 +452,7 @@ export default {
       address: '',
       isDisable: false,
       address2: '',
+      isUpdate: false,
     }
   },
   created() {
@@ -527,6 +539,7 @@ export default {
       if (!validate) {
         return
       }
+      this.isUpdate = true
       const { id } = this.$route.params
       const params = {
         id: id,
@@ -548,6 +561,7 @@ export default {
       }
       let result = await this[UPDATE_PACKAGE](params)
       if (result.error) {
+        this.isUpdate = false
         this.$toast.open({
           type: 'error',
           message: result.message,
@@ -560,6 +574,7 @@ export default {
         message: 'Sửa đơn thành công',
         duration: 3000,
       })
+      this.isUpdate = false
       this.handleClose()
       this.$emit('create', true)
     },

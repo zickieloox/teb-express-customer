@@ -60,9 +60,10 @@
     padding: 16px;
     top: -19px;
     left: 100px;
-    width: 100%;
+    //width: 100%;
     z-index: 10000;
     background: #ffffff;
+    //min-width: 100px;
   }
   .pop-up-more-extra-fee > div {
     display: flex;
@@ -74,6 +75,8 @@
     font-size: 14px;
     line-height: 22px;
     z-index: 100;
+    width: max-content;
+    margin-right: 15px;
   }
 
   .pop-up-more-extra-fee > div > div:nth-last-child {

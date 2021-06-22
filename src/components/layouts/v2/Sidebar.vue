@@ -16,7 +16,7 @@
             <span class="site-menu-title" @click="menu.isOpen = !menu.isOpen">{{
               menu.title
             }}</span>
-            <div class="icon-sub">
+            <div class="icon-sub" @click="menu.isOpen = !menu.isOpen">
               <img
                 :class="{ 'is-active': menu.isOpen }"
                 class=""
