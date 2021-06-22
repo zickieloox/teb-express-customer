@@ -51,6 +51,10 @@
           .birthday {
             .reportrange-text{
               padding-top: 10px;
+              line-height: 20px;
+              img {
+                margin-top: 3px !important;
+              }
             }
             .daterangepicker {
               top:45px !important;

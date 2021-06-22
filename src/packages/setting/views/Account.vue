@@ -128,6 +128,7 @@ export default {
     this.data.full_name = this.user.full_name
     this.data.birthday = this.user.birthday
     this.label = this.data.birthday ? this.data.birthday : 'dd/mm/yyyy'
+    console.log(this.label)
   },
   data() {
     return {
@@ -145,7 +146,7 @@ export default {
       isSelectDate: false,
       localeData: {
         firstDay: 1,
-        format: 'dd/MM/YYYY',
+        format: 'dd/MM/yyyy',
         monthNames: [
           'Tháng 1',
           'Tháng 2',

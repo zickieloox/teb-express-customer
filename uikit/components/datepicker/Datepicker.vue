@@ -62,6 +62,7 @@
       >
         {{ dateRange.startDate | date('dd/MM/yyyy') }}
       </span>
+      <span class="label-date-picker" v-else>{{ label }}</span>
     </div>
   </date-range-picker>
 </template>
