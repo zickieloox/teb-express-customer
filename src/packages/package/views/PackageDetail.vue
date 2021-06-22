@@ -342,17 +342,33 @@
                                   </td>
                                   <td>{{ item.updated_user_name }}</td>
                                   <td>
-                                    {{
-                                      $evaluate(
-                                        `changePackageType[${item.type}]`
-                                      ) || ''
-                                    }}
+                                    <p
+                                      class="mb-0"
+                                      v-for="ov in item.type"
+                                      :key="ov.id"
+                                    >
+                                      {{ changePackageType[ov] || '-' }}
+                                    </p>
                                   </td>
                                   <td>
-                                    {{ item.old_value }}
+                                    <p
+                                      class="mb-0"
+                                      v-for="ov in item.old_value"
+                                      :key="ov.id"
+                                    >
+                                      {{ ov || '-' }}
+                                    </p>
                                   </td>
-                                  <td>{{ item.value }}</td>
-                                  <td>{{ item.fee | formatPrice }}</td>
+                                  <td>
+                                    <p
+                                      class="mb-0"
+                                      v-for="ov in item.value"
+                                      :key="ov.id"
+                                    >
+                                      {{ ov || '-' }}
+                                    </p>
+                                  </td>
+                                  <td>{{ item.extra_fee | formatPrice }}</td>
                                 </tr>
                               </tbody>
                             </table>
@@ -461,10 +477,36 @@ export default {
       const start =
         (this.auditPagination.currentPage - 1) *
         this.auditPagination.itemsPerPage
-      return this.package_detail.audit_logs.slice(
+      const auditLogsSlice = this.package_detail.audit_logs.slice(
         start,
         start + this.auditPagination.itemsPerPage
       )
+
+      let result = []
+      auditLogsSlice.forEach((ele) => {
+        let foundResult = result.findIndex(
+          (e) =>
+            e.created_at === ele.created_at &&
+            e.updated_user_id === ele.updated_user_id
+        )
+        if (foundResult >= 0) {
+          result[foundResult].type.push(ele.type)
+          result[foundResult].old_value.push(ele.old_value)
+          result[foundResult].value.push(ele.value)
+        } else {
+          result.push({
+            created_at: ele.created_at,
+            updated_at: ele.updated_at,
+            updated_user_name: ele.updated_user_name,
+            updated_user_id: ele.updated_user_id,
+            extra_fee: ele.extra_fee,
+            type: [ele.type],
+            old_value: [ele.old_value],
+            value: [ele.value],
+          })
+        }
+      })
+      return result
     },
     sumExtraFee() {
       if (
