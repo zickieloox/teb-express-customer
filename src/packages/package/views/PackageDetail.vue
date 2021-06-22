@@ -474,16 +474,8 @@ export default {
       )
     },
     displayAuditLogs() {
-      const start =
-        (this.auditPagination.currentPage - 1) *
-        this.auditPagination.itemsPerPage
-      const auditLogsSlice = this.package_detail.audit_logs.slice(
-        start,
-        start + this.auditPagination.itemsPerPage
-      )
-
       let result = []
-      auditLogsSlice.forEach((ele) => {
+      this.package_detail.audit_logs.forEach((ele) => {
         let foundResult = result.findIndex(
           (e) =>
             e.created_at === ele.created_at &&
@@ -506,7 +498,11 @@ export default {
           })
         }
       })
-      return result
+
+      const start =
+        (this.auditPagination.currentPage - 1) *
+        this.auditPagination.itemsPerPage
+      return result.slice(start, start + this.auditPagination.itemsPerPage)
     },
     sumExtraFee() {
       if (
