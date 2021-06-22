@@ -90,7 +90,7 @@
                         }}</div></div
                       >
                     </div>
-                    <div v-if="package_detail.package.address_2" class="row">
+                    <div class="row">
                       <div class="col-4 mb-8">Địa chỉ phụ:</div>
                       <div class="col-8"
                         ><div>{{
