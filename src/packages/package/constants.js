@@ -94,4 +94,5 @@ export const CHANGE_PACKAGE_TYPE = [
   'Yêu cầu khi giao',
   'Dịch vụ',
   'Chi tiết hàng hóa',
+  'Địa chỉ phụ người nhận',
 ]
