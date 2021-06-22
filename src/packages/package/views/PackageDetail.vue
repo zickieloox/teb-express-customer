@@ -352,7 +352,13 @@
                                     {{ item.old_value }}
                                   </td>
                                   <td>{{ item.value }}</td>
-                                  <td>{{ item.extra_fee | formatPrice }}</td>
+                                  <td
+                                    :class="{
+                                      'disable-extra-fee':
+                                        item.extra_fee_status != 1,
+                                    }"
+                                    >{{ item.extra_fee | formatPrice }}</td
+                                  >
                                 </tr>
                               </tbody>
                             </table>
@@ -409,6 +415,9 @@
   font-size: 14px;
   line-height: 22px;
   color: #313232;
+}
+.disable-extra-fee {
+  color: #cfd0d0;
 }
 </style>
 <script>
