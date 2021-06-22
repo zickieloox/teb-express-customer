@@ -114,8 +114,8 @@
               </div>
 
               <div class="rule">
-                Chúng tôi chỉ chấp nhận file dưới 5Mb và có các định dạng: CSV,
-                PNG, JPG, JPEG
+                Định dạng file hợp lệ : XLSX, PNG, JPG, JPEG.Và có dung lượng
+                dưới 5Mb
               </div>
             </div>
           </div>
