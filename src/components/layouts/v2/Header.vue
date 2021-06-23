@@ -7,7 +7,7 @@
       <div class="navbar__header-content">
         <div class="navbar__header-input">
           <p-input
-            placeholder="Tra cứu đơn hàng"
+            placeholder="Tra cứu theo mã vận đơn "
             type="search"
             hiddenPass="on"
             prefixIcon="search"
