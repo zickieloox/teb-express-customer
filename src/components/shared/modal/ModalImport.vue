@@ -179,5 +179,6 @@ export default {
 <style scoped>
 .rule {
   font-size: 12px;
+  width: 50%;
 }
 </style>
