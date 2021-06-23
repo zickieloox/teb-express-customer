@@ -29,7 +29,7 @@
             <vcl-table class=" md-20" v-if="isFetching"></vcl-table>
             <template v-else-if="listclaim.length > 0">
               <div class="table-responsive">
-                <table class="table">
+                <table class="table table-hover">
                   <thead>
                     <tr class="list__claim-title">
                       <th>MÃ KHIẾU NẠI</th>
