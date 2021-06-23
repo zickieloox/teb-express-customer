@@ -326,7 +326,7 @@
                                   <th>Loại thay đổi</th>
                                   <th>Nội dung cũ</th>
                                   <th>Nội dung mới</th>
-                                  <th>Phí sửa đơn</th>
+                                  <th>Phí phát sinh</th>
                                 </tr>
                               </thead>
                               <tbody>
