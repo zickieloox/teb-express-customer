@@ -11,6 +11,8 @@
             type="search"
             hiddenPass="on"
             prefixIcon="search"
+            @keyup.enter="handleSearchCode"
+            v-model="searchCode"
           />
         </div>
         <div class="navbar__header-drop">
@@ -42,6 +44,7 @@
 </template>
 <script>
 import mixinDownload from '@/packages/shared/mixins/download'
+import evenBus from '../../../core/utils/evenBus'
 
 export default {
   components: {},
@@ -66,7 +69,23 @@ export default {
       socket: null,
       isVisibleAddShop: false,
       query: '',
+      searchCode: '',
     }
+  },
+  methods: {
+    handleSearchCode() {
+      if (this.$route.name != 'list-packages' && this.searchCode) {
+        this.$router.push({
+          name: 'list-packages',
+          query: {
+            limit: 50,
+            page: 1,
+            code: this.searchCode.trim(),
+          },
+        })
+      }
+      evenBus.$emit('code', this.searchCode.trim())
+    },
   },
 }
 </script>

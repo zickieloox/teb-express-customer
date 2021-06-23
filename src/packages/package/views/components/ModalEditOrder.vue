@@ -372,6 +372,8 @@
             </div>
           </div>
         </div>
+      </template>
+      <template slot="footer">
         <div class="modal__edit-order-footer">
           <div class="total-title">
             Tổng cước:

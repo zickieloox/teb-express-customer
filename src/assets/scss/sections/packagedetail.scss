@@ -106,12 +106,17 @@
       color: red;
     }
   }
+  .modal-footer{
+    padding:0px 0px 10px 0px;
+    overflow: hidden;
+  }
   &-footer{
     box-shadow: 0px 0px 1px rgba(40, 41, 61, 0.12), 0px 0.5px 2px rgba(96, 97, 112, 0.26);
     margin-top: 9px;
     border-radius: 4px;
     display: flex;
     height: 88px;
+    width: 100%;
     .total-title{
       padding: 21px 16px;
       flex: 1;
