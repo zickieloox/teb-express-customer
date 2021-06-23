@@ -72,7 +72,7 @@
             <a class="police__text-link" href="/"
               >Điều kiện sử dụng & chính sách</a
             >
-            của xxx.
+            của LIONBAY.
           </span>
         </div>
         <p-button

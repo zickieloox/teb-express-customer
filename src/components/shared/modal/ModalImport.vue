@@ -14,7 +14,7 @@
     <template v-else>
       <div align="center">
         <span class="example">
-          Tải về file <a :href="csvTemplate" target="_blank">mẫu CSV</a>
+          Tải về file <a :href="csvTemplate" target="_blank">mẫu XLSX</a>
         </span>
         <upload
           class="order-uploader"
@@ -112,7 +112,7 @@ export default {
       return this.files[this.files.length - 1]
     },
     csvTemplate() {
-      return `${process.env.VUE_APP_ASSETS}/lionnix-template-fulfill-v2.csv`
+      return `${process.env.VUE_APP_ASSETS}/shipping-templatee.xlsx`
     },
   },
   methods: {
