@@ -112,7 +112,7 @@ export default {
       return this.files[this.files.length - 1]
     },
     csvTemplate() {
-      return `${process.env.VUE_APP_ASSETS}/shipping-templatee.xlsx`
+      return `${process.env.VUE_APP_ASSETS}/shipping-template.xlsx`
     },
   },
   methods: {
