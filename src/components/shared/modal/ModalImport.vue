@@ -41,7 +41,17 @@
     </template>
 
     <template slot="footer">
-      <a></a>
+      <div class="rule">
+        <img
+          style="margin-bottom: 3px"
+          src="@/assets/img/InfoCircle.svg"
+          alt="alert"
+        />
+        <i
+          ><b>Lưu ý:</b>Định dạng file hợp lệ là XLSX và có dung lượng dưới
+          2Mb.</i
+        >
+      </div>
       <div class="group-button">
         <p-button
           type="default"
@@ -166,3 +176,8 @@ export default {
   },
 }
 </script>
+<style scoped>
+.rule {
+  font-size: 12px;
+}
+</style>

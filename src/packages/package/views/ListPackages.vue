@@ -189,6 +189,8 @@ import ModalImportPreviewPackage from './components/ModalImportPreviewPackage'
 import ModalImport from '@components/shared/modal/ModalImport'
 import { mapState, mapActions } from 'vuex'
 import mixinDownload from '@/packages/shared/mixins/download'
+import evenBus from '../../../core/utils/evenBus'
+
 import {
   PACKAGE_STATUS_TAB,
   MAP_NAME_STATUS_PACKAGE,
@@ -238,6 +240,7 @@ export default {
     }
   },
   created() {
+    evenBus.$on('code', this.updateQuery)
     this.filter = this.getRouteQuery()
     this.searchCode = this.filter.code
     this.init()
@@ -283,6 +286,11 @@ export default {
     handleSearchCode() {
       this.filter.page = 1
       this.searchCode = this.searchCode.trim()
+      this.$set(this.filter, 'code', this.searchCode)
+    },
+    updateQuery(e) {
+      this.filter.page = 1
+      this.searchCode = e
       this.$set(this.filter, 'code', this.searchCode)
     },
     handleClosePreview() {
