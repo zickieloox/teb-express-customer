@@ -377,7 +377,8 @@
         <div class="modal__edit-order-footer">
           <div class="total-title">
             Tổng cước:
-            <span class="total-number">{{ total | formatPrice }}</span>
+            <span class="total-number">{{ 0 | formatPrice }}</span>
+            <div class="text">Bảng giá không áp dụng cho hành trình này!</div>
           </div>
           <div class="divider">
             <div class="notch"></div>
