@@ -120,16 +120,19 @@
     .total-title{
       padding: 21px 16px;
       flex: 1;
-      display: flex;
       align-items: center;
       color: $color-neutral-10;
       font-weight: 600;
-      span{
+      .total-number{
         color: $color-neutral-10;
         font-weight: 600;
         font-size: 20px;
         margin-left: 5px;
         margin-bottom: 5px;
+      }
+      .text{
+        color:red;
+        font-size: 12px;
       }
     }
     .total-action{
