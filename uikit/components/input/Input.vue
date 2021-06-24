@@ -355,7 +355,7 @@ export default {
       validateEmail: [
         {
           message: 'Số điện thoại / Email không hợp lệ',
-          regex: /^[a-z0-9A-Z_\\.]{1,32}@[a-z0-9A-Z]{2,}(\.[a-z0-9A-Z]{2,4}){1,2}$/,
+          regex: /^[a-z0-9A-Z_\\.]{1,32}@[a-z0-9A-Z\\-]{2,}(\.[a-z0-9A-Z]{2,4}){1,2}$/,
           result: true,
         },
       ],
