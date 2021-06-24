@@ -24,7 +24,7 @@
           <div class="card-body">
             <div class="d-flex">
               <p-input
-                placeholder="Tìm theo mã vận đơn..."
+                placeholder="Tìm theo mã đơn hàng hoặc mã vận đơn..."
                 suffixIcon="search"
                 type="search"
                 v-model="searchCode"
@@ -94,7 +94,7 @@
                       </th>
                       <template>
                         <th :class="{ hidden: hiddenClass }">Mã vận đơn</th>
-                        <th :class="{ hidden: hiddenClass }">Sku</th>
+                        <th :class="{ hidden: hiddenClass }">Mã đơn hàng</th>
                         <th :class="{ hidden: hiddenClass }">Người nhận</th>
                         <th :class="{ hidden: hiddenClass }"
                           >Chi tiết hàng hóa</th

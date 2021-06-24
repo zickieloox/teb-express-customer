@@ -65,7 +65,7 @@
                       v-if="claim.package"
                       :to="{
                         name: 'package-detail',
-                        params: { id: claim.package.code },
+                        params: { id: claim.package.id },
                       }"
                     >
                       {{ claim.package.code }}
