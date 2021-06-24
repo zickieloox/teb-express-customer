@@ -326,7 +326,7 @@
                                   <th>Loại thay đổi</th>
                                   <th>Nội dung cũ</th>
                                   <th>Nội dung mới</th>
-                                  <th>Phí sửa đơn</th>
+                                  <th>Phí phát sinh</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -352,13 +352,7 @@
                                     {{ item.old_value }}
                                   </td>
                                   <td>{{ item.value }}</td>
-                                  <td
-                                    :class="{
-                                      'disable-extra-fee':
-                                        item.extra_fee_status != 1,
-                                    }"
-                                    >{{ item.extra_fee | formatPrice }}</td
-                                  >
+                                  <td>{{ item.extra_fee | formatPrice }}</td>
                                 </tr>
                               </tbody>
                             </table>
