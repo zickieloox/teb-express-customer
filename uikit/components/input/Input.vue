@@ -382,7 +382,7 @@ export default {
         {
           message: 'Số điện thoại / Email không hợp lệ',
           // regex: /^[+]?[(]?[0-9]{2,3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
-          regex: /^[0-9+\-() ]{1,20}$/,
+          regex: /^[+]?[0-9]{1,20}$/,
           result: true,
         },
       ],
