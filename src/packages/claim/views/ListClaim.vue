@@ -36,7 +36,7 @@
                       <th>MÃ VẬN ĐƠN </th>
                       <th>TIÊU ĐỀ</th>
                       <th>NGÀY TẠO</th>
-                      <th>NGÀY CẬP NHẬT GẦN NHẤT</th>
+                      <th>NGÀY CẬP NHẬT</th>
                       <th>TRẠNG THÁI </th>
                     </tr>
                   </thead>
@@ -55,7 +55,7 @@
                         </router-link>
                       </td>
                       <td>{{ item.package.code }}</td>
-                      <td width="235">
+                      <td width="300">
                         <p-tooltip
                           :label="item.title"
                           size="large"
@@ -66,12 +66,8 @@
                           {{ truncate(item.title, 15) }}
                         </p-tooltip>
                       </td>
-                      <td>{{
-                        item.created_at | datetime('dd-MM-yyyy HH:mm:ss')
-                      }}</td>
-                      <td>{{
-                        item.updated_at | datetime('dd-MM-yyyy HH:mm:ss')
-                      }}</td>
+                      <td>{{ item.created_at | datetime('dd-MM-yyyy') }}</td>
+                      <td>{{ item.updated_at | datetime('dd-MM-yyyy') }}</td>
                       <td>{{ converStatus(item.status) }}</td>
                     </tr>
                   </tbody>

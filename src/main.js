@@ -98,7 +98,7 @@ VeeValidate.Validator.extend('phoneAddress', {
   getMessage: () => `Số điện thoại không hợp lệ`,
   validate: (value) => {
     /* eslint-disable */
-    const regex = new RegExp(/^[0-9+\-() ]{1,20}$/)
+    const regex = new RegExp(/^[\+]?[0-9]{1,20}$/)
     return regex.test(value)
   },
 })
