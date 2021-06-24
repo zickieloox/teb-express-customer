@@ -313,6 +313,7 @@ export default {
       this.content = ''
       this.files = []
       this.reason = null
+      this.isUploading = false
       ;(this.validateSize = false), (this.errMessage = [])
       this.$validator.pause()
       this.$nextTick(() => {
