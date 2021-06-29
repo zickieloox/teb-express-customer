@@ -6,7 +6,7 @@
       </div>
       <div class="page-body">
         <div class="row">
-          <div class="col-6">
+          <div class="col-8">
             <div class="title">Token</div>
             <div class="user-token">
               <div class="user-token-input">
