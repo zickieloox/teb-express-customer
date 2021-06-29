@@ -158,6 +158,10 @@ export default {
               route: '',
               title: 'Danh sách hàng hóa',
             },
+            {
+              route: '/setting/api',
+              title: 'API',
+            },
           ],
         },
       },

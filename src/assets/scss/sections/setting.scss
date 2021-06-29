@@ -16,6 +16,47 @@
         }
       }
     }
+
+    .user-token, .user-token > div {
+      margin-right: 15px;
+      display: flex;
+      align-items: center;
+    }
+
+    .user-token-input > div {
+      background: #fff;
+      width: 400px;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+
+    .user-token-input {
+      position: relative;
+    }
+
+    .user-token-input .btn {
+      position: absolute;
+      right: 0;
+      z-index: 10;
+      outline: none;
+    }
+
+    .title {
+      font-weight: bold;
+      font-size: 12px;
+      line-height: 16px;
+      letter-spacing: 0.75px;
+      text-transform: uppercase;
+      color: $color-neutral-5;
+      margin-bottom: 16px;
+    }
+    .user-token-note {
+      padding-top: 5px;
+      font-style: italic;
+    }
+    .form-control {
+      padding: 12px 100px 12px 16px;
+    }
   }
 }
 
@@ -117,3 +158,4 @@
     color: #F5222D;
   }
 }
+

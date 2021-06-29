@@ -55,7 +55,7 @@ export default {
     },
     description: {
       type: String,
-      default: '',
+      default: 'Bạn có chắc chắn không?',
     },
     actionConfirm: {
       type: String,

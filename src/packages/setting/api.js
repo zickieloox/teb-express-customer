@@ -45,4 +45,20 @@ export default {
   updateSender(payload) {
     return http.post(`/users/update-sender/${payload.id}`, payload.body)
   },
+
+  /**
+   * Get user token
+   * @return {*}
+   */
+  getUserToken() {
+    return http.get(`/users/token`)
+  },
+
+  /**
+   * Reset user token
+   * @return {*}
+   */
+  resetUserToken() {
+    return http.put(`/users/token`)
+  },
 }
