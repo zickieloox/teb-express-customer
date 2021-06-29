@@ -24,7 +24,7 @@
                   class="btn btn-default"
                   @click.prevent="showUserToken"
                 >
-                  <span>Show</span>
+                  <span>{{ isShowToken ? 'Hide' : 'Show' }} </span>
                 </a>
               </div>
               <a
