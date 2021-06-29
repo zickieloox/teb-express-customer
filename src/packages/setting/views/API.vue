@@ -37,7 +37,7 @@
             </div>
 
             <div class="title mt-40">API</div>
-            <a style="color:#20bfca" href="#">Danh sách API</a>
+            <a style="color:#20bfca" href="#">List API </a>
 
             <br />
             <div class="user-token-note">
