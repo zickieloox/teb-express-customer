@@ -51,7 +51,7 @@
             <div class="info-bill"
               >Ngày tạo:
               <span class="info-number">{{
-                bill.created_at | datetime('dd-MM-yyyy')
+                bill.created_at | datetime('dd-MM-yyyy HH:mm:ss ')
               }}</span>
             </div>
             <div class="info-bill"
@@ -91,6 +91,7 @@
                   <thead>
                     <tr class="table-header">
                       <th>MÃ VẬN ĐƠN </th>
+                      <th>THỜI GIAN </th>
                       <th width="400">PHÍ VẬN ĐƠN </th>
                     </tr>
                   </thead>
@@ -111,6 +112,9 @@
                           <img src="@/assets/img/external.svg" />
                         </router-link>
                       </td>
+                      <td>{{
+                        item.created_at | datetime('dd-MM-yyyy HH:mm:ss')
+                      }}</td>
                       <td>+ {{ item.shipping_fee | formatPrice }}</td>
                     </tr>
                   </tbody>
@@ -197,7 +201,7 @@
                     class="btn-pagi"
                     @click="nextExtraFee"
                     :class="{
-                      'disable-next-page': filterEdit.page >= totalPageExtra,
+                      'disable-next-page': filterExtra.page >= totalPageExtra,
                     }"
                   >
                     <i class="fas fa-chevron-right"></i>
