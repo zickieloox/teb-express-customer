@@ -49,10 +49,15 @@
               @click="handleModal"
               href="#"
               class="btn btn-primary-custom ml-7"
+              v-if="package_detail.package.status == 1"
             >
               <span>Sửa đơn</span>
             </a>
-            <a href="#" class="btn btn-primary ml-7">
+            <a
+              v-if="package_detail.package.status == 1"
+              href="#"
+              class="btn btn-primary ml-7"
+            >
               <span>Vận đơn</span>
             </a>
           </div>

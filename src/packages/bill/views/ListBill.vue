@@ -149,7 +149,7 @@
                     <tr class="table-header">
                       <th width="350">MÃ VẬN ĐƠN </th>
                       <th>THỜI GIAN </th>
-                      <th width="400">PHÍ VẬN ĐƠN </th>
+                      <th width="400">PHÍ SỬA ĐƠN </th>
                     </tr>
                   </thead>
 
@@ -208,7 +208,7 @@
                     <tr class="table-header">
                       <th width="350">MÃ VẬN ĐƠN </th>
                       <th>THỜI GIAN </th>
-                      <th width="400">PHÍ VẬN ĐƠN </th>
+                      <th width="400">PHÍ PHÁT SINH </th>
                     </tr>
                   </thead>
 
@@ -277,14 +277,14 @@ export default {
       search: '',
       filterEdit: {
         id: '',
-        type: 7,
+        type: 8,
         limit: 5,
         page: 1,
       },
       filterExtra: {
         limit: 5,
         page: 1,
-        type: 8,
+        type: 7,
         id: '',
       },
       total_fee: 0,
@@ -325,11 +325,12 @@ export default {
       this.isFetching = true
       this.handleUpdateRouteQuery()
       let result = await this[FETCH_BILL_DETAIL](this.filter)
+      this.bill = result.bill
+      this.labelDate = date(this.bill.created_at, 'dd-MM-yyyy')
       if (result.error) {
         this.$toast.open({ type: 'danger', message: result.message })
         return
       }
-      this.bill = result.bill
       this.total_fee = result.total
       if (result.bill) {
         this.filterEdit.id = this.bill.id
@@ -436,8 +437,5 @@ export default {
   height: 40px;
   border: 1px solid #ccc;
   border-radius: 8px;
-}
-.isFetch {
-  display: none;
 }
 </style>

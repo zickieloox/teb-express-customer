@@ -70,13 +70,17 @@
                         <span class="bulk-actions__selection-count">{{
                           selectionCountText
                         }}</span>
-                        <p-button class="bulk-actions__selection-status"
+                        <p-button
+                          :disabled="createOrder(filter.status)"
+                          class="bulk-actions__selection-status"
                           >Vận đơn</p-button
                         >
                         <p-button class="bulk-actions__selection-status"
                           >In đơn</p-button
                         >
-                        <p-button class="bulk-actions__selection-status"
+                        <p-button
+                          :disabled="cancelOrder(filter.status)"
+                          class="bulk-actions__selection-status"
                           >Hủy đơn</p-button
                         >
                       </div>
@@ -198,7 +202,6 @@ import ModalImport from '@components/shared/modal/ModalImport'
 import { mapState, mapActions } from 'vuex'
 import mixinDownload from '@/packages/shared/mixins/download'
 import evenBus from '../../../core/utils/evenBus'
-
 import {
   PACKAGE_STATUS_TAB,
   MAP_NAME_STATUS_PACKAGE,
@@ -212,6 +215,7 @@ import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import { date } from '@core/utils/datetime'
+
 export default {
   name: 'ListPackages',
   mixins: [mixinRoute, mixinTable, mixinDownload],
@@ -360,6 +364,47 @@ export default {
         'danh_sach_van_don_'
       )
       this.isVisibleExport = false
+    },
+    createOrder(value) {
+      switch (value) {
+        case 1:
+          return false
+        case 2:
+          return true
+        case 3:
+          return false
+        case 4:
+          return false
+        case 5:
+          return false
+        case 6:
+          return false
+        case 7:
+          return false
+        default:
+          return false
+      }
+    },
+
+    cancelOrder(status) {
+      switch (status) {
+        case 1:
+          return false
+        case 2:
+          return true
+        case 3:
+          return false
+        case 4:
+          return false
+        case 5:
+          return false
+        case 6:
+          return false
+        case 7:
+          return false
+        default:
+          return false
+      }
     },
   },
   watch: {
