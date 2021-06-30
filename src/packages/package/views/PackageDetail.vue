@@ -49,6 +49,7 @@
               @click="handleModal"
               href="#"
               class="btn btn-primary-custom ml-7"
+              v-if="package_detail.package.status == 1"
             >
               <span>Sửa đơn</span>
             </a>

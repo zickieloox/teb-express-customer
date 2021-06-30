@@ -71,6 +71,7 @@
                           selectionCountText
                         }}</span>
                         <p-button
+                          :disabled="createOrder(filter.status)"
                           class="bulk-actions__selection-status"
                           @click="handleWayBill"
                           >Vận đơn</p-button
@@ -78,7 +79,9 @@
                         <p-button class="bulk-actions__selection-status"
                           >In đơn</p-button
                         >
-                        <p-button class="bulk-actions__selection-status"
+                        <p-button
+                          :disabled="cancelOrder(filter.status)"
+                          class="bulk-actions__selection-status"
                           >Hủy đơn</p-button
                         >
                       </div>
@@ -233,6 +236,7 @@ import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import { date } from '@core/utils/datetime'
+
 export default {
   name: 'ListPackages',
   mixins: [mixinRoute, mixinTable, mixinDownload],
@@ -397,7 +401,47 @@ export default {
       )
       this.isVisibleExport = false
     },
+    createOrder(value) {
+      switch (value) {
+        case 1:
+          return false
+        case 2:
+          return true
+        case 3:
+          return false
+        case 4:
+          return false
+        case 5:
+          return false
+        case 6:
+          return false
+        case 7:
+          return false
+        default:
+          return false
+      }
+    },
 
+    cancelOrder(status) {
+      switch (status) {
+        case 1:
+          return false
+        case 2:
+          return true
+        case 3:
+          return false
+        case 4:
+          return false
+        case 5:
+          return false
+        case 6:
+          return false
+        case 7:
+          return false
+        default:
+          return false
+      }
+    },
     handleValue(e) {
       this.selected = JSON.parse(JSON.stringify(e))
     },
@@ -412,9 +456,7 @@ export default {
           })
         }
       }
-      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selected.length
-      }. Bạn có chắc chắn muốn vận đơn?`
+      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${this.selected.length}. Bạn có chắc chắn muốn vận đơn?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
