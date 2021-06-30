@@ -32,11 +32,13 @@
             </div>
             <div>
               <div>Trạng thái</div>
-              <div>{{
-                $evaluate(
-                  `packageStatus[${package_detail.package.status}]?.text`
-                ) || ''
-              }}</div>
+              <div>
+                <span
+                  v-status:status="
+                    mapStatus[package_detail.package.status].value
+                  "
+                ></span>
+              </div>
             </div>
           </div>
           <div class="page-header__action">
@@ -132,120 +134,118 @@
                     </div>
                   </div>
                 </div>
+                <div class="card-block">
+                  <div class="card-header">
+                    <div class="card-title">Thông tin hàng hóa</div>
+                  </div>
+                  <div class="card-content">
+                    <div class="row">
+                      <div class="col-4 mb-8">Mã vận hàng:</div>
+                      <div class="col-8"
+                        ><div>{{
+                          $evaluate('package_detail.package.code')
+                        }}</div></div
+                      >
+                    </div>
+                    <div class="row">
+                      <div class="col-4 mb-8">Chi tiết hàng hóa:</div>
+                      <div class="col-8"
+                        ><div>{{
+                          $evaluate('package_detail.package.detail')
+                        }}</div></div
+                      >
+                    </div>
+                    <div class="row">
+                      <div class="col-4 mb-8">Mã đơn hàng:</div>
+                      <div class="col-8"
+                        ><div>{{
+                          $evaluate('package_detail.package.sku')
+                        }}</div></div
+                      >
+                    </div>
+                    <div class="row">
+                      <div class="col-4 mb-8">Trọng lượng:</div>
+                      <div class="col-8"
+                        ><div>{{
+                          $evaluate('package_detail.package.weight')
+                        }}</div></div
+                      >
+                    </div>
+                    <div class="row">
+                      <div class="col-4 mb-8">Dài:</div>
+                      <div class="col-8"
+                        ><div>{{
+                          $evaluate('package_detail.package.length')
+                        }}</div></div
+                      >
+                    </div>
+                    <div class="row">
+                      <div class="col-4 mb-8">Rộng:</div>
+                      <div class="col-8"
+                        ><div>{{
+                          $evaluate('package_detail.package.width')
+                        }}</div></div
+                      >
+                    </div>
+                    <div class="row">
+                      <div class="col-4 mb-8">Cao:</div>
+                      <div class="col-8"
+                        ><div>{{
+                          $evaluate('package_detail.package.height')
+                        }}</div></div
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="card-block">
+                  <div class="card-header">
+                    <div class="card-title">Phí</div>
+                  </div>
+                  <div class="card-content">
+                    <div class="row">
+                      <div class="col-8 mb-8">Phí giao hàng:</div>
+                      <div class="col-4"
+                        ><div>{{
+                          $evaluate('package_detail.package?.shipping_fee')
+                            | formatPrice
+                        }}</div></div
+                      >
+                    </div>
+                    <div class="row">
+                      <div class="col-8 mb-8">Phí phát sinh:</div>
+                      <div class="col-4 more-extra-fee"
+                        ><div>{{ sumExtraFee | formatPrice }}</div
+                        ><div v-if="extraFee.length" class="ml-2">
+                          <img
+                            @mouseover="showPopupMoreExtraFee"
+                            @mouseleave="hiddenPopupMoreExtraFee"
+                            src="~@/assets/img/InfoCircleGrey.svg"
+                            alt=""
+                          />
+                        </div>
+                        <div
+                          v-if="isVisiblePopupMoreExtraFee"
+                          class="pop-up-more-extra-fee"
+                        >
+                          <div v-for="(item, i) of extraFee" :key="i">
+                            <div>{{ item.extra_fee_types.name }}</div>
+                            <div>{{ item.amount | formatPrice }}</div>
+                          </div>
+                        </div></div
+                      >
+                    </div>
+                    <div class="row sum-price">
+                      <div class="col-8">Tổng cước:</div>
+                      <div class="col-4"
+                        ><div>{{ sumFee | formatPrice }}</div></div
+                      >
+                    </div>
+                  </div>
+                </div>
               </div>
               <div v-if="!displayDeliverDetail" class="col-8 p-0">
                 <div class="row">
-                  <div class="col-6 p-0">
-                    <div class="card-block">
-                      <div class="card-header">
-                        <div class="card-title">Thông tin hàng hóa</div>
-                      </div>
-                      <div class="card-content">
-                        <div class="row">
-                          <div class="col-4 mb-8">Mã vận hàng:</div>
-                          <div class="col-8"
-                            ><div>{{
-                              $evaluate('package_detail.package.code')
-                            }}</div></div
-                          >
-                        </div>
-                        <div class="row">
-                          <div class="col-4 mb-8">Chi tiết hàng hóa:</div>
-                          <div class="col-8"
-                            ><div>{{
-                              $evaluate('package_detail.package.detail')
-                            }}</div></div
-                          >
-                        </div>
-                        <div class="row">
-                          <div class="col-4 mb-8">Mã đơn hàng:</div>
-                          <div class="col-8"
-                            ><div>{{
-                              $evaluate('package_detail.package.sku')
-                            }}</div></div
-                          >
-                        </div>
-                        <div class="row">
-                          <div class="col-4 mb-8">Trọng lượng:</div>
-                          <div class="col-8"
-                            ><div>{{
-                              $evaluate('package_detail.package.weight')
-                            }}</div></div
-                          >
-                        </div>
-                        <div class="row">
-                          <div class="col-4 mb-8">Dài:</div>
-                          <div class="col-8"
-                            ><div>{{
-                              $evaluate('package_detail.package.length')
-                            }}</div></div
-                          >
-                        </div>
-                        <div class="row">
-                          <div class="col-4 mb-8">Rộng:</div>
-                          <div class="col-8"
-                            ><div>{{
-                              $evaluate('package_detail.package.width')
-                            }}</div></div
-                          >
-                        </div>
-                        <div class="row">
-                          <div class="col-4 mb-8">Cao:</div>
-                          <div class="col-8"
-                            ><div>{{
-                              $evaluate('package_detail.package.height')
-                            }}</div></div
-                          >
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-block">
-                      <div class="card-header">
-                        <div class="card-title">Phí</div>
-                      </div>
-                      <div class="card-content">
-                        <div class="row">
-                          <div class="col-8 mb-8">Phí giao hàng:</div>
-                          <div class="col-4"
-                            ><div>{{
-                              $evaluate('package_detail.package?.shipping_fee')
-                                | formatPrice
-                            }}</div></div
-                          >
-                        </div>
-                        <div class="row">
-                          <div class="col-8 mb-8">Phí phát sinh:</div>
-                          <div class="col-4 more-extra-fee"
-                            ><div>{{ sumExtraFee | formatPrice }}</div
-                            ><div v-if="extraFee.length" class="ml-2">
-                              <img
-                                @mouseover="showPopupMoreExtraFee"
-                                @mouseleave="hiddenPopupMoreExtraFee"
-                                src="~@/assets/img/InfoCircleGrey.svg"
-                                alt=""
-                              />
-                            </div>
-                            <div
-                              v-if="isVisiblePopupMoreExtraFee"
-                              class="pop-up-more-extra-fee"
-                            >
-                              <div v-for="(item, i) of extraFee" :key="i">
-                                <div>{{ item.extra_fee_types.name }}</div>
-                                <div>{{ item.amount | formatPrice }}</div>
-                              </div>
-                            </div></div
-                          >
-                        </div>
-                        <div class="row sum-price">
-                          <div class="col-8">Tổng cước:</div>
-                          <div class="col-4"
-                            ><div>{{ sumFee | formatPrice }}</div></div
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-6 p-0">
+                  <div class="col-12 p-0">
                     <div class="card-block">
                       <div class="card-header">
                         <div class="card-title">Hành trình đơn</div>
@@ -305,7 +305,7 @@
               </div>
               <div v-if="displayDeliverDetail" class="col-8 p-0">
                 <div class="row">
-                  <div class="col-12">
+                  <div class="col-12 p-0">
                     <div class="card-block">
                       <div class="card-header">
                         <div class="card-action"
@@ -422,6 +422,7 @@ import ModalEditOrder from './components/ModalEditOrder'
 import { LIST_SENDER } from '../../setting/store'
 import {
   PACKAGE_STATUS_TAB,
+  MAP_NAME_STATUS_PACKAGE,
   CHANGE_PACKAGE_TYPE,
 } from '@/packages/package/constants'
 export default {
@@ -483,6 +484,10 @@ export default {
     sumFee() {
       return this.package_detail.package.shipping_fee + this.sumExtraFee
     },
+    mapStatus() {
+      return MAP_NAME_STATUS_PACKAGE
+    },
+
     extraFee() {
       return this.package_detail.extra_fee ? this.package_detail.extra_fee : []
     },
