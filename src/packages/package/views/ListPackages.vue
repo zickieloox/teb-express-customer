@@ -343,7 +343,7 @@ export default {
     },
     handleClosePreview() {
       this.filter = {
-        limit: 50,
+        limit: 20,
         status: '',
         search: '',
         start_date: '',
