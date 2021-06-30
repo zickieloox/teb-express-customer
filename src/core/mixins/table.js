@@ -1,5 +1,3 @@
-import { cloneDeep } from '@core/utils'
-
 export default {
   computed: {
     totalSelected() {
@@ -145,7 +143,7 @@ export default {
       if (this.isAllChecked) {
         selected = []
       } else {
-        selected = cloneDeep(this.items)
+        selected = this.items
       }
       this.$set(this.action, 'selected', selected)
     },
