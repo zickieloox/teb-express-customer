@@ -42,14 +42,18 @@
             </div>
           </div>
           <div class="page-header__action">
-            <a href="#" class="btn btn-danger">
+            <a
+              href="#"
+              class="btn btn-danger"
+              v-if="package_detail.package.status === 1"
+            >
               <span>Hủy đơn</span>
             </a>
             <a
               @click="handleModal"
               href="#"
               class="btn btn-primary-custom ml-7"
-              v-if="package_detail.package.status == 1"
+              v-if="package_detail.package.status === 1"
             >
               <span>Sửa đơn</span>
             </a>
@@ -57,7 +61,7 @@
               href="#"
               class="btn btn-primary ml-7"
               @click="handleWayBill"
-              v-if="package_detail.package.status == 1"
+              v-if="package_detail.package.status === 1"
             >
               <span>Vận đơn</span>
             </a>

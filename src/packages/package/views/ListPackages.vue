@@ -447,16 +447,25 @@ export default {
     },
 
     handleWayBill() {
-      for (const item of this.selected) {
-        if (item.status != PackageStatusInit) {
-          return this.$toast.open({
-            type: 'error',
-            message: `Đơn hàng ${item.code} không thể vận đơn.`,
-            duration: 3000,
-          })
+      let selectedInvalid = this.selected.filter(
+        (ele) => ele.status !== PackageStatusInit
+      )
+      if (selectedInvalid.length > 0) {
+        let codeSelectedInvalid = selectedInvalid.map((ele) => ele.code)
+        if (codeSelectedInvalid.length > 3) {
+          codeSelectedInvalid = [...codeSelectedInvalid.slice(0, 3), '...']
         }
+        return this.$toast.open({
+          type: 'error',
+          message: `Đơn hàng ${codeSelectedInvalid.join(
+            ', '
+          )} không thể vận đơn.`,
+          duration: 5000,
+        })
       }
-      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${this.selected.length}. Bạn có chắc chắn muốn vận đơn?`
+      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${
+        this.selected.length
+      }. Bạn có chắc chắn muốn vận đơn?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
