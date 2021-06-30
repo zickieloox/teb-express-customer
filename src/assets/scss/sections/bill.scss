@@ -102,4 +102,19 @@
       }
     }
   }
+
+  .daterangepicker{
+    .calendars{
+      .ranges{
+        display: none;
+      }
+      .calendars-container, .drp-calendar, .calendar-table{
+        width: 100%;
+        max-width: 100%;
+      }
+      .calendar-table{
+        padding: 0 8px;
+      }
+    }
+  }
 }

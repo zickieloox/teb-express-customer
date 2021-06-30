@@ -39,202 +39,205 @@
             <span>Xuất hóa đơn</span>
           </a>
         </div>
-        <div v-if="bill" class="page-header_info d-flex ">
-          <div class="info-bill"
-            >Mã hóa đơn :
-            <span class="info-number">{{ bill.code }}</span>
-          </div>
-          <div class="info-bill"
-            >Ngày tạo:
-            <span class="info-number">{{
-              bill.created_at | datetime('dd-MM-yyyy')
-            }}</span>
-          </div>
-          <div class="info-bill"
-            >Tồng hóa đơn :
-            <span class="info-number font-weight-600">{{
-              total_fee | formatPrice
-            }}</span>
-          </div>
-        </div>
       </div>
-      <div v-if="bill" class="page-content">
-        <div class="card-block  ">
-          <div class="card-content">
-            <div class="card-title">
-              <div class="title-text"> Phí vận đơn :</div>
-              <div class="title-pagi">
-                <div
-                  class="btn-pagi mr-2"
-                  :class="{
-                    'disable-next-page': filter.page <= 1,
-                  }"
-                  @click="previousCreateFee"
-                >
-                  <i class="fas fa-chevron-left"></i>
-                </div>
-                <div
-                  class="btn-pagi"
-                  :class="{
-                    'disable-next-page': filter.page >= totalPageCreate,
-                  }"
-                  @click="nextCreateFee"
-                >
-                  <i class="fas fa-chevron-right"></i>
+      <vcl-table class=" md-20" v-if="isFetching"></vcl-table>
+      <template v-else-if="bill">
+        <div class="page-content">
+          <div v-if="bill" class="page-header_info d-flex mb-16 ">
+            <div class="info-bill"
+              >Mã hóa đơn :
+              <span class="info-number">{{ bill.code }}</span>
+            </div>
+            <div class="info-bill"
+              >Ngày tạo:
+              <span class="info-number">{{
+                bill.created_at | datetime('dd-MM-yyyy')
+              }}</span>
+            </div>
+            <div class="info-bill"
+              >Tồng hóa đơn :
+              <span class="info-number font-weight-600">{{
+                total_fee | formatPrice
+              }}</span>
+            </div>
+          </div>
+          <div class="card-block  ">
+            <div class="card-content">
+              <div class="card-title">
+                <div class="title-text"> Phí vận đơn :</div>
+                <div class="title-pagi">
+                  <div
+                    class="btn-pagi mr-2"
+                    :class="{
+                      'disable-next-page': filter.page <= 1,
+                    }"
+                    @click="previousCreateFee"
+                  >
+                    <i class="fas fa-chevron-left"></i>
+                  </div>
+                  <div
+                    class="btn-pagi"
+                    :class="{
+                      'disable-next-page': filter.page >= totalPageCreate,
+                    }"
+                    @click="nextCreateFee"
+                  >
+                    <i class="fas fa-chevron-right"></i>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="table-responsive">
-              <table class="table table-hover">
-                <thead>
-                  <tr class="table-header">
-                    <th>MÃ VẬN ĐƠN </th>
-                    <th width="400">PHÍ VẬN ĐƠN </th>
-                  </tr>
-                </thead>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr class="table-header">
+                      <th>MÃ VẬN ĐƠN </th>
+                      <th width="400">PHÍ VẬN ĐƠN </th>
+                    </tr>
+                  </thead>
 
-                <tbody v-if="bill">
-                  <tr v-for="(item, i) in feeCreate" :key="i">
-                    <td>
-                      <router-link
-                        :to="{
-                          name: 'package-detail',
-                          params: {
-                            id: item.id,
-                          },
-                        }"
-                        class="card-link"
-                      >
-                        {{ item.code }}
-                      </router-link>
-                      <img src="@/assets/img/external.svg" />
-                    </td>
-                    <td>+ {{ item.shipping_fee | formatPrice }}</td>
-                  </tr>
-                </tbody>
-              </table>
+                  <tbody v-if="bill">
+                    <tr v-for="(item, i) in feeCreate" :key="i">
+                      <td>
+                        <router-link
+                          :to="{
+                            name: 'package-detail',
+                            params: {
+                              id: item.id,
+                            },
+                          }"
+                          class="card-link"
+                        >
+                          {{ item.code }}
+                        </router-link>
+                        <img src="@/assets/img/external.svg" />
+                      </td>
+                      <td>+ {{ item.shipping_fee | formatPrice }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="card-block  ">
+            <div class="card-content">
+              <div class="card-title">
+                <div class="title-text"> Phí sửa đơn :</div>
+                <div class="title-pagi">
+                  <div
+                    class="btn-pagi   mr-2"
+                    :class="{
+                      'disable-next-page': filterEdit.page <= 1,
+                    }"
+                    @click="previousEditFee"
+                  >
+                    <i class="fas fa-chevron-left"></i>
+                  </div>
+                  <div
+                    class="btn-pagi"
+                    :class="{
+                      'disable-next-page': filterEdit.page >= totalPageEdit,
+                    }"
+                    @click="nextEditFee"
+                  >
+                    <i class="fas fa-chevron-right"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr class="table-header">
+                      <th width="350">MÃ VẬN ĐƠN </th>
+                      <th>THỜI GIAN </th>
+                      <th width="400">PHÍ VẬN ĐƠN </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr v-for="(item, i) in feeEdit" :key="i">
+                      <td>
+                        <router-link
+                          :to="{
+                            name: 'package-detail',
+                            params: {
+                              id: item.package.id,
+                            },
+                          }"
+                          class="card-link"
+                        >
+                          {{ item.package.code }}
+                        </router-link>
+                        <img src="@/assets/img/external.svg" />
+                      </td>
+                      <td>{{ item.created_at | datetime('dd-MM-yyyy') }}</td>
+                      <td>{{ item.amount | formatPrice }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="card-block  ">
+            <div class="card-content">
+              <div class="card-title">
+                <div class="title-text"> Phí phát sinh :</div>
+                <div class="title-pagi">
+                  <div
+                    class="btn-pagi  mr-2"
+                    :class="{
+                      'disable-next-page': filterExtra.page <= 1,
+                    }"
+                    @click="previousExtraFee"
+                  >
+                    <i class="fas fa-chevron-left"></i>
+                  </div>
+                  <div
+                    class="btn-pagi"
+                    @click="nextExtraFee"
+                    :class="{
+                      'disable-next-page': filterEdit.page >= totalPageExtra,
+                    }"
+                  >
+                    <i class="fas fa-chevron-right"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr class="table-header">
+                      <th width="350">MÃ VẬN ĐƠN </th>
+                      <th>THỜI GIAN </th>
+                      <th width="400">PHÍ VẬN ĐƠN </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr v-for="(item, i) in feeExtra" :key="i">
+                      <td>
+                        <router-link
+                          :to="{
+                            name: 'package-detail',
+                            params: {
+                              id: item.package.id,
+                            },
+                          }"
+                          class="card-link"
+                        >
+                          {{ item.package.code }}
+                        </router-link>
+                        <img src="@/assets/img/external.svg" />
+                      </td>
+                      <td>{{ item.created_at | datetime('dd-MM-yyyy') }}</td>
+                      <td>{{ item.amount | formatPrice }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
-        <div class="card-block  ">
-          <div class="card-content">
-            <div class="card-title">
-              <div class="title-text"> Phí sửa đơn :</div>
-              <div class="title-pagi">
-                <div
-                  class="btn-pagi   mr-2"
-                  :class="{
-                    'disable-next-page': filterEdit.page <= 1,
-                  }"
-                  @click="previousEditFee"
-                >
-                  <i class="fas fa-chevron-left"></i>
-                </div>
-                <div
-                  class="btn-pagi"
-                  :class="{
-                    'disable-next-page': filterEdit.page >= totalPageEdit,
-                  }"
-                  @click="nextEditFee"
-                >
-                  <i class="fas fa-chevron-right"></i>
-                </div>
-              </div>
-            </div>
-            <div class="table-responsive">
-              <table class="table table-hover">
-                <thead>
-                  <tr class="table-header">
-                    <th width="350">MÃ VẬN ĐƠN </th>
-                    <th>THỜI GIAN </th>
-                    <th width="400">PHÍ VẬN ĐƠN </th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <tr v-for="(item, i) in feeEdit" :key="i">
-                    <td>
-                      <router-link
-                        :to="{
-                          name: 'package-detail',
-                          params: {
-                            id: item.package.id,
-                          },
-                        }"
-                        class="card-link"
-                      >
-                        {{ item.package.code }}
-                      </router-link>
-                      <img src="@/assets/img/external.svg" />
-                    </td>
-                    <td>{{ item.created_at | datetime('dd-MM-yyyy') }}</td>
-                    <td>{{ item.amount | formatPrice }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div class="card-block  ">
-          <div class="card-content">
-            <div class="card-title">
-              <div class="title-text"> Phí phát sinh :</div>
-              <div class="title-pagi">
-                <div
-                  class="btn-pagi  mr-2"
-                  :class="{
-                    'disable-next-page': filterExtra.page <= 1,
-                  }"
-                  @click="previousExtraFee"
-                >
-                  <i class="fas fa-chevron-left"></i>
-                </div>
-                <div
-                  class="btn-pagi"
-                  @click="nextExtraFee"
-                  :class="{
-                    'disable-next-page': filterEdit.page >= totalPageExtra,
-                  }"
-                >
-                  <i class="fas fa-chevron-right"></i>
-                </div>
-              </div>
-            </div>
-            <div class="table-responsive">
-              <table class="table table-hover">
-                <thead>
-                  <tr class="table-header">
-                    <th width="350">MÃ VẬN ĐƠN </th>
-                    <th>THỜI GIAN </th>
-                    <th width="400">PHÍ VẬN ĐƠN </th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <tr v-for="(item, i) in feeExtra" :key="i">
-                    <td>
-                      <router-link
-                        :to="{
-                          name: 'package-detail',
-                          params: {
-                            id: item.package.id,
-                          },
-                        }"
-                        class="card-link"
-                      >
-                        {{ item.package.code }}
-                      </router-link>
-                      <img src="@/assets/img/external.svg" />
-                    </td>
-                    <td>{{ item.created_at | datetime('dd-MM-yyyy') }}</td>
-                    <td>{{ item.amount | formatPrice }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+      </template>
       <empty-search-result v-else></empty-search-result>
     </div>
   </div>
@@ -285,6 +288,7 @@ export default {
         id: '',
       },
       total_fee: 0,
+      isFetching: false,
     }
   },
   computed: {
@@ -432,5 +436,8 @@ export default {
   height: 40px;
   border: 1px solid #ccc;
   border-radius: 8px;
+}
+.isFetch {
+  display: none;
 }
 </style>
