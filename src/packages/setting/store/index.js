@@ -9,6 +9,8 @@ export const COUNT_SENDER = 'countSender'
 export const CREATE_SENDER = 'createSender'
 export const UPDATE_SENDER = 'updateSender'
 export const GET_SENDER = 'getSender'
+export const GET_USER_TOKEN = 'getUserToken'
+export const RESET_USER_TOKEN = 'resetUserToken'
 /**
  * State
  */
@@ -16,6 +18,7 @@ export const state = {
   user: {},
   senders: [],
   count_sender: 0,
+  user_token: '',
 }
 
 /**
@@ -41,6 +44,9 @@ export const mutations = {
   },
   [COUNT_SENDER]: (state, payload) => {
     state.count_sender = payload
+  },
+  [GET_USER_TOKEN]: (state, payload) => {
+    state.user_token = payload
   },
 }
 
@@ -105,6 +111,44 @@ export const actions = {
   // eslint-disable-next-line
   async updateSender({ commit }, payload) {
     const response = await api.updateSender(payload)
+
+    if (response && response.success) {
+      return { success: true }
+    }
+
+    return {
+      success: false,
+      message: response.errorMessage || '',
+    }
+  },
+
+  /**
+   * Get user token
+   * @param commit
+   * @param payload
+   */
+  // eslint-disable-next-line
+  async getUserToken({ commit }, payload) {
+    const response = await api.getUserToken(payload)
+    if (response && response.token) {
+      commit(GET_USER_TOKEN, response.token)
+      return { success: true }
+    }
+
+    return {
+      success: false,
+      message: response.errorMessage || '',
+    }
+  },
+
+  /**
+   * Get user token
+   * @param commit
+   * @param payload
+   */
+  // eslint-disable-next-line
+  async resetUserToken({ commit }, payload) {
+    const response = await api.resetUserToken(payload)
 
     if (response && response.success) {
       return { success: true }

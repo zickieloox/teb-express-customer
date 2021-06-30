@@ -17,4 +17,13 @@ export const routes = [
     component: () =>
       import(/* webpackChunkName: "settings" */ './views/ListSender.vue'),
   },
+  {
+    path: '/setting/api',
+    name: 'api',
+    meta: {
+      title: 'API',
+    },
+    component: () =>
+      import(/* webpackChunkName: "settings" */ './views/API.vue'),
+  },
 ]
