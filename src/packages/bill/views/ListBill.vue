@@ -21,10 +21,10 @@
               :label="labelDate"
               id="date-search"
               @update="selectDate"
+              :autoApply="true"
               :singleDatePicker="true"
               :value="{
                 startDate: filter.date_search,
-                endDate: filter.date_search,
               }"
             ></p-datepicker>
             <p-button
@@ -46,7 +46,7 @@
           <div v-if="bill" class="page-header_info d-flex mb-16 ">
             <div class="info-bill"
               >Mã hóa đơn :
-              <span class="info-number">{{ bill.code }}</span>
+              <span class="info-number">{{ bill.id }}</span>
             </div>
             <div class="info-bill"
               >Ngày tạo:
@@ -169,7 +169,9 @@
                           <img src="@/assets/img/external.svg" />
                         </router-link>
                       </td>
-                      <td>{{ item.created_at | datetime('dd-MM-yyyy') }}</td>
+                      <td>{{
+                        item.created_at | datetime('dd-MM-yyyy HH:mm:ss')
+                      }}</td>
                       <td>{{ item.amount | formatPrice }}</td>
                     </tr>
                   </tbody>
@@ -228,7 +230,9 @@
                           <img src="@/assets/img/external.svg" />
                         </router-link>
                       </td>
-                      <td>{{ item.created_at | datetime('dd-MM-yyyy') }}</td>
+                      <td>{{
+                        item.created_at | datetime('dd-MM-yyyy HH:mm:ss')
+                      }}</td>
                       <td>{{ item.amount | formatPrice }}</td>
                     </tr>
                   </tbody>
@@ -260,8 +264,9 @@ export default {
         limit: 5,
         page: 1,
         search: '',
-        date_search: '',
+        date_search: date(new Date(), 'yyyy-MM-dd'),
       },
+      dateInit: new Date(),
       labelDate: `Tìm theo ngày`,
       orderPagination: {
         numberPage: 0,
@@ -326,9 +331,8 @@ export default {
       this.handleUpdateRouteQuery()
       let result = await this[FETCH_BILL_DETAIL](this.filter)
       this.bill = result.bill
-      this.labelDate = date(this.bill.created_at, 'dd-MM-yyyy')
-      if (result.error) {
-        this.$toast.open({ type: 'danger', message: result.message })
+      if (!result.success) {
+        this.isFetching = false
         return
       }
       this.total_fee = result.total
