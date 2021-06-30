@@ -110,7 +110,11 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(item, i) in packages" :key="i">
+                    <tr
+                      v-for="(item, i) in packages"
+                      :key="i"
+                      :class="{ hover: isChecked(item) }"
+                    >
                       <td width="40">
                         <p-checkbox
                           v-model="action.selected"
