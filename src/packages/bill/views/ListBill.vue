@@ -108,8 +108,8 @@
                           class="card-link"
                         >
                           {{ item.code }}
+                          <img src="@/assets/img/external.svg" />
                         </router-link>
-                        <img src="@/assets/img/external.svg" />
                       </td>
                       <td>+ {{ item.shipping_fee | formatPrice }}</td>
                     </tr>
@@ -166,8 +166,8 @@
                           class="card-link"
                         >
                           {{ item.package.code }}
+                          <img src="@/assets/img/external.svg" />
                         </router-link>
-                        <img src="@/assets/img/external.svg" />
                       </td>
                       <td>{{ item.created_at | datetime('dd-MM-yyyy') }}</td>
                       <td>{{ item.amount | formatPrice }}</td>
@@ -225,8 +225,8 @@
                           class="card-link"
                         >
                           {{ item.package.code }}
+                          <img src="@/assets/img/external.svg" />
                         </router-link>
-                        <img src="@/assets/img/external.svg" />
                       </td>
                       <td>{{ item.created_at | datetime('dd-MM-yyyy') }}</td>
                       <td>{{ item.amount | formatPrice }}</td>
