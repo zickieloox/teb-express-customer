@@ -1,2 +1,2 @@
-export const EditFeeBill = 7
-export const ExtraFeeBill = 8
+export const EditFeeBill = 8
+export const ExtraFeeBill = 7
