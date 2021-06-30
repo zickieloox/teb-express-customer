@@ -99,8 +99,12 @@
                         <th :class="{ hidden: hiddenClass }"
                           >Chi tiết hàng hóa</th
                         >
-                        <th :class="{ hidden: hiddenClass }">Ngày tạo </th>
-                        <th :class="{ hidden: hiddenClass }">Trạng thái</th>
+                        <th width="100" :class="{ hidden: hiddenClass }"
+                          >Ngày tạo
+                        </th>
+                        <th width="100" :class="{ hidden: hiddenClass }"
+                          >Trạng thái</th
+                        >
                         <th :class="{ hidden: hiddenClass }">Tổng cước</th>
                       </template>
                     </tr>
@@ -139,7 +143,11 @@
                         </p-tooltip>
                       </td>
                       <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
-                      <td>{{ mapStatus[item.status].value }}</td>
+                      <td>
+                        <span
+                          v-status:status="mapStatus[item.status].value"
+                        ></span>
+                      </td>
                       <td>{{ item.shipping_fee }} $</td>
                     </tr>
                   </tbody>

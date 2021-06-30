@@ -457,7 +457,7 @@ export default {
 
     formatStatus(status) {
       for (const [key, value] of Object.entries(this.claimStatus)) {
-        console.log(`${key}: ${value}`)
+        console.log(key)
         if (status == value) {
           return key
         }
