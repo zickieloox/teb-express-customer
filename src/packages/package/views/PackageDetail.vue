@@ -50,7 +50,12 @@
             >
               <span>Sửa đơn</span>
             </a>
-            <a href="#" class="btn btn-primary ml-7">
+            <a
+              href="#"
+              class="btn btn-primary ml-7"
+              @click="handleWayBill"
+              v-if="package_detail.package.status == 1"
+            >
               <span>Vận đơn</span>
             </a>
           </div>
@@ -394,6 +399,17 @@
       :total="sumFee"
     >
     </modal-edit-order>
+    <modal-confirm
+      :visible.sync="isVisibleConfirmWayBill"
+      v-if="isVisibleConfirmWayBill"
+      :actionConfirm="actions.wayBill.button"
+      :description="actions.wayBill.Description"
+      :title="actions.wayBill.title"
+      :type="actions.wayBill.type"
+      :disabled="actions.wayBill.disabled"
+      :loading="actions.wayBill.loading"
+      @action="handleActionWayBill"
+    ></modal-confirm>
   </div>
 </template>
 
@@ -416,7 +432,11 @@
 </style>
 <script>
 import { mapState, mapActions } from 'vuex'
-import { FETCH_PACKAGE_DETAIL, FETCH_LIST_SERVICE } from '../store/index'
+import {
+  FETCH_PACKAGE_DETAIL,
+  FETCH_LIST_SERVICE,
+  PROCESS_PACKAGE,
+} from '../store/index'
 import mixinChaining from '@/packages/shared/mixins/chaining'
 import ModalEditOrder from './components/ModalEditOrder'
 import { LIST_SENDER } from '../../setting/store'
@@ -424,10 +444,11 @@ import {
   PACKAGE_STATUS_TAB,
   CHANGE_PACKAGE_TYPE,
 } from '@/packages/package/constants'
+import ModalConfirm from '@components/shared/modal/ModalConfirm'
 export default {
   name: 'PackageDetail',
   mixins: [mixinChaining],
-  components: { ModalEditOrder },
+  components: { ModalEditOrder, ModalConfirm },
   data() {
     return {
       isFetching: true,
@@ -435,6 +456,7 @@ export default {
       displayDeliverDetail: false,
       isVisibleModal: false,
       isVisiblePopupMoreExtraFee: false,
+      isVisibleConfirmWayBill: false,
       timelinePagination: {
         numberPage: 0,
         itemsPerPage: 10,
@@ -444,6 +466,16 @@ export default {
         numberPage: 0,
         itemsPerPage: 10,
         currentPage: 1,
+      },
+      actions: {
+        wayBill: {
+          type: 'primary',
+          title: 'Xác nhận vận đơn',
+          button: 'Vận đơn',
+          Description: '',
+          disabled: false,
+          loading: false,
+        },
       },
     }
   },
@@ -500,7 +532,11 @@ export default {
     this.init()
   },
   methods: {
-    ...mapActions('package', [FETCH_PACKAGE_DETAIL, FETCH_LIST_SERVICE]),
+    ...mapActions('package', [
+      FETCH_PACKAGE_DETAIL,
+      FETCH_LIST_SERVICE,
+      PROCESS_PACKAGE,
+    ]),
     ...mapActions('setting', [LIST_SENDER]),
     async init() {
       this.isFetching = true
@@ -543,6 +579,39 @@ export default {
     },
     hiddenPopupMoreExtraFee() {
       this.isVisiblePopupMoreExtraFee = false
+    },
+
+    handleWayBill() {
+      this.actions.wayBill.Description = `Bạn có chắc chắn muốn vận đơn?`
+      this.isVisibleConfirmWayBill = true
+    },
+
+    async handleActionWayBill() {
+      let id = this.packageID
+
+      let params = {
+        ids: [id],
+      }
+
+      this.actions.wayBill.loading = true
+      this.result = await this.processPackage(params)
+      this.isVisibleConfirmWayBill = false
+      this.actions.wayBill.loading = false
+
+      if (!this.result || !this.result.success) {
+        return this.$toast.open({
+          type: 'error',
+          message: this.result.message,
+          duration: 3000,
+        })
+      }
+
+      this.init()
+      this.$toast.open({
+        type: 'success',
+        message: 'Vận đơn thành công',
+        duration: 3000,
+      })
     },
   },
 

@@ -44,4 +44,7 @@ export default {
   updatePackage(payload) {
     return http.put(`/packages/${payload.id}`, payload)
   },
+  processPackage(payload) {
+    return http.post(`/packages/process`, payload)
+  },
 }

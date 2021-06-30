@@ -70,7 +70,9 @@
                         <span class="bulk-actions__selection-count">{{
                           selectionCountText
                         }}</span>
-                        <p-button class="bulk-actions__selection-status"
+                        <p-button
+                          class="bulk-actions__selection-status"
+                          @click="handleWayBill"
                           >Vận đơn</p-button
                         >
                         <p-button class="bulk-actions__selection-status"
@@ -111,6 +113,7 @@
                         <p-checkbox
                           v-model="action.selected"
                           :native-value="item"
+                          @input="handleValue($event)"
                         ></p-checkbox>
                       </td>
                       <td>
@@ -180,6 +183,17 @@
       @close="handleClosePreview"
     ></modal-import-preview-package>
     <modal-export :visible="isVisibleExport"> </modal-export>
+    <modal-confirm
+      :visible.sync="isVisibleConfirmWayBill"
+      v-if="isVisibleConfirmWayBill"
+      :actionConfirm="actions.wayBill.button"
+      :description="actions.wayBill.Description"
+      :title="actions.wayBill.title"
+      :type="actions.wayBill.type"
+      :disabled="actions.wayBill.disabled"
+      :loading="actions.wayBill.loading"
+      @action="handleActionWayBill"
+    ></modal-confirm>
   </div>
 </template>
 <script>
@@ -190,15 +204,18 @@ import ModalImport from '@components/shared/modal/ModalImport'
 import { mapState, mapActions } from 'vuex'
 import mixinDownload from '@/packages/shared/mixins/download'
 import evenBus from '../../../core/utils/evenBus'
+import ModalConfirm from '@components/shared/modal/ModalConfirm'
 
 import {
   PACKAGE_STATUS_TAB,
+  PackageStatusInit,
   MAP_NAME_STATUS_PACKAGE,
 } from '@/packages/package/constants'
 import {
   FETCH_LIST_PACKAGES,
   IMPORT_PACKAGE,
   EXPORT_PACKAGE,
+  PROCESS_PACKAGE,
 } from '@/packages/package/store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
@@ -213,6 +230,7 @@ export default {
     EmptySearchResult,
     PackageStatusTab,
     ModalExport,
+    ModalConfirm,
   },
   data() {
     return {
@@ -237,6 +255,18 @@ export default {
       searchCode: '',
       allowSearch: true,
       isFetching: false,
+      actions: {
+        wayBill: {
+          type: 'primary',
+          title: 'Xác nhận vận đơn',
+          button: 'Vận đơn',
+          Description: '',
+          disabled: false,
+          loading: false,
+        },
+      },
+      isVisibleConfirmWayBill: false,
+      selected: [],
     }
   },
   created() {
@@ -269,9 +299,11 @@ export default {
       FETCH_LIST_PACKAGES,
       IMPORT_PACKAGE,
       EXPORT_PACKAGE,
+      PROCESS_PACKAGE,
     ]),
     async init() {
       this.isFetching = true
+      this.action.selected = []
       this.handleUpdateRouteQuery()
       const result = await this.fetchListPackages(this.filter)
       this.isFetching = false
@@ -352,6 +384,55 @@ export default {
         'danh_sach_van_don_'
       )
       this.isVisibleExport = false
+    },
+
+    handleValue(e) {
+      this.selected = JSON.parse(JSON.stringify(e))
+    },
+
+    handleWayBill() {
+      for (const item of this.selected) {
+        if (item.status != PackageStatusInit) {
+          return this.$toast.open({
+            type: 'error',
+            message: `Đơn hàng ${item.code} không thể vận đơn.`,
+            duration: 3000,
+          })
+        }
+      }
+      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${
+        this.selected.length
+      }. Bạn có chắc chắn muốn vận đơn?`
+      this.isVisibleConfirmWayBill = true
+    },
+    async handleActionWayBill() {
+      let ids
+      ids = this.selected.map((item) => item.id)
+      console.log(ids)
+
+      let params = {
+        ids: ids,
+      }
+
+      this.actions.wayBill.loading = true
+      this.result = await this.processPackage(params)
+      this.isVisibleConfirmWayBill = false
+      this.actions.wayBill.loading = false
+
+      if (!this.result || !this.result.success) {
+        return this.$toast.open({
+          type: 'error',
+          message: this.result.message,
+          duration: 3000,
+        })
+      }
+
+      this.init()
+      this.$toast.open({
+        type: 'success',
+        message: 'Vận đơn thành công',
+        duration: 3000,
+      })
     },
   },
   watch: {
