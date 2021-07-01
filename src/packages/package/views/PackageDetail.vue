@@ -278,14 +278,14 @@
                           >
                             <div class="timeline-item__left">
                               <div>{{
-                                item.ship_time | datetime('dd/MM/yyyy')
+                                item.created_at | datetime('dd/MM/yyyy')
                               }}</div>
                               <div>{{
-                                item.ship_time | datetime('HH:mm')
+                                item.created_at | datetime('HH:mm')
                               }}</div>
                             </div>
                             <div class="timeline-item__right">
-                              <div>{{ item.location }}</div>
+                              <div>{{ deliverLogPackage[item.type] }}</div>
                             </div>
                           </div>
                         </div>
@@ -449,6 +449,7 @@ import {
   PACKAGE_STATUS_TAB,
   MAP_NAME_STATUS_PACKAGE,
   CHANGE_PACKAGE_TYPE,
+  DELIVER_LOG_PACKAGE,
 } from '@/packages/package/constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 export default {
@@ -533,6 +534,10 @@ export default {
     },
     changePackageType() {
       return CHANGE_PACKAGE_TYPE
+    },
+    deliverLogPackage() {
+      console.log(DELIVER_LOG_PACKAGE)
+      return DELIVER_LOG_PACKAGE
     },
   },
   created() {

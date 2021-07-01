@@ -96,3 +96,8 @@ export const CHANGE_PACKAGE_TYPE = [
   'Chi tiết hàng hóa',
   'Địa chỉ phụ người nhận',
 ]
+
+export const DELIVER_LOG_PACKAGE = {
+  [PackageStatusInit]: 'Đơn hàng được tạo mới',
+  [PackageStatusWattingTransport]: 'Đơn hàng đang chờ lấy',
+}
