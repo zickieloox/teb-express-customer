@@ -3,7 +3,7 @@
     class="multiselect-custom dropdown-order"
     v-model="selected"
     :options="optionSearch"
-    placeholder="More filters"
+    :placeholder="placeHolder"
     :custom-label="customLabel"
     :loading="isLoading"
     @select="handleSelect"
@@ -24,6 +24,10 @@ export default {
       type: [Number, String],
       default: 'transaction-type',
     },
+    placeHolder: {
+      type: String,
+      default: '',
+    },
     filter: {
       type: Object,
       default: () => {},
@@ -37,7 +41,7 @@ export default {
     return {
       selected: {
         key: 'more-filter',
-        name: 'More filter',
+        name: 'Loại',
       },
       isLoading: false,
       users: [],
