@@ -21,10 +21,10 @@
               :label="labelDate"
               id="date-search"
               @update="selectDate"
-              :autoApply="true"
               :singleDatePicker="true"
               :value="{
                 startDate: filter.date_search,
+                endDate: filter.date_search,
               }"
             ></p-datepicker>
             <p-button
