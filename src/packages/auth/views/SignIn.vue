@@ -178,7 +178,6 @@ export default {
           } else {
             path = decodeURIComponent(path.replace(/\+/g, '%20'))
           }
-          console.log(path)
           this.$router.push(path)
         }, 1000)
       } else {

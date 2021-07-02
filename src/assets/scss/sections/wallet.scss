@@ -123,6 +123,7 @@
                             background-color: #ffffff;
                             color: #111212;
                             padding-top: 0;
+                            font-family: "Be VietNam", sans-serif;
                         }
                     }
                     .multiselect__select {
@@ -142,6 +143,7 @@
                         color: #111212;
                         padding-top: 0;
                         padding-left: 5px;
+                        font-family: "Be VietNam", sans-serif;
                     }
                     .multiselect__content-wrapper {
                         border: 1px solid #111212;
@@ -261,7 +263,7 @@
 .modal-recharge-wallet {
     .modal-body {
         padding: 24px 16px;
-        max-height: none;
+        // max-height: none;
         .payments {
             display: flex;
             justify-content: space-between;
@@ -381,9 +383,23 @@
                     margin-right: 12px;
                     padding: 8px 0;
                 }
-                .input-group {
+                input {
+                    border: 1px solid #CFD0D0;
+                    box-sizing: border-box;
+                    border-radius: 8px;
                     width: 80%;
-                    margin-right: 5px
+                    margin-right: 5px;
+                    padding: 13px 16px;
+                    height: 40px;
+                    font-family: "Be Vietnam";
+                    font-style: normal;
+                    font-weight: normal;
+                    font-size: 14px;
+                    line-height: 22px;
+                    color: #313232;
+                    &:focus {
+                        border-color: #80bdff;
+                    }
                 }
                 span {
                     padding: 8px 0;

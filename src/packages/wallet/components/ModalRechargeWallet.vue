@@ -37,8 +37,13 @@
           </p>
           <div class="money d-flex">
             <div class="title">Số tiền:</div>
-            <p-input v-model="amount" placeholder="Nhập số tiền" type="number">
-            </p-input>
+            <input
+              id="money"
+              @input="checkValidMoney"
+              placeholder="Nhập số tiền"
+              :v-model="amount"
+            />
+
             <span>VNĐ</span>
           </div>
           <div class="invalid-error" v-if="error == true">
@@ -48,7 +53,7 @@
 
         <div class="note">
           <img src="@/assets/img/InfoCircle.svg" alt="" />
-          <b>Lưu ý: </b>Nhập chính xác nội dung thanh toán và số tiền
+          <b>Lưu ý: </b><i>Nhập chính xác nội dung thanh toán và số tiền</i>
         </div>
       </template>
       <template slot="footer">
@@ -77,6 +82,7 @@
 
 <script>
 import { USD_TO_VND, BANK, BRANCH, NAME, ACCOUNT_NUMBER } from '../constant'
+
 export default {
   name: 'ModalRechargeWallet',
   props: {
@@ -123,19 +129,33 @@ export default {
     },
 
     handlerRecharge() {
-      if (this.amount == '') {
-        this.error = true
-        this.errorText = 'Số tiền không được để trống!'
-        return
-      }
-      if (this.amount <= 0) {
+      this.checkValidMoney()
+      if (this.error == true) return
+
+      this.$emit('recharge', this.amount.replace(',', ''))
+      this.$emit('update:visible', false)
+    },
+
+    checkValidMoney() {
+      this.amount = document.getElementById('money').value
+      if (!/^[0-9,]+$/.test(this.amount.replace(',', ''))) {
         this.error = true
         this.errorText = 'Số tiền không hợp lệ!'
         return
       }
+      if (this.amount.replace(',', '') == '') {
+        this.error = true
+        this.errorText = 'Số tiền không được để trống!'
+        return
+      }
 
-      this.$emit('recharge', this.amount)
-      this.$emit('update:visible', false)
+      document.getElementById('money').value = document
+        .getElementById('money')
+        .value.replace(/\D/g, '')
+        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
+      this.error = false
+      this.errorText = ''
     },
 
     handleClose() {
@@ -150,6 +170,7 @@ export default {
     visible: {
       handler: function(val) {
         this.isVisible = val
+        this.amount = ''
       },
       deep: true,
     },

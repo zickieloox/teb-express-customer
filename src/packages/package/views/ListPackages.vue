@@ -471,7 +471,6 @@ export default {
     async handleActionWayBill() {
       let ids
       ids = this.selected.map((item) => item.id)
-      console.log(ids)
 
       let params = {
         ids: ids,
