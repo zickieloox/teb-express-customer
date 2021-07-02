@@ -110,9 +110,7 @@
                     display: flex;
                     height: 40px;
                     margin-right: 8px;
-                    .search-type {
-                        width: 460px;
-                    }
+                    width: 100%;
                     .multiselect__tags {
                         height: 40px;
                         border: 1px solid #E5E7ED;
@@ -152,11 +150,13 @@
                     }
                 }
                 #date-search {
+                    width: 220px;
                     &+.close {
-                        width: 50px;
+                        width: 40px;
                         height: 40px;
                         border: 1px solid #ccc;
                         border-radius: 8px;
+                        background-color: #ffffff
                     }
                     .calendars {
                         min-width: 400px;
@@ -170,6 +170,9 @@
                         .label-date-picker {
                             color: $color-neutral-4;
                         }
+                    }
+                    .opensleft {
+                        right: 0px;
                     }
                 }
             }

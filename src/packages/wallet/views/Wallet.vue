@@ -17,25 +17,27 @@
                 :placeHolder="'Loại'"
               />
             </div>
-            <p-datepicker
-              class="p-input-group input-group"
-              :format="'dd/mm/yyyy'"
-              :label="label"
-              id="date-search"
-              :value="{
-                startDate: this.filter.start_date,
-                endDate: this.filter.end_date,
-              }"
-              @update="selectDate"
-            >
-            </p-datepicker>
-            <p-button
-              class="close ml-2"
-              type="default"
-              icon="close"
-              v-if="filter.start_date && filter.end_date"
-              @click="clearDate"
-            />
+            <div class="select-date d-flex">
+              <p-datepicker
+                class="p-input-group input-group"
+                :format="'dd/mm/yyyy'"
+                :label="label"
+                id="date-search"
+                :value="{
+                  startDate: this.filter.start_date,
+                  endDate: this.filter.end_date,
+                }"
+                @update="selectDate"
+              >
+              </p-datepicker>
+              <p-button
+                class="close ml-2"
+                type="default"
+                icon="close"
+                v-if="filter.start_date && filter.end_date"
+                @click="clearDate"
+              />
+            </div>
           </div>
           <div class="content">
             <vcl-table class="md-20" v-if="isFetching"></vcl-table>
@@ -72,7 +74,8 @@
                         </router-link>
                       </span>
                       <span
-                        >{{ item.created_at | date('dd/MM/yyyy') }} -
+                        >{{ formatWeekday(item.created_at) }},
+                        {{ item.created_at | date('dd/MM/yyyy') }} -
                         {{ item.created_at | datetime('HH:mm') }}</span
                       >
                     </div>
@@ -270,6 +273,19 @@ export default {
       this.filter.end_date = ''
       this.filter.start_date = ''
       this.filter.page = 1
+    },
+
+    formatWeekday(day) {
+      var weekday = [
+        'Chủ nhật',
+        'Thứ hai',
+        'Thứ ba',
+        'Thứ tư',
+        'Thứ năm',
+        'Thứ sáu',
+        'Thứ bảy',
+      ]
+      return weekday[new Date(day).getDay()]
     },
 
     handleSearchTypeTransaction(type) {
