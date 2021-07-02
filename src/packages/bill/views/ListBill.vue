@@ -21,10 +21,10 @@
               :label="labelDate"
               id="date-search"
               @update="selectDate"
-              :autoApply="true"
               :singleDatePicker="true"
               :value="{
                 startDate: filter.date_search,
+                endDate: filter.date_search,
               }"
             ></p-datepicker>
             <p-button
@@ -90,7 +90,7 @@
                 <table class="table table-hover">
                   <thead>
                     <tr class="table-header">
-                      <th>MÃ VẬN ĐƠN </th>
+                      <th width="350">MÃ VẬN ĐƠN </th>
                       <th>THỜI GIAN </th>
                       <th width="400">PHÍ VẬN ĐƠN </th>
                     </tr>
