@@ -536,7 +536,6 @@ export default {
       return CHANGE_PACKAGE_TYPE
     },
     deliverLogPackage() {
-      console.log(DELIVER_LOG_PACKAGE)
       return DELIVER_LOG_PACKAGE
     },
   },
