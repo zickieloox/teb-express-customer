@@ -108,7 +108,9 @@
           <div class="card">
             <div class="wallet">
               <span>Ví của tôi</span>
-              <span class="money">{{ balance | formatPrice }}</span>
+              <span class="money">{{
+                balance > 0 ? balance : 0 | formatPrice
+              }}</span>
               <p-button
                 href="#"
                 class="btn btn-primary"
@@ -124,7 +126,9 @@
             <img src="@assets/img/unpaid_money.svg" alt="" />
             <div class="wallet">
               <span class="title">Tiền chưa thanh toán</span>
-              <span class="money">{{ unpaid_money | formatPrice }}</span>
+              <span class="money">{{
+                balance > 0 ? 0 : Math.abs(balance) | formatPrice
+              }}</span>
             </div>
           </div>
           <div class="card d-flex">
@@ -176,7 +180,6 @@ export default {
     ...mapState('wallet', {
       topup: (state) => state.topup,
       balance: (state) => state.balance,
-      unpaid_money: (state) => state.unpaid_money,
       process_money: (state) => state.process_money,
       transaction_logs: (state) => state.transaction_logs,
       count: (state) => state.count,
