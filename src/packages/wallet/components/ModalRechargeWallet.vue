@@ -108,7 +108,9 @@ export default {
       amount: '',
     }
   },
-  created() {},
+  created() {
+    this.amount = ''
+  },
   methods: {
     copy() {
       var copyText = document.getElementById('content')
@@ -170,7 +172,6 @@ export default {
     visible: {
       handler: function(val) {
         this.isVisible = val
-        this.amount = ''
       },
       deep: true,
     },
