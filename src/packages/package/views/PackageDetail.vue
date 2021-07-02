@@ -281,7 +281,7 @@
                                 item.created_at | datetime('dd/MM/yyyy')
                               }}</div>
                               <div>{{
-                                item.created_at | datetime('HH:mm')
+                                item.created_at | datetime('HH:mm:ss')
                               }}</div>
                             </div>
                             <div class="timeline-item__right">
