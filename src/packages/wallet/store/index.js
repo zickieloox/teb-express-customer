@@ -14,7 +14,6 @@ export const COUNT_TRANSACTION = 'countTransaction'
 export const state = {
   topup: {},
   balance: 0.0,
-  unpaid_money: 0.0,
   process_money: 0.0,
   transaction_logs: [],
   count: 0,
@@ -26,7 +25,6 @@ export const mutations = {
   },
   [FETCH_TRANSACTION]: (state, payload) => {
     state.balance = payload.balance
-    state.unpaid_money = payload.unpaid_money
     state.process_money = payload.process_money
     state.transaction_logs = payload.transaction_log
   },
