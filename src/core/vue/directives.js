@@ -92,16 +92,19 @@ const getFormatStatus = (status) => {
       statusClass = 'primary'
       break
     case 'Giao thành công':
+    case 'Thành công':
       statusClass = 'success'
       break
     case 'Trả hàng':
       statusClass = 'info'
       break
     case 'Đã hủy':
+    case 'Thất bại':
       statusClass = 'danger'
       break
 
     case 'Đang xử lý':
+    case 'Chờ xác nhận':
       statusClass = 'pending'
       break
     case 'Đã xử lý':
