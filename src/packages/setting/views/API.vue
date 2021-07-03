@@ -37,7 +37,9 @@
             </div>
 
             <div class="title mt-40">API</div>
-            <a style="color:#20bfca" href="#">List API </a>
+            <a style="color:#20bfca" target="_blank" :href="`${urlDocument}`"
+              >List API
+            </a>
 
             <br />
             <div class="user-token-note">
@@ -74,6 +76,9 @@ export default {
     ...mapState('setting', {
       user_token: (state) => state.user_token,
     }),
+    urlDocument() {
+      return `${process.env.VUE_APP_DOC_API_URL}`
+    },
   },
   data() {
     return {
