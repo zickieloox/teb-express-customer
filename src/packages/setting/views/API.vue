@@ -19,6 +19,9 @@
                   type="search"
                 >
                 </p-input>
+                <span class="copy" @click.prevent="copy">
+                  <img src="@assets/img/copy.svg" alt="" />
+                </span>
                 <a
                   href="#"
                   class="btn btn-default"
@@ -122,6 +125,16 @@ export default {
         })
         await this.init()
       }
+    },
+
+    copy() {
+      let copyText = this.user_token
+      let textArea = document.createElement('textarea')
+      textArea.value = copyText
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand('Copy')
+      textArea.remove()
     },
   },
 }
