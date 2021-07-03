@@ -409,7 +409,7 @@
     <modal-edit-order
       :visible.sync="isVisibleModal"
       :info_user="package_detail"
-      @create="init"
+      @create="init2"
       :total="sumFee"
     >
     </modal-edit-order>
@@ -424,11 +424,6 @@
       :loading="actions.wayBill.loading"
       @action="handleActionWayBill"
     ></modal-confirm>
-    <model-label
-      :active.sync="isVisibleModalLabel"
-      :url="package_detail.package.label"
-    >
-    </model-label>
   </div>
 </template>
 
@@ -578,9 +573,11 @@ export default {
     async init() {
       this.isFetching = true
       await this.fetchPackage(this.packageID)
-      // await this.listSender({})
       await this[FETCH_LIST_SERVICE]()
       this.isFetching = false
+    },
+    init2() {
+      location.reload()
     },
     changeDisplayDeliverDetail() {
       this.displayDeliverDetail = !this.displayDeliverDetail
