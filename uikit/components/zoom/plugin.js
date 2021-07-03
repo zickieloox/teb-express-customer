@@ -7,7 +7,6 @@ const ZoomImageProgrammatic = {
   open(url, alt = '') {
     const vm = typeof window !== 'undefined' && window.Vue ? window.Vue : Vue
     const ImageComponent = vm.extend(Zoom)
-
     const propsData = { url, alt }
 
     return new ImageComponent({
