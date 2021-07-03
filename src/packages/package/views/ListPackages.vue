@@ -84,6 +84,7 @@
                         <p-button
                           :disabled="cancelOrder(filter.status)"
                           class="bulk-actions__selection-status"
+                          @click="handlerCancelPackages"
                           >Hủy đơn</p-button
                         >
                       </div>
@@ -211,6 +212,18 @@
       :loading="actions.wayBill.loading"
       @action="handleActionWayBill"
     ></modal-confirm>
+    <modal-confirm
+      :visible.sync="visibleConfirmCancel"
+      v-if="visibleConfirmCancel"
+      :actionConfirm="actions.cancelPackage.button"
+      :cancel="actions.cancelPackage.cancel"
+      :description="actions.cancelPackage.Description"
+      :title="actions.cancelPackage.title"
+      :type="actions.cancelPackage.type"
+      :disabled="actions.cancelPackage.disabled"
+      :loading="actions.cancelPackage.loading"
+      @action="cancelPackagesAction"
+    ></modal-confirm>
   </div>
 </template>
 <script>
@@ -233,6 +246,7 @@ import {
   IMPORT_PACKAGE,
   EXPORT_PACKAGE,
   PROCESS_PACKAGE,
+  CANCEL_PACKAGES,
 } from '@/packages/package/store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
@@ -282,8 +296,18 @@ export default {
           disabled: false,
           loading: false,
         },
+        cancelPackage: {
+          type: 'primary',
+          title: 'Xác nhận hủy đơn',
+          button: 'Hủy đơn',
+          cancel: 'Bỏ qua',
+          Description: '',
+          disabled: false,
+          loading: false,
+        },
       },
       isVisibleConfirmWayBill: false,
+      visibleConfirmCancel: false,
       selected: [],
     }
   },
@@ -321,6 +345,7 @@ export default {
       IMPORT_PACKAGE,
       EXPORT_PACKAGE,
       PROCESS_PACKAGE,
+      CANCEL_PACKAGES,
     ]),
     async init() {
       this.isFetching = true
@@ -450,7 +475,48 @@ export default {
     handleValue(e) {
       this.selected = JSON.parse(JSON.stringify(e))
     },
-
+    handlerCancelPackages() {
+      const selectedInvalid = this.selected.filter(
+        (ele) => ele.status !== PackageStatusInit
+      )
+      if (selectedInvalid.length > 0) {
+        let codeSelectedInvalid = selectedInvalid.map((ele) => ele.code)
+        if (codeSelectedInvalid.length > 3) {
+          codeSelectedInvalid = [...codeSelectedInvalid.slice(0, 3), '...']
+        }
+        return this.$toast.open({
+          type: 'error',
+          message: `Đơn hàng ${codeSelectedInvalid.join(
+            ', '
+          )} không thể hủy đơn.`,
+          duration: 5000,
+        })
+      }
+      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn hủy đơn?`
+      this.visibleConfirmCancel = true
+    },
+    async cancelPackagesAction() {
+      const payload = {
+        ids: this.selectedIds,
+      }
+      this.actions.cancelPackage.loading = true
+      const result = await this[CANCEL_PACKAGES](payload)
+      this.visibleConfirmCancel = false
+      this.actions.cancelPackage.loading = false
+      if (!result || !result.success) {
+        return this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 3000,
+        })
+      }
+      this.init()
+      this.$toast.open({
+        type: 'success',
+        message: 'Hủy đơn thành công',
+        duration: 3000,
+      })
+    },
     handleWayBill() {
       let selectedInvalid = this.selected.filter(
         (ele) => ele.status !== PackageStatusInit

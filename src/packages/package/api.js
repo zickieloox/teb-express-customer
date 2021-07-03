@@ -55,4 +55,7 @@ export default {
       RESPONSE_TYPE_BLOB
     )
   },
+  cancelPackages(payload) {
+    return http.put(`/packages/cancel`, payload)
+  },
 }

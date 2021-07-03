@@ -54,6 +54,7 @@
             <a
               href="#"
               class="btn btn-danger"
+              @click="handleCancelPackage"
               v-if="package_detail.package.status === 1"
             >
               <span>Hủy đơn</span>
@@ -294,7 +295,7 @@
                               }}</div>
                             </div>
                             <div class="timeline-item__right">
-                              <div>{{ deliverLogPackage[item.type] }}</div>
+                              <div v-html="deliverLogPackage(item)"></div>
                             </div>
                           </div>
                         </div>
@@ -424,6 +425,19 @@
       :loading="actions.wayBill.loading"
       @action="handleActionWayBill"
     ></modal-confirm>
+
+    <modal-confirm
+      :visible.sync="visibleConfirmCancel"
+      v-if="visibleConfirmCancel"
+      :actionConfirm="actions.cancelPackage.button"
+      :cancel="actions.cancelPackage.cancel"
+      :description="actions.cancelPackage.Description"
+      :title="actions.cancelPackage.title"
+      :type="actions.cancelPackage.type"
+      :disabled="actions.cancelPackage.disabled"
+      :loading="actions.cancelPackage.loading"
+      @action="cancelPackageAction"
+    ></modal-confirm>
   </div>
 </template>
 
@@ -450,6 +464,7 @@ import {
   FETCH_PACKAGE_DETAIL,
   FETCH_LIST_SERVICE,
   PROCESS_PACKAGE,
+  CANCEL_PACKAGES,
 } from '../store/index'
 import mixinChaining from '@/packages/shared/mixins/chaining'
 import ModalEditOrder from './components/ModalEditOrder'
@@ -459,6 +474,7 @@ import {
   MAP_NAME_STATUS_PACKAGE,
   CHANGE_PACKAGE_TYPE,
   DELIVER_LOG_PACKAGE,
+  PackageStatusCancel,
 } from '@/packages/package/constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import { extension } from '@core/utils/url'
@@ -495,7 +511,17 @@ export default {
           disabled: false,
           loading: false,
         },
+        cancelPackage: {
+          type: 'primary',
+          title: 'Xác nhận hủy đơn',
+          button: 'Hủy đơn',
+          cancel: 'Bỏ qua',
+          Description: '',
+          disabled: false,
+          loading: false,
+        },
       },
+      visibleConfirmCancel: false,
       isVisibleModalLabel: false,
       blob: null,
     }
@@ -553,9 +579,6 @@ export default {
     changePackageType() {
       return CHANGE_PACKAGE_TYPE
     },
-    deliverLogPackage() {
-      return DELIVER_LOG_PACKAGE
-    },
   },
   created() {
     this.packageID = parseInt(this.$route.params.id, 10)
@@ -568,6 +591,7 @@ export default {
       FETCH_PACKAGE_DETAIL,
       FETCH_LIST_SERVICE,
       PROCESS_PACKAGE,
+      CANCEL_PACKAGES,
     ]),
     ...mapActions('setting', [LIST_SENDER]),
     async init() {
@@ -619,7 +643,6 @@ export default {
       this.actions.wayBill.Description = `Bạn có chắc chắn muốn vận đơn?`
       this.isVisibleConfirmWayBill = true
     },
-
     async handleActionWayBill() {
       let id = this.packageID
 
@@ -648,12 +671,49 @@ export default {
       })
     },
 
+    handleCancelPackage() {
+      this.actions.cancelPackage.Description = `Bạn có chắc chắn muốn hủy đơn?`
+      this.visibleConfirmCancel = true
+    },
+
+    async cancelPackageAction() {
+      let id = this.packageID
+
+      let payload = {
+        ids: [id],
+      }
+
+      this.actions.cancelPackage.loading = true
+      const result = await this[CANCEL_PACKAGES](payload)
+      this.visibleConfirmCancel = false
+      this.actions.cancelPackage.loading = false
+      if (!result || !result.success) {
+        return this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 3000,
+        })
+      }
+      this.init()
+      this.$toast.open({
+        type: 'success',
+        message: 'Hủy đơn thành công',
+        duration: 3000,
+      })
+    },
+
     showContent() {
       if (this.isImage) {
         this.zoomImage()
       } else {
         this.download()
       }
+    },
+    deliverLogPackage(log) {
+      return log.type === PackageStatusCancel
+        ? DELIVER_LOG_PACKAGE[log.type] +
+            ` bởi <strong>${log.user.full_name}</strong>`
+        : DELIVER_LOG_PACKAGE[log.type]
     },
     async zoomImage() {
       if (!this.isImage) return
