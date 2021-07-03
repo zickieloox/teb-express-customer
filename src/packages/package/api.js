@@ -47,4 +47,7 @@ export default {
   processPackage(payload) {
     return http.post(`/packages/process`, payload)
   },
+  cancelPackages(payload) {
+    return http.put(`/packages/cancel`, payload)
+  },
 }

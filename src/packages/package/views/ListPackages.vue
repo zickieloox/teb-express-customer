@@ -84,6 +84,7 @@
                         <p-button
                           :disabled="cancelOrder(filter.status)"
                           class="bulk-actions__selection-status"
+                          @click="handlerCancelPackage"
                           >Hủy đơn</p-button
                         >
                       </div>
@@ -233,6 +234,7 @@ import {
   IMPORT_PACKAGE,
   EXPORT_PACKAGE,
   PROCESS_PACKAGE,
+  CANCEL_PACKAGES,
 } from '@/packages/package/store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
@@ -321,6 +323,7 @@ export default {
       IMPORT_PACKAGE,
       EXPORT_PACKAGE,
       PROCESS_PACKAGE,
+      CANCEL_PACKAGES,
     ]),
     async init() {
       this.isFetching = true
@@ -450,7 +453,49 @@ export default {
     handleValue(e) {
       this.selected = JSON.parse(JSON.stringify(e))
     },
-
+    handlerCancelPackage() {
+      const selectedInvalid = this.selected.filter(
+        (ele) => ele.status !== PackageStatusInit
+      )
+      this.$dialog.confirm({
+        message: `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn hủy đơn?`,
+        onConfirm: () => this.cancelPackagesAction(),
+      })
+      if (selectedInvalid.length > 0) {
+        let codeSelectedInvalid = selectedInvalid.map((ele) => ele.code)
+        if (codeSelectedInvalid.length > 3) {
+          codeSelectedInvalid = [...codeSelectedInvalid.slice(0, 3), '...']
+        }
+        return this.$toast.open({
+          type: 'error',
+          message: `Đơn hàng ${codeSelectedInvalid.join(
+            ', '
+          )} không thể hủy đơn.`,
+          duration: 5000,
+        })
+      }
+    },
+    async cancelPackagesAction() {
+      this.isFetching = true
+      const payload = {
+        ids: this.selectedIds,
+      }
+      const result = await this[CANCEL_PACKAGES](payload)
+      this.isFetching = false
+      if (!result || !result.success) {
+        return this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 3000,
+        })
+      }
+      this.init()
+      this.$toast.open({
+        type: 'success',
+        message: 'Hủy đơn thành công',
+        duration: 3000,
+      })
+    },
     handleWayBill() {
       let selectedInvalid = this.selected.filter(
         (ele) => ele.status !== PackageStatusInit
