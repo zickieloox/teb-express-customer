@@ -3,7 +3,6 @@
     class="animsition layout-full"
     :class="$route.meta && $route.meta.class ? $route.meta.class : ''"
   >
-    <p-noti></p-noti>
     <div class="app container-fluid">
       <div class="row">
         <div class="img  disable-moblie hide-tablet">
@@ -52,13 +51,10 @@
   </div>
 </template>
 <script>
-import PNoti from '../v2/Notibar'
 import { mapState } from 'vuex'
 export default {
   name: 'FullPage',
-  components: {
-    PNoti,
-  },
+  components: {},
   data() {
     return {
       urlSingup: 'https://help.lionnix.com/general/registration/ ',

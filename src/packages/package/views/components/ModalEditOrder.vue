@@ -96,7 +96,7 @@
                         v-model="city"
                         :input="city"
                         class="form-control"
-                        v-validate="'required|city'"
+                        v-validate="'required'"
                         name="city"
                         data-vv-as="Thành phố"
                         :class="{ 'error-color': errors.has('city') }"

@@ -17,7 +17,16 @@
           <div class="page-header__info">
             <div>
               <div>Mã vận đơn</div>
-              <div class="package-code">{{ package_detail.package.code }}</div>
+              <div class="package-code"
+                >{{ package_detail.package.code }}
+                <span
+                  @click="showContent"
+                  v-if="package_detail.package.label"
+                  class="page-header__barcode"
+                >
+                  <img src="@/assets/img/barcode.svg" alt="barcode" />
+                </span>
+              </div>
             </div>
             <div>
               <div>Dịch vụ </div>
@@ -415,6 +424,11 @@
       :loading="actions.wayBill.loading"
       @action="handleActionWayBill"
     ></modal-confirm>
+    <model-label
+      :active.sync="isVisibleModalLabel"
+      :url="package_detail.package.label"
+    >
+    </model-label>
   </div>
 </template>
 
@@ -452,6 +466,9 @@ import {
   DELIVER_LOG_PACKAGE,
 } from '@/packages/package/constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
+import { extension } from '@core/utils/url'
+import Browser from '@core/helpers/browser'
+import api from '../api'
 export default {
   name: 'PackageDetail',
   mixins: [mixinChaining],
@@ -484,6 +501,8 @@ export default {
           loading: false,
         },
       },
+      isVisibleModalLabel: false,
+      blob: null,
     }
   },
   computed: {
@@ -508,6 +527,7 @@ export default {
         start + this.auditPagination.itemsPerPage
       )
     },
+
     sumExtraFee() {
       if (
         !this.package_detail.extra_fee ||
@@ -525,7 +545,10 @@ export default {
     mapStatus() {
       return MAP_NAME_STATUS_PACKAGE
     },
-
+    isImage() {
+      const ext = extension(this.package_detail.package.label)
+      return ['png', 'jpg', 'jpeg'].includes(ext)
+    },
     extraFee() {
       return this.package_detail.extra_fee ? this.package_detail.extra_fee : []
     },
@@ -626,6 +649,40 @@ export default {
         message: 'Vận đơn thành công',
         duration: 3000,
       })
+    },
+
+    showContent() {
+      if (this.isImage) {
+        this.zoomImage()
+      } else {
+        this.download()
+      }
+    },
+    async zoomImage() {
+      if (!this.isImage) return
+
+      if (this.blob) {
+        this.$zoom.open(this.blob)
+        return
+      }
+
+      const res = await api.fetchBarcodeFile({
+        url: this.package_detail.package.label,
+        type: 'labels',
+      })
+      if (res && !res.error) {
+        this.blob = window.URL.createObjectURL(res)
+        this.$zoom.open(this.blob)
+      }
+    },
+    async download() {
+      const res = await api.fetchBarcodeFile({
+        url: this.package_detail.package.label,
+        type: 'labels',
+      })
+      if (res && !res.error) {
+        Browser.downloadBlob(res, this.url.split('/').pop())
+      }
     },
   },
 
