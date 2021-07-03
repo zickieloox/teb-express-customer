@@ -216,6 +216,7 @@
       :visible.sync="visibleConfirmCancel"
       v-if="visibleConfirmCancel"
       :actionConfirm="actions.cancelPackage.button"
+      :cancel="actions.cancelPackage.cancel"
       :description="actions.cancelPackage.Description"
       :title="actions.cancelPackage.title"
       :type="actions.cancelPackage.type"
@@ -299,6 +300,7 @@ export default {
           type: 'primary',
           title: 'Xác nhận hủy đơn',
           button: 'Hủy đơn',
+          cancel: 'Bỏ qua',
           Description: '',
           disabled: false,
           loading: false,
