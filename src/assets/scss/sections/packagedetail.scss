@@ -1,6 +1,11 @@
 .package-detail {
   .page-header {
     margin-bottom: 12px;
+    &__barcode{
+      img{
+        margin: 0 0 5px 8px;
+      }
+    }
   }
 
   .page-header_back {

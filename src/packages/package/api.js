@@ -1,5 +1,7 @@
 import http from '@core/services/http'
 import { buildQueryString } from '@core/utils/url'
+import { RESPONSE_TYPE_BLOB } from '@core/constants/http'
+
 export default {
   /**
    * fetch package
@@ -46,5 +48,11 @@ export default {
   },
   processPackage(payload) {
     return http.post(`/packages/process`, payload)
+  },
+  fetchBarcodeFile(payload) {
+    return http.get(
+      `/uploads/file-export/download?${buildQueryString(payload)}`,
+      RESPONSE_TYPE_BLOB
+    )
   },
 }
