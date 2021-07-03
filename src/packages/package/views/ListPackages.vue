@@ -76,7 +76,9 @@
                           @click="handleWayBill"
                           >Vận đơn</p-button
                         >
-                        <p-button class="bulk-actions__selection-status"
+                        <p-button
+                          :disabled="isFilterInitTab"
+                          class="bulk-actions__selection-status"
                           >In đơn</p-button
                         >
                         <p-button
@@ -299,6 +301,9 @@ export default {
       hiddenClass() {
         return this.action.selected.length > 0 || this.isAllChecked
       },
+      isFilterInitTab() {
+        return this.filter.status === PackageStatusInit
+      },
       items() {
         return this.packages
       },
@@ -463,9 +468,7 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selected.length
-      }. Bạn có chắc chắn muốn vận đơn?`
+      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${this.selected.length}. Bạn có chắc chắn muốn vận đơn?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
