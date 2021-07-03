@@ -21,6 +21,7 @@
                 </p-input>
                 <span class="copy" @click.prevent="copy">
                   <img src="@assets/img/copy.svg" alt="" />
+                  <span class="tooltip-text" id="myTooltip"></span>
                 </span>
                 <a
                   href="#"
@@ -135,6 +136,10 @@ export default {
       textArea.select()
       document.execCommand('Copy')
       textArea.remove()
+
+      let tooltip = document.getElementById('myTooltip')
+      tooltip.innerHTML = 'Đã sao chép!'
+      setTimeout(() => (tooltip.innerHTML = ''), 1000)
     },
   },
 }

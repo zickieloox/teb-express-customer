@@ -43,15 +43,23 @@
 
     .user-token-input .copy {
       position: absolute;
-      z-index: 10;
       outline: none;
-      right: 82px;
       top: 6px;
+      right: 80px;
       cursor: pointer;
+      z-index: 10;
 
       .tooltip-text {
         position: absolute;
-        z-index: 10;
+
+        width: 100px;
+        background-color: #37393e;
+        z-index: 11;
+        text-align: center;
+        border-radius: 4px;
+        color: #fff;
+        top: -27px;
+        right: -41px;
       }
     }
 
