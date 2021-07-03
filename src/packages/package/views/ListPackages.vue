@@ -84,7 +84,7 @@
                         <p-button
                           :disabled="cancelOrder(filter.status)"
                           class="bulk-actions__selection-status"
-                          @click="handlerCancelPackage"
+                          @click="handlerCancelPackages"
                           >Hủy đơn</p-button
                         >
                       </div>
@@ -212,6 +212,17 @@
       :loading="actions.wayBill.loading"
       @action="handleActionWayBill"
     ></modal-confirm>
+    <modal-confirm
+      :visible.sync="visibleConfirmCancel"
+      v-if="visibleConfirmCancel"
+      :actionConfirm="actions.cancelPackage.button"
+      :description="actions.cancelPackage.Description"
+      :title="actions.cancelPackage.title"
+      :type="actions.cancelPackage.type"
+      :disabled="actions.cancelPackage.disabled"
+      :loading="actions.cancelPackage.loading"
+      @action="cancelPackagesAction"
+    ></modal-confirm>
   </div>
 </template>
 <script>
@@ -284,8 +295,17 @@ export default {
           disabled: false,
           loading: false,
         },
+        cancelPackage: {
+          type: 'primary',
+          title: 'Xác nhận hủy đơn',
+          button: 'Hủy đơn',
+          Description: '',
+          disabled: false,
+          loading: false,
+        },
       },
       isVisibleConfirmWayBill: false,
+      visibleConfirmCancel: false,
       selected: [],
     }
   },
@@ -453,14 +473,10 @@ export default {
     handleValue(e) {
       this.selected = JSON.parse(JSON.stringify(e))
     },
-    handlerCancelPackage() {
+    handlerCancelPackages() {
       const selectedInvalid = this.selected.filter(
         (ele) => ele.status !== PackageStatusInit
       )
-      this.$dialog.confirm({
-        message: `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn hủy đơn?`,
-        onConfirm: () => this.cancelPackagesAction(),
-      })
       if (selectedInvalid.length > 0) {
         let codeSelectedInvalid = selectedInvalid.map((ele) => ele.code)
         if (codeSelectedInvalid.length > 3) {
@@ -474,14 +490,17 @@ export default {
           duration: 5000,
         })
       }
+      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn hủy đơn?`
+      this.visibleConfirmCancel = true
     },
     async cancelPackagesAction() {
-      this.isFetching = true
       const payload = {
         ids: this.selectedIds,
       }
+      this.actions.cancelPackage.loading = true
       const result = await this[CANCEL_PACKAGES](payload)
-      this.isFetching = false
+      this.visibleConfirmCancel = false
+      this.actions.cancelPackage.loading = false
       if (!result || !result.success) {
         return this.$toast.open({
           type: 'error',
