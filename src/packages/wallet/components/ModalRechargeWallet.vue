@@ -133,8 +133,7 @@ export default {
     handlerRecharge() {
       this.checkValidMoney()
       if (this.error == true) return
-
-      this.$emit('recharge', this.amount.replace(',', ''))
+      this.$emit('recharge', this.amount.replaceAll(',', ''))
       this.$emit('update:visible', false)
     },
 
