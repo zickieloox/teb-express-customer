@@ -4,7 +4,7 @@
       <template>
         <div class="payments">
           <span>Vui lòng chọn phương thức thanh toán:</span>
-          <span class="usd">Tỷ giá đô la: {{ usdToVnd / 1000 }} vnđ</span>
+          <span class="usd">Tỷ giá đô la: {{ moneyText }} vnđ</span>
         </div>
         <div class="tab">
           <div class="active">Chuyển khoản</div>
@@ -108,9 +108,13 @@ export default {
       accountNumber: ACCOUNT_NUMBER,
       error: false,
       errorText: '',
+      moneyText: '',
       amount: '',
       amountUsd: '',
     }
+  },
+  created() {
+    this.moneyText = (this.usdToVnd / 1000).toString().replace('.', ',')
   },
   methods: {
     copy() {
