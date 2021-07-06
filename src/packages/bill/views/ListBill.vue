@@ -51,7 +51,7 @@
             <div class="info-bill"
               >Ngày tạo:
               <span class="info-number">{{
-                bill.created_at | datetime('dd-MM-yyyy HH:mm:ss ')
+                bill.created_at | datetime('dd/MM/yyyy HH:mm:ss ')
               }}</span>
             </div>
             <div class="info-bill"
@@ -113,7 +113,7 @@
                         </router-link>
                       </td>
                       <td>{{
-                        item.created_at | datetime('dd-MM-yyyy HH:mm:ss')
+                        item.created_at | datetime('dd/MM/yyyy HH:mm:ss')
                       }}</td>
                       <td>+ {{ item.shipping_fee | formatPrice }}</td>
                     </tr>
@@ -174,7 +174,7 @@
                         </router-link>
                       </td>
                       <td>{{
-                        item.created_at | datetime('dd-MM-yyyy HH:mm:ss')
+                        item.created_at | datetime('dd/MM/yyyy HH:mm:ss')
                       }}</td>
                       <td>{{ item.amount | formatPrice }}</td>
                     </tr>
@@ -235,7 +235,7 @@
                         </router-link>
                       </td>
                       <td>{{
-                        item.created_at | datetime('dd-MM-yyyy HH:mm:ss')
+                        item.created_at | datetime('dd/MM/yyyy HH:mm:ss')
                       }}</td>
                       <td>{{ item.amount | formatPrice }}</td>
                     </tr>

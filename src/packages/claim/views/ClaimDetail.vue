@@ -73,11 +73,11 @@
                   </li>
                   <li class="item-note">
                     <span class="item-title">Ngày tạo: </span>
-                    {{ claim.created_at | datetime('dd-MM-yyyy   HH:mm:ss') }}
+                    {{ claim.created_at | datetime('dd/MM/yyyy   HH:mm:ss') }}
                   </li>
                   <li class="item-note">
                     <span class="item-title">Ngày cập nhật gần nhất: </span>
-                    {{ claim.updated_at | datetime('dd-MM-yyyy   HH:mm:ss') }}
+                    {{ claim.updated_at | datetime('dd/MM/yyyy   HH:mm:ss') }}
                   </li>
                 </ul>
               </div>
@@ -104,7 +104,7 @@
                     }}</span>
                   </div>
                   <div class="user-time">
-                    {{ claim.created_at | datetime('dd-MM-yyyy HH:mm:ss') }}
+                    {{ claim.created_at | datetime('dd/MM/yyyy HH:mm:ss') }}
                   </div>
                 </div>
                 <div class="user-text">
