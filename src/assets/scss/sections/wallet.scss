@@ -393,12 +393,16 @@
                     height: 40px;
                     font-family: "Be Vietnam";
                     font-style: normal;
-                    font-weight: normal;
+                    font-weight: bold;
                     font-size: 14px;
                     line-height: 22px;
-                    color: #313232;
+                    color: #111212;
                     &:focus {
                         border-color: #80bdff;
+                    }
+                    &::placeholder {
+                        font-weight: normal;
+                        color: #CFD0D0;
                     }
                 }
                 span {
