@@ -460,6 +460,8 @@
 </style>
 <script>
 import { mapState, mapActions } from 'vuex'
+import { printImage } from '@core/utils/print'
+
 import {
   FETCH_PACKAGE_DETAIL,
   FETCH_LIST_SERVICE,
@@ -478,7 +480,6 @@ import {
 } from '@/packages/package/constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import { extension } from '@core/utils/url'
-import Browser from '@core/helpers/browser'
 import api from '../api'
 export default {
   name: 'PackageDetail',
@@ -702,11 +703,30 @@ export default {
       })
     },
 
-    showContent() {
-      if (this.isImage) {
-        this.zoomImage()
-      } else {
-        this.download()
+    async showContent() {
+      document.activeElement && document.activeElement.blur()
+      if (this.blob && this.isImage) {
+        printImage(this.blob)
+        return
+      }
+      const res = await api.fetchBarcodeFile({
+        url: this.package_detail.package.label,
+        type: 'labels',
+      })
+      if (!res && res.error) {
+        this.$toast.open({
+          type: 'error',
+          message: res.errorMessage,
+          duration: 3000,
+        })
+        return
+      }
+
+      try {
+        this.blob = (window.webkitURL || window.URL).createObjectURL(res)
+        printImage(this.blob)
+      } catch (error) {
+        this.$toast.error('File error !!!')
       }
     },
     deliverLogPackage(log) {
@@ -714,32 +734,6 @@ export default {
         ? DELIVER_LOG_PACKAGE[log.type] +
             ` bởi <strong>${log.user.full_name}</strong>`
         : DELIVER_LOG_PACKAGE[log.type]
-    },
-    async zoomImage() {
-      if (!this.isImage) return
-
-      if (this.blob) {
-        this.$zoom.open(this.blob)
-        return
-      }
-
-      const res = await api.fetchBarcodeFile({
-        url: this.package_detail.package.label,
-        type: 'labels',
-      })
-      if (res && !res.error) {
-        this.blob = window.URL.createObjectURL(res)
-        this.$zoom.open(this.blob)
-      }
-    },
-    async download() {
-      const res = await api.fetchBarcodeFile({
-        url: this.package_detail.package.label,
-        type: 'labels',
-      })
-      if (res && !res.error) {
-        Browser.downloadBlob(res, this.url.split('/').pop())
-      }
     },
   },
 
