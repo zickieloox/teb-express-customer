@@ -60,8 +60,8 @@
 <!--                        {{ truncate(item.title, 15) }}-->
 <!--                      </p-tooltip>-->
 <!--                    </td>-->
-<!--                    <td>{{ item.created_at | datetime('dd-MM-yyyy') }}</td>-->
-<!--                    <td>{{ item.updated_at | datetime('dd-MM-yyyy') }}</td>-->
+<!--                    <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>-->
+<!--                    <td>{{ item.updated_at | datetime('dd/MM/yyyy') }}</td>-->
 <!--                    <td>{{ converStatus(item.status) }}</td>-->
 <!--                  </tr>-->
 <!--                  </tbody>-->

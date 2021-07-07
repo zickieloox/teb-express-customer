@@ -12,7 +12,7 @@
           <span class="role-user" v-show="roleName">{{ roleName }}</span>
         </div>
         <div class="user-time">
-          {{ current.created_at | datetime('dd-MM-yyyy HH:mm:ss') }}
+          {{ current.created_at | datetime('dd/MM/yyyy HH:mm:ss') }}
         </div>
       </div>
       <div class="user-text">

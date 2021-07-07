@@ -36,7 +36,7 @@
               <div>Ngày tạo </div>
               <div>{{
                 package_detail.package.created_at
-                  | datetime('dd-MM-yyyy HH:mm:ss')
+                  | datetime('dd/MM/yyyy HH:mm:ss')
               }}</div>
             </div>
             <div>

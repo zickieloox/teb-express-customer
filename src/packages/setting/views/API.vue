@@ -19,6 +19,10 @@
                   type="search"
                 >
                 </p-input>
+                <span class="copy" @click.prevent="copy">
+                  <img src="@assets/img/copy.svg" alt="" />
+                  <span class="tooltip-text" id="myTooltip"></span>
+                </span>
                 <a
                   href="#"
                   class="btn btn-default"
@@ -37,7 +41,9 @@
             </div>
 
             <div class="title mt-40">API</div>
-            <a style="color:#20bfca" href="#">List API </a>
+            <a style="color:#20bfca" target="_blank" :href="`${urlDocument}`"
+              >List API
+            </a>
 
             <br />
             <div class="user-token-note">
@@ -74,6 +80,9 @@ export default {
     ...mapState('setting', {
       user_token: (state) => state.user_token,
     }),
+    urlDocument() {
+      return `${process.env.VUE_APP_DOC_API_URL}`
+    },
   },
   data() {
     return {
@@ -117,6 +126,20 @@ export default {
         })
         await this.init()
       }
+    },
+
+    copy() {
+      let copyText = this.user_token
+      let textArea = document.createElement('textarea')
+      textArea.value = copyText
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand('Copy')
+      textArea.remove()
+
+      let tooltip = document.getElementById('myTooltip')
+      tooltip.innerHTML = 'Đã sao chép!'
+      setTimeout(() => (tooltip.innerHTML = ''), 1000)
     },
   },
 }

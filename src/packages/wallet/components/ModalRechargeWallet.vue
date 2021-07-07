@@ -4,7 +4,7 @@
       <template>
         <div class="payments">
           <span>Vui lòng chọn phương thức thanh toán:</span>
-          <span class="usd">Tỷ giá đô la: {{ usdToVnd }} vnđ</span>
+          <span class="usd">Tỷ giá đô la: {{ moneyText }} vnđ</span>
         </div>
         <div class="tab">
           <div class="active">Chuyển khoản</div>
@@ -49,6 +49,9 @@
           <div class="invalid-error" v-if="error == true">
             {{ errorText }}
           </div>
+          <span class="mt-8"
+            >Tương ứng: {{ amountUsd | formatPrice }} USD
+          </span>
         </div>
 
         <div class="note">
@@ -105,11 +108,13 @@ export default {
       accountNumber: ACCOUNT_NUMBER,
       error: false,
       errorText: '',
+      moneyText: '',
       amount: '',
+      amountUsd: '',
     }
   },
   created() {
-    this.amount = ''
+    this.moneyText = (this.usdToVnd / 1000).toString().replace('.', ',')
   },
   methods: {
     copy() {
@@ -139,12 +144,12 @@ export default {
 
     checkValidMoney() {
       this.amount = document.getElementById('money').value
-      if (!/^[0-9,]+$/.test(this.amount.replace(',', ''))) {
+      if (!/^[0-9,]+$/.test(this.amount)) {
         this.error = true
         this.errorText = 'Số tiền không hợp lệ!'
         return
       }
-      if (this.amount.replace(',', '') == '') {
+      if (this.amount == '') {
         this.error = true
         this.errorText = 'Số tiền không được để trống!'
         return
@@ -154,6 +159,10 @@ export default {
         .getElementById('money')
         .value.replace(/\D/g, '')
         .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
+      this.amountUsd =
+        Math.floor((this.amount.replaceAll(',', '') / this.usdToVnd) * 100) /
+        100
 
       this.error = false
       this.errorText = ''
@@ -171,6 +180,8 @@ export default {
     visible: {
       handler: function(val) {
         this.isVisible = val
+        this.amount = ''
+        this.amountUsd = ''
       },
       deep: true,
     },
