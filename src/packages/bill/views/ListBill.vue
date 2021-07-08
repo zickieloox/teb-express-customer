@@ -13,7 +13,7 @@
               clearable
               :value.sync="filter.search"
               @keyup.enter="handleSearch"
-              v-model="search"
+              v-model="filter.search"
             >
             </p-input>
             <p-datepicker
