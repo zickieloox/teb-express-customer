@@ -12,9 +12,10 @@
                 placeholder="Tìm theo mã hoặc tên người gửi ..."
                 prefixIcon="search"
                 class="mb-2"
-                :value="filter.search"
+                :value.sync="filter.search"
                 @keyup.enter="handleSearch"
                 type="search"
+                clearable
               >
               </p-input>
               <a
