@@ -27,7 +27,8 @@
                 placeholder="Tìm theo mã đơn hàng hoặc mã vận đơn..."
                 suffixIcon="search"
                 type="search"
-                v-model="searchCode"
+                clearable
+                :value.sync="searchCode"
                 :suffix-func="handleSearchCode"
                 @keyup.enter="handleSearchCode"
               >

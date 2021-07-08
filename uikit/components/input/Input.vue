@@ -662,7 +662,7 @@ export default {
     },
 
     clear() {
-      this.$emit('input', '')
+      this.$emit('update:value', '')
     },
   },
   watch: {

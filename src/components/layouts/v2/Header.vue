@@ -9,10 +9,11 @@
           <p-input
             placeholder="Tra cứu theo mã vận đơn "
             type="search"
+            clearable
             hiddenPass="on"
             prefixIcon="search"
             @keyup.enter="handleSearchCode"
-            v-model="searchCode"
+            :value.sync="searchCode"
           />
         </div>
         <div class="navbar__header-drop">

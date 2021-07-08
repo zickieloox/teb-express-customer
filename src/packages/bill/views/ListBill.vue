@@ -10,7 +10,8 @@
               prefixIcon="search"
               class="mb-2"
               type="search"
-              :value="filter.search"
+              clearable
+              :value.sync="filter.search"
               @keyup.enter="handleSearch"
               v-model="search"
             >
