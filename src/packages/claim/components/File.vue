@@ -107,14 +107,24 @@ export default {
       }
 
       if (this.isError) return
-      const res = await api.fetchTicketFile({ url: this.src, type: 'tickets' })
+      const { id } = this.$route.params
+      const res = await api.fetchTicketFile({
+        url: this.src,
+        type: 'tickets',
+        id: id,
+      })
       if (res && !res.error) {
         this.blob = window.URL.createObjectURL(res)
         this.$zoom.open(this.blob)
       }
     },
     async download() {
-      const res = await api.fetchTicketFile({ url: this.src, type: 'tickets' })
+      const { id } = this.$route.params
+      const res = await api.fetchTicketFile({
+        url: this.src,
+        type: 'tickets',
+        id: id,
+      })
       if (res && !res.error) {
         Browser.downloadBlob(res, this.src.split('/').pop())
       }
