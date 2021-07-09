@@ -69,7 +69,11 @@
                       </td>
                       <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>
                       <td>{{ item.updated_at | datetime('dd/MM/yyyy') }}</td>
-                      <td>{{ converStatus(item.status) }}</td>
+                      <td>
+                        <span
+                          v-status:status="converStatus(item.status)"
+                        ></span>
+                      </td>
                     </tr>
                   </tbody>
                 </table>

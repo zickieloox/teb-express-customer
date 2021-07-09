@@ -121,28 +121,30 @@ export default {
               title: 'Quản lý đơn hàng',
               alias: ['/packages', '/packages/:id'],
             },
-            {
-              route: '/packages/claims',
-              title: 'Đơn khiếu nại',
-              alias: ['/packages/claims', '/packages/claims/:id'],
-            },
           ],
         },
-        q3: {
+        q4: {
           title: 'Hóa đơn',
           icon: require('@assets/img/BillInactive.svg'),
           iconActive: require('@assets/img/Bill.svg'),
           route: '/bill',
           class: '',
         },
-        q4: {
+        q3: {
+          title: 'Đơn khiếu nại',
+          icon: require('@assets/img/claimInactive.svg'),
+          iconActive: require('@assets/img/claimsActive.svg'),
+          route: '/packages/claims',
+          class: '',
+        },
+        q5: {
           title: 'Ví',
           icon: require('@assets/img/WalletInactive.svg'),
           iconActive: require('@assets/img/Wallet.svg'),
           route: '/wallet',
           class: '',
         },
-        q5: {
+        q6: {
           title: 'Cài đặt tài khoản',
           icon: require('@assets/img/SettingInactive.svg'),
           iconActive: require('@assets/img/Setting.svg'),

@@ -33,8 +33,9 @@
 }
 
 .badge-pending {
-  background: #EFEBE9;
-  color: #795548;
+  background: #E6FFFB;
+  color: #13C2C2;
+  border: 1px solid #87E8DE;
 }
 .badge-resolved {
   background: #11c26d;
@@ -64,8 +65,10 @@
   color: #FFB74D;
 }
 .badge-done{
-  background:  #E0F2F1;
-  color: #009688;
+  background:  #F2EBE4;
+  color: #7F5345;
+  border: 1px solid #CCC5C0;
+
 }
 
 
