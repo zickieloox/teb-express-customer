@@ -39,6 +39,7 @@
                       <th>NGÀY TẠO</th>
                       <th>NGÀY CẬP NHẬT</th>
                       <th>TRẠNG THÁI </th>
+                      <th></th>
                     </tr>
                   </thead>
 
@@ -55,7 +56,17 @@
                           {{ item.id }}
                         </router-link>
                       </td>
-                      <td>{{ item.package.code }}</td>
+                      <td>
+                        <router-link
+                          class="text-no-underline"
+                          :to="{
+                            name: 'package-detail',
+                            params: { id: item.package.code },
+                          }"
+                        >
+                          {{ item.package.code }}
+                        </router-link></td
+                      >
                       <td width="300">
                         <p-tooltip
                           :label="item.title"
@@ -74,6 +85,20 @@
                           v-status:status="converStatus(item.status)"
                         ></span>
                       </td>
+                      <td width="40">
+                        <router-link
+                          v-if="item.status_rep == claimAdminReply"
+                          class="text-no-underline"
+                          :to="{
+                            name: 'claim-detail',
+                            params: { id: item.id },
+                          }"
+                        >
+                          <img
+                            src="@assets/img/messenger.svg"
+                            alt=""
+                          /> </router-link
+                      ></td>
                     </tr>
                   </tbody>
                 </table>
@@ -106,7 +131,8 @@
 </template>
 <script>
 import EmptySearchResult from '../../../components/shared/EmptySearchResult'
-import { CLAIM_STATUS } from '../constants'
+import { CLAIM_STATUS, CLAIM_ADMIN_REPLY } from '../constants'
+
 import { truncate } from '@core/utils/string'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
@@ -131,6 +157,7 @@ export default {
       visibleModal: false,
       isFetching: false,
       claimStatus: CLAIM_STATUS,
+      claimAdminReply: CLAIM_ADMIN_REPLY,
     }
   },
   created() {

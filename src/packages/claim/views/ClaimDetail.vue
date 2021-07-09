@@ -15,20 +15,21 @@
           </div>
           <div class="page-header-group">
             <div class="page-header_title header-2">
-              <span style="font-weight: bold" v-if="claim.title">{{
-                truncate(claim.title, 50)
-              }}</span>
-              <!-- <span
-                v-if="claim.status == 1"
-                class="edit-ticket"
-                @click="showTicketModal"
+              <p-tooltip
+                :label="claim.title"
+                size="large"
+                position="top"
+                type="dark"
+                style="font-weight: bold"
+                v-if="claim.title"
+                :active="claim.title.length > 50"
               >
-                <img src="~@/assets/img/edit-2.svg" alt="edit" />
-              </span> -->
+                {{ truncate(claim.title, 50) }}
+              </p-tooltip>
             </div>
             <div
               class="page-header-group-actions__right"
-              v-if="claim.status != 2"
+              v-if="claim.status != claimStatusProcessed"
             >
               <a href="#" class="btn btn-primary" @click="showModalReply">
                 <span>Trả lời</span>
@@ -36,7 +37,7 @@
               <a
                 href="#"
                 class="btn btn-danger ml-10"
-                @click="actionCancelTicket()"
+                @click="handleCancelTicket()"
               >
                 <span>Đóng</span>
               </a>
@@ -145,29 +146,12 @@
         </div>
       </div>
     </div>
-    <!-- <modal-edit-ticket
-      @success="toggleShowTicket"
-      :visible.sync="isTicketOpen"
-      v-if="isTicketOpen"
-    >
-    </modal-edit-ticket> -->
     <modal-reply
       :claim="claim"
       :visible.sync="isVisibleModalReply"
       v-if="isVisibleModalReply"
       @success="replySuccess"
     ></modal-reply>
-
-    <modal-confirm
-      :visible.sync="isVisibleCancelClaim"
-      v-if="isVisibleCancelClaim"
-      :actionConfirm="actions.cancel.button"
-      :description="actions.cancel.Description"
-      :title="actions.cancel.title"
-      :type="actions.cancel.type"
-      @action="handleCancelTicket()"
-    >
-    </modal-confirm>
   </div>
 </template>
 
@@ -187,8 +171,11 @@ import {
   GET_FILE_TICKET,
 } from '../store'
 import { FETCH_TICKET } from '@/packages/claim/store'
-import { CLAIM_STATUS } from '../constants'
-import ModalConfirm from '@components/shared/modal/ModalConfirm'
+import {
+  CLAIM_STATUS,
+  CLAIM_STATUS_PENDING,
+  CLAIM_STATUS_PROCESSED,
+} from '../constants'
 import { truncate } from '@core/utils/string'
 
 export default {
@@ -198,7 +185,6 @@ export default {
     File,
     ModalReply,
     Message,
-    ModalConfirm,
   },
   props: {
     visible: {
@@ -209,21 +195,9 @@ export default {
       type: Boolean,
       default: false,
     },
-    description: {
-      type: String,
-      default: '',
-    },
-    actionConfirm: {
-      type: String,
-    },
-    type: {
-      type: String,
-      default: 'primary',
-    },
   },
   data() {
     return {
-      isVisibleCancelClaim: false,
       content: '',
       reply: '',
       reason: null,
@@ -248,14 +222,8 @@ export default {
       styleObject: {},
       styleInfoObject: {},
       claimStatus: CLAIM_STATUS,
-      actions: {
-        cancel: {
-          title: 'Đóng khiếu nại',
-          button: 'Xác nhận',
-          Description: `Bạn có chắc chắn đóng khiếu nại này ?`,
-          type: 'danger',
-        },
-      },
+      claimStatusPending: CLAIM_STATUS_PENDING,
+      claimStatusProcessed: CLAIM_STATUS_PROCESSED,
     }
   },
   computed: {
@@ -353,17 +321,6 @@ export default {
       }
     },
 
-    adjustIconsInTextarea() {
-      this.requiredContent = false
-    },
-
-    showTicketModal() {
-      this.isTicketOpen = !this.isTicketOpen
-    },
-    toggleShowTicket() {
-      this.isTicketOpen = !this.isTicketOpen
-      this.init()
-    },
     hasFiles() {
       return this.claim.attachment && this.claims.attachment.length
     },
@@ -472,12 +429,7 @@ export default {
       this.init()
     },
 
-    actionCancelTicket() {
-      this.isVisibleCancelClaim = true
-    },
-
     async handleCancelTicket() {
-      this.isVisibleCancelClaim = false
       let payload = {
         id: this.claim.id,
       }
@@ -491,7 +443,7 @@ export default {
       }
       this.$toast.open({
         type: 'success',
-        message: ' Thành công',
+        message: 'Thành công',
       })
       this.files = []
       this.init()
