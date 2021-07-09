@@ -45,6 +45,11 @@
         .card-body {
             padding: 24px 32px 48px;
         }
+        .text-no-underline {
+            font-weight: 500;
+            line-height: 160%;
+            color: $color-java-blue-10
+        }
         .p-tooltip {
             display: inline;
             top: -2px;
@@ -151,11 +156,6 @@
                     }
                 }
             }
-            .text-no-underline {
-                font-weight: 500;
-                line-height: 160%;
-                color: #2A46B2;
-            }
             .hidden {
                 visibility: hidden;
             }
@@ -177,9 +177,6 @@
                 color: #2A46B2;
             }
         }
-    }
-    a {
-        color: $color-java-blue-10
     }
 }
 
