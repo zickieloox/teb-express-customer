@@ -24,7 +24,7 @@
           <div class="card-body">
             <div class="d-flex">
               <p-input
-                placeholder="Tìm theo mã đơn hàng hoặc mã vận đơn..."
+                placeholder="Tìm theo mã vận đơn hoặc mã vận đơn..."
                 suffixIcon="search"
                 type="search"
                 v-model="searchCode"
@@ -492,9 +492,7 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selectedIds.length
-      }. Bạn có chắc chắn muốn hủy đơn?`
+      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn hủy đơn?`
       this.visibleConfirmCancel = true
     },
     async cancelPackagesAction() {
@@ -536,9 +534,7 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selected.length
-      }. Bạn có chắc chắn muốn vận đơn?`
+      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${this.selected.length}. Bạn có chắc chắn muốn vận đơn?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
