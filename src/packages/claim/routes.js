@@ -1,7 +1,7 @@
 export const routes = [
   {
-    path: '/packages/claims',
-    name: 'list-claim',
+    path: '/claims',
+    name: 'claims',
     meta: {
       title: 'Khiếu nại',
     },
@@ -9,7 +9,7 @@ export const routes = [
       import(/* webpackChunkName: "settings" */ './views/ListClaim.vue'),
   },
   {
-    path: '/packages/claims/:id',
+    path: '/claims/:id',
     name: 'claim-detail',
     meta: {
       title: 'Chi tiết khiếu nại',

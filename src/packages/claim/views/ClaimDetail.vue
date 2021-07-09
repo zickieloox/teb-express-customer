@@ -4,7 +4,7 @@
       <div class="content-page">
         <div class="page-header">
           <div class="page-header_back">
-            <router-link :to="{ name: 'list-claim' }" class="text">
+            <router-link :to="{ name: 'claims' }" class="text">
               <img
                 src="@/assets/img/Arrow - Left Square 24px.png"
                 class="page-header_back_icon"

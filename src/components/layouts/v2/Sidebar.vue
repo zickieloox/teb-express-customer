@@ -134,7 +134,7 @@ export default {
           title: 'Đơn khiếu nại',
           icon: require('@assets/img/claimInactive.svg'),
           iconActive: require('@assets/img/claimsActive.svg'),
-          route: '/packages/claims',
+          route: { name: 'claims' },
           class: '',
         },
         q5: {
@@ -175,7 +175,6 @@ export default {
       if (isObject(route)) {
         return this.$route.name === route.name
       }
-
       return this.$route.path === route || this.$route.fullPath === route
     },
 
