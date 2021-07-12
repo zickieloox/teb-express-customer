@@ -66,6 +66,7 @@
                             name: 'list-bill',
                             query: {
                               search: item.bill_id,
+                              date_search: '',
                             },
                           }"
                           class="card-link"

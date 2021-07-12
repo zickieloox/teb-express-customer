@@ -159,7 +159,6 @@
 import mixinUpload from '@core/mixins/upload'
 import mixinRoute from '@core/mixins/route'
 import File from '../components/File'
-import Browser from '@core/helpers/browser'
 import ModalReply from '../components/ModalReply'
 import { mapActions, mapState, mapMutations } from 'vuex'
 import Message from '../components/Message'
@@ -341,48 +340,6 @@ export default {
       return false
     },
 
-    async getTicketFile(url, isFile) {
-      let result = ''
-
-      this.isFetching = true
-      try {
-        const payload = {
-          url: url,
-          type: 'tickets',
-        }
-        result = await this.getFileTicket(payload)
-
-        if (!result.success) {
-          this.$toast.open({ type: 'error', message: `Download failed ! ` })
-          return false
-        }
-      } catch (e) {
-        this.$toast.open({ type: 'error', message: `Download failed !` })
-      }
-      this.isFetching = false
-
-      if (isFile) {
-        Browser.downloadBlob(result.blob, url.split('/').pop())
-      } else {
-        return window.URL.createObjectURL(result.blob)
-      }
-    },
-
-    getTicketFiles() {
-      if (!this.attach_files.length) return false
-
-      this.attach_files.forEach(async (el, i) => {
-        if (this.isImage(el)) {
-          let result = this.getTicketFile(el, false)
-          result.then((response) => {
-            this.$set(this.attach_files, i, {
-              url: el,
-              blob: response,
-            })
-          })
-        }
-      })
-    },
     async handlerFetchTicketMessages(id) {
       this.isMessageLoading = true
       let payload = this.filter
