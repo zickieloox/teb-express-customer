@@ -126,67 +126,6 @@
           <div class="card-block  ">
             <div class="card-content">
               <div class="card-title">
-                <div class="title-text"> Phí sửa đơn :</div>
-                <div class="title-pagi">
-                  <div
-                    class="btn-pagi   mr-2"
-                    :class="{
-                      'disable-next-page': filterEdit.page <= 1,
-                    }"
-                    @click="previousEditFee"
-                  >
-                    <i class="fas fa-chevron-left"></i>
-                  </div>
-                  <div
-                    class="btn-pagi"
-                    :class="{
-                      'disable-next-page': filterEdit.page >= totalPageEdit,
-                    }"
-                    @click="nextEditFee"
-                  >
-                    <i class="fas fa-chevron-right"></i>
-                  </div>
-                </div>
-              </div>
-              <div class="table-responsive">
-                <table class="table table-hover">
-                  <thead>
-                    <tr class="table-header">
-                      <th width="350">MÃ VẬN ĐƠN </th>
-                      <th>THỜI GIAN </th>
-                      <th width="400">PHÍ SỬA ĐƠN </th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    <tr v-for="(item, i) in feeEdit" :key="i">
-                      <td>
-                        <router-link
-                          :to="{
-                            name: 'package-detail',
-                            params: {
-                              id: item.package.id,
-                            },
-                          }"
-                          class="card-link"
-                        >
-                          {{ item.package.code }}
-                          <img src="@/assets/img/external.svg" />
-                        </router-link>
-                      </td>
-                      <td>{{
-                        item.created_at | datetime('dd/MM/yyyy HH:mm:ss')
-                      }}</td>
-                      <td>{{ item.amount | formatPrice }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="card-block  ">
-            <div class="card-content">
-              <div class="card-title">
                 <div class="title-text"> Phí phát sinh :</div>
                 <div class="title-pagi">
                   <div
@@ -285,16 +224,9 @@ export default {
         created_at: '',
       },
       search: '',
-      filterEdit: {
-        id: '',
-        type: 8,
-        limit: 5,
-        page: 1,
-      },
       filterExtra: {
         limit: 5,
         page: 1,
-        type: 7,
         id: '',
       },
       total_fee: 0,
@@ -303,17 +235,11 @@ export default {
   },
   computed: {
     ...mapState('bill', {
-      feeEdit: (state) => state.feeEdit,
-      countEdit: (state) => state.countEdit,
       feeCreate: (state) => state.feeCreate,
       countCreate: (state) => state.countCreate,
       feeExtra: (state) => state.feeExtra,
       countExtra: (state) => state.countExtra,
     }),
-    totalPageEdit() {
-      const totalPages = Math.ceil(this.countEdit / this.filterEdit.limit)
-      return totalPages
-    },
     totalPageCreate() {
       const totalPages = Math.ceil(this.countCreate / this.filter.limit)
       return totalPages
@@ -342,9 +268,7 @@ export default {
       }
       this.total_fee = result.total
       if (result.bill) {
-        this.filterEdit.id = this.bill.id
         this.filterExtra.id = this.bill.id
-        await this[FETCH_BILL_EXTRA](this.filterEdit)
         await this[FETCH_BILL_EXTRA](this.filterExtra)
       }
       this.isFetching = false
@@ -368,22 +292,6 @@ export default {
         this.orderPagination.currentPage >= this.orderPagination.numberPage
           ? this.orderPagination.numberPage
           : this.orderPagination.currentPage + 1
-    },
-    async previousEditFee() {
-      let page =
-        this.filterEdit.page <= 1
-          ? (this.filterEdit.page = 1)
-          : (this.filterEdit.page -= 1)
-      this.$set(this.filterEdit, 'page', page)
-      await this[FETCH_BILL_EXTRA](this.filterEdit)
-    },
-    async nextEditFee() {
-      let page =
-        this.filterEdit.page >= this.totalPageEdit
-          ? this.filterEdit.page
-          : this.filterEdit.page + 1
-      this.$set(this.filterEdit, 'page', page)
-      await this[FETCH_BILL_EXTRA](this.filterEdit)
     },
     async previousCreateFee() {
       let page =
