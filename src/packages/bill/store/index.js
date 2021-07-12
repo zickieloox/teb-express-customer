@@ -1,9 +1,6 @@
 import api from '../api'
-import { EditFeeBill, ExtraFeeBill } from '../constants'
 export const FETCH_BILL_DETAIL = 'fetchBillDetail'
 export const FETCH_BILL_EXTRA = 'fetchBillExtra'
-export const FETCH_FEE_EDIT = 'fetchFeeEdit'
-export const COUNT_FEE_EDIT = 'countFeeEdit'
 export const COUNT_FEE_CREATE = 'countFeeCreate'
 export const FETCH_FEE_CREATE = 'fetchFeeCreate'
 export const COUNT_FEE_EXTRA = 'countFeeExtra'
@@ -21,12 +18,6 @@ export const state = {
 export const mutations = {
   [FETCH_BILL_DETAIL]: (state, payload) => {
     state.bill = payload
-  },
-  [FETCH_FEE_EDIT]: (state, payload) => {
-    state.feeEdit = payload
-  },
-  [COUNT_FEE_EDIT]: (state, payload) => {
-    state.countEdit = payload
   },
   [COUNT_FEE_CREATE]: (state, payload) => {
     state.countCreate = payload
@@ -58,15 +49,9 @@ export const actions = {
     if (!res || res.error) {
       return { success: false, message: res.errorMessage || '' }
     }
-    if (payload.type == EditFeeBill) {
-      commit(FETCH_FEE_EDIT, res.fees)
-      commit(COUNT_FEE_EDIT, res.count)
-    }
+    commit(FETCH_FEE_EXTRA, res.fees)
+    commit(COUNT_FEE_EXTRA, res.count)
 
-    if (payload.type == ExtraFeeBill) {
-      commit(FETCH_FEE_EXTRA, res.fees)
-      commit(COUNT_FEE_EXTRA, res.count)
-    }
     return { success: true }
   },
 }
