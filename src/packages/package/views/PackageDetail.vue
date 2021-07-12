@@ -179,7 +179,7 @@
                       <div class="col-4 mb-8">Mã đơn hàng:</div>
                       <div class="col-8"
                         ><div>{{
-                          $evaluate('package_detail.package.sku')
+                          $evaluate('package_detail.package.order_number')
                         }}</div></div
                       >
                     </div>
