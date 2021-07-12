@@ -149,10 +149,12 @@
                       <td>
                         <p-tooltip
                           :label="item.detail"
+                          size="large"
                           position="top"
                           type="dark"
+                          :active="item.detail.length > 15"
                         >
-                          <div class="detail_product">{{ item.detail }}</div>
+                          {{ truncate(item.detail, 15) }}
                         </p-tooltip>
                       </td>
                       <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
@@ -252,6 +254,7 @@ import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import { date } from '@core/utils/datetime'
+import { truncate } from '@core/utils/string'
 
 export default {
   name: 'ListPackages',
@@ -347,6 +350,7 @@ export default {
       PROCESS_PACKAGE,
       CANCEL_PACKAGES,
     ]),
+    truncate,
     async init() {
       this.isFetching = true
       this.action.selected = []
@@ -492,7 +496,9 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn hủy đơn?`
+      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${
+        this.selectedIds.length
+      }. Bạn có chắc chắn muốn hủy đơn?`
       this.visibleConfirmCancel = true
     },
     async cancelPackagesAction() {
@@ -534,7 +540,9 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${this.selected.length}. Bạn có chắc chắn muốn vận đơn?`
+      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${
+        this.selected.length
+      }. Bạn có chắc chắn muốn vận đơn?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
