@@ -33,6 +33,10 @@ export default {
       type: String,
       default: '',
     },
+    id: {
+      type: Number,
+      default: 0,
+    },
   },
   computed: {
     isImage() {
@@ -107,27 +111,27 @@ export default {
       }
 
       if (this.isError) return
-      const { id } = this.$route.params
       const res = await api.fetchTicketFile({
         url: this.src,
         type: 'tickets',
-        id: id,
+        id: this.id,
       })
-      if (res && !res.error) {
-        this.blob = window.URL.createObjectURL(res)
-        this.$zoom.open(this.blob)
+      if (!res || res.error) {
+        return this.$toast.open({ type: 'error', message: res.error })
       }
+      this.blob = window.URL.createObjectURL(res)
+      this.$zoom.open(this.blob)
     },
     async download() {
-      const { id } = this.$route.params
       const res = await api.fetchTicketFile({
         url: this.src,
         type: 'tickets',
-        id: id,
+        id: this.id,
       })
-      if (res && !res.error) {
-        Browser.downloadBlob(res, this.src.split('/').pop())
+      if (!res || res.error) {
+        return this.$toast.open({ type: 'error', message: res.error })
       }
+      Browser.downloadBlob(res, this.src.split('/').pop())
     },
   },
   watch: {

@@ -22,7 +22,7 @@
         <div class="list-item">
           <div class="item" v-for="(file, i) in files" :key="i">
             <div :class="classImage(file)">
-              <File :src="file" />
+              <File :src="file" :id="messageId" />
             </div>
           </div>
         </div>
@@ -47,6 +47,9 @@ export default {
   computed: {
     files() {
       return this.current.attachment || []
+    },
+    messageId() {
+      return this.current.id || 0
     },
     hasFiles() {
       return this.files.length
