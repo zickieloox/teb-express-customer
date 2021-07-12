@@ -153,8 +153,9 @@
                   <thead>
                     <tr class="table-header">
                       <th width="350">MÃ VẬN ĐƠN </th>
-                      <th>THỜI GIAN </th>
-                      <th width="400">PHÍ PHÁT SINH </th>
+                      <th width="330">THỜI GIAN </th>
+                      <th>PHÍ PHÁT SINH </th>
+                      <th width="100">TRẠNG THÁI </th>
                     </tr>
                   </thead>
 
@@ -178,6 +179,12 @@
                         item.created_at | datetime('dd/MM/yyyy HH:mm:ss')
                       }}</td>
                       <td>{{ item.amount | formatPrice }}</td>
+                      <td>
+                        <span
+                          v-if="item.status == 10"
+                          v-status:status="`Chưa thanh toán`"
+                        ></span>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
