@@ -110,6 +110,9 @@ const getFormatStatus = (status) => {
     case 'Đã xử lý':
       statusClass = 'done'
       break
+    case 'Chưa thanh toán':
+      statusClass = 'unpaid'
+      break
   }
 
   return {

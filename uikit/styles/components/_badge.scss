@@ -55,9 +55,11 @@
   background: #FFF3E0;
   color: #FFB74D;
 }
-.badge-paid {
-  background: #E3F2FD;
-  color: #2196F3;
+.badge-unpaid {
+  background: #E6FFFB;
+  color: #13C2C2;
+  border: 1px solid #87E8DE;
+  font-size: 12px;
 }
 
 .badge-cancel{
