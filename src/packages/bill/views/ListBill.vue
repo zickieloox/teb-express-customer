@@ -271,6 +271,10 @@ export default {
       this.bill = result.bill
       if (!result.success) {
         this.isFetching = false
+        this.$toast.open({
+          message: result.message,
+          type: 'error',
+        })
         return
       }
       this.total_fee = result.total
