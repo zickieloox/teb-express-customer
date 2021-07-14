@@ -100,15 +100,15 @@ export default {
       activeSubIndex: 0,
       isactive: false,
       activeItem: '',
-      menus: {
-        q1: {
+      menus: [
+        {
           title: 'Trang chủ',
           icon: require('@assets/img/HomeInactive.svg'),
           iconActive: require('@assets/img/Home.svg'),
           route: '/',
           class: '',
         },
-        q2: {
+        {
           title: 'Đơn hàng',
           icon: require('@assets/img/OrderInactive.svg'),
           iconActive: require('@assets/img/Order.svg'),
@@ -123,28 +123,28 @@ export default {
             },
           ],
         },
-        q4: {
+        {
           title: 'Hóa đơn',
           icon: require('@assets/img/BillInactive.svg'),
           iconActive: require('@assets/img/Bill.svg'),
           route: '/bill',
           class: '',
         },
-        q3: {
+        {
           title: 'Đơn khiếu nại',
           icon: require('@assets/img/claimInactive.svg'),
           iconActive: require('@assets/img/claimsActive.svg'),
           route: { name: 'claims' },
           class: '',
         },
-        q5: {
+        {
           title: 'Ví',
           icon: require('@assets/img/WalletInactive.svg'),
           iconActive: require('@assets/img/Wallet.svg'),
           route: '/wallet',
           class: '',
         },
-        q6: {
+        {
           title: 'Cài đặt tài khoản',
           icon: require('@assets/img/SettingInactive.svg'),
           iconActive: require('@assets/img/Setting.svg'),
@@ -166,7 +166,7 @@ export default {
             },
           ],
         },
-      },
+      ],
     }
   },
 
