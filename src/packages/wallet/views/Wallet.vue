@@ -215,7 +215,7 @@ export default {
         end_date: '',
         type: '',
       },
-      isFetching: false,
+      isFetching: true,
       typeTopup: TransactionLogTypeTopup,
       typePay: TransactionLogTypePay,
       typeRefund: TransactionLogTypeRefund,
@@ -225,7 +225,7 @@ export default {
     }
   },
 
-  created() {
+  mounted() {
     this.filter = this.getRouteQuery()
   },
 
@@ -236,10 +236,6 @@ export default {
       this.isFetching = true
       this.handleUpdateRouteQuery()
       this.result = await this[FETCH_TRANSACTION](this.filter)
-      if (this.result.error) {
-        this.isFetching = false
-        return
-      }
       this.isFetching = false
     },
 

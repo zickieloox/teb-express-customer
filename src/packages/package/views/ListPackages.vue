@@ -319,7 +319,6 @@ export default {
     evenBus.$on('code', this.updateQuery)
     this.filter = this.getRouteQuery()
     this.searchCode = this.filter.code
-    this.init()
   },
   computed: {
     ...mapState('package', {
@@ -528,6 +527,7 @@ export default {
       let selectedInvalid = this.selected.filter(
         (ele) => ele.status_string !== PackageStatusCreatedText
       )
+      debugger
       if (selectedInvalid.length > 0) {
         let codeSelectedInvalid = selectedInvalid.map((ele) => ele.code)
         if (codeSelectedInvalid.length > 3) {
