@@ -160,7 +160,7 @@
                       <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
                       <td>
                         <span
-                          v-status:status="mapStatus[item.status].value"
+                          v-status:status="mapStatus[item.status_string].value"
                         ></span>
                       </td>
                       <td>{{ item.shipping_fee | formatPrice }}</td>
@@ -240,9 +240,9 @@ import ModalConfirm from '@components/shared/modal/ModalConfirm'
 
 import {
   PACKAGE_STATUS_TAB,
-  PackageStatusInit,
+  PackageStatusCreated,
   MAP_NAME_STATUS_PACKAGE,
-} from '@/packages/package/constants'
+} from '../constants'
 import {
   FETCH_LIST_PACKAGES,
   IMPORT_PACKAGE,
@@ -329,7 +329,7 @@ export default {
         return this.action.selected.length > 0 || this.isAllChecked
       },
       isFilterInitTab() {
-        return this.filter.status === PackageStatusInit
+        return this.filter.status === PackageStatusCreated
       },
       items() {
         return this.packages
@@ -481,7 +481,7 @@ export default {
     },
     handlerCancelPackages() {
       const selectedInvalid = this.selected.filter(
-        (ele) => ele.status !== PackageStatusInit
+        (ele) => ele.status !== PackageStatusCreated
       )
       if (selectedInvalid.length > 0) {
         let codeSelectedInvalid = selectedInvalid.map((ele) => ele.code)
@@ -525,7 +525,7 @@ export default {
     },
     handleWayBill() {
       let selectedInvalid = this.selected.filter(
-        (ele) => ele.status !== PackageStatusInit
+        (ele) => ele.status !== PackageStatusCreated
       )
       if (selectedInvalid.length > 0) {
         let codeSelectedInvalid = selectedInvalid.map((ele) => ele.code)
