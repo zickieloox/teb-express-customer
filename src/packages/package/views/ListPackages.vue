@@ -319,7 +319,6 @@ export default {
     evenBus.$on('code', this.updateQuery)
     this.filter = this.getRouteQuery()
     this.searchCode = this.filter.code
-    this.init()
   },
   computed: {
     ...mapState('package', {
