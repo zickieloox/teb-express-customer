@@ -240,7 +240,7 @@ import ModalConfirm from '@components/shared/modal/ModalConfirm'
 
 import {
   PACKAGE_STATUS_TAB,
-  PackageStatusCreated,
+  PackageStatusCreatedText,
   MAP_NAME_STATUS_PACKAGE,
 } from '../constants'
 import {
@@ -329,7 +329,7 @@ export default {
         return this.action.selected.length > 0 || this.isAllChecked
       },
       isFilterInitTab() {
-        return this.filter.status === PackageStatusCreated
+        return this.filter.status_string === PackageStatusCreatedText
       },
       items() {
         return this.packages
@@ -481,7 +481,7 @@ export default {
     },
     handlerCancelPackages() {
       const selectedInvalid = this.selected.filter(
-        (ele) => ele.status !== PackageStatusCreated
+        (ele) => ele.status_string !== PackageStatusCreatedText
       )
       if (selectedInvalid.length > 0) {
         let codeSelectedInvalid = selectedInvalid.map((ele) => ele.code)
@@ -525,7 +525,7 @@ export default {
     },
     handleWayBill() {
       let selectedInvalid = this.selected.filter(
-        (ele) => ele.status !== PackageStatusCreated
+        (ele) => ele.status_string !== PackageStatusCreatedText
       )
       if (selectedInvalid.length > 0) {
         let codeSelectedInvalid = selectedInvalid.map((ele) => ele.code)

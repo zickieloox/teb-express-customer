@@ -44,7 +44,7 @@
               <div>
                 <span
                   v-status:status="
-                    mapStatus[package_detail.package.status].value
+                    mapStatus[package_detail.package.status_string].value
                   "
                 ></span>
               </div>
