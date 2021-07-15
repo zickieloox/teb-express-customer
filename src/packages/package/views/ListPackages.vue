@@ -528,6 +528,7 @@ export default {
       let selectedInvalid = this.selected.filter(
         (ele) => ele.status_string !== PackageStatusCreatedText
       )
+      debugger
       if (selectedInvalid.length > 0) {
         let codeSelectedInvalid = selectedInvalid.map((ele) => ele.code)
         if (codeSelectedInvalid.length > 3) {

@@ -55,7 +55,10 @@
               href="#"
               class="btn btn-danger"
               @click="handleCancelPackage"
-              v-if="package_detail.package.status === 1"
+              v-if="
+                package_detail.package.status_string ===
+                  PackageStatusCreatedText
+              "
             >
               <span>Hủy đơn</span>
             </a>
@@ -63,7 +66,10 @@
               @click="handleModal"
               href="#"
               class="btn btn-primary-custom ml-7"
-              v-if="package_detail.package.status === 1"
+              v-if="
+                package_detail.package.status_string ===
+                  PackageStatusCreatedText
+              "
             >
               <span>Sửa đơn</span>
             </a>
@@ -71,7 +77,10 @@
               href="#"
               class="btn btn-primary ml-7"
               @click="handleWayBill"
-              v-if="package_detail.package.status === 1"
+              v-if="
+                package_detail.package.status_string ===
+                  PackageStatusCreatedText
+              "
             >
               <span>Vận đơn</span>
             </a>
@@ -477,6 +486,7 @@ import {
   CHANGE_PACKAGE_TYPE,
   DELIVER_LOG_PACKAGE,
   PackageStatusCancelledText,
+  PackageStatusCreatedText,
 } from '../constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import { extension } from '@core/utils/url'
@@ -525,6 +535,7 @@ export default {
       visibleConfirmCancel: false,
       isVisibleModalLabel: false,
       blob: null,
+      PackageStatusCreatedText: PackageStatusCreatedText,
     }
   },
   computed: {
