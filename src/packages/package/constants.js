@@ -102,3 +102,6 @@ export const DELIVER_LOG_PACKAGE = {
   [PackageStatusWattingTransport]: 'Đơn hàng đang chờ lấy',
   [PackageStatusCancel]: 'Đơn hàng đã bị hủy',
 }
+
+export const ROLE_ADMIN = 'admin'
+export const ROLE_SUPPORT = 'support'
