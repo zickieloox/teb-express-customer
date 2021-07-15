@@ -259,9 +259,6 @@ export default {
   created() {
     this.filter = this.getRouteQuery()
   },
-  mounted() {
-    this.init()
-  },
   methods: {
     ...mapActions('bill', [FETCH_BILL_DETAIL, FETCH_BILL_EXTRA]),
     async init() {
@@ -269,14 +266,6 @@ export default {
       this.handleUpdateRouteQuery()
       let result = await this[FETCH_BILL_DETAIL](this.filter)
       this.bill = result.bill
-      if (!result.success) {
-        this.isFetching = false
-        this.$toast.open({
-          message: result.message,
-          type: 'error',
-        })
-        return
-      }
       this.total_fee = result.total
       if (result.bill) {
         this.filterExtra.id = this.bill.id
