@@ -44,7 +44,7 @@
               <div>
                 <span
                   v-status:status="
-                    mapStatus[package_detail.package.status].value
+                    mapStatus[package_detail.package.status_string].value
                   "
                 ></span>
               </div>
@@ -476,10 +476,10 @@ import {
   MAP_NAME_STATUS_PACKAGE,
   CHANGE_PACKAGE_TYPE,
   DELIVER_LOG_PACKAGE,
-  PackageStatusCancel,
   ROLE_ADMIN,
   ROLE_SUPPORT,
-} from '@/packages/package/constants'
+  PackageStatusCancelledText,
+} from '../constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import { extension } from '@core/utils/url'
 import api from '../api'
@@ -732,7 +732,7 @@ export default {
       }
     },
     deliverLogPackage(log) {
-      return log.type === PackageStatusCancel
+      return log.type === PackageStatusCancelledText
         ? DELIVER_LOG_PACKAGE[log.type] +
             ` bởi <strong>${this.displayRole(log)}</strong>`
         : DELIVER_LOG_PACKAGE[log.type]

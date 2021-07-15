@@ -9,12 +9,13 @@
         <div class="transaction-log">
           <div class="search">
             <div class="multiselect-transaction">
-              <search-balance
+              <search-type
                 class="search-type"
                 @selected="handleSearchTypeTransaction"
                 @unselected="handleRemoveSearch"
                 :optionSearch="transactionStatus"
                 :placeHolder="'Loại'"
+                :type="filter.type"
               />
             </div>
             <div class="select-date d-flex">
@@ -41,8 +42,8 @@
           </div>
           <div class="content">
             <vcl-table class="md-20" v-if="isFetching"></vcl-table>
-            <template v-else-if="transaction_logs">
-              <div v-for="(item, i) in transaction_logs" :key="i">
+            <template v-else-if="transactions.length">
+              <div v-for="(item, i) in transactions" :key="i">
                 <div class="card">
                   <div class="card-left">
                     <img
@@ -64,6 +65,7 @@
                         v-else-if="item.type == typeRefund"
                         >Hoàn tiền cho hóa đơn
                         <router-link
+                          class="text-no-underline"
                           :to="{
                             name: 'list-bill',
                             query: {
@@ -71,7 +73,6 @@
                               date_search: '',
                             },
                           }"
-                          class="card-link"
                         >
                           #{{ item.bill_id }}
                         </router-link>
@@ -79,6 +80,7 @@
                       <span class="transaction-title" v-else
                         >Thanh toán hóa đơn
                         <router-link
+                          class="text-no-underline"
                           :to="{
                             name: 'list-bill',
                             query: {
@@ -86,7 +88,6 @@
                               date_search: '',
                             },
                           }"
-                          class="card-link"
                         >
                           #{{ item.bill_id }}
                         </router-link>
@@ -176,7 +177,7 @@ import { CREATE_TOPUP, UPDATE_TOPUP, FETCH_TRANSACTION } from '../store/index'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
-import SearchBalance from '../../../components/shared/resource/SearchBalance.vue'
+import SearchType from '../components/SearchType.vue'
 import { date } from '@core/utils/datetime'
 
 import {
@@ -193,21 +194,15 @@ export default {
   components: {
     ModalRechargeWallet,
     EmptySearchResult,
-    SearchBalance,
+    SearchType,
   },
   computed: {
     ...mapState('wallet', {
       topup: (state) => state.topup,
       balance: (state) => state.balance,
       process_money: (state) => state.process_money,
-      transaction_logs: (state) => state.transaction_logs,
+      transactions: (state) => state.transactions,
       count: (state) => state.count,
-      mapStatus() {
-        return MAP_NAME_STATUS_TRANSACTION
-      },
-      transactionStatus() {
-        return TRANSACTION_STATUS
-      },
     }),
   },
   data() {
@@ -225,6 +220,8 @@ export default {
       typePay: TransactionLogTypePay,
       typeRefund: TransactionLogTypeRefund,
       label: 'Tìm theo ngày',
+      mapStatus: MAP_NAME_STATUS_TRANSACTION,
+      transactionStatus: TRANSACTION_STATUS,
     }
   },
 

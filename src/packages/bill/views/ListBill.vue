@@ -101,13 +101,13 @@
                     <tr v-for="(item, i) in feeCreate" :key="i">
                       <td>
                         <router-link
+                          class="text-no-underline"
                           :to="{
                             name: 'package-detail',
                             params: {
                               id: item.id,
                             },
                           }"
-                          class="card-link"
                         >
                           {{ item.code }}
                           <img src="@/assets/img/external.svg" />
@@ -163,13 +163,13 @@
                     <tr v-for="(item, i) in feeExtra" :key="i">
                       <td>
                         <router-link
+                          class="text-no-underline"
                           :to="{
                             name: 'package-detail',
                             params: {
                               id: item.package.id,
                             },
                           }"
-                          class="card-link"
                         >
                           {{ item.package.code }}
                           <img src="@/assets/img/external.svg" />
@@ -356,9 +356,6 @@ export default {
 .disable-next-page {
   background-color: #f6f7f7;
   pointer-events: none;
-}
-.card-link {
-  color: #015858;
 }
 .close {
   width: 50px;
