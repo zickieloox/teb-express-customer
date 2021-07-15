@@ -30,15 +30,15 @@ export const MAP_NAME_STATUS_TRANSACTION = {
 
 export const TRANSACTION_STATUS = [
   {
-    key: 1,
+    key: '1',
     name: 'Nạp tiền',
   },
   {
-    key: 2,
+    key: '2',
     name: 'Thanh toán',
   },
   {
-    key: 4,
+    key: '4',
     name: 'Hoàn tiền',
   },
 ]
