@@ -15,7 +15,7 @@ export const state = {
   topup: {},
   balance: 0.0,
   process_money: 0.0,
-  transaction_logs: [],
+  transactions: [],
   count: 0,
 }
 
@@ -26,7 +26,7 @@ export const mutations = {
   [FETCH_TRANSACTION]: (state, payload) => {
     state.balance = payload.balance
     state.process_money = payload.process_money
-    state.transaction_logs = payload.transaction_log
+    state.transactions = payload.transactions
   },
   [COUNT_TRANSACTION]: (state, payload) => {
     state.count = payload
@@ -36,8 +36,8 @@ export const mutations = {
 export const actions = {
   async [FETCH_TRANSACTION]({ commit }, payload) {
     const [res, count] = await Promise.all([
-      api.fetchTransactionLogs(payload),
-      api.countTransactionLogs(payload),
+      api.fetchTransactions(payload),
+      api.countTransactions(payload),
     ])
     if (!res || res.error || count.error) {
       return { error: true, message: res.errorMessage || '' }

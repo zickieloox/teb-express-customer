@@ -8,10 +8,10 @@ export default {
   updateTopup(payload) {
     return http.post(`/transactions/top-up/update/${payload.id}`, payload.body)
   },
-  fetchTransactionLogs(payload) {
+  fetchTransactions(payload) {
     return http.get(`/transactions?${buildQueryString(payload)}`)
   },
-  countTransactionLogs(payload) {
+  countTransactions(payload) {
     return http.get(`/transactions/count?${buildQueryString(payload)}`)
   },
 }
