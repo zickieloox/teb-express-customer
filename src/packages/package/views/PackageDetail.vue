@@ -476,8 +476,8 @@ import {
   MAP_NAME_STATUS_PACKAGE,
   CHANGE_PACKAGE_TYPE,
   DELIVER_LOG_PACKAGE,
-  PackageStatusCancel,
-} from '@/packages/package/constants'
+  PackageStatusCancelled,
+} from '../constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import { extension } from '@core/utils/url'
 import api from '../api'
@@ -730,7 +730,7 @@ export default {
       }
     },
     deliverLogPackage(log) {
-      return log.type === PackageStatusCancel
+      return log.type === PackageStatusCancelled
         ? DELIVER_LOG_PACKAGE[log.type] +
             ` bởi <strong>${log.user.full_name}</strong>`
         : DELIVER_LOG_PACKAGE[log.type]
