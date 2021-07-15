@@ -47,7 +47,7 @@
                   <div class="card-left">
                     <img
                       :src="
-                        item.type == typeTopup
+                        item.type == typeTopup || item.type == typeRefund
                           ? require('@assets/img/in.svg')
                           : require('@assets/img/out.svg')
                       "
@@ -59,6 +59,23 @@
                         v-if="item.type == typeTopup"
                         >Nạp tiền vào ví</span
                       >
+                      <span
+                        class="transaction-title"
+                        v-else-if="item.type == typeRefund"
+                        >Hoàn tiền cho hóa đơn
+                        <router-link
+                          :to="{
+                            name: 'list-bill',
+                            query: {
+                              search: item.bill_id,
+                              date_search: '',
+                            },
+                          }"
+                          class="card-link"
+                        >
+                          #{{ item.bill_id }}
+                        </router-link>
+                      </span>
                       <span class="transaction-title" v-else
                         >Thanh toán hóa đơn
                         <router-link
@@ -83,7 +100,7 @@
                   </div>
                   <div class="card-right">
                     <span
-                      >{{ item.type == typeTopup ? '+' : '-' }}
+                      >{{ item.type == typePay ? '-' : '+' }}
                       {{ item.amount | formatPrice }}</span
                     >
                     <span v-status:status="mapStatus[item.status].value"></span>
@@ -165,6 +182,7 @@ import { date } from '@core/utils/datetime'
 import {
   TransactionLogTypeTopup,
   TransactionLogTypePay,
+  TransactionLogTypeRefund,
   MAP_NAME_STATUS_TRANSACTION,
   TRANSACTION_STATUS,
 } from '../constant'
@@ -205,6 +223,7 @@ export default {
       isFetching: false,
       typeTopup: TransactionLogTypeTopup,
       typePay: TransactionLogTypePay,
+      typeRefund: TransactionLogTypeRefund,
       label: 'Tìm theo ngày',
     }
   },
