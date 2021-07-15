@@ -42,8 +42,8 @@
           </div>
           <div class="content">
             <vcl-table class="md-20" v-if="isFetching"></vcl-table>
-            <template v-else-if="transaction_logs.length">
-              <div v-for="(item, i) in transaction_logs" :key="i">
+            <template v-else-if="transactions.length">
+              <div v-for="(item, i) in transactions" :key="i">
                 <div class="card">
                   <div class="card-left">
                     <img
@@ -65,6 +65,7 @@
                         v-else-if="item.type == typeRefund"
                         >Hoàn tiền cho hóa đơn
                         <router-link
+                          class="text-no-underline"
                           :to="{
                             name: 'list-bill',
                             query: {
@@ -72,7 +73,6 @@
                               date_search: '',
                             },
                           }"
-                          class="card-link"
                         >
                           #{{ item.bill_id }}
                         </router-link>
@@ -80,6 +80,7 @@
                       <span class="transaction-title" v-else
                         >Thanh toán hóa đơn
                         <router-link
+                          class="text-no-underline"
                           :to="{
                             name: 'list-bill',
                             query: {
@@ -87,7 +88,6 @@
                               date_search: '',
                             },
                           }"
-                          class="card-link"
                         >
                           #{{ item.bill_id }}
                         </router-link>
@@ -201,7 +201,7 @@ export default {
       topup: (state) => state.topup,
       balance: (state) => state.balance,
       process_money: (state) => state.process_money,
-      transaction_logs: (state) => state.transaction_logs,
+      transactions: (state) => state.transactions,
       count: (state) => state.count,
     }),
   },
