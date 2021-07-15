@@ -103,7 +103,10 @@ export const CHANGE_PACKAGE_TYPE = [
 ]
 
 export const DELIVER_LOG_PACKAGE = {
-  // [PackageStatusInit]: 'Đơn hàng được tạo mới',
-  // [PackageStatusWattingTransport]: 'Đơn hàng đang chờ lấy',
-  // [PackageStatusCancel]: 'Đơn hàng đã bị hủy',
+  [PackageStatusCreated]: 'Đơn hàng được tạo mới',
+  [PackageStatusPendingPickup]: 'Đơn hàng đang chờ lấy',
+  [PackageStatusCancelled]: 'Đơn hàng đã bị hủy',
 }
+
+export const ROLE_ADMIN = 'admin'
+export const ROLE_SUPPORT = 'support'

@@ -369,7 +369,7 @@
                                         | datetime('dd/MM/yyyy - HH:mm')
                                     }}
                                   </td>
-                                  <td>{{ item.updated_user_name }}</td>
+                                  <td v-html="displayUserName(item)"></td>
                                   <td>
                                     {{
                                       $evaluate(
@@ -485,6 +485,8 @@ import {
   MAP_NAME_STATUS_PACKAGE,
   CHANGE_PACKAGE_TYPE,
   DELIVER_LOG_PACKAGE,
+  ROLE_ADMIN,
+  ROLE_SUPPORT,
   PackageStatusCancelledText,
   PackageStatusCreatedText,
 } from '../constants'
@@ -743,8 +745,29 @@ export default {
     deliverLogPackage(log) {
       return log.type === PackageStatusCancelledText
         ? DELIVER_LOG_PACKAGE[log.type] +
-            ` bởi <strong>${log.user.full_name}</strong>`
+            ` bởi <strong>${this.displayRole(log)}</strong>`
         : DELIVER_LOG_PACKAGE[log.type]
+    },
+
+    displayUserName(item) {
+      if (
+        item.updated_user_role == ROLE_ADMIN ||
+        item.updated_user_role == ROLE_SUPPORT
+      ) {
+        return 'bộ phận chăm sóc khách hàng'
+      }
+
+      return item.updated_user_name
+    },
+    displayRole(log) {
+      if (
+        log.updated_user_role == ROLE_ADMIN ||
+        log.updated_user_role == ROLE_SUPPORT
+      ) {
+        return 'CSKH'
+      }
+
+      return log.updated_user_name
     },
   },
 
