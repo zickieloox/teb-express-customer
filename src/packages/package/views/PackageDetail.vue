@@ -419,7 +419,7 @@
     <modal-edit-order
       :visible.sync="isVisibleModal"
       :info_user="package_detail"
-      @create="init2"
+      @create="init"
       :total="sumFee"
     >
     </modal-edit-order>
@@ -614,9 +614,6 @@ export default {
       await this.fetchPackage(this.packageID)
       await this[FETCH_LIST_SERVICE]()
       this.isFetching = false
-    },
-    init2() {
-      location.reload()
     },
     changeDisplayDeliverDetail() {
       this.displayDeliverDetail = !this.displayDeliverDetail
