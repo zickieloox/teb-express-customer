@@ -1,11 +1,14 @@
 export const PackageStatusCreated = 1
 export const PackageStatusPendingPickup = 2
-export const PackageStatusPickedUp = 3
-export const PackageStatusProcessing = 4
-export const PackageStatusInTransit = 5
-export const PackageStatusDelivered = 6
-export const PackageStatusReturn = 7
-export const PackageStatusCancelled = 8
+export const PackageStatusPicked = 10
+export const PackageStatusWareHouseLabeled = 11
+export const PackageStatusWareHouseInContainer = 12
+export const PackageStatusWareHouseInShipment = 13
+export const PackageStatusWareHouseExport = 14
+export const PackageStatusInTransit = 30
+export const PackageStatusDelivered = 31
+export const PackageStatusReturned = 40
+export const PackageStatusCancelled = 50
 
 export const PackageStatusCreatedText = 'created'
 export const PackageStatusPendingPickupText = 'pending-pickup'
