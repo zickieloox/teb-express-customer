@@ -419,7 +419,7 @@
     <modal-edit-order
       :visible.sync="isVisibleModal"
       :info_user="package_detail"
-      @create="init2"
+      @create="init"
       :total="sumFee"
     >
     </modal-edit-order>
@@ -615,9 +615,6 @@ export default {
       await this[FETCH_LIST_SERVICE]()
       this.isFetching = false
     },
-    init2() {
-      location.reload()
-    },
     changeDisplayDeliverDetail() {
       this.displayDeliverDetail = !this.displayDeliverDetail
     },
@@ -719,10 +716,7 @@ export default {
 
     async showContent() {
       document.activeElement && document.activeElement.blur()
-      if (this.blob && this.isImage) {
-        printImage(this.blob)
-        return
-      }
+
       const res = await api.fetchBarcodeFile({
         url: this.package_detail.package.label,
         type: 'labels',
@@ -737,8 +731,8 @@ export default {
       }
 
       try {
-        this.blob = (window.webkitURL || window.URL).createObjectURL(res)
-        printImage(this.blob)
+        let blob = (window.webkitURL || window.URL).createObjectURL(res)
+        printImage(blob)
       } catch (error) {
         this.$toast.error('File error !!!')
       }
