@@ -6,10 +6,12 @@ export const ACCOUNT_NUMBER = '123 4566 8888'
 
 export const TransactionLogTypeTopup = 1
 export const TransactionLogTypePay = 2
+export const TransactionLogTypeRefund = 4
 
 export const TransactionStatusProcess = 1
 export const TransactionStatusSuccess = 2
 export const TransactionStatusFailure = 3
+export const TransactionStatusReFund = 4
 
 export const MAP_NAME_STATUS_TRANSACTION = {
   [TransactionStatusProcess]: {
@@ -21,15 +23,22 @@ export const MAP_NAME_STATUS_TRANSACTION = {
   [TransactionStatusFailure]: {
     value: 'Thất bại',
   },
+  [TransactionStatusReFund]: {
+    value: 'Hoàn tiền',
+  },
 }
 
 export const TRANSACTION_STATUS = [
   {
-    key: 1,
+    key: '1',
     name: 'Nạp tiền',
   },
   {
-    key: 2,
+    key: '2',
     name: 'Thanh toán',
+  },
+  {
+    key: '4',
+    name: 'Hoàn tiền',
   },
 ]

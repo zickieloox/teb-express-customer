@@ -101,13 +101,13 @@
                     <tr v-for="(item, i) in feeCreate" :key="i">
                       <td>
                         <router-link
+                          class="text-no-underline"
                           :to="{
                             name: 'package-detail',
                             params: {
                               id: item.id,
                             },
                           }"
-                          class="card-link"
                         >
                           {{ item.code }}
                           <img src="@/assets/img/external.svg" />
@@ -163,13 +163,13 @@
                     <tr v-for="(item, i) in feeExtra" :key="i">
                       <td>
                         <router-link
+                          class="text-no-underline"
                           :to="{
                             name: 'package-detail',
                             params: {
                               id: item.package.id,
                             },
                           }"
-                          class="card-link"
                         >
                           {{ item.package.code }}
                           <img src="@/assets/img/external.svg" />
@@ -259,9 +259,6 @@ export default {
   created() {
     this.filter = this.getRouteQuery()
   },
-  mounted() {
-    this.init()
-  },
   methods: {
     ...mapActions('bill', [FETCH_BILL_DETAIL, FETCH_BILL_EXTRA]),
     async init() {
@@ -269,14 +266,6 @@ export default {
       this.handleUpdateRouteQuery()
       let result = await this[FETCH_BILL_DETAIL](this.filter)
       this.bill = result.bill
-      if (!result.success) {
-        this.isFetching = false
-        this.$toast.open({
-          message: result.message,
-          type: 'error',
-        })
-        return
-      }
       this.total_fee = result.total
       if (result.bill) {
         this.filterExtra.id = this.bill.id
@@ -356,9 +345,6 @@ export default {
 .disable-next-page {
   background-color: #f6f7f7;
   pointer-events: none;
-}
-.card-link {
-  color: #015858;
 }
 .close {
   width: 50px;

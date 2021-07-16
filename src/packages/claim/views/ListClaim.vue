@@ -163,9 +163,6 @@ export default {
   created() {
     this.filter = this.getRouteQuery()
   },
-  mounted() {
-    this.init()
-  },
   computed: {
     ...mapState('claim', {
       count: (state) => state.count,

@@ -63,6 +63,7 @@
                   <li class="item-note">
                     <span class="item-title">Mã vận đơn: </span>
                     <router-link
+                      class="text-no-underline"
                       v-if="claim.package"
                       :to="{
                         name: 'package-detail',

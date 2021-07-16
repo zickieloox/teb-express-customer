@@ -9,12 +9,13 @@
         <div class="transaction-log">
           <div class="search">
             <div class="multiselect-transaction">
-              <search-balance
+              <search-type
                 class="search-type"
                 @selected="handleSearchTypeTransaction"
                 @unselected="handleRemoveSearch"
                 :optionSearch="transactionStatus"
                 :placeHolder="'Loại'"
+                :type="filter.type"
               />
             </div>
             <div class="select-date d-flex">
@@ -41,13 +42,13 @@
           </div>
           <div class="content">
             <vcl-table class="md-20" v-if="isFetching"></vcl-table>
-            <template v-else-if="transaction_logs">
-              <div v-for="(item, i) in transaction_logs" :key="i">
+            <template v-else-if="transactions.length">
+              <div v-for="(item, i) in transactions" :key="i">
                 <div class="card">
                   <div class="card-left">
                     <img
                       :src="
-                        item.type == typeTopup
+                        item.type == typeTopup || item.type == typeRefund
                           ? require('@assets/img/in.svg')
                           : require('@assets/img/out.svg')
                       "
@@ -59,9 +60,12 @@
                         v-if="item.type == typeTopup"
                         >Nạp tiền vào ví</span
                       >
-                      <span class="transaction-title" v-else
-                        >Thanh toán hóa đơn
+                      <span
+                        class="transaction-title"
+                        v-else-if="item.type == typeRefund"
+                        >Hoàn tiền cho hóa đơn
                         <router-link
+                          class="text-no-underline"
                           :to="{
                             name: 'list-bill',
                             query: {
@@ -69,7 +73,21 @@
                               date_search: '',
                             },
                           }"
-                          class="card-link"
+                        >
+                          #{{ item.bill_id }}
+                        </router-link>
+                      </span>
+                      <span class="transaction-title" v-else
+                        >Thanh toán hóa đơn
+                        <router-link
+                          class="text-no-underline"
+                          :to="{
+                            name: 'list-bill',
+                            query: {
+                              search: item.bill_id,
+                              date_search: '',
+                            },
+                          }"
                         >
                           #{{ item.bill_id }}
                         </router-link>
@@ -83,7 +101,7 @@
                   </div>
                   <div class="card-right">
                     <span
-                      >{{ item.type == typeTopup ? '+' : '-' }}
+                      >{{ item.type == typePay ? '-' : '+' }}
                       {{ item.amount | formatPrice }}</span
                     >
                     <span v-status:status="mapStatus[item.status].value"></span>
@@ -159,12 +177,13 @@ import { CREATE_TOPUP, UPDATE_TOPUP, FETCH_TRANSACTION } from '../store/index'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
-import SearchBalance from '../../../components/shared/resource/SearchBalance.vue'
+import SearchType from '../components/SearchType.vue'
 import { date } from '@core/utils/datetime'
 
 import {
   TransactionLogTypeTopup,
   TransactionLogTypePay,
+  TransactionLogTypeRefund,
   MAP_NAME_STATUS_TRANSACTION,
   TRANSACTION_STATUS,
 } from '../constant'
@@ -175,21 +194,15 @@ export default {
   components: {
     ModalRechargeWallet,
     EmptySearchResult,
-    SearchBalance,
+    SearchType,
   },
   computed: {
     ...mapState('wallet', {
       topup: (state) => state.topup,
       balance: (state) => state.balance,
       process_money: (state) => state.process_money,
-      transaction_logs: (state) => state.transaction_logs,
+      transactions: (state) => state.transactions,
       count: (state) => state.count,
-      mapStatus() {
-        return MAP_NAME_STATUS_TRANSACTION
-      },
-      transactionStatus() {
-        return TRANSACTION_STATUS
-      },
     }),
   },
   data() {
@@ -202,14 +215,17 @@ export default {
         end_date: '',
         type: '',
       },
-      isFetching: false,
+      isFetching: true,
       typeTopup: TransactionLogTypeTopup,
       typePay: TransactionLogTypePay,
+      typeRefund: TransactionLogTypeRefund,
       label: 'Tìm theo ngày',
+      mapStatus: MAP_NAME_STATUS_TRANSACTION,
+      transactionStatus: TRANSACTION_STATUS,
     }
   },
 
-  created() {
+  mounted() {
     this.filter = this.getRouteQuery()
   },
 
@@ -220,10 +236,6 @@ export default {
       this.isFetching = true
       this.handleUpdateRouteQuery()
       this.result = await this[FETCH_TRANSACTION](this.filter)
-      if (this.result.error) {
-        this.isFetching = false
-        return
-      }
       this.isFetching = false
     },
 

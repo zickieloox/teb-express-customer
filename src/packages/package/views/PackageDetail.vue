@@ -44,7 +44,7 @@
               <div>
                 <span
                   v-status:status="
-                    mapStatus[package_detail.package.status].value
+                    mapStatus[package_detail.package.status_string].value
                   "
                 ></span>
               </div>
@@ -55,7 +55,10 @@
               href="#"
               class="btn btn-danger"
               @click="handleCancelPackage"
-              v-if="package_detail.package.status === 1"
+              v-if="
+                package_detail.package.status_string ===
+                  PackageStatusCreatedText
+              "
             >
               <span>Hủy đơn</span>
             </a>
@@ -63,7 +66,10 @@
               @click="handleModal"
               href="#"
               class="btn btn-primary-custom ml-7"
-              v-if="package_detail.package.status === 1"
+              v-if="
+                package_detail.package.status_string ===
+                  PackageStatusCreatedText
+              "
             >
               <span>Sửa đơn</span>
             </a>
@@ -71,7 +77,10 @@
               href="#"
               class="btn btn-primary ml-7"
               @click="handleWayBill"
-              v-if="package_detail.package.status === 1"
+              v-if="
+                package_detail.package.status_string ===
+                  PackageStatusCreatedText
+              "
             >
               <span>Vận đơn</span>
             </a>
@@ -360,7 +369,7 @@
                                         | datetime('dd/MM/yyyy - HH:mm')
                                     }}
                                   </td>
-                                  <td>{{ item.updated_user_name }}</td>
+                                  <td v-html="displayRole(item)"></td>
                                   <td>
                                     {{
                                       $evaluate(
@@ -476,8 +485,12 @@ import {
   MAP_NAME_STATUS_PACKAGE,
   CHANGE_PACKAGE_TYPE,
   DELIVER_LOG_PACKAGE,
-  PackageStatusCancel,
-} from '@/packages/package/constants'
+  ROLE_ADMIN,
+  ROLE_SUPPORT,
+  ROLE_ACCOUNTANT,
+  PackageStatusCancelled,
+  PackageStatusCreatedText,
+} from '../constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import { extension } from '@core/utils/url'
 import api from '../api'
@@ -525,6 +538,7 @@ export default {
       visibleConfirmCancel: false,
       isVisibleModalLabel: false,
       blob: null,
+      PackageStatusCreatedText: PackageStatusCreatedText,
     }
   },
   computed: {
@@ -727,10 +741,33 @@ export default {
       }
     },
     deliverLogPackage(log) {
-      return log.type === PackageStatusCancel
+      return log.type === PackageStatusCancelled
         ? DELIVER_LOG_PACKAGE[log.type] +
-            ` bởi <strong>${log.user.full_name}</strong>`
+            ` bởi <strong>${this.displayUserName(log)}</strong>`
         : DELIVER_LOG_PACKAGE[log.type]
+    },
+
+    displayUserName(item) {
+      if (
+        item.updated_user_role == ROLE_ADMIN ||
+        item.updated_user_role == ROLE_SUPPORT ||
+        item.updated_user_role == ROLE_ACCOUNTANT
+      ) {
+        return 'Bộ phận chăm sóc khách hàng'
+      }
+
+      return item.updated_user_name
+    },
+    displayRole(item) {
+      if (
+        item.updated_user_role == ROLE_ADMIN ||
+        item.updated_user_role == ROLE_SUPPORT ||
+        item.updated_user_role == ROLE_ACCOUNTANT
+      ) {
+        return 'CSKH'
+      }
+
+      return item.updated_user_name
     },
   },
 
