@@ -369,7 +369,7 @@
                                         | datetime('dd/MM/yyyy - HH:mm')
                                     }}
                                   </td>
-                                  <td v-html="displayUserName(item)"></td>
+                                  <td v-html="displayRole(item)"></td>
                                   <td>
                                     {{
                                       $evaluate(
@@ -487,7 +487,7 @@ import {
   DELIVER_LOG_PACKAGE,
   ROLE_ADMIN,
   ROLE_SUPPORT,
-  PackageStatusCancelledText,
+  PackageStatusCancelled,
   PackageStatusCreatedText,
 } from '../constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
@@ -743,9 +743,9 @@ export default {
       }
     },
     deliverLogPackage(log) {
-      return log.type === PackageStatusCancelledText
+      return log.type === PackageStatusCancelled
         ? DELIVER_LOG_PACKAGE[log.type] +
-            ` bởi <strong>${this.displayRole(log)}</strong>`
+            ` bởi <strong>${this.displayUserName(log)}</strong>`
         : DELIVER_LOG_PACKAGE[log.type]
     },
 
@@ -759,15 +759,15 @@ export default {
 
       return item.updated_user_name
     },
-    displayRole(log) {
+    displayRole(item) {
       if (
-        log.updated_user_role == ROLE_ADMIN ||
-        log.updated_user_role == ROLE_SUPPORT
+        item.updated_user_role == ROLE_ADMIN ||
+        item.updated_user_role == ROLE_SUPPORT
       ) {
         return 'CSKH'
       }
 
-      return log.updated_user_name
+      return item.updated_user_name
     },
   },
 
