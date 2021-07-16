@@ -487,6 +487,7 @@ import {
   DELIVER_LOG_PACKAGE,
   ROLE_ADMIN,
   ROLE_SUPPORT,
+  ROLE_ACCOUNTANT,
   PackageStatusCancelled,
   PackageStatusCreatedText,
 } from '../constants'
@@ -752,9 +753,10 @@ export default {
     displayUserName(item) {
       if (
         item.updated_user_role == ROLE_ADMIN ||
-        item.updated_user_role == ROLE_SUPPORT
+        item.updated_user_role == ROLE_SUPPORT ||
+        item.updated_user_role == ROLE_ACCOUNTANT
       ) {
-        return 'bộ phận chăm sóc khách hàng'
+        return 'Bộ phận chăm sóc khách hàng'
       }
 
       return item.updated_user_name
@@ -762,7 +764,8 @@ export default {
     displayRole(item) {
       if (
         item.updated_user_role == ROLE_ADMIN ||
-        item.updated_user_role == ROLE_SUPPORT
+        item.updated_user_role == ROLE_SUPPORT ||
+        item.updated_user_role == ROLE_ACCOUNTANT
       ) {
         return 'CSKH'
       }
