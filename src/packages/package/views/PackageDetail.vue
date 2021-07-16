@@ -705,10 +705,7 @@ export default {
 
     async showContent() {
       document.activeElement && document.activeElement.blur()
-      if (this.blob && this.isImage) {
-        printImage(this.blob)
-        return
-      }
+
       const res = await api.fetchBarcodeFile({
         url: this.package_detail.package.label,
         type: 'labels',
@@ -723,8 +720,8 @@ export default {
       }
 
       try {
-        this.blob = (window.webkitURL || window.URL).createObjectURL(res)
-        printImage(this.blob)
+        let blob = (window.webkitURL || window.URL).createObjectURL(res)
+        printImage(blob)
       } catch (error) {
         this.$toast.error('File error !!!')
       }
