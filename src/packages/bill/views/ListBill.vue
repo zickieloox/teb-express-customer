@@ -155,6 +155,7 @@
                       <th width="350">MÃ VẬN ĐƠN </th>
                       <th width="330">THỜI GIAN </th>
                       <th>PHÍ PHÁT SINH </th>
+                      <th>LOẠI PHÍ</th>
                       <th width="100">TRẠNG THÁI </th>
                     </tr>
                   </thead>
@@ -179,6 +180,7 @@
                         item.created_at | datetime('dd/MM/yyyy HH:mm:ss')
                       }}</td>
                       <td>{{ item.amount | formatPrice }}</td>
+                      <td>{{ item.extra_fee_types.name }}</td>
                       <td>
                         <span
                           v-if="item.status == 10"
