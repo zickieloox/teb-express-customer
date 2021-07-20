@@ -14,6 +14,7 @@
             prefixIcon="search"
             @keyup.enter="handleSearchCode"
             :value.sync="searchCode"
+            v-model="searchCode"
           />
         </div>
         <div class="navbar__header-drop">
