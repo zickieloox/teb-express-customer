@@ -91,9 +91,9 @@
                 <table class="table table-hover">
                   <thead>
                     <tr class="table-header">
-                      <th width="350">MÃ VẬN ĐƠN </th>
-                      <th>THỜI GIAN </th>
-                      <th width="400">PHÍ VẬN ĐƠN </th>
+                      <th width="300">MÃ VẬN ĐƠN </th>
+                      <th width="300">THỜI GIAN </th>
+                      <th width="">PHÍ VẬN ĐƠN </th>
                     </tr>
                   </thead>
 
@@ -152,11 +152,11 @@
                 <table class="table table-hover">
                   <thead>
                     <tr class="table-header">
-                      <th width="350">MÃ VẬN ĐƠN </th>
-                      <th width="330">THỜI GIAN </th>
+                      <th width="300">MÃ VẬN ĐƠN </th>
+                      <th width="300">THỜI GIAN </th>
                       <th>PHÍ PHÁT SINH </th>
                       <th>LOẠI PHÍ</th>
-                      <th width="100">TRẠNG THÁI </th>
+                      <th>TRẠNG THÁI </th>
                     </tr>
                   </thead>
 
