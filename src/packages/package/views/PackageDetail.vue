@@ -256,7 +256,7 @@
                           v-if="isVisiblePopupMoreExtraFee"
                           class="pop-up-more-extra-fee"
                         >
-                          <div v-for="(item, i) of extraFee" :key="i">
+                          <div v-for="(item, i) of mapExtraFee" :key="i">
                             <div>{{ item.extra_fee_types.name }}</div>
                             <div>{{ item.amount | formatPrice }}</div>
                           </div>
@@ -493,6 +493,7 @@ import {
 } from '../constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import { extension } from '@core/utils/url'
+import { cloneDeep } from '@core/utils'
 import api from '../api'
 export default {
   name: 'PackageDetail',
@@ -593,6 +594,20 @@ export default {
     },
     changePackageType() {
       return CHANGE_PACKAGE_TYPE
+    },
+    mapExtraFee() {
+      let arr = cloneDeep(this.extraFee),
+        result = []
+
+      for (const ele of arr) {
+        let index = result.findIndex(
+          (x) => x.extra_fee_types.name == ele.extra_fee_types.name
+        )
+        if (index == -1) {
+          result.push(ele)
+        } else result[index].amount += ele.amount
+      }
+      return result
     },
   },
   created() {

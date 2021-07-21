@@ -91,9 +91,9 @@
                 <table class="table table-hover">
                   <thead>
                     <tr class="table-header">
-                      <th width="350">MÃ VẬN ĐƠN </th>
-                      <th>THỜI GIAN </th>
-                      <th width="400">PHÍ VẬN ĐƠN </th>
+                      <th width="270">MÃ VẬN ĐƠN </th>
+                      <th width="270">THỜI GIAN </th>
+                      <th width="">PHÍ VẬN ĐƠN </th>
                     </tr>
                   </thead>
 
@@ -152,10 +152,12 @@
                 <table class="table table-hover">
                   <thead>
                     <tr class="table-header">
-                      <th width="350">MÃ VẬN ĐƠN </th>
-                      <th width="330">THỜI GIAN </th>
+                      <th width="270">MÃ VẬN ĐƠN </th>
+                      <th width="270">THỜI GIAN </th>
                       <th>PHÍ PHÁT SINH </th>
-                      <th width="100">TRẠNG THÁI </th>
+                      <th>LOẠI PHÍ</th>
+                      <th>NỘI DUNG</th>
+                      <th>TRẠNG THÁI </th>
                     </tr>
                   </thead>
 
@@ -179,6 +181,8 @@
                         item.created_at | datetime('dd/MM/yyyy HH:mm:ss')
                       }}</td>
                       <td>{{ item.amount | formatPrice }}</td>
+                      <td>{{ item.extra_fee_types.name }}</td>
+                      <td>{{ item.description }}</td>
                       <td>
                         <span
                           v-if="item.status == 10"
