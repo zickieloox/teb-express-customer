@@ -437,20 +437,20 @@ export default {
     },
     createOrder(value) {
       switch (value) {
-        case 1:
+        case 'created':
           return false
-        case 2:
+        case 'pending-pickup':
           return true
-        case 3:
-          return false
-        case 4:
-          return false
-        case 5:
-          return false
-        case 6:
-          return false
-        case 7:
-          return false
+        case 'processing':
+          return true
+        case 'in-transit':
+          return true
+        case 'delivered':
+          return true
+        case 'return':
+          return true
+        case 'cancelled':
+          return true
         default:
           return false
       }
@@ -458,20 +458,20 @@ export default {
 
     cancelOrder(status) {
       switch (status) {
-        case 1:
+        case 'created':
           return false
-        case 2:
+        case 'pending-pickup':
           return true
-        case 3:
-          return false
-        case 4:
-          return false
-        case 5:
-          return false
-        case 6:
-          return false
-        case 7:
-          return false
+        case 'processing':
+          return true
+        case 'in-transit':
+          return true
+        case 'delivered':
+          return true
+        case 'return':
+          return true
+        case 'cancelled':
+          return true
         default:
           return false
       }
@@ -496,9 +496,7 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selectedIds.length
-      }. Bạn có chắc chắn muốn hủy đơn?`
+      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn hủy đơn?`
       this.visibleConfirmCancel = true
     },
     async cancelPackagesAction() {
@@ -541,9 +539,7 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selected.length
-      }. Bạn có chắc chắn muốn vận đơn?`
+      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${this.selected.length}. Bạn có chắc chắn muốn vận đơn?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
