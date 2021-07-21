@@ -157,7 +157,6 @@
                       <th>PHÍ PHÁT SINH </th>
                       <th>LOẠI PHÍ</th>
                       <th>NỘI DUNG</th>
-                      <th>TRẠNG THÁI </th>
                     </tr>
                   </thead>
 
@@ -183,12 +182,6 @@
                       <td>{{ item.amount | formatPrice }}</td>
                       <td>{{ item.extra_fee_types.name }}</td>
                       <td>{{ item.description }}</td>
-                      <td>
-                        <span
-                          v-if="item.status == 10"
-                          v-status:status="`Chưa thanh toán`"
-                        ></span>
-                      </td>
                     </tr>
                   </tbody>
                 </table>
