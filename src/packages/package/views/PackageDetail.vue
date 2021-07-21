@@ -43,6 +43,7 @@
               <div>Trạng thái</div>
               <div>
                 <span
+                  v-if="package_detail.package.status_string"
                   v-status:status="
                     mapStatus[package_detail.package.status_string].value
                   "
@@ -490,6 +491,7 @@ import {
   ROLE_ACCOUNTANT,
   PackageStatusCancelled,
   PackageStatusCreatedText,
+  PackageStatusReturned,
 } from '../constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import { extension } from '@core/utils/url'
@@ -753,10 +755,19 @@ export default {
       }
     },
     deliverLogPackage(log) {
-      return log.type === PackageStatusCancelled
-        ? DELIVER_LOG_PACKAGE[log.type] +
+      switch (log.type) {
+        case PackageStatusCancelled:
+          return (
+            DELIVER_LOG_PACKAGE[log.type] +
             ` bởi <strong>${this.displayUserName(log)}</strong>`
-        : DELIVER_LOG_PACKAGE[log.type]
+          )
+        case PackageStatusReturned:
+          return (
+            DELIVER_LOG_PACKAGE[log.type] + `<p>Lí do: ${log.description}</p>`
+          )
+        default:
+          return DELIVER_LOG_PACKAGE[log.type]
+      }
     },
 
     displayUserName(item) {
