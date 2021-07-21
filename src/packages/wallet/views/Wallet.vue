@@ -100,7 +100,10 @@
                     </div>
                   </div>
                   <div class="card-right">
-                    <span
+                    <span v-if="item.amount < 0"
+                      >- {{ Math.abs(item.amount) | formatPrice }}</span
+                    >
+                    <span v-else
                       >{{ item.type == typePay ? '-' : '+' }}
                       {{ item.amount | formatPrice }}</span
                     >
