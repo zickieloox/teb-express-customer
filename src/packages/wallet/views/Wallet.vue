@@ -60,25 +60,12 @@
                         v-if="item.type == typeTopup"
                         >Nạp tiền vào ví</span
                       >
-                      <span
-                        class="transaction-title"
-                        v-else-if="item.type == typeRefund"
-                        >Hoàn tiền cho hóa đơn
-                        <router-link
-                          class="text-no-underline"
-                          :to="{
-                            name: 'list-bill',
-                            query: {
-                              search: item.bill_id,
-                              date_search: '',
-                            },
-                          }"
-                        >
-                          #{{ item.bill_id }}
-                        </router-link>
-                      </span>
                       <span class="transaction-title" v-else
-                        >Thanh toán hóa đơn
+                        >{{
+                          item.type == typeRefund
+                            ? 'Hoàn tiền cho hóa đơn'
+                            : 'Thanh toán hóa đơn'
+                        }}
                         <router-link
                           class="text-no-underline"
                           :to="{
@@ -225,7 +212,7 @@ export default {
     }
   },
 
-  mounted() {
+  created() {
     this.filter = this.getRouteQuery()
   },
 

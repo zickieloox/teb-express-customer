@@ -96,7 +96,6 @@ const getFormatStatus = (status) => {
       statusClass = 'success'
       break
     case 'Trả hàng':
-    case 'Hoàn tiền':
       statusClass = 'info'
       break
     case 'Đã hủy':

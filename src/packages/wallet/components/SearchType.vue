@@ -53,6 +53,7 @@ export default {
     }
   },
   created() {
+    console.log(this.type)
     this.selected = this.type
       ? this.optionSearch.find((item) => item.key == this.type)
       : this.selected
