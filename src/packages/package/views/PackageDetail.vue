@@ -343,7 +343,7 @@
                             >Hành trình đơn</a
                           ></div
                         >
-                        <div class="card-title">Lịch sử phát sinh</div>
+                        <div class="card-title">Lịch sử đơn</div>
                       </div>
                       <div class="card-content">
                         <template>
@@ -382,7 +382,7 @@
                                     {{ item.old_value }}
                                   </td>
                                   <td>{{ item.value }}</td>
-                                  <td>{{ item.extra_fee | formatPrice }}</td>
+                                  <td>{{ item.fee | formatPrice }}</td>
                                 </tr>
                               </tbody>
                             </table>

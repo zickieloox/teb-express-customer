@@ -103,6 +103,13 @@ export const CHANGE_PACKAGE_TYPE = [
   'Dịch vụ',
   'Chi tiết hàng hóa',
   'Địa chỉ phụ người nhận',
+  'Covid',
+  'Quá cỡ',
+  'Sửa trọng lượng',
+  'Sửa kích thước',
+  'Dịch vụ',
+  'Sửa đơn',
+  'Hoàn tiền',
 ]
 
 export const DELIVER_LOG_PACKAGE = {
