@@ -170,7 +170,7 @@
                   </div>
                   <div class="card-content">
                     <div class="row">
-                      <div class="col-4 mb-8">Mã vận hàng:</div>
+                      <div class="col-4 mb-8">Mã vận đơn:</div>
                       <div class="col-8"
                         ><div>{{
                           $evaluate('package_detail.package.code')
