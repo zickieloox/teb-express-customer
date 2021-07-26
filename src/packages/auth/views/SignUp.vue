@@ -22,12 +22,10 @@
           />
         </div>
         <div class="mb-16">
-          <label class="font-weight-600 color-newtral-10"
-            >Số điện thoại / Email</label
-          >
+          <label class="font-weight-600 color-newtral-10"> Email</label>
           <p-input
-            placeholder="Nhập số điện thoại hoặc email"
-            :type="type"
+            placeholder="Nhập email"
+            type="email"
             validate="on"
             ref="email"
             v-model="user.email"
@@ -35,6 +33,20 @@
             @status="checkEmail($event)"
             @keyup.enter="onSignUp"
             :required="requiredEmail"
+          />
+        </div>
+        <div class="mb-16">
+          <label class="font-weight-600 color-newtral-10">Số điện thoại </label>
+          <p-input
+            placeholder="Nhập số điện thoại"
+            type="phone"
+            validate="on"
+            ref="phone"
+            v-model="user.phone"
+            :input="user.phone.trim()"
+            @status="checkPhone($event)"
+            @keyup.enter="onSignUp"
+            :required="requiredPhone"
           />
         </div>
         <div class="mb-16">
@@ -113,19 +125,21 @@ export default {
       form: {
         checkCaptcha: false,
       },
-      type: 'emailornumber',
       check: true,
       user: {
         fullname: '',
         email: '',
+        phone: '',
         password: '',
       },
       isLoading: false,
       result: { success: true, message: 'Some thing wrong' },
       requiredEmail: false,
+      requiredPhone: false,
       requiredPassword: false,
       requiredUsername: false,
       correctEmail: false,
+      correctPhone: false,
       correctPassword: false,
       correctUsername: false,
     }
@@ -139,6 +153,12 @@ export default {
         return (this.correctEmail = true)
       }
       return (this.correctEmail = false)
+    },
+    checkPhone(e) {
+      if (e) {
+        return (this.correctPhone = true)
+      }
+      return (this.correctPhone = false)
     },
     checkUsername(e) {
       if (e) {
@@ -176,6 +196,13 @@ export default {
         this.requiredEmail = false
       }
 
+      if (this.user.phone == '') {
+        this.requiredPhone = true
+        result = false
+      } else {
+        this.requiredPhone = false
+      }
+
       return result
     },
 
@@ -194,7 +221,8 @@ export default {
       if (
         this.correctEmail == false ||
         this.correctUsername == false ||
-        this.correctPassword == false
+        this.correctPassword == false ||
+        this.correctPhone == false
       ) {
         return
       }
@@ -207,6 +235,7 @@ export default {
         full_name: this.user.fullname.trim(),
         email: this.user.email.trim().toLowerCase(),
         password: this.user.password,
+        phone_number: this.user.phone.trim(),
       }
 
       this.isLoading = true
