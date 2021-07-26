@@ -11,7 +11,6 @@ export const TransactionLogTypeRefund = 4
 export const TransactionStatusProcess = 1
 export const TransactionStatusSuccess = 2
 export const TransactionStatusFailure = 3
-export const TransactionStatusReFund = 4
 
 export const MAP_NAME_STATUS_TRANSACTION = {
   [TransactionStatusProcess]: {
@@ -22,9 +21,6 @@ export const MAP_NAME_STATUS_TRANSACTION = {
   },
   [TransactionStatusFailure]: {
     value: 'Thất bại',
-  },
-  [TransactionStatusReFund]: {
-    value: 'Hoàn tiền',
   },
 }
 

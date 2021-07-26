@@ -157,7 +157,6 @@
                       <th>PHÍ PHÁT SINH </th>
                       <th>LOẠI PHÍ</th>
                       <th>NỘI DUNG</th>
-                      <th>TRẠNG THÁI </th>
                     </tr>
                   </thead>
 
@@ -180,14 +179,25 @@
                       <td>{{
                         item.created_at | datetime('dd/MM/yyyy HH:mm:ss')
                       }}</td>
-                      <td>{{ item.amount | formatPrice }}</td>
+                      <td v-if="item.amount < 0"
+                        >-{{ Math.abs(item.amount) | formatPrice }}</td
+                      >
+                      <td v-else>{{ item.amount | formatPrice }}</td>
+                      <td v-if="item.status == 10">
+                        <span v-status:status="`Chưa thanh toán`"></span>
+                      </td>
                       <td>{{ item.extra_fee_types.name }}</td>
-                      <td>{{ item.description }}</td>
+
                       <td>
-                        <span
-                          v-if="item.status == 10"
-                          v-status:status="`Chưa thanh toán`"
-                        ></span>
+                        <p-tooltip
+                          :label="item.description"
+                          size="large"
+                          position="top"
+                          type="dark"
+                          :active="item.description > 15"
+                        >
+                          {{ truncate(item.description, 15) }}
+                        </p-tooltip>
                       </td>
                     </tr>
                   </tbody>
@@ -208,6 +218,7 @@ import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import { date } from '@core/utils/datetime'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
+import { truncate } from '@core/utils/string'
 
 export default {
   name: 'ListBill',
@@ -265,6 +276,7 @@ export default {
   },
   methods: {
     ...mapActions('bill', [FETCH_BILL_DETAIL, FETCH_BILL_EXTRA]),
+    truncate,
     async init() {
       this.isFetching = true
       this.handleUpdateRouteQuery()
