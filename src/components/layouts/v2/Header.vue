@@ -2,44 +2,43 @@
   <nav class="site-navbar" role="navigation">
     <div class="navbar__header">
       <div class="navbar__header-left">
-        <div class="navbar-logo"> YOUR LOGO </div>
+        <img src="@assets/img/icon22.svg" alt="" />
+        <span
+          >Need help? Check out the <a href="#" class="link">FAQ</a> or
+          <a href="" class="link">submit a ticket.</a></span
+        >
       </div>
-      <div class="navbar__header-content">
-        <div class="navbar__header-input">
-          <p-input
-            placeholder="Tra cứu theo mã vận đơn "
-            type="search"
-            clearable
-            hiddenPass="on"
-            prefixIcon="search"
-            @keyup.enter="handleSearchCode"
-            :value.sync="searchCode"
-            v-model="searchCode"
-          />
-        </div>
-        <div class="navbar__header-drop">
-          <p-dropdown>
-            <div class="nav-link  pointer" slot="trigger">
-              {{ user.full_name }}
-              <img src="@/assets/img/dropdown.svg" />
+      <div class="navbar__header-right">
+        <p-dropdown>
+          <div class="pointer" slot="trigger">
+            <div class="logo-user">
+              <span class="helper"></span>
+              <img src="@assets/img/user.svg" alt="" />
             </div>
-            <p-dropdown-item>
-              <img
-                src="@/assets/img/Circle 16px.svg"
-                class="navbar__header-icon"
-              />
-              <router-link to="/" class="nav-item">
-                Hỏi đáp trợ giúp
-              </router-link>
-            </p-dropdown-item>
-            <p-dropdown-item>
-              <img src="@/assets/img/Logout.svg" class="navbar__header-icon" />
-              <router-link to="/logout" class="nav-item">
-                Đăng xuất
-              </router-link>
-            </p-dropdown-item>
-          </p-dropdown>
-        </div>
+            <div class="info-user">
+              <div class="name">
+                {{ user.full_name }}
+              </div>
+              <div class="money"> {{ user.balance | formatPrice }} USD </div>
+            </div>
+            <i class="fa fa-chevron-down"></i>
+          </div>
+          <p-dropdown-item>
+            <img
+              src="@/assets/img/Circle 16px.svg"
+              class="navbar__header-icon"
+            />
+            <router-link to="/" class="nav-item">
+              Hỏi đáp trợ giúp
+            </router-link>
+          </p-dropdown-item>
+          <p-dropdown-item>
+            <img src="@/assets/img/Logout.svg" class="navbar__header-icon" />
+            <router-link to="/logout" class="nav-item">
+              Đăng xuất
+            </router-link>
+          </p-dropdown-item>
+        </p-dropdown>
       </div>
     </div>
   </nav>
