@@ -170,7 +170,7 @@
                   </div>
                   <div class="card-content">
                     <div class="row">
-                      <div class="col-4 mb-8">Mã vận hàng:</div>
+                      <div class="col-4 mb-8">Mã vận đơn:</div>
                       <div class="col-8"
                         ><div>{{
                           $evaluate('package_detail.package.code')
@@ -281,7 +281,7 @@
                         <div class="card-title">Hành trình đơn</div>
                         <div class="card-action"
                           ><a @click="changeDisplayDeliverDetail()" href="#"
-                            >Lịch sử phát sinh</a
+                            >Lịch sử đơn</a
                           ></div
                         >
                       </div>
@@ -343,7 +343,7 @@
                             >Hành trình đơn</a
                           ></div
                         >
-                        <div class="card-title">Lịch sử phát sinh</div>
+                        <div class="card-title">Lịch sử đơn</div>
                       </div>
                       <div class="card-content">
                         <template>
@@ -362,6 +362,10 @@
                               <tbody>
                                 <tr
                                   v-for="(item, i) in displayAuditLogs"
+                                  :class="{
+                                    'bold-line': item.active,
+                                    'through-line': !item.active,
+                                  }"
                                   :key="i"
                                 >
                                   <td>
@@ -382,7 +386,7 @@
                                     {{ item.old_value }}
                                   </td>
                                   <td>{{ item.value }}</td>
-                                  <td>{{ item.extra_fee | formatPrice }}</td>
+                                  <td>{{ item.fee | formatPrice }}</td>
                                 </tr>
                               </tbody>
                             </table>
@@ -466,6 +470,14 @@
 }
 .disable-extra-fee {
   color: #cfd0d0;
+}
+.bold-line {
+  font-weight: 600;
+}
+.through-line,
+.through-line td {
+  text-decoration-line: line-through;
+  color: #aaabab !important;
 }
 </style>
 <script>
@@ -561,10 +573,17 @@ export default {
       const start =
         (this.auditPagination.currentPage - 1) *
         this.auditPagination.itemsPerPage
-      return this.package_detail.audit_logs.slice(
-        start,
-        start + this.auditPagination.itemsPerPage
-      )
+      let auditLogs = cloneDeep(this.package_detail.audit_logs)
+      let arrTemp = []
+      auditLogs.forEach((ele, index) => {
+        if (!arrTemp.includes(ele.type)) {
+          auditLogs[index].active = true
+          arrTemp.push(ele.type)
+        } else {
+          auditLogs[index].active = false
+        }
+      })
+      return auditLogs.slice(start, start + this.auditPagination.itemsPerPage)
     },
 
     sumExtraFee() {

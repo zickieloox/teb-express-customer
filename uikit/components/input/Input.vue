@@ -354,7 +354,7 @@ export default {
       ],
       validateEmail: [
         {
-          message: 'Số điện thoại / Email không hợp lệ',
+          message: 'Email không hợp lệ',
           /* eslint-disable */
           regex: /^[a-z0-9A-Z_\\.]{1,32}@[a-z0-9A-Z\-]{2,}(\.[a-z0-9A-Z]{2,4}){1,2}$/,
           result: true,
@@ -381,8 +381,7 @@ export default {
       ],
       validatePhonenumber: [
         {
-          message: 'Số điện thoại / Email không hợp lệ',
-          // regex: /^[+]?[(]?[0-9]{2,3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
+          message: 'Số điện thoại không hợp lệ',
           regex: /^[+]?[0-9]{1,20}$/,
           result: true,
         },
