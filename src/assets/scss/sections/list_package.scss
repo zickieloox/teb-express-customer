@@ -1,9 +1,14 @@
 .list-packages {
-
   .page-header__title {
-    font-size: 20px;
-    line-height: 28px;
-    font-weight: bold;
+    margin-top: 6px;
+    font-weight: normal;
+    font-size: 36px;
+    line-height: 54px;
+    /* identical to box height, or 150% */
+    
+    
+    /* Neutral / Neutral 10 */
+    
     color: $color-neutral-10;
 
     .btn-excel {

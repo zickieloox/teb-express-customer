@@ -3,7 +3,7 @@
     <div class="page-content">
       <div class="page-header">
         <div class="page-header__title">
-          <span class="pull-left">Quản lý vận đơn</span>
+          <span class="pull-left">Quản lý đơn hàng</span>
           <button class="pull-right btn-excel btn-import" @click="handleImport">
             <img src="~@/assets/img/import-excel.svg" />
             <span>Nhập Excel</span>
@@ -496,7 +496,9 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn hủy đơn?`
+      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${
+        this.selectedIds.length
+      }. Bạn có chắc chắn muốn hủy đơn?`
       this.visibleConfirmCancel = true
     },
     async cancelPackagesAction() {
@@ -539,7 +541,9 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${this.selected.length}. Bạn có chắc chắn muốn vận đơn?`
+      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${
+        this.selected.length
+      }. Bạn có chắc chắn muốn vận đơn?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
