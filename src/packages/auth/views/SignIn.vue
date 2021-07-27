@@ -1,17 +1,35 @@
 <template>
-  <div class="page vertical-align sign-in">
-    <div class="vertical-align-middle">
-      <div class="mb-16">
-        <div class="header-2">
-          Đăng nhập
+  <div class="login__page">
+    <div class="login__page-header d-flex justify-content-between">
+      <img alt="home" src="~@/assets/img/logo.svg" class="login__page-logo" />
+      <div class="login__page-help content_help">
+        <img
+          class="content_help-icon"
+          src="~@/assets/img/Support.svg"
+          alt="help"
+        />
+        <a target="_blank" class="content_help-text">Cần trợ giúp ?</a>
+      </div>
+    </div>
+    <div class="login__page-content">
+      <div class="login__page-circle">
+        <div class="login__page-circle-one">
+          <span class="img-one"></span>
+          <div class="login__page-circle-two">
+            <span class="img-two"></span>
+            <div class="login__page-circle-three">
+              <span class="img-three"></span>
+              <div class="circle__word"></div>
+            </div>
+          </div>
         </div>
       </div>
-      <div>
-        <form @submit.prevent="onSignIn">
+      <div class="login__page-form">
+        <div class="login__page-form-header">
+          <div class="header-text">Đăng nhập</div>
+        </div>
+        <div class="login__page-form-content">
           <div class="mb-16">
-            <label class=" color-newtral-10 font-weight-600"
-              >Số điện thoại / Email</label
-            >
             <p-input
               placeholder="Nhập số điện thoại hoặc email"
               v-model="email"
@@ -19,10 +37,7 @@
               :required="requiredEmail"
             />
           </div>
-          <div class="mb-16">
-            <div class="label">
-              <label class=" color-newtral-10 font-weight-600">Mật khẩu</label>
-            </div>
+          <div class="mb-60">
             <p-input
               placeholder="Nhập mật khẩu của bạn"
               type="password"
@@ -32,18 +47,6 @@
               @keyup.enter="onSignIn"
             />
           </div>
-          <div class="captcha mt-40" v-if="count >= 1">
-            <vue-recaptcha
-              ref="recapcha"
-              @verify="onVerify"
-              :sitekey="`${recapchaKey}`"
-              :loadRecaptchaScript="true"
-            >
-            </vue-recaptcha>
-            <span class="invalid-error" v-if="check == false">
-              Please check the captcha
-            </span>
-          </div>
           <p-button
             class="mb-16 btn btn-special  "
             :loading="isLoading"
@@ -52,25 +55,24 @@
           >
             Đăng nhập
           </p-button>
-        </form>
+          <p class="new-member">
+            <span>Bạn là thành viên mới?</span>
+            <router-link class="create__acount" :to="{ name: 'sign-up' }">
+              Tạo tài khoản
+            </router-link>
+          </p>
+        </div>
+        <div class="login__page-form-footer"></div>
       </div>
-
-      <p class="new-member">
-        <span>Bạn là thành viên mới?</span>
-        <router-link class=" creatAcount" :to="{ name: 'sign-up' }"
-          >Tạo tài khoản
-        </router-link>
-      </p>
     </div>
   </div>
 </template>
 <script>
 import { mapActions, mapState } from 'vuex'
-import VueRecaptcha from 'vue-recaptcha'
 import mixinRoute from '@core/mixins/route'
 
 export default {
-  components: { VueRecaptcha },
+  components: {},
   mixins: [mixinRoute],
   name: 'SignIn',
   data() {
