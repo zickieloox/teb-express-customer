@@ -5,17 +5,6 @@
     <component :is="layout">
       <router-view :key="$route.name"></router-view>
     </component>
-    <notifications position="bottom center" />
-    <div
-      id="scroll-top"
-      class="scroll-top"
-      @click="scrollToTop"
-      v-show="isShowScrollTop"
-    >
-      <a href="javascript:void(0)">
-        <i class="icon md-chevron-up"></i>
-      </a>
-    </div>
   </div>
 </template>
 <script>
