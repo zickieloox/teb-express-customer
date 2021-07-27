@@ -29,6 +29,7 @@
           <div class="header-text">Đăng nhập</div>
         </div>
         <div class="login__page-form-content">
+          <div v-if="error" class="login__page-error">{{ error }}</div>
           <div class="mb-16">
             <p-input
               placeholder="Nhập số điện thoại hoặc email"
@@ -62,7 +63,6 @@
             </router-link>
           </p>
         </div>
-        <div class="login__page-form-footer"></div>
       </div>
     </div>
   </div>
@@ -81,23 +81,18 @@ export default {
       password: '',
       isLoading: false,
       result: { success: false, message: '' },
-      form: {
-        checkCaptcha: false,
-      },
       count: 0,
       status: false,
       requiredPassword: false,
       requiredEmail: false,
       check: true,
+      error: '',
     }
   },
   computed: {
     ...mapState('auth', {
       currentUser: (state) => state.user,
     }),
-    recapchaKey() {
-      return `${process.env.VUE_APP_RECAPCHA_KEY}`
-    },
   },
   mounted() {
     const { type, message } = this.$route.query
@@ -132,11 +127,6 @@ export default {
 
       return result
     },
-
-    pushNoti() {
-      this.showNotificationMessage('This is message')
-    },
-
     async onSignIn() {
       if (!this.checkRequired()) {
         return
@@ -151,28 +141,13 @@ export default {
       } else {
         data.phone_number = this.email.trim()
       }
-
-      if (this.count >= 1 && !this.form.checkCaptcha) {
-        this.check = false
-        return
-      }
       this.isLoading = true
       this.result = await this.signIn(data)
       setTimeout(() => {
         this.isLoading = false
       }, 1000)
 
-      if (this.result.number_incorrect >= 3) {
-        this.count += 1
-      }
-
       if (this.result.success) {
-        if (this.result.user && this.result.user.email) {
-          // eslint-disable-next-line no-undef
-          // $crisp.push(['set', 'user:nickname', [this.result.user.username]])
-          // eslint-disable-next-line no-undef
-          // $crisp.push(['set', 'user:email', this.result.user.email])
-        }
         setTimeout(() => {
           let { path } = this.$route.query
           if (!path) {
@@ -183,16 +158,8 @@ export default {
           this.$router.push(path)
         }, 1000)
       } else {
-        this.$toast.open({
-          type: 'error',
-          message: this.result.message,
-          duration: 3000,
-        })
+        this.error = this.result.message
       }
-    },
-    onVerify: function(response) {
-      if (response) this.form.checkCaptcha = true
-      this.check = true
     },
   },
 }

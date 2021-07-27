@@ -228,8 +228,6 @@ $bg-end: #1571b1;
             cursor: pointer;
         }
     }
-    &-content{
-    }
     &-circle{
      max-width: 1280px;
      max-height: 100vh;
@@ -374,6 +372,15 @@ $bg-end: #1571b1;
             }
          padding-bottom: 100px;
         }
+    }
+    &-error{
+        padding: 5px 20px;
+        background-color: #FFF1F0;
+        border-left: 2px solid #F5222D;
+        font-size: 12px;
+        font-style: italic;
+        margin-bottom: 10px;
+        color: #F5222D;
     }
 
     @keyframes animate {
