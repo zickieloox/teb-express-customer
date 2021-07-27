@@ -298,14 +298,18 @@
                           >
                             <div class="timeline-item__left">
                               <div>{{
-                                item.created_at | datetime('dd/MM/yyyy')
+                                item.ship_time | datetime('dd/MM/yyyy')
                               }}</div>
                               <div>{{
-                                item.created_at | datetime('HH:mm:ss')
+                                item.ship_time | datetime('HH:mm:ss')
                               }}</div>
                             </div>
                             <div class="timeline-item__right">
-                              <div v-html="deliverLogPackage(item)"></div>
+                              <div v-html="item.text"></div>
+                              <span v-if="item.location"
+                                ><i class="fa fa-map-marker mr-1"></i>
+                                {{ item.location }}</span
+                              >
                             </div>
                           </div>
                         </div>
@@ -564,10 +568,29 @@ export default {
       const start =
         (this.timelinePagination.currentPage - 1) *
         this.timelinePagination.itemsPerPage
-      return this.package_detail.deliver_logs.slice(
-        start,
-        start + this.timelinePagination.itemsPerPage
-      )
+      return this.package_detail.deliver_logs
+        .slice(start, start + this.timelinePagination.itemsPerPage)
+        .map((log) => {
+          let text = DELIVER_LOG_PACKAGE[log.type]
+
+          if (log.type == PackageStatusCancelled) {
+            text = `${
+              DELIVER_LOG_PACKAGE[log.type]
+            } bởi <strong>${this.displayUserName(log)}</strong>`
+          }
+          if (log.type == PackageStatusReturned) {
+            text = `${DELIVER_LOG_PACKAGE[log.type]} <p>Lí do: ${
+              log.description
+            }</p>`
+          }
+
+          text = text || log.description
+          return {
+            text,
+            ship_time: log.ship_time,
+            location: log.location,
+          }
+        })
     },
     displayAuditLogs() {
       const start =
@@ -771,21 +794,6 @@ export default {
         printImage(blob)
       } catch (error) {
         this.$toast.error('File error !!!')
-      }
-    },
-    deliverLogPackage(log) {
-      switch (log.type) {
-        case PackageStatusCancelled:
-          return (
-            DELIVER_LOG_PACKAGE[log.type] +
-            ` bởi <strong>${this.displayUserName(log)}</strong>`
-          )
-        case PackageStatusReturned:
-          return (
-            DELIVER_LOG_PACKAGE[log.type] + `<p>Lí do: ${log.description}</p>`
-          )
-        default:
-          return DELIVER_LOG_PACKAGE[log.type]
       }
     },
 
