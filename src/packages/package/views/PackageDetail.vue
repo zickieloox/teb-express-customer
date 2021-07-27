@@ -366,10 +366,6 @@
                               <tbody>
                                 <tr
                                   v-for="(item, i) in displayAuditLogs"
-                                  :class="{
-                                    'bold-line': item.active,
-                                    'through-line': !item.active,
-                                  }"
                                   :key="i"
                                 >
                                   <td>
