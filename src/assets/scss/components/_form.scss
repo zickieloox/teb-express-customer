@@ -322,6 +322,10 @@ input[type='search'] {
         color: #f44336;
       }
     }
+    &:focus{
+      border-bottom: 1px solid $color-neutral-9;
+      box-shadow: 0 1px 0 0 $color-neutral-9;
+    }
   }
 
   > label {

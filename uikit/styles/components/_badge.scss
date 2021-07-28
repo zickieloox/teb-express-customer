@@ -26,17 +26,13 @@
   color: #722ED1;
   border: 1px solid #D3ADF7;
 }
-.badge-primary {
-  color: #3F51B5;
-  background: #E6EBF5;
-  border: 1px solid #8A99CF;
-}
+// .badge-primary {
+//   color: #3F51B5;
+//   background: #E6EBF5;
+//   border: 1px solid #8A99CF;
+// }
 
-.badge-pending {
-  background: #E6FFFB;
-  color: #00ABFB;
-  border: 1px solid #7AE2FF;
-}
+
 .badge-resolved {
   background: #11c26d;
   color: #fff;
@@ -74,7 +70,13 @@
 
 }
 
-.badge-intransit{
+.badge-pending {
+  background: #E6FFFB;
+  color: #00ABFB;
+  border: 1px solid #7AE2FF;
+}
+
+.badge-primary{
   background: #E6FBFF;
   color: #00ABFB;
   border: 1px solid #7AE2FF;
