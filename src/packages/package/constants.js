@@ -72,7 +72,7 @@ export const MAP_NAME_STATUS_PACKAGE = {
   },
   [PackageStatusInTransitText]: {
     value: 'Đang giao',
-    class: 'badge-intransit',
+    class: 'badge-primary',
   },
   [PackageStatusDeliveredText]: {
     value: 'Giao thành công',
