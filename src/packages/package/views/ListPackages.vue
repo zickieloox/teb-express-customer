@@ -25,7 +25,7 @@
             <div class="d-flex">
               <p-input
                 placeholder="Tìm theo mã vận đơn hoặc mã hóa đơn..."
-                suffixIcon="search"
+                prefixIcon="search"
                 type="search"
                 v-model="searchCode"
                 :suffix-func="handleSearchCode"
@@ -104,9 +104,7 @@
                         <th :class="{ hidden: hiddenClass }">Mã vận đơn</th>
                         <th :class="{ hidden: hiddenClass }">Mã đơn hàng</th>
                         <th :class="{ hidden: hiddenClass }">Người nhận</th>
-                        <th :class="{ hidden: hiddenClass }"
-                          >Chi tiết hàng hóa</th
-                        >
+                        <th :class="{ hidden: hiddenClass }">Dịch vụ</th>
                         <th width="100" :class="{ hidden: hiddenClass }"
                           >Ngày tạo
                         </th>
@@ -142,25 +140,27 @@
                         >
                           {{ item.code }}
                         </router-link>
-                        <img
-                          src="@/assets/img/Vector-barcode.png"
-                          style="position: absolute; left: 150px;"
-                        />
+
+                        <span
+                          @click="showContent(item)"
+                          v-if="item.label"
+                          class="page-header__barcode"
+                        >
+                          <img
+                            src="@/assets/img/Vector-barcode.png"
+                            style="margin-top: 6px;position: absolute; left: 150px;"
+                          />
+                        </span>
                       </td>
                       <td>{{ item.order_number }}</td>
                       <td>
                         {{ item.recipient }}
                       </td>
-                      <td>
-                        <p-tooltip
-                          :label="item.detail"
-                          size="large"
-                          position="top"
-                          type="dark"
-                          :active="item.detail.length > 15"
-                        >
-                          {{ truncate(item.detail, 15) }}
-                        </p-tooltip>
+                      <td v-if="item.service">
+                        {{ item.service.name }}
+                      </td>
+                      <td v-if="!item.service">
+                        N/A
                       </td>
                       <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
                       <td>
@@ -260,6 +260,8 @@ import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import { date } from '@core/utils/datetime'
 import { truncate } from '@core/utils/string'
+import { printImage } from '@core/utils/print'
+import api from '../api'
 
 export default {
   name: 'ListPackages',
@@ -577,6 +579,30 @@ export default {
         message: 'Vận đơn thành công',
         duration: 3000,
       })
+    },
+
+    async showContent(item) {
+      document.activeElement && document.activeElement.blur()
+
+      const res = await api.fetchBarcodeFile({
+        url: item.label,
+        type: 'labels',
+      })
+      if (!res && res.error) {
+        this.$toast.open({
+          type: 'error',
+          message: res.errorMessage,
+          duration: 3000,
+        })
+        return
+      }
+
+      try {
+        let blob = (window.webkitURL || window.URL).createObjectURL(res)
+        printImage(blob)
+      } catch (error) {
+        this.$toast.error('File error !!!')
+      }
     },
   },
   watch: {
