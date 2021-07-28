@@ -5,23 +5,18 @@
         <img src="@assets/img/icon22.svg" alt="" />
         <span
           >Need help? Check out the <a href="#" class="link">FAQ</a> or
-          <a href="" class="link">submit a ticket.</a></span
+          <a href="#" class="link" @click.prevent="addClaim"
+            >submit a ticket.</a
+          ></span
         >
       </div>
       <div class="navbar__header-right">
         <p-dropdown>
           <div class="pointer" slot="trigger">
-            <div class="logo-user">
-              <span class="helper"></span>
-              <img src="@assets/img/user.svg" alt="" />
-            </div>
-            <div class="info-user">
-              <div class="name">
-                {{ user.full_name }}
-              </div>
-              <div class="money"> {{ user.balance | formatPrice }} USD </div>
-            </div>
-            <i class="fa fa-chevron-down"></i>
+            <span
+              >Xin chào, <span class="username">{{ user.full_name }}</span>
+            </span>
+            <img src="@/assets/img/dropdown.svg" />
           </div>
           <p-dropdown-item>
             <img
@@ -41,51 +36,41 @@
         </p-dropdown>
       </div>
     </div>
+    <modal-add-claim
+      :visible.sync="visibleModal"
+      :title="`Khiếu nại`"
+      @create="init"
+    >
+    </modal-add-claim>
   </nav>
 </template>
 <script>
-import mixinDownload from '@/packages/shared/mixins/download'
-import evenBus from '../../../core/utils/evenBus'
+import ModalAddClaim from '../../../packages/claim/components/ModalAddClaim.vue'
 
 export default {
-  components: {},
-  mixins: [mixinDownload],
+  components: {
+    ModalAddClaim,
+  },
   name: 'Header',
   props: {
     user: {
       type: Object,
       default: () => {},
     },
-    isSidebarOpen: {
-      type: Boolean,
-      default: true,
-    },
   },
   mounted() {},
   created() {},
   data() {
     return {
-      isFetchNotity: false,
-      isShowNavbarOnMobile: false,
-      socket: null,
-      isVisibleAddShop: false,
-      query: '',
-      searchCode: '',
+      visibleModal: false,
     }
   },
   methods: {
-    handleSearchCode() {
-      if (this.$route.name != 'list-packages' && this.searchCode) {
-        this.$router.push({
-          name: 'list-packages',
-          query: {
-            limit: 50,
-            page: 1,
-            code: this.searchCode.trim(),
-          },
-        })
-      }
-      evenBus.$emit('code', this.searchCode.trim())
+    init() {
+      location.reload()
+    },
+    addClaim() {
+      this.visibleModal = true
     },
   },
 }

@@ -6,16 +6,21 @@ $menubar-height:70vh;
 }
 
 .site-menu {
+    padding: 0 10px;
+    .open-right {
+        position: absolute;
+        left: calc(#{$sidebar-width} - 20px);
+        padding-left: 15px;
+        top: 0;
+        cursor: default;
+    }
     &-sub {
         width: 180px;
         height: calc(#{$menubar-height}/5);
         background: #0F1750;
         border-radius: 4px;
         display: none;
-        position: absolute;
         padding: 1.8vh;
-        left: calc(5px + #{$sidebar-width});
-        top: 0;
         cursor: default;
         &.has-sub {
             display: inline-block;
@@ -27,7 +32,7 @@ $menubar-height:70vh;
             border-bottom-color: rgba(0, 0, 0, .2);
             content: "";
             top: 20px;
-            left: -5px;
+            left: 10px;
             border-top: 5px solid transparent;
             border-right: 5px solid #0F1750;
             border-bottom: 5px solid transparent;
@@ -36,12 +41,25 @@ $menubar-height:70vh;
             padding-bottom: 0.5vh;
             text-align: left;
         }
-        span {
+        &-title {
             color: #FFFFFF;
             font-size: 14px;
             transition: .3s;
             font-weight: 500;
             line-height: 22px;
+            .hover {
+                display: none;
+            }
+            &:hover,
+            &.active {
+                color: #02BABA;
+                .default {
+                    display: none;
+                }
+                .hover {
+                    display: inherit;
+                }
+            }
         }
     }
 }
@@ -82,31 +100,38 @@ $menubar-height:70vh;
         cursor: pointer;
         border: 0;
         position: relative;
-        &:hover {
-            background-color: #0F1750;
-        }
     }
     .site-menu-icon {
+        &.active {
+            display: none;
+        }
         display: block;
         margin-left: auto;
         margin-right: auto;
     }
     .site-menu-title {
-        margin-top: 8px;
         color: #EDEEEE;
         font-weight: 500;
     }
+    &:hover,
     &.active {
-        background-color: #0F1750;
-        border-left: 1px solid #02BABA;
         .site-menu-title {
-            color: #FFFFFF;
-            font-weight: 600;
+            color: #02BABA;
+        }
+        .site-menu-icon {
+            &.default {
+                display: none;
+            }
+            &.active {
+                display: block;
+            }
+        }
+        .item-link {
+            background: #0F1750;
+            border-radius: 16px;
         }
     }
 }
-
-.site-menu-item:hover {}
 
 //Logout
 .site-menubar-hide .site-menu-title {
