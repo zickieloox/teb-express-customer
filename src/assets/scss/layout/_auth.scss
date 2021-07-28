@@ -152,7 +152,6 @@ $bg-end: #1571b1;
   }
 
   .header {
-    margin-bottom: 3.5rem;
     h2 {
       font-weight: 700;
       font-size: 2.8rem;
@@ -223,6 +222,45 @@ $bg-end: #1571b1;
       left: 50%;
       transform: translateX(-50%);
     }
+  }
+
+  .card .alert {
+    opacity: 0;
+    width: 100%;
+    min-height: 3rem;
+    line-height: 1.6rem;
+    padding: 5px 1.2rem;
+    margin-bottom: 0;
+
+    &.success {
+      color: #48BE78;
+      border-left: 2px solid #48BE78;
+      background: #F0FFF3;
+    }
+
+    &.error {
+      color: #F5222D;
+      border-left: 2px solid #F5222D;
+      background: #FFF0F3;
+      white-space: pre-line;
+    }
+
+    &.active {
+      opacity: 1;
+    }
+  }
+
+  .btn.loading.spin {
+    color: #fff!important;
+  }
+
+  .btn.loading.spin:after {
+    border-left-color: #007e78;
+    border-bottom-color: #007e78;
+  }
+
+  .btn:disabled {
+    color: #fff;
   }
 }
 
