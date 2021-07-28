@@ -27,7 +27,7 @@
               :status="claimStatus"
               :count="totalCount"
             />
-            <vcl-table class=" md-20" v-if="isFetching"></vcl-table>
+            <vcl-table class="md-20" v-if="isFetching"></vcl-table>
             <template v-else-if="listclaim.length > 0">
               <div class="table-responsive">
                 <table class="table table-hover">
@@ -39,7 +39,6 @@
                       <th>NGÀY TẠO</th>
                       <th>NGÀY CẬP NHẬT</th>
                       <th>TRẠNG THÁI </th>
-                      <th></th>
                     </tr>
                   </thead>
 
@@ -54,19 +53,17 @@
                           }"
                         >
                           {{ item.id }}
+                          <img
+                            class="ml-10"
+                            v-if="item.status_rep == claimAdminReply"
+                            src="@assets/img/messenger.svg"
+                            alt=""
+                          />
                         </router-link>
                       </td>
                       <td>
-                        <router-link
-                          class="text-no-underline"
-                          :to="{
-                            name: 'package-detail',
-                            params: { id: item.package.code },
-                          }"
-                        >
-                          {{ item.package.code }}
-                        </router-link></td
-                      >
+                        {{ item.package.code }}
+                      </td>
                       <td width="300">
                         <p-tooltip
                           :label="item.title"
@@ -85,20 +82,6 @@
                           v-status:status="converStatus(item.status)"
                         ></span>
                       </td>
-                      <td width="40">
-                        <router-link
-                          v-if="item.status_rep == claimAdminReply"
-                          class="text-no-underline"
-                          :to="{
-                            name: 'claim-detail',
-                            params: { id: item.id },
-                          }"
-                        >
-                          <img
-                            src="@assets/img/messenger.svg"
-                            alt=""
-                          /> </router-link
-                      ></td>
                     </tr>
                   </tbody>
                 </table>

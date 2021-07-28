@@ -1,68 +1,43 @@
 <template>
-  <div class="login__page">
-    <div class="login__page-header d-flex justify-content-between">
-      <img alt="home" src="~@/assets/img/logo.svg" class="login__page-logo" />
-      <div class="login__page-help content_help">
-        <img
-          class="content_help-icon"
-          src="~@/assets/img/Support.svg"
-          alt="help"
-        />
-        <a target="_blank" class="content_help-text">Cần trợ giúp ?</a>
+  <div class="card sign-in">
+    <div class="form form-sign-in">
+      <div class="header">
+        <h2 class="header-text">Đăng nhập</h2>
       </div>
-    </div>
-    <div class="login__page-content">
-      <div class="login__page-circle">
-        <div class="login__page-circle-one">
-          <span class="img-one"></span>
-          <div class="login__page-circle-two">
-            <span class="img-two"></span>
-            <div class="login__page-circle-three">
-              <span class="img-three"></span>
-              <div class="circle__word"></div>
-            </div>
-          </div>
+      <div class="login__page-form-content">
+        <div v-if="error" class="login__page-error">{{ error }}</div>
+        <div class="mb-16">
+          <p-input
+            placeholder="Nhập số điện thoại hoặc email"
+            v-model="email"
+            @keyup.enter="onSignIn"
+            :required="requiredEmail"
+          />
         </div>
-      </div>
-      <div class="login__page-form">
-        <div class="login__page-form-header">
-          <div class="header-text">Đăng nhập</div>
+        <div class="mb-60">
+          <p-input
+            placeholder="Nhập mật khẩu của bạn"
+            type="password"
+            hiddenPass="on"
+            v-model="password"
+            :required="requiredPassword"
+            @keyup.enter="onSignIn"
+          />
         </div>
-        <div class="login__page-form-content">
-          <div v-if="error" class="login__page-error">{{ error }}</div>
-          <div class="mb-16">
-            <p-input
-              placeholder="Nhập số điện thoại hoặc email"
-              v-model="email"
-              @keyup.enter="onSignIn"
-              :required="requiredEmail"
-            />
-          </div>
-          <div class="mb-60">
-            <p-input
-              placeholder="Nhập mật khẩu của bạn"
-              type="password"
-              hiddenPass="on"
-              v-model="password"
-              :required="requiredPassword"
-              @keyup.enter="onSignIn"
-            />
-          </div>
-          <p-button
-            class="mb-16 btn btn-special  "
-            :loading="isLoading"
-            @click="onSignIn"
-            :type="`java-blue`"
-          >
-            Đăng nhập
-          </p-button>
-          <p class="new-member">
-            <span>Bạn là thành viên mới?</span>
-            <router-link class="create__acount" :to="{ name: 'sign-up' }">
-              Tạo tài khoản
-            </router-link>
-          </p>
-        </div>
+        <p-button
+          class="mb-16 btn btn-special  "
+          :loading="isLoading"
+          @click="onSignIn"
+          :type="`java-blue`"
+        >
+          Đăng nhập
+        </p-button>
+        <p class="new-member">
+          <span>Bạn là thành viên mới?</span>
+          <router-link class="create__acount" :to="{ name: 'sign-up' }">
+            Tạo tài khoản
+          </router-link>
+        </p>
       </div>
     </div>
   </div>

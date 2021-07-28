@@ -1,0 +1,249 @@
+$bg-start: $color-primary;
+$bg-end: #1571b1;
+
+.layout-auth {
+  position: relative;
+  font-family: $font-family-sans-serif;
+  background-color: #fff;
+  height: 100vh;
+
+  a {
+    color: #007e78;
+  }
+
+  .main-header {
+    padding: 24px 32px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+
+    .help {
+      .help-icon {
+        width: 16px;
+        height: 16px;
+        vertical-align: unset;
+      }
+      .help-text,
+      a {
+        letter-spacing: 0.2px;
+        margin-left: 4px;
+        color: $color-neutral-10;
+        font-size: 12px;
+        vertical-align: top;
+      }
+    }
+  }
+
+  .page-content {
+    width: 100%;
+    height: 100%;
+  }
+
+  .page-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    .circle {
+      width: 1200px;
+      height: 1200px;
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid #edeeee;
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%, 50%);
+
+      &:before,
+      &:after {
+        content: '';
+        border: 1px solid #edeeee;
+        border-radius: 50%;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      &:before {
+        top: 30px;
+        height: 1140px;
+        width: 1140px;
+      }
+
+      &:after {
+        top: 60px;
+        height: 1080px;
+        width: 1080px;
+      }
+
+      .animate {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        animation: animate-rotate 42s linear infinite;
+      }
+
+      .icon {
+        display: block;
+        width: 100%;
+
+        &:after,
+        &:before {
+          content: '';
+          position: absolute;
+          background-size: contain;
+          background-repeat: no-repeat;
+        }
+
+        &-boat-truck {
+          &:before {
+            right: 67px;
+            width: 40px;
+            height: 40px;
+            background-image: url('~@/assets/img/truck.svg');
+            transform: rotate(93deg) translateY(50%);
+          }
+
+          &:after {
+            left: -26px;
+            width: 60px;
+            height: 60px;
+            background-image: url('~@/assets/img/ship.svg');
+            transform: rotate(-89deg) translateX(50%);
+          }
+        }
+
+        &-box-plane {
+          transform: rotate(90deg);
+          &:before {
+            right: 43px;
+            width: 35px;
+            height: 35px;
+            background-image: url('~@/assets/img/airplane.svg');
+            transform: rotate(-179deg) translateY(50%);
+          }
+
+          &:after {
+            left: 14px;
+            width: 35px;
+            height: 35px;
+            background-image: url('~@/assets/img/package.svg');
+            transform: rotate(-93deg) translateX(50%);
+          }
+        }
+      }
+    }
+
+    .circle__word {
+      height: 1020px;
+      width: 1020px;
+      background: url('~@/assets/img/word.svg');
+      background-repeat: no-repeat;
+      transform: translate(-50%, 50%);
+      background-size: contain;
+      bottom: 0;
+      left: 50%;
+      position: absolute;
+    }
+  }
+
+  .header {
+    margin-bottom: 3.5rem;
+    h2 {
+      font-weight: 700;
+      font-size: 2.8rem;
+      line-height: 4.2rem;
+    }
+  }
+
+  .card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 528px;
+    height: auto;
+    background: #ffffff;
+    box-shadow: 0px 2px 4px rgba(40, 41, 61, 0.04),
+      0px 8px 16px rgba(96, 97, 112, 0.16);
+    border-radius: 12px;
+    padding: 32px 40px 24px;
+
+    &-header {
+      padding: 32px 0;
+    }
+    .header-text {
+      color: $color-neutral-10;
+      font-weight: bold;
+      font-size: 28px;
+    }
+    .new-member {
+      .create__acount {
+        color: #007e78;
+      }
+      padding-bottom: 100px;
+    }
+  }
+
+  .form {
+    .m-input-field {
+      margin-bottom: 2.5rem;
+      > label {
+        color: #cfd0d0;
+      }
+      > label:not(.label-icon).active {
+        transform: translateY(5px);
+      }
+
+      .toggle-password {
+        color: #007e78;
+      }
+
+      .helper-text {
+        text-align: right;
+      }
+    }
+  }
+
+  .btn-special {
+    border-radius: 4.8rem;
+    height: 4rem;
+    font-weight: 700;
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+  }
+
+  @media (max-height: 750px) {
+    .sign-up  {
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
+
+@keyframes animate-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.sign-up {
+  .form .m-input-field:nth-child(4) {
+    margin-bottom: 0.7rem !important;
+  }
+
+  .gg-captche {
+    a {
+      text-decoration: underline;
+      color: #626363;
+    }
+  }
+}
