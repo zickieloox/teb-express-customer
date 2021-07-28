@@ -156,8 +156,11 @@
                       <td>
                         {{ item.recipient }}
                       </td>
-                      <td>
+                      <td v-if="item.service">
                         {{ item.service.name }}
+                      </td>
+                      <td v-if="!item.service">
+                        N/A
                       </td>
                       <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
                       <td>
