@@ -7,28 +7,40 @@
       <div class="login__page-form-content">
         <div v-if="error" class="login__page-error">{{ error }}</div>
         <div class="mb-16">
-          <p-input
-            placeholder="Nhập số điện thoại hoặc email"
-            v-model="email"
-            @keyup.enter="onSignIn"
-            :required="requiredEmail"
-          />
+          <m-input
+            icon="envelope-o"
+            v-model.trim="email"
+            :error="requiredEmail"
+            :messages="errorEmail"
+            @keydown="onEmail"
+          >
+            <template v-if="!email">
+              Nhập số điện thoại hoặc email <span class="text-danger">*</span>
+            </template>
+          </m-input>
         </div>
         <div class="mb-60">
-          <p-input
-            placeholder="Nhập mật khẩu của bạn"
+          <m-input
             type="password"
-            hiddenPass="on"
-            v-model="password"
-            :required="requiredPassword"
-            @keyup.enter="onSignIn"
-          />
+            icon="lock-o"
+            v-model.trim="password"
+            :password="true"
+            :error="requiredPassword"
+            :messages="errorPassWord"
+            @keydown="onPassword"
+          >
+            <template v-if="!password">
+              Mật khẩu của bạn <span class="text-danger">*</span>
+            </template>
+            <template v-slot:toggle-password="{ type }">
+              {{ type === 'text' ? 'Hiển thị' : 'Ẩn' }}
+            </template>
+          </m-input>
         </div>
         <p-button
           class="mb-16 btn btn-special  "
           :loading="isLoading"
           @click="onSignIn"
-          :type="`java-blue`"
         >
           Đăng nhập
         </p-button>
@@ -62,6 +74,8 @@ export default {
       requiredEmail: false,
       check: true,
       error: '',
+      errorEmail: '',
+      errorPassWord: '',
     }
   },
   computed: {
@@ -83,11 +97,17 @@ export default {
     redirect() {
       return this.$router.push('/forgot')
     },
-
+    onEmail() {
+      ;(this.requiredEmail = false), (this.errorEmail = '')
+    },
+    onPassword() {
+      ;(this.requiredPassword = false), (this.errorPassWord = '')
+    },
     checkRequired() {
       let result = true
       if (this.password == '') {
         this.requiredPassword = true
+        this.errorPassWord = 'Vui lòng không để trống!'
         result = false
       } else {
         this.requiredPassword = false
@@ -95,6 +115,7 @@ export default {
 
       if (this.email == '') {
         this.requiredEmail = true
+        this.errorEmail = 'Vui lòng không để trống!'
         result = false
       } else {
         this.requiredEmail = false

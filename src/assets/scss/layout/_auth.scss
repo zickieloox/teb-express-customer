@@ -65,6 +65,7 @@ $bg-end: #1571b1;
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
+        z-index: -1;
       }
 
       &:before {
@@ -101,11 +102,12 @@ $bg-end: #1571b1;
 
         &-boat-truck {
           &:before {
-            right: 67px;
+            right: -4px;
             width: 40px;
             height: 40px;
             background-image: url('~@/assets/img/truck.svg');
-            transform: rotate(93deg) translateY(50%);
+            transform: rotate(71deg) translateY(50%);
+            bottom: 200px;
           }
 
           &:after {
@@ -201,10 +203,14 @@ $bg-end: #1571b1;
 
       .toggle-password {
         color: #007e78;
+        font-style: italic;
+        cursor: pointer;
       }
 
       .helper-text {
         text-align: right;
+        font-style: italic;
+        color:#F5222D !important;
       }
     }
   }
