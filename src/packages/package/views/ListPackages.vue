@@ -142,6 +142,10 @@
                         >
                           {{ item.code }}
                         </router-link>
+                        <img
+                          src="@/assets/img/Vector-barcode.png"
+                          style="position: absolute; left: 150px;"
+                        />
                       </td>
                       <td>{{ item.order_number }}</td>
                       <td>
