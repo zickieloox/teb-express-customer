@@ -387,7 +387,7 @@
                                   </td>
                                   <td>{{ item.value }}</td>
                                   <td style="text-align: right">{{
-                                    item.fee | formatPrice('after')
+                                    item.extra_fee | formatPrice('after')
                                   }}</td>
                                 </tr>
                               </tbody>
