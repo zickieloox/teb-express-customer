@@ -42,6 +42,7 @@ export default {
     Loading,
     'default-layout': () => import('@layouts/v2/Index'),
     'full-page-layout': () => import('@layouts/v2-full-page/Index'),
+    'auth-layout': () => import('@layouts/auth/Index'),
   },
   methods: {
     scrollToTop() {

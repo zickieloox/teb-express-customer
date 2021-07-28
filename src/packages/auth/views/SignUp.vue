@@ -1,107 +1,75 @@
 <template>
-  <div class="page vertical-align sign-up">
+  <div class="card sign-up">
     <div class="vertical-align-middle">
-      <div class="header mb-16">
-        <div class="header-2">
-          Tạo tài khoản mới
-        </div>
+      <div class="header">
+        <h2>Tạo tài khoản mới</h2>
       </div>
 
-      <form :model="form" class="" @submit.prevent="onSignUp">
-        <div class="mb-16">
-          <label class="font-weight-600 color-newtral-10">Họ và tên</label>
-          <p-input
-            placeholder="vd. Nguyen Van A"
-            type="fullname"
-            validate="on"
-            v-model="user.fullname"
-            :input="user.fullname"
-            @keyup.enter="onSignUp"
-            @status="checkUsername($event)"
-            :required="requiredUsername"
-          />
-        </div>
-        <div class="mb-16">
-          <label class="font-weight-600 color-newtral-10"> Email</label>
-          <p-input
-            placeholder="Nhập email"
-            type="email"
-            validate="on"
-            ref="email"
-            v-model="user.email"
-            :input="user.email.trim()"
-            @status="checkEmail($event)"
-            @keyup.enter="onSignUp"
-            :required="requiredEmail"
-          />
-        </div>
-        <div class="mb-16">
-          <label class="font-weight-600 color-newtral-10">Số điện thoại </label>
-          <p-input
-            placeholder="Nhập số điện thoại"
-            type="phone"
-            validate="on"
-            ref="phone"
-            v-model="user.phone"
-            :input="user.phone.trim()"
-            @status="checkPhone($event)"
-            @keyup.enter="onSignUp"
-            :required="requiredPhone"
-          />
-        </div>
-        <div class="mb-16">
-          <label class="font-weight-600 color-newtral-10">Mật khẩu</label>
-          <p-input
-            placeholder="Nhập mật khẩu của bạn"
-            hiddenPass="on"
-            type="password"
-            validate="on"
-            v-model="user.password"
-            :input="user.password"
-            @keyup.enter="onSignUp"
-            :required="requiredPassword"
-            @status="checkPassword($event)"
-          />
-        </div>
-        <div class="captcha mb-16">
-          <vue-recaptcha
-            ref="recapcha"
-            @verify="onVerify"
-            :sitekey="`${recapchaKey}`"
-            :loadRecaptchaScript="true"
-            @expired="onCaptchaExpired"
-          >
-          </vue-recaptcha>
-          <span class="invalid-error" v-if="check == false">
-            Please check the captcha
-          </span>
-        </div>
-        <div class="police mb-16">
-          <span class="police__text">
-            Khi nhấn nút <b> Đăng ký</b>, bạn đã đồng ý thực hiện mọi giao dịch
-            mua bán theo
+      <form class="form form-sign-up" @submit.prevent="onSignUp">
+        <m-input icon="user-o" v-model.trim="user.fullname">
+          <template v-if="!user.fullname">
+            Tên của bạn <span class="text-danger">*</span>
+          </template>
+        </m-input>
 
-            <a class="police__text-link" href="/"
-              >Điều kiện sử dụng & chính sách</a
-            >
-            của LIONBAY.
-          </span>
-        </div>
+        <m-input icon="phone-o" v-model.trim="user.phone">
+          <template v-if="!user.phone">
+            Số điện thoại của bạn <span class="text-danger">*</span>
+          </template>
+        </m-input>
+
+        <m-input icon="envelope-o" v-model.trim="user.email">
+          <template v-if="!user.email">
+            Email của bạn <span class="text-danger">*</span>
+          </template>
+        </m-input>
+
+        <m-input
+          type="password"
+          icon="lock-o"
+          v-model.trim="user.password"
+          :password="true"
+        >
+          <template v-if="!user.password">
+            Mật khẩu của bạn <span class="text-danger">*</span>
+          </template>
+          <template v-slot:toggle-password="{ type }">
+            {{ type === 'text' ? 'Hiển thị' : 'Ẩn' }}
+          </template>
+        </m-input>
+        <p class="police__text mb-40">
+          Khi nhấn nút <b>Đăng ký tài khoản</b>, bạn đã đồng ý thực hiện mọi
+          giao dịch theo <a href="#">Điều kiện sử dụng & chính sách</a> của
+          LionBay
+        </p>
         <p-button
-          class="btn btn-special  mb-16 "
+          class="btn btn-special"
           :loading="isLoading"
           @click="onSignUp"
-          :type="`java-blue`"
         >
-          Đăng ký
+          Đăng ký tài khoản
         </p-button>
       </form>
 
-      <p class="mb-80">
+      <p class="text-center" style="margin: 28px 0 50px;">
         Bạn đã có tài khoản?
-        <router-link :to="{ name: 'sign-in' }" class="creatAcount"
+        <router-link :to="{ name: 'sign-in' }" class="link-login"
           >Đăng nhập</router-link
         >
+      </p>
+
+      <p class="police__text text-center gg-captche">
+        Được bảo vệ bởi reCAPTCHA và tuân theo
+        <a
+          href="https://www.google.com/intl/en/policies/privacy/"
+          target="_blank"
+          >Chính sách quyền riêng tư</a
+        >
+        và
+        <a href="https://www.google.com/intl/en/policies/terms/" target="_blank"
+          >Điều khoản dịch vụ</a
+        >
+        của Google.
       </p>
     </div>
   </div>
@@ -110,10 +78,9 @@
 <script>
 import { mapActions } from 'vuex'
 import Storage from '@core/helpers/storage'
-import VueRecaptcha from 'vue-recaptcha'
-export default {
-  components: { VueRecaptcha },
+// import VueRecaptcha from 'vue-recaptcha'
 
+export default {
   computed: {
     recapchaKey() {
       return `${process.env.VUE_APP_RECAPCHA_KEY}`
