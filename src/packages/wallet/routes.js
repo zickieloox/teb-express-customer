@@ -1,6 +1,6 @@
 export const routes = [
   {
-    path: '/wallet',
+    path: '/bill/wallet',
     name: 'wallet',
     meta: {
       title: 'Wallet',

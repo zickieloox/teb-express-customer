@@ -19,39 +19,51 @@
             @mouseover.native="openItem(menu)"
             @mouseleave.native="closeItem(menu)"
           >
-            <img class="site-menu-icon" :src="menu.icon" />
+            <img class="site-menu-icon default" :src="menu.icon" />
+            <img class="site-menu-icon active" :src="menu.iconActive" />
             <span class="site-menu-title">{{ menu.title }}</span>
-            <div
-              class="site-menu-sub"
-              :class="{
-                'has-sub': menu.isOpen,
-              }"
-              v-if="menu.sub"
-            >
+            <div class="open-right">
               <div
-                class="site-menu-sub-item"
-                v-for="(sub, j) in menu.sub"
-                :key="j"
+                class="site-menu-sub"
+                :class="{
+                  'has-sub': menu.isOpen,
+                }"
+                v-if="menu.sub"
               >
-                <router-link
-                  :to="sub.route"
-                  class="animsition-link"
-                  @click.native="closeItem(menu)"
+                <div
+                  class="site-menu-sub-item"
+                  v-for="(sub, j) in menu.sub"
+                  :key="j"
                 >
-                  <span
-                    :class="{
-                      active:
-                        isActive(sub.route) ||
-                        isContainAlias(sub.alias) ||
-                        childrenNameRoute(sub.title),
-                    }"
-                    class="site-menu-sub-title"
+                  <router-link
+                    :to="sub.route"
+                    class="animsition-link"
+                    @click.native="closeItem(menu)"
                   >
-                    <img src="@assets/img/Arrow - Right Circle.svg" alt="" />
+                    <span
+                      :class="{
+                        active:
+                          isActive(sub.route) ||
+                          isContainAlias(sub.alias) ||
+                          childrenNameRoute(sub.title),
+                      }"
+                      class="site-menu-sub-title"
+                    >
+                      <img
+                        class="default"
+                        src="@assets/img/Arrow - Right Circle.svg"
+                        alt=""
+                      />
+                      <img
+                        class="hover"
+                        src="@assets/img/Arrow - Right CircleHover.svg"
+                        alt=""
+                      />
 
-                    {{ sub.title }}</span
-                  >
-                </router-link>
+                      {{ sub.title }}</span
+                    >
+                  </router-link>
+                </div>
               </div>
             </div>
           </router-link>
@@ -91,12 +103,14 @@ export default {
         {
           title: 'Trang chủ',
           icon: require('@assets/img/Home.png'),
+          iconActive: require('@assets/img/HomeActive.png'),
           route: '/',
           class: '',
         },
         {
           title: 'Đơn hàng',
           icon: require('@assets/img/Order.png'),
+          iconActive: require('@assets/img/OrderActive.png'),
           route: { name: 'packages' },
           class: '',
           isOpen: false,
@@ -111,12 +125,25 @@ export default {
         {
           title: 'Hóa đơn',
           icon: require('@assets/img/Bill.png'),
-          route: '/bill',
+          iconActive: require('@assets/img/BillActive.png'),
+          route: { name: 'bill' },
           class: '',
+          isOpen: false,
+          sub: [
+            {
+              route: '/bill',
+              title: 'Hóa đơn',
+            },
+            {
+              route: '/bill/wallet',
+              title: 'Ví',
+            },
+          ],
         },
         {
-          title: 'Đơn khiếu nại',
+          title: 'Khiếu nại',
           icon: require('@assets/img/Claim.png'),
+          iconActive: require('@assets/img/ClaimActive.png'),
           route: { name: 'claims' },
           class: '',
         },
@@ -127,8 +154,9 @@ export default {
         //   class: '',
         // },
         {
-          title: 'Cài đặt tài khoản',
+          title: 'Cài đặt',
           icon: require('@assets/img/Setting.png'),
+          iconActive: require('@assets/img/SettingActive.png'),
           route: { name: 'setting' },
           class: '',
           isOpen: false,
