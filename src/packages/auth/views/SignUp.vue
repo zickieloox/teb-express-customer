@@ -29,6 +29,8 @@
           icon="lock-o"
           v-model.trim="user.password"
           :password="true"
+          :error="true"
+          messages="Password khong hop le"
         >
           <template v-if="!user.password">
             Mật khẩu của bạn <span class="text-danger">*</span>

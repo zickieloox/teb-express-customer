@@ -191,7 +191,7 @@ $bg-end: #1571b1;
 
   .form {
     .m-input-field {
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
       > label {
         color: #cfd0d0;
       }
@@ -201,6 +201,10 @@ $bg-end: #1571b1;
 
       .toggle-password {
         color: #007e78;
+      }
+
+      .helper-text {
+        text-align: right;
       }
     }
   }

@@ -6,8 +6,8 @@ export const routes = [
     name: 'sign-in',
     meta: {
       title: 'Sign In',
-      layout: 'full-page',
-      class: 'page-login-v3',
+      layout: 'auth',
+      class: 'page-auth',
       ...noAuthRequired(),
     },
     component: () =>
