@@ -1,7 +1,7 @@
 <template>
   <div class="site-menubar">
     <div class="site-menubar-logo">
-      <img src="@assets/img/logo.png" alt="" />
+      <router-link to="/"><img src="@assets/img/logo.png" alt=""/></router-link>
     </div>
     <div class="site-menubar-body">
       <ul class="site-menu">
