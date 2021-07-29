@@ -1,6 +1,8 @@
 // Roles
 export const ROLE_CUSTOMER = 'customer'
 export const ROLE_ADMIN = 'admin'
+export const ROLE_SUPPORT = 'support'
+export const ROLE_ACCOUNTANT = 'accountant'
 
 // Order and order status
 export const ORDER_STATUS_DRAFT = 'draft'

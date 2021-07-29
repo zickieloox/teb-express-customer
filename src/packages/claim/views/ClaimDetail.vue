@@ -1,33 +1,31 @@
 <template>
   <div class="claim-detail-page pages">
-    <div class="container">
-      <div class="content-page">
-        <div class="page-header">
-          <div class="page-header_back">
-            <router-link :to="{ name: 'claims' }" class="text">
-              <img
-                src="@/assets/img/Arrow - Left Square 24px.png"
-                class="page-header_back_icon"
-              />
+    <div class="content-page">
+      <div class="page-header" ref="header" :style="styleInfoObject">
+        <div class="page-header_back">
+          <router-link :to="{ name: 'claims' }" class="text">
+            <img
+              src="@/assets/img/Arrow - Left Square 24px.png"
+              class="page-header_back_icon"
+            />
 
-              Đơn hàng khiếu nại
-            </router-link>
+            Đơn hàng khiếu nại
+          </router-link>
+        </div>
+        <div class="page-header-group mb-12">
+          <div class="page-header_title header-2">
+            <p-tooltip
+              :label="claim.title"
+              size="large"
+              position="top"
+              type="dark"
+              v-if="claim.title"
+              :active="claim.title.length > 60"
+            >
+              {{ truncate(claim.title, 60) }}
+            </p-tooltip>
           </div>
-          <div class="page-header-group">
-            <div class="page-header_title header-2">
-              <p-tooltip
-                :label="claim.title"
-                size="large"
-                position="top"
-                type="dark"
-                style="font-weight: bold"
-                v-if="claim.title"
-                :active="claim.title.length > 50"
-              >
-                {{ truncate(claim.title, 50) }}
-              </p-tooltip>
-            </div>
-            <div
+          <!-- <div
               class="page-header-group-actions__right"
               v-if="claim.status != claimStatusProcessed"
             >
@@ -41,107 +39,81 @@
               >
                 <span>Đóng</span>
               </a>
-            </div>
-          </div>
+            </div> -->
         </div>
-        <div class="page-content">
-          <div class="page-content_note">
-            <div class="card" :style="styleInfoObject" ref="claimInfo">
-              <div class="note-content">
-                <ul class="list-note">
-                  <li class="item-note">
-                    <span class="item-title">Trạng thái:</span>
-                    <span
-                      style="margin-left: 10px"
-                      v-status:status="formatStatus(claim.status)"
-                    ></span>
-                  </li>
-                  <li class="item-note">
-                    <span class="item-title">Lý do: </span>
-                    {{ formatReason(claim.category) }}
-                  </li>
-                  <li class="item-note">
-                    <span class="item-title">Mã vận đơn: </span>
-                    <router-link
-                      class="text-no-underline"
-                      v-if="claim.package"
-                      :to="{
-                        name: 'package-detail',
-                        params: { id: claim.package.id },
-                      }"
-                    >
-                      {{ claim.package.code }}
-                    </router-link>
-                  </li>
-                  <li class="item-note">
-                    <span class="item-title">Ngày tạo: </span>
-                    {{ claim.created_at | datetime('dd/MM/yyyy HH:mm:ss') }}
-                  </li>
-                  <li class="item-note">
-                    <span class="item-title">Ngày cập nhật gần nhất: </span>
-                    {{ claim.updated_at | datetime('dd/MM/yyyy HH:mm:ss') }}
-                  </li>
-                </ul>
+        <div class="note-content">
+          <span v-if="claim.package"> Mã đơn: {{ claim.package.code }} </span>
+          <span>
+            Ngày tạo: {{ claim.created_at | datetime('dd/MM/yyyy') }} -
+            {{ claim.created_at | datetime('HH:mm') }}
+          </span>
+          <span> Lý do: {{ formatReason(claim.category) }} </span>
+          <span> Trạng thái: {{ formatStatus(claim.status) }} </span>
+        </div>
+      </div>
+      <div class="page-content">
+        <div class="menu_content">
+          <div
+            class="user-content card main-claim"
+            :style="styleObject"
+            ref="mainClaim"
+          >
+            <img class="bookmark" src="@assets/img/Bookmark.svg" alt="" />
+
+            <div
+              class="
+                user-title
+                d-flex
+                justify-content-between
+                align-items-center
+              "
+            >
+              <div class="info-user">
+                <img
+                  src="~@/assets/img/avatar.png"
+                  alt="avatar"
+                  class="avatar-user"
+                />
+                <span v-if="claim.user" class="user-name">{{
+                  claim.user.full_name || claim.user.email
+                }}</span>
+              </div>
+              <div class="user-time">
+                {{ claim.created_at | datetime('dd/MM/yyyy HH:mm:ss') }}
+              </div>
+            </div>
+            <div class="user-text">
+              {{ claim.content }}
+            </div>
+            <div class="gallery ticket-attach-files" v-if="hasFiles">
+              <div class="list-item">
+                <div
+                  class="item"
+                  v-for="(file, i) in claim.attachment"
+                  :key="i"
+                >
+                  <div
+                    class="gallery-item"
+                    :class="{ 'ticket-file': isImage(file) }"
+                  >
+                    <file :src="file" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="menu_content">
-            <div class="page-content_drag claim-messages" ref="messages">
-              <div
-                class="user-content card main-claim"
-                :style="styleObject"
-                ref="mainClaim"
-              >
-                <div
-                  class="user-title d-flex justify-content-between align-items-center"
-                >
-                  <div class="info-user">
-                    <img
-                      src="~@/assets/img/avatar.png"
-                      alt="avatar"
-                      class="avatar-user"
-                    />
-                    <span v-if="claim.user" class="user-name">{{
-                      claim.user.full_name || claim.user.email
-                    }}</span>
-                  </div>
-                  <div class="user-time">
-                    {{ claim.created_at | datetime('dd/MM/yyyy HH:mm:ss') }}
-                  </div>
-                </div>
-                <div class="user-text">
-                  {{ claim.content }}
-                </div>
-                <div class="gallery ticket-attach-files" v-if="hasFiles">
-                  <div class="list-item">
-                    <div
-                      class="item"
-                      v-for="(file, i) in claim.attachment"
-                      :key="i"
-                    >
-                      <div
-                        class="gallery-item"
-                        :class="{ 'ticket-file': isImage(file) }"
-                      >
-                        <file :src="file" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <Message v-for="(mes, i) in messages" :key="i" :current="mes" />
-              <div
-                class="d-flex justify-content-between align-items-center mb-16"
-                v-if="count > 0"
-              >
-                <p-pagination
-                  :total="count"
-                  :perPage.sync="filter.limit"
-                  :current.sync="filter.page"
-                  size="sm"
-                ></p-pagination>
-              </div>
+          <div class="page-content_drag claim-messages" ref="messages">
+            <Message v-for="(mes, i) in messages" :key="i" :current="mes" />
+            <div
+              class="d-flex justify-content-between align-items-center mb-16"
+              v-if="count > 0"
+            >
+              <p-pagination
+                :total="count"
+                :perPage.sync="filter.limit"
+                :current.sync="filter.page"
+                size="sm"
+              ></p-pagination>
             </div>
           </div>
         </div>
@@ -233,10 +205,10 @@ export default {
     }),
   },
   created() {
-    ;(this.filter = this.getRouteQuery()), this.init()
+    this.filter = this.getRouteQuery()
   },
   mounted() {
-    this.scrollHandle()
+    // this.scrollHandle()
   },
   methods: {
     ...mapActions('claim', [
@@ -271,31 +243,29 @@ export default {
     scrollHandle() {
       let eMain = null
       let eMessage = null
-      let eInfo = null
+      let eHeader = null
+
       window.onscroll = () => {
         if (!eMain) {
           eMain = this.$refs.mainClaim
-        }
-
-        if (!eInfo) {
-          eInfo = this.$refs.claimInfo
         }
 
         if (!eMessage) {
           eMessage = this.$refs.messages
         }
 
+        if (!eHeader) {
+          eHeader = this.$refs.header
+        }
+
         if (!eMain || !eMessage) return
-        const { height } = eMain.getBoundingClientRect()
-        const { top, left, width } = eMessage.getBoundingClientRect()
-        const rectInfo = eInfo.getBoundingClientRect()
-
-        if (top - 56 < 0) {
+        const mainInfo = eMain.getBoundingClientRect()
+        const { top, width, height } = eHeader.getBoundingClientRect()
+        // const { top } = eMessage.getBoundingClientRect()
+        if (top < 74) {
           if (this.classMainClaim === 'fixed') return
-
           this.styleObject = {
-            top: '56px',
-            left,
+            top: '230px',
             width: width + 'px',
             position: 'fixed',
             'z-index': 999,
@@ -303,13 +273,13 @@ export default {
 
           this.styleInfoObject = {
             top: '56px',
-            left: rectInfo.left,
-            width: rectInfo.width + 'px',
+            width: width + 'px',
             position: 'fixed',
+            paddingTop: '18px',
             'z-index': 999,
+            background: 'white',
           }
-
-          let hh = height + 12
+          let hh = height + mainInfo.height + 6
           eMessage.style.paddingTop = hh + 'px'
         } else {
           if (this.classMainClaim === '') return
