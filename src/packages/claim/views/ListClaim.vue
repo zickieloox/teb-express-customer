@@ -1,7 +1,11 @@
 <template>
   <div class="pages list__claim">
-    <div class="page-header">
+    <div class="page-header d-flex jc-sb">
       <div class="page-header_title header-2">Đơn khiếu nại</div>
+      <a href="#" class="btn btn-primary" @click="handleModal">
+        <img src="@assets/img/Plus.svg" alt="" />
+        <span class="ml-10">Tạo khiếu nại</span>
+      </a>
     </div>
     <div class="page-content">
       <div class="card">
@@ -17,9 +21,6 @@
               @keyup.enter="handleSearch"
             >
             </p-input>
-            <a href="#" class="btn btn-primary ml-10" @click="handleModal">
-              <span>Tạo khiếu nại</span>
-            </a>
           </div>
           <div class="list__claim-list">
             <status-tab
@@ -27,7 +28,7 @@
               :status="claimStatus"
               :count="totalCount"
             />
-            <vcl-table class="md-20" v-if="isFetching"></vcl-table>
+            <vcl-table class="mt-20" v-if="isFetching"></vcl-table>
             <template v-else-if="listclaim.length > 0">
               <div class="table-responsive">
                 <table class="table table-hover">
@@ -77,7 +78,7 @@
                       </td>
                       <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>
                       <td>{{ item.updated_at | datetime('dd/MM/yyyy') }}</td>
-                      <td>
+                      <td width="150">
                         <span
                           v-status:status="converStatus(item.status)"
                         ></span>
