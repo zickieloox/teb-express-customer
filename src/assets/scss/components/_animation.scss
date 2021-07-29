@@ -1,0 +1,31 @@
+.loading.spin {
+  opacity: 1 !important;
+  position: relative;
+  color: rgba(255,255,255,0.05)!important;
+  pointer-events: none !important;
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    margin-top: -8px;
+    left: 50%;
+    margin-left: -8px;
+    animation: animation-spin 500ms infinite linear;
+    border-radius: 50%;
+    border: 2px solid #000;
+    border-top-color: transparent;
+    border-right-color: transparent;
+  }
+}
+
+@keyframes animation-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
