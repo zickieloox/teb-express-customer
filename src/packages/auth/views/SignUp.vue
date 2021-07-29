@@ -1,245 +1,201 @@
 <template>
   <div class="card sign-up">
-    <div class="vertical-align-middle">
-      <div class="header">
-        <h2>Tạo tài khoản mới</h2>
-      </div>
-
-      <form class="form form-sign-up" @submit.prevent="onSignUp">
-        <m-input icon="user-o" v-model.trim="user.fullname">
-          <template v-if="!user.fullname">
-            Tên của bạn <span class="text-danger">*</span>
-          </template>
-        </m-input>
-
-        <m-input icon="phone-o" v-model.trim="user.phone">
-          <template v-if="!user.phone">
-            Số điện thoại của bạn <span class="text-danger">*</span>
-          </template>
-        </m-input>
-
-        <m-input icon="envelope-o" v-model.trim="user.email">
-          <template v-if="!user.email">
-            Email của bạn <span class="text-danger">*</span>
-          </template>
-        </m-input>
-
-        <m-input
-          type="password"
-          icon="lock-o"
-          v-model.trim="user.password"
-          :password="true"
-          :error="true"
-          messages="Password khong hop le"
-        >
-          <template v-if="!user.password">
-            Mật khẩu của bạn <span class="text-danger">*</span>
-          </template>
-          <template v-slot:toggle-password="{ type }">
-            {{ type === 'text' ? 'Hiển thị' : 'Ẩn' }}
-          </template>
-        </m-input>
-        <p class="police__text mb-40">
-          Khi nhấn nút <b>Đăng ký tài khoản</b>, bạn đã đồng ý thực hiện mọi
-          giao dịch theo <a href="#">Điều kiện sử dụng & chính sách</a> của
-          LionBay
-        </p>
-        <p-button
-          class="btn btn-special"
-          :loading="isLoading"
-          @click="onSignUp"
-        >
-          Đăng ký tài khoản
-        </p-button>
-      </form>
-
-      <p class="text-center" style="margin: 28px 0 50px;">
-        Bạn đã có tài khoản?
-        <router-link :to="{ name: 'sign-in' }" class="link-login"
-          >Đăng nhập</router-link
-        >
-      </p>
-
-      <p class="police__text text-center gg-captche">
-        Được bảo vệ bởi reCAPTCHA và tuân theo
-        <a
-          href="https://www.google.com/intl/en/policies/privacy/"
-          target="_blank"
-          >Chính sách quyền riêng tư</a
-        >
-        và
-        <a href="https://www.google.com/intl/en/policies/terms/" target="_blank"
-          >Điều khoản dịch vụ</a
-        >
-        của Google.
-      </p>
+    <div class="header">
+      <h2>Tạo tài khoản mới</h2>
     </div>
+    <p
+      class="alert"
+      :class="{
+        active: !!message,
+        error: error,
+        success: !error,
+      }"
+      >{{ message }}</p
+    >
+    <form class="form form-sign-up" @submit.prevent="onSignUp">
+      <m-input
+        icon="user-o"
+        v-model.trim="user.fullname"
+        :error="valider.hasError('fullname')"
+        :messages="valider.error('fullname')"
+        @input="onInput('fullname')"
+      >
+        <template v-if="!user.fullname">
+          Tên của bạn <span class="text-danger">*</span>
+        </template>
+      </m-input>
+
+      <m-input
+        icon="phone-o"
+        v-model.trim="user.phone"
+        :error="valider.hasError('phone')"
+        :messages="valider.error('phone')"
+        @input="onInput('phone')"
+      >
+        <template v-if="!user.phone">
+          Số điện thoại của bạn <span class="text-danger">*</span>
+        </template>
+      </m-input>
+
+      <m-input
+        icon="envelope-o"
+        v-model.trim="user.email"
+        :error="valider.hasError('email')"
+        :messages="valider.error('email')"
+        @input="onInput('email')"
+      >
+        <template v-if="!user.email">
+          Email của bạn <span class="text-danger">*</span>
+        </template>
+      </m-input>
+
+      <m-input
+        type="password"
+        icon="lock-o"
+        v-model="user.password"
+        :password="true"
+        :error="valider.hasError('password')"
+        :messages="valider.error('password')"
+        @input="onInput('password')"
+      >
+        <template v-if="!user.password">
+          Mật khẩu của bạn <span class="text-danger">*</span>
+        </template>
+        <template v-slot:toggle-password="{ type }">
+          {{ type === 'text' ? 'Hiển thị' : 'Ẩn' }}
+        </template>
+      </m-input>
+      <p class="police__text mb-40">
+        Khi nhấn nút <b>Đăng ký tài khoản</b>, bạn đã đồng ý thực hiện mọi giao
+        dịch theo <a href="#">Điều kiện sử dụng & chính sách</a> của LionBay
+      </p>
+      <p-button
+        class="btn-special"
+        :class="{ 'loading spin': isSubmitting }"
+        @click="onSignUp"
+        :disabled="disableBtn"
+      >
+        Đăng ký tài khoản
+      </p-button>
+    </form>
+
+    <p class="text-center" style="margin: 28px 0 50px">
+      Bạn đã có tài khoản?
+      <router-link :to="{ name: 'sign-in' }" class="link-login"
+        >Đăng nhập</router-link
+      >
+    </p>
+
+    <p class="police__text text-center gg-captche">
+      Được bảo vệ bởi reCAPTCHA và tuân theo
+      <a href="https://www.google.com/intl/en/policies/privacy/" target="_blank"
+        >Chính sách quyền riêng tư</a
+      >
+      và
+      <a href="https://www.google.com/intl/en/policies/terms/" target="_blank"
+        >Điều khoản dịch vụ</a
+      >
+      của Google.
+    </p>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
-import Storage from '@core/helpers/storage'
+// import Storage from '@core/helpers/storage'
 // import VueRecaptcha from 'vue-recaptcha'
+import { signup } from '../validate'
+// import { debounce } from '@core/utils'
 
 export default {
   computed: {
-    recapchaKey() {
-      return `${process.env.VUE_APP_RECAPCHA_KEY}`
+    disableBtn() {
+      return (
+        this.isSubmitting ||
+        this.user.fullname === '' ||
+        this.user.email === '' ||
+        this.user.phone === '' ||
+        this.user.password === ''
+      )
     },
   },
-
   data() {
     return {
-      form: {
-        checkCaptcha: false,
-      },
-      check: true,
       user: {
         fullname: '',
         email: '',
         phone: '',
         password: '',
       },
-      isLoading: false,
-      result: { success: true, message: 'Some thing wrong' },
-      requiredEmail: false,
-      requiredPhone: false,
-      requiredPassword: false,
-      requiredUsername: false,
-      correctEmail: false,
-      correctPhone: false,
-      correctPassword: false,
-      correctUsername: false,
+      error: false,
+      message: '',
+      isSubmitting: false,
+      valider: signup,
     }
   },
 
   methods: {
     ...mapActions('auth', ['signUp']),
 
-    checkEmail(e) {
-      if (e) {
-        return (this.correctEmail = true)
-      }
-      return (this.correctEmail = false)
-    },
-    checkPhone(e) {
-      if (e) {
-        return (this.correctPhone = true)
-      }
-      return (this.correctPhone = false)
-    },
-    checkUsername(e) {
-      if (e) {
-        return (this.correctUsername = true)
-      }
-      return (this.correctUsername = false)
-    },
-    checkPassword(e) {
-      if (e) {
-        return (this.correctPassword = true)
-      }
-      return (this.correctPassword = false)
-    },
-
-    checkRequired() {
-      let result = true
-      if (this.user.fullname == '') {
-        this.requiredUsername = true
-        result = false
-      } else {
-        this.requiredUsername = false
+    onInput(key) {
+      if (key === 'fullname') {
+        this.valider.validFullname(this.user.fullname)
       }
 
-      if (this.user.password == '') {
-        this.requiredPassword = true
-        result = false
-      } else {
-        this.requiredPassword = false
+      if (key === 'phone') {
+        this.valider.validPhone(this.user.phone)
       }
 
-      if (this.user.email == '') {
-        this.requiredEmail = true
-        result = false
-      } else {
-        this.requiredEmail = false
+      if (key === 'email') {
+        this.valider.validEmail(this.user.email)
       }
 
-      if (this.user.phone == '') {
-        this.requiredPhone = true
-        result = false
-      } else {
-        this.requiredPhone = false
+      if (key === 'password') {
+        this.valider.validPassword(this.user.password)
       }
-
-      return result
     },
 
-    onVerify: function(response) {
-      if (response) this.form.checkCaptcha = true
-      this.check = true
-    },
-    onCaptchaExpired: function() {
-      this.form.checkCaptcha = false
-    },
+    onSignUp() {
+      if (this.isSubmitting) return
 
-    async onSignUp() {
-      if (!this.checkRequired()) {
-        return
-      }
-      if (
-        this.correctEmail == false ||
-        this.correctUsername == false ||
-        this.correctPassword == false ||
-        this.correctPhone == false
-      ) {
+      if (!this.valider.isValid(this.user)) {
         return
       }
 
-      if (this.form.checkCaptcha == false) {
-        this.check = false
-        return
-      }
-      const data = {
+      const payload = {
         full_name: this.user.fullname.trim(),
         email: this.user.email.trim().toLowerCase(),
         password: this.user.password,
         phone_number: this.user.phone.trim(),
       }
 
-      this.isLoading = true
-      this.result = await this.signUp({ user: data })
-      setTimeout(() => {
-        this.isLoading = false
-      }, 1000)
+      this.isSubmitting = true
+      setTimeout(async () => {
+        const res = await this.signUp({ user: payload })
+        this.isSubmitting = false
 
-      if (this.result.success) {
-        Storage.set('userEmail', this.user.email)
-        Storage.set('expried', null)
-        setTimeout(() => {
-          this.$router.push({
-            name: 'sign-in',
-          })
-          this.$toast.open({
-            type: 'success',
-            message: 'Đăng ký thành công',
-            duration: 3000,
-          })
-        }, 2000)
-        return
-      }
-      this.$refs.recapcha.reset()
-      this.form.checkCaptcha = false
-      this.$toast.open({
-        type: 'error',
-        message: this.result.errors
-          ? this.result.errors.join(',')
-          : this.result.error,
-        duration: 3000,
-      })
+        if (res && res.success) {
+          this.error = false
+          this.message = 'Đăng ký tài khoản thành công!'
+          this.resetForm()
+          return
+        }
+
+        this.error = true
+        this.message = res.message || 'Có lỗi xảy, vui lòng thử lại!'
+        if (res.errors && res.errors.length) {
+          this.message = `${res.errors.join('\n')}`
+        }
+      }, 1500)
     },
-    onQueryChange() {
-      this.checkRequired()
+
+    resetForm() {
+      this.user = {
+        fullname: '',
+        email: '',
+        phone: '',
+        password: '',
+      }
     },
   },
 }
