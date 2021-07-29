@@ -34,14 +34,14 @@
     .page-header-group {
         margin-bottom: 12px;
     }
-    .content-page {
-        width: 1080px;
+    .claim-content-page {
+        width: 56.250vw;
         margin: auto;
         .page-header {
             padding: 0;
             margin-bottom: 24px;
             top: 56px;
-            width: 1080px;
+            width: 56.250vw;
             position: fixed;
             padding-top: 18px;
             z-index: 999;
@@ -102,7 +102,7 @@
                 }
                 .main-claim {
                     top: 230px;
-                    width: 1080px;
+                    width: 56.250vw;
                     position: fixed !important;
                     z-index: 999;
                 }
@@ -110,7 +110,7 @@
                     position: relative;
                     border-left: 1px solid #AAB2FB;
                     .user-title {
-                        padding-bottom: 20px;
+                        padding-bottom: 12px;
                         border-bottom: 1px solid #dfe3e8;
                         .info-user {
                             .user-name {
@@ -138,7 +138,7 @@
                         }
                     }
                     .user-text {
-                        margin-top: 24px;
+                        margin-top: 16px;
                         color: #37393e;
                     }
                     .ticket-attach-files {
@@ -183,6 +183,32 @@
                                 }
                             }
                         }
+                    }
+                }
+                .button-reply {
+                    position: absolute;
+                    // right: calc(-5.208vw - 12px);
+                    // width: 5.208vw;
+                    // height: 5.208vw;
+                    right: calc(-90px - 12px);
+                    width: 90px;
+                    height: 90px;
+                    padding-top: 16px;
+                    top: 0;
+                    display: flex;
+                    flex-direction: column;
+                    color: $color-turquoise-4;
+                    background: #FFFFFF;
+                    box-shadow: 0px 0px 1px rgba(40, 41, 61, 0.04), 0px 2px 4px rgba(96, 97, 112, 0.16);
+                    border-radius: 4px;
+                    text-align: center;
+                    align-items: center;
+                    font-weight: bold;
+                    font-size: 14px;
+                    line-height: 22px;
+                    img,
+                    span {
+                        cursor: pointer;
                     }
                 }
             }
@@ -315,7 +341,7 @@
 .claim-messages {
     width: 100%;
     position: relative;
-    padding-top: 408.312px;
+    // padding-top: 392.312px;
 }
 
 .err-span {

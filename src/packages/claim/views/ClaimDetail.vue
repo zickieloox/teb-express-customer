@@ -1,7 +1,7 @@
 <template>
   <div class="claim-detail-page pages">
-    <div class="content-page">
-      <div class="page-header" ref="header" :style="styleInfoObject">
+    <div class="claim-content-page">
+      <div class="page-header" id="header">
         <div class="page-header_back">
           <router-link :to="{ name: 'claims' }" class="text">
             <img
@@ -53,11 +53,7 @@
       </div>
       <div class="page-content">
         <div class="menu_content">
-          <div
-            class="user-content card main-claim"
-            :style="styleObject"
-            ref="mainClaim"
-          >
+          <div class="user-content card main-claim" id="mainClaim">
             <img class="bookmark" src="@assets/img/Bookmark.svg" alt="" />
 
             <div
@@ -101,8 +97,17 @@
                 </div>
               </div>
             </div>
+
+            <div
+              class="button-reply"
+              v-if="claim.status != claimStatusProcessed"
+              @click="showModalReply"
+            >
+              <img src="@assets/img/chat.png" alt="" />
+              <span>Trả lời</span>
+            </div>
           </div>
-          <div class="page-content_drag claim-messages" ref="messages">
+          <div class="page-content_drag claim-messages" id="messages">
             <Message v-for="(mes, i) in messages" :key="i" :current="mes" />
             <div
               class="d-flex justify-content-between align-items-center mb-16"
@@ -191,8 +196,6 @@ export default {
       filter: {
         limit: 20,
       },
-      styleObject: {},
-      styleInfoObject: {},
       claimStatus: CLAIM_STATUS,
       claimStatusPending: CLAIM_STATUS_PENDING,
       claimStatusProcessed: CLAIM_STATUS_PROCESSED,
@@ -206,9 +209,6 @@ export default {
   },
   created() {
     this.filter = this.getRouteQuery()
-  },
-  mounted() {
-    // this.scrollHandle()
   },
   methods: {
     ...mapActions('claim', [
@@ -238,57 +238,7 @@ export default {
           this.files.push({ name: x, url: x })
         )
       }
-    },
-
-    scrollHandle() {
-      let eMain = null
-      let eMessage = null
-      let eHeader = null
-
-      window.onscroll = () => {
-        if (!eMain) {
-          eMain = this.$refs.mainClaim
-        }
-
-        if (!eMessage) {
-          eMessage = this.$refs.messages
-        }
-
-        if (!eHeader) {
-          eHeader = this.$refs.header
-        }
-
-        if (!eMain || !eMessage) return
-        const mainInfo = eMain.getBoundingClientRect()
-        const { top, width, height } = eHeader.getBoundingClientRect()
-        // const { top } = eMessage.getBoundingClientRect()
-        if (top < 74) {
-          if (this.classMainClaim === 'fixed') return
-          this.styleObject = {
-            top: '230px',
-            width: width + 'px',
-            position: 'fixed',
-            'z-index': 999,
-          }
-
-          this.styleInfoObject = {
-            top: '56px',
-            width: width + 'px',
-            position: 'fixed',
-            paddingTop: '18px',
-            'z-index': 999,
-            background: 'white',
-          }
-          let hh = height + mainInfo.height + 6
-          eMessage.style.paddingTop = hh + 'px'
-        } else {
-          if (this.classMainClaim === '') return
-
-          this.styleObject = {}
-          this.styleInfoObject = {}
-          eMessage.style.paddingTop = 0
-        }
-      }
+      this.positionMessage()
     },
 
     hasFiles() {
@@ -309,6 +259,13 @@ export default {
         return true
       }
       return false
+    },
+
+    positionMessage() {
+      var headerHeight = document.getElementById('header').offsetHeight
+      var mainClaimHeight = document.getElementById('mainClaim').offsetHeight
+      document.getElementById('messages').style.paddingTop =
+        headerHeight + mainClaimHeight + 6 + 'px'
     },
 
     async handlerFetchTicketMessages(id) {
