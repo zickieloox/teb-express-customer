@@ -60,19 +60,19 @@ export const MAP_NAME_STATUS_PACKAGE = {
   },
   [PackageStatusCreatedText]: {
     value: 'Tạo mới',
-    class: 'badge-primary',
+    class: 'badge-default',
   },
   [PackageStatusPendingPickupText]: {
     value: 'Chờ lấy',
-    class: 'badge-success',
+    class: 'badge-await',
   },
   [PackageStatusProcessingText]: {
     value: 'Đang xử lý',
-    class: 'badge-success',
+    class: 'badge-pending',
   },
   [PackageStatusInTransitText]: {
     value: 'Đang giao',
-    class: 'badge-success',
+    class: 'badge-primary',
   },
   [PackageStatusDeliveredText]: {
     value: 'Giao thành công',
@@ -80,11 +80,11 @@ export const MAP_NAME_STATUS_PACKAGE = {
   },
   [PackageStatusReturnText]: {
     value: 'Trả hàng',
-    class: 'badge-success',
+    class: 'badge-returned',
   },
   [PackageStatusCancelledText]: {
     value: 'Đã hủy',
-    class: 'badge-success',
+    class: 'badge-cancel',
   },
 }
 
@@ -110,6 +110,7 @@ export const CHANGE_PACKAGE_TYPE = [
   'Dịch vụ',
   'Sửa đơn',
   'Hoàn tiền',
+  'Phí phát sinh khác',
 ]
 
 export const DELIVER_LOG_PACKAGE = {

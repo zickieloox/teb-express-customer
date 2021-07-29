@@ -1,5 +1,9 @@
-$bg-start: $color-primary;
-$bg-end: #1571b1;
+.card-sign-up {
+}
+
+
+
+
 .page-login-v3 {
     display: flex;
     font-family: $font-family-sans-serif;
@@ -214,182 +218,16 @@ $bg-end: #1571b1;
         }
     }
 }
-.login__page{
-    height: 100%;
-    overflow: hidden;
-    position: relative;
-    &-header{
-        padding: 24px 32px;
-    }
-    .content_help{
-        &-text{
-            color: $color-neutral-9;
-            margin-left: 6px;
-            cursor: pointer;
-        }
-    }
-    &-circle{
-     max-width: 1280px;
-     max-height: 100vh;
-     width: 1280px;
-     height: 100vh;
-        margin: 0 auto;
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-    }
-    &-circle-one{
-        position: relative;
-        height: 1200px;
-        width: 1200px;
-        border-radius: 50%;
-        transform: translateY(50%);
-        border: 1px solid #EDEEEE;
-        span{
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-        }
-        .img-one{
-            animation: animate  42s linear infinite;
-            &:before{
-                content: '';
-                width: 40px;
-                height: 40px;
-                background-image: url("~@/assets/img/truck.svg");
-                background-repeat: no-repeat;
-                top: 125px;
-                background-size: contain;
-                left: 183px;
-                transform: rotate(-43deg);
-                position: absolute;
 
-            }
-            &:after{
-                content: '';
-                width: 60px;
-                height: 60px;
-                background-image: url("~@/assets/img/ship.svg");
-                background-repeat: no-repeat;
-                bottom: 125px;
-                background-size: contain;
-                left: 175px;
-                transform: rotate(-140deg);
-                position: absolute;
+.login__page-error{
+    padding: 5px 20px;
+    background-color: #FFF1F0;
+    border-left: 2px solid #F5222D;
+    font-size: 12px;
+    font-style: italic;
+    margin-bottom: 10px;
+    color: #F5222D;
 
-            }
-        }
-
-    }
-    &-circle-two{
-        position: absolute;
-        height: 1140px;
-        width: 1140px;
-        border-radius: 50%;
-        border: 1px solid #EDEEEE;
-        margin: 0 auto;
-        transform: translate(-50%,-50%);
-        top: 50%;
-        left: 50%;
-        .img-two{
-            animation: animate  42s linear infinite;
-            &:before{
-                content: '';
-                width: 35px;
-                height: 35px;
-                background-image: url("~@/assets/img/package.svg");
-                background-repeat: no-repeat;
-                bottom: 125px;
-                background-size: contain;
-                right: 172px;
-                position: absolute;
-                transform: rotate(45deg);
-            }
-        }
-    }
-    &-circle-three{
-        position: absolute;
-        height: 1080px;
-        width: 1080px;
-        border-radius: 50%;
-        border: 1px solid #EDEEEE;
-        margin: 0 auto;
-        transform: translate(-50%,-50%);
-        top: 50%;
-        left: 50%;
-        .img-three{
-            animation: animate  42s linear infinite;
-            &:before{
-                content: "";
-                width: 35px;
-                height: 35px;
-                background-image: url("~@/assets/img/airplane.svg");
-                background-repeat: no-repeat;
-                top: 125px;
-                background-size: contain;
-                right: 156px;
-                position: absolute;
-                transform: rotate(134deg);
-            }
-        }
-    }
-    .circle__word{
-        height: 1020px;
-        width: 1020px;
-        background: url("~@/assets/img/word.svg");
-        background-repeat: no-repeat;
-        transform: translate(-50%,-50%);
-        background-size: contain;
-        top: 50%;
-        left: 50%;
-        position: absolute;
-    }
-
-    &-form{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-        width: 528px;
-        height: auto;
-        background: #FFFFFF;
-        box-shadow: 0px 2px 4px rgba(40, 41, 61, 0.04), 0px 8px 16px rgba(96, 97, 112, 0.16);
-        border-radius: 12px;
-        padding:0 40px ;
-        &-header{
-            padding: 32px 0;
-        }
-        .header-text{
-            color: $color-neutral-10;
-            font-weight: bold;
-            font-size: 28px;
-        }
-        .new-member{
-            .create__acount{
-                color: #007E78;
-            }
-         padding-bottom: 100px;
-        }
-    }
-    &-error{
-        padding: 5px 20px;
-        background-color: #FFF1F0;
-        border-left: 2px solid #F5222D;
-        font-size: 12px;
-        font-style: italic;
-        margin-bottom: 10px;
-        color: #F5222D;
-    }
-
-    @keyframes animate {
-        0%{
-            transform: rotate(0deg);
-        }
-        100%{
-            transform: rotate(360deg);
-        }
-    }
 }
+
 

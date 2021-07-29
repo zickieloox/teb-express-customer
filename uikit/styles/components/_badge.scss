@@ -22,21 +22,17 @@
   border: 1px solid #87E8DE;
 }
 .badge-await {
-  background:#E6FBFF;
-  color: #00ABFB;
-  border: 1px solid #7AE2FF;
+  background:#F9F0FF;
+  color: #722ED1;
+  border: 1px solid #D3ADF7;
 }
-.badge-primary {
-  color: #3F51B5;
-  background: #E6EBF5;
-  border: 1px solid #8A99CF;
-}
+// .badge-primary {
+//   color: #3F51B5;
+//   background: #E6EBF5;
+//   border: 1px solid #8A99CF;
+// }
 
-.badge-pending {
-  background: #E6FFFB;
-  color: #13C2C2;
-  border: 1px solid #87E8DE;
-}
+
 .badge-resolved {
   background: #11c26d;
   color: #fff;
@@ -63,14 +59,33 @@
 }
 
 .badge-cancel{
-  background:  #FFF3E0;
-  color: #FFB74D;
+  background: #FFF1F0;
+  color: #F5222D;
+  border: 1px solid #FFA39E;
 }
 .badge-done{
-  background:  #F2EBE4;
+  background: #F0FFF3;
+  color: #48BE78;  
+  border: 1px solid #C5E6CF;
+
+}
+
+.badge-pending {
+  background: #E6FFFB;
+  color: #00ABFB;
+  border: 1px solid #7AE2FF;
+}
+
+.badge-primary{
+  background: #E6FBFF;
+  color: #00ABFB;
+  border: 1px solid #7AE2FF;
+}
+
+.badge-returned{
+  background: #F2EBE4;
   color: #7F5345;
   border: 1px solid #CCC5C0;
-
 }
 
 

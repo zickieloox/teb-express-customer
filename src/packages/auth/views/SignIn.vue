@@ -1,68 +1,56 @@
 <template>
-  <div class="login__page">
-    <div class="login__page-header d-flex justify-content-between">
-      <img alt="home" src="~@/assets/img/logo.svg" class="login__page-logo" />
-      <div class="login__page-help content_help">
-        <img
-          class="content_help-icon"
-          src="~@/assets/img/Support.svg"
-          alt="help"
-        />
-        <a target="_blank" class="content_help-text">Cần trợ giúp ?</a>
+  <div class="card sign-in">
+    <div class="form form-sign-in">
+      <div class="header">
+        <h2 class="header-text">Đăng nhập</h2>
       </div>
-    </div>
-    <div class="login__page-content">
-      <div class="login__page-circle">
-        <div class="login__page-circle-one">
-          <span class="img-one"></span>
-          <div class="login__page-circle-two">
-            <span class="img-two"></span>
-            <div class="login__page-circle-three">
-              <span class="img-three"></span>
-              <div class="circle__word"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="login__page-form">
-        <div class="login__page-form-header">
-          <div class="header-text">Đăng nhập</div>
-        </div>
-        <div class="login__page-form-content">
-          <div v-if="error" class="login__page-error">{{ error }}</div>
-          <div class="mb-16">
-            <p-input
-              placeholder="Nhập số điện thoại hoặc email"
-              v-model="email"
-              @keyup.enter="onSignIn"
-              :required="requiredEmail"
-            />
-          </div>
-          <div class="mb-60">
-            <p-input
-              placeholder="Nhập mật khẩu của bạn"
-              type="password"
-              hiddenPass="on"
-              v-model="password"
-              :required="requiredPassword"
-              @keyup.enter="onSignIn"
-            />
-          </div>
-          <p-button
-            class="mb-16 btn btn-special  "
-            :loading="isLoading"
-            @click="onSignIn"
-            :type="`java-blue`"
+      <div class="login__page-form-content">
+        <div v-if="error" class="login__page-error">{{ error }}</div>
+        <div class="mb-16">
+          <m-input
+            icon="envelope-o"
+            v-model.trim="email"
+            :error="valider.hasError('email')"
+            :messages="valider.error('email')"
+            @input="onInput('email')"
           >
-            Đăng nhập
-          </p-button>
-          <p class="new-member">
-            <span>Bạn là thành viên mới?</span>
-            <router-link class="create__acount" :to="{ name: 'sign-up' }">
-              Tạo tài khoản
-            </router-link>
-          </p>
+            <template v-if="!email">
+              Nhập số điện thoại hoặc email <span class="text-danger">*</span>
+            </template>
+          </m-input>
         </div>
+        <div class="mb-60">
+          <m-input
+            type="password"
+            icon="lock-o"
+            v-model.trim="password"
+            :password="true"
+            :error="valider.hasError('password')"
+            :messages="valider.error('password')"
+            @input="onInput('password')"
+          >
+            <template v-if="!password">
+              Mật khẩu của bạn <span class="text-danger">*</span>
+            </template>
+            <template v-slot:toggle-password="{ type }">
+              {{ type === 'text' ? 'Ẩn' : 'Hiển thị' }}
+            </template>
+          </m-input>
+        </div>
+        <p-button
+          class="mb-16 btn btn-special  "
+          :loading="isLoading"
+          @click="onSignIn"
+          :disabled="disableBtn"
+        >
+          Đăng nhập
+        </p-button>
+        <p class="new-member">
+          <span>Bạn là thành viên mới?</span>
+          <router-link class="create__acount" :to="{ name: 'sign-up' }">
+            Tạo tài khoản
+          </router-link>
+        </p>
       </div>
     </div>
   </div>
@@ -70,11 +58,13 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import mixinRoute from '@core/mixins/route'
+import { signup } from '../validate'
 
 export default {
   components: {},
   mixins: [mixinRoute],
   name: 'SignIn',
+
   data() {
     return {
       email: '',
@@ -87,12 +77,18 @@ export default {
       requiredEmail: false,
       check: true,
       error: '',
+      errorEmail: '',
+      errorPassWord: '',
+      valider: signup,
     }
   },
   computed: {
     ...mapState('auth', {
       currentUser: (state) => state.user,
     }),
+    disableBtn() {
+      return this.isLoading || this.email === '' || this.password === ''
+    },
   },
   mounted() {
     const { type, message } = this.$route.query
@@ -108,27 +104,49 @@ export default {
     redirect() {
       return this.$router.push('/forgot')
     },
-
-    checkRequired() {
-      let result = true
-      if (this.password == '') {
-        this.requiredPassword = true
-        result = false
-      } else {
-        this.requiredPassword = false
+    // onEmail() {
+    //   ;(this.requiredEmail = false), (this.errorEmail = '')
+    // },
+    // onPassword() {
+    //   ;(this.requiredPassword = false), (this.errorPassWord = '')
+    // },
+    // checkRequired() {
+    //   let result = true
+    //   if (this.password == '') {
+    //     this.requiredPassword = true
+    //     this.errorPassWord = 'Vui lòng không để trống!'
+    //     result = false
+    //   } else {
+    //     this.requiredPassword = false
+    //   }
+    //
+    //   if (this.email == '') {
+    //     this.requiredEmail = true
+    //     this.errorEmail = 'Vui lòng không để trống!'
+    //     result = false
+    //   } else {
+    //     this.requiredEmail = false
+    //   }
+    //
+    //   return result
+    // },
+    onInput(key) {
+      if (key === 'email') {
+        this.valider.validEmailSignin(this.email)
       }
 
-      if (this.email == '') {
-        this.requiredEmail = true
-        result = false
-      } else {
-        this.requiredEmail = false
+      if (key === 'password') {
+        this.valider.validPassword(this.password)
       }
-
-      return result
     },
     async onSignIn() {
-      if (!this.checkRequired()) {
+      if (this.isLoading) return
+      if (
+        !this.valider.isValidSignin({
+          email: this.email,
+          password: this.password,
+        })
+      ) {
         return
       }
 
