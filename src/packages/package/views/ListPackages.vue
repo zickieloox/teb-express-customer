@@ -24,7 +24,7 @@
           <div class="card-body">
             <div class="d-flex">
               <p-input
-                placeholder="Tìm theo mã vận đơn hoặc mã hóa đơn..."
+                placeholder="Tìm theo mã vận đơn hoặc mã đơn hàng..."
                 prefixIcon="search"
                 type="search"
                 v-model="searchCode"
