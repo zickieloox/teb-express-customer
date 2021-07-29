@@ -65,6 +65,7 @@ $bg-end: #1571b1;
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
+        z-index: -1;
       }
 
       &:before {
@@ -101,11 +102,12 @@ $bg-end: #1571b1;
 
         &-boat-truck {
           &:before {
-            right: 67px;
+            right: -4px;
             width: 40px;
             height: 40px;
             background-image: url('~@/assets/img/truck.svg');
-            transform: rotate(93deg) translateY(50%);
+            transform: rotate(71deg) translateY(50%);
+            bottom: 200px;
           }
 
           &:after {
@@ -152,7 +154,6 @@ $bg-end: #1571b1;
   }
 
   .header {
-    margin-bottom: 3.5rem;
     h2 {
       font-weight: 700;
       font-size: 2.8rem;
@@ -201,10 +202,14 @@ $bg-end: #1571b1;
 
       .toggle-password {
         color: #007e78;
+        font-style: italic;
+        cursor: pointer;
       }
 
       .helper-text {
         text-align: right;
+        font-style: italic;
+        color:#F5222D !important;
       }
     }
   }
@@ -223,6 +228,45 @@ $bg-end: #1571b1;
       left: 50%;
       transform: translateX(-50%);
     }
+  }
+
+  .card .alert {
+    opacity: 0;
+    width: 100%;
+    min-height: 3rem;
+    line-height: 1.6rem;
+    padding: 5px 1.2rem;
+    margin-bottom: 0;
+
+    &.success {
+      color: #48BE78;
+      border-left: 2px solid #48BE78;
+      background: #F0FFF3;
+    }
+
+    &.error {
+      color: #F5222D;
+      border-left: 2px solid #F5222D;
+      background: #FFF0F3;
+      white-space: pre-line;
+    }
+
+    &.active {
+      opacity: 1;
+    }
+  }
+
+  .btn.loading.spin {
+    color: #fff!important;
+  }
+
+  .btn.loading.spin:after {
+    border-left-color: #007e78;
+    border-bottom-color: #007e78;
+  }
+
+  .btn:disabled {
+    color: #fff;
   }
 }
 

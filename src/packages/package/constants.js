@@ -110,6 +110,7 @@ export const CHANGE_PACKAGE_TYPE = [
   'Dịch vụ',
   'Sửa đơn',
   'Hoàn tiền',
+  'Phí phát sinh khác',
 ]
 
 export const DELIVER_LOG_PACKAGE = {

@@ -16,7 +16,7 @@
       :autocomplete="autocomplete"
     />
 
-    <label v-if="showLabel" :for="uid" :class="labelClasses">
+    <label v-if="showLabel" :for="uid" class="label-name" :class="labelClasses">
       <slot>{{ label }}</slot>
     </label>
 
