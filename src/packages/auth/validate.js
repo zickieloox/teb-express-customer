@@ -1,5 +1,28 @@
 import { isEmail, isPhone } from '@core/utils/validate'
 
+function validFullname(fullname) {
+  if (!fullname) return 'Vui lòng không để trống!'
+  return true
+}
+
+function validPhone(phone) {
+  if (!phone) return 'Vui lòng không để trống!'
+  if (!isPhone(phone)) return 'Số điện thoại không hợp lệ'
+  return true
+}
+
+function validEmail(email) {
+  if (!email) return 'Vui lòng không để trống!'
+  if (!isEmail(email)) return 'Email không hợp lệ'
+  return true
+}
+
+function validPassword(password) {
+  if (!password) return 'Vui lòng không để trống!'
+  if (password.length < 6) return 'Mật khẩu tối thiểu phải có 6 ký tự'
+  return true
+}
+
 export const signup = {
   errors: {},
 
@@ -28,57 +51,38 @@ export const signup = {
 
   validFullname(fullname) {
     this.clean('fullname')
-    if (!fullname) {
-      this.errors.fullname = 'Vui lòng không để trống!'
-      return false
-    }
+    const msg = validFullname(fullname)
+    if (msg === true) return true
 
-    return true
+    this.errors.fullname = msg
+    return false
   },
 
   validPhone(phone) {
     this.clean('phone')
-    if (!phone) {
-      this.errors.phone = 'Vui lòng không để trống!'
-      return false
-    }
+    const msg = validPhone(phone)
+    if (msg === true) return true
 
-    if (!isPhone(phone)) {
-      this.errors.phone = 'Số điện thoại không hợp lệ'
-      return false
-    }
-
-    return true
+    this.errors.phone = msg
+    return false
   },
 
   validEmail(email) {
     this.clean('email')
-    if (!email) {
-      this.errors.email = 'Vui lòng không để trống!'
-      return false
-    }
+    const msg = validEmail(email)
+    if (msg === true) return true
 
-    if (!isEmail(email)) {
-      this.errors.email = 'Email không hợp lệ'
-      return false
-    }
-
-    return true
+    this.errors.email = msg
+    return false
   },
 
   validPassword(password) {
     this.clean('password')
-    if (!password) {
-      this.errors.password = 'Vui lòng không để trống!'
-      return false
-    }
+    const msg = validPassword(password)
+    if (msg === true) return true
 
-    if (password.length < 6) {
-      this.errors.password = 'Mật khẩu tối thiểu phải có 6 ký tự'
-      return false
-    }
-
-    return true
+    this.errors.password = msg
+    return false
   },
 
   hasError(name) {
@@ -94,21 +98,27 @@ export const signup = {
       this.errors = {}
     }
   },
+}
 
-  //SIGN IN
-  isValidSignin({ email, password }) {
+export const signin = {
+  errors: {},
+
+  isValid({ email, password }) {
     let valid = true
     this.clean()
-    if (!this.validEmailSignin(email)) {
+
+    if (!this.validEmail(email)) {
       valid = false
     }
+
     if (!this.validPassword(password)) {
       valid = false
     }
+
     return valid
   },
 
-  validEmailSignin(email) {
+  validEmail(email) {
     this.clean('email')
     if (!email) {
       this.errors.email = 'Vui lòng không để trống!'
@@ -116,5 +126,28 @@ export const signup = {
     }
 
     return true
+  },
+
+  validPassword(password) {
+    this.clean('password')
+    const msg = validPassword(password)
+    if (msg === true) return true
+
+    this.errors.password = msg
+    return false
+  },
+
+  hasError(name) {
+    return !!this.errors[name]
+  },
+  error(name) {
+    return this.errors[name]
+  },
+  clean(name) {
+    if (name) {
+      delete this.errors[name]
+    } else {
+      this.errors = {}
+    }
   },
 }

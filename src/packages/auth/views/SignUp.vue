@@ -155,7 +155,7 @@ export default {
       }
     },
 
-    onSignUp() {
+    async onSignUp() {
       if (this.isSubmitting) return
 
       if (!this.valider.isValid(this.user)) {
@@ -170,21 +170,25 @@ export default {
       }
 
       this.isSubmitting = true
-      setTimeout(async () => {
-        const res = await this.signUp({ user: payload })
+      const res = await this.signUp({ user: payload })
+
+      if (res && res.success) {
+        this.error = false
+        this.message = 'Đăng ký tài khoản thành công!'
+        this.resetForm()
+      }
+
+      setTimeout(() => {
         this.isSubmitting = false
 
-        if (res && res.success) {
-          this.error = false
-          this.message = 'Đăng ký tài khoản thành công!'
-          this.resetForm()
-          return
-        }
-
-        this.error = true
-        this.message = res.message || 'Có lỗi xảy, vui lòng thử lại!'
-        if (res.errors && res.errors.length) {
-          this.message = `${res.errors.join('\n')}`
+        if (!res || !res.success) {
+          this.error = true
+          this.message = res.message || 'Có lỗi xảy, vui lòng thử lại!'
+          if (res.errors && res.errors.length) {
+            this.message = `${res.errors.join('\n')}`
+          }
+        } else {
+          this.$router.push({ name: 'sign-in' })
         }
       }, 1500)
     },
