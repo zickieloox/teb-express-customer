@@ -33,7 +33,7 @@
               Mật khẩu của bạn <span class="text-danger">*</span>
             </template>
             <template v-slot:toggle-password="{ type }">
-              {{ type === 'text' ? 'Hiển thị' : 'Ẩn' }}
+              {{ type === 'text' ? 'Ẩn' : 'Hiển thị' }}
             </template>
           </m-input>
         </div>
