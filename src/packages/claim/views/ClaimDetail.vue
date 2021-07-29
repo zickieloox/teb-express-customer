@@ -17,12 +17,12 @@
             <p-tooltip
               :label="claim.title"
               size="large"
-              position="top"
+              position="bottom"
               type="dark"
               v-if="claim.title"
-              :active="claim.title.length > 60"
+              :active="claim.title.length > 43"
             >
-              {{ truncate(claim.title, 60) }}
+              {{ truncate(claim.title, 43) }}
             </p-tooltip>
           </div>
           <!-- <div

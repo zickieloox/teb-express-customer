@@ -43,7 +43,7 @@
             top: 56px;
             width: 56.250vw;
             position: fixed;
-            padding-top: 18px;
+            padding-top: 24px;
             z-index: 999;
             background: white;
             .page-header_back {
@@ -84,6 +84,13 @@
                     margin-left: 16px;
                 }
             }
+            .p-tooltip {
+                &::after {
+                    font-size: 1.25rem;
+                    padding: 5px;
+                    line-height: 24px
+                }
+            }
         }
         .page-content {
             .card {
@@ -101,10 +108,10 @@
                     top: 0;
                 }
                 .main-claim {
-                    top: 230px;
+                    top: 236px;
                     width: 56.250vw;
                     position: fixed !important;
-                    z-index: 999;
+                    z-index: 998;
                 }
                 .user-content {
                     position: relative;
@@ -139,7 +146,12 @@
                     }
                     .user-text {
                         margin-top: 16px;
-                        color: #37393e;
+                        font-size: 14px;
+                        line-height: 22px;
+                        color: $color-neutral-9;
+                        a {
+                            color: $color-turquoise-4;
+                        }
                     }
                     .ticket-attach-files {
                         margin-top: 16px;

@@ -178,7 +178,8 @@ $sidebar-width:128px;
             font-size: 1.25rem;
             padding: 5px;
             white-space: inherit;
-            width: 150%;
+            width: 100%;
+            z-index: 9;
         }
     }
     .jc-sb {
