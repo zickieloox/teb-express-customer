@@ -45,7 +45,7 @@
 
                   <tbody>
                     <tr v-for="(item, i) in listclaim" :key="i">
-                      <td>
+                      <td width="150">
                         <router-link
                           class="text-no-underline"
                           :to="{
@@ -62,22 +62,26 @@
                           />
                         </router-link>
                       </td>
-                      <td>
+                      <td width="150">
                         {{ item.package.code }}
                       </td>
-                      <td width="300">
+                      <td width="500">
                         <p-tooltip
                           :label="item.title"
                           size="large"
                           position="top"
                           type="dark"
-                          :active="item.title.length > 15"
+                          :active="item.title.length > 30"
                         >
-                          {{ truncate(item.title, 15) }}
+                          {{ truncate(item.title, 30) }}
                         </p-tooltip>
                       </td>
-                      <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>
-                      <td>{{ item.updated_at | datetime('dd/MM/yyyy') }}</td>
+                      <td width="150">{{
+                        item.created_at | datetime('dd/MM/yyyy')
+                      }}</td>
+                      <td width="150">{{
+                        item.updated_at | datetime('dd/MM/yyyy')
+                      }}</td>
                       <td width="150">
                         <span
                           v-status:status="converStatus(item.status)"
