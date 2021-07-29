@@ -94,4 +94,27 @@ export const signup = {
       this.errors = {}
     }
   },
+
+  //SIGN IN
+  isValidSignin({ email, password }) {
+    let valid = true
+    this.clean()
+    if (!this.validEmailSignin(email)) {
+      valid = false
+    }
+    if (!this.validPassword(password)) {
+      valid = false
+    }
+    return valid
+  },
+
+  validEmailSignin(email) {
+    this.clean('email')
+    if (!email) {
+      this.errors.email = 'Vui lòng không để trống!'
+      return false
+    }
+
+    return true
+  },
 }
