@@ -24,7 +24,10 @@
                   v-if="package_detail.package.label"
                   class="page-header__barcode"
                 >
-                  <img src="@/assets/img/barcode.svg" alt="barcode" />
+                  <img
+                    src="@/assets/img/Vector-barcode.png"
+                    style="margin-top: 6px;position: absolute; left: 150px;"
+                  />
                 </span>
               </div>
             </div>
