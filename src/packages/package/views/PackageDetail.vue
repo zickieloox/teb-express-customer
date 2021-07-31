@@ -54,7 +54,7 @@
           <div class="page-header__action">
             <a
               href="#"
-              class="btn btn-danger"
+              class="btn btn-default"
               @click="handleCancelPackage"
               v-if="
                 package_detail.package.status_string ===
@@ -66,7 +66,7 @@
             <a
               @click="handleModal"
               href="#"
-              class="btn btn-primary-custom ml-7"
+              class="btn btn-default ml-7"
               v-if="
                 package_detail.package.status_string ===
                   PackageStatusCreatedText
@@ -398,28 +398,27 @@
                   }}</span>
                 </div>
                 <div>
-                  <div class="more-extra-fee"
-                    ><div
-                      ><span>Phí phát sinh:</span>
-                      <span>{{ sumExtraFee | formatPrice }}</span></div
-                    ><div v-if="extraFee.length" class="ml-2">
-                      <img
-                        @mouseover="showPopupMoreExtraFee"
-                        @mouseleave="hiddenPopupMoreExtraFee"
-                        src="~@/assets/img/InfoCircleGrey.svg"
-                        alt=""
-                      />
-                    </div>
-                    <div
-                      v-if="isVisiblePopupMoreExtraFee"
-                      class="pop-up-more-extra-fee"
-                    >
-                      <div v-for="(item, i) of mapExtraFee" :key="i">
-                        <div>{{ item.extra_fee_types.name }}</div>
-                        <div>{{ item.amount | formatPrice }}</div>
-                      </div>
-                    </div></div
-                  >
+                  <div>
+                    <span>Phí phát sinh:</span>
+                    <span>{{ sumExtraFee | formatPrice }}</span>
+                  </div>
+                </div>
+                <div class="more-extra-fee" v-if="extraFee.length">
+                  <img
+                    @mouseover="showPopupMoreExtraFee"
+                    @mouseleave="hiddenPopupMoreExtraFee"
+                    src="~@/assets/img/InfoCircleGrey.svg"
+                    alt=""
+                  />
+                </div>
+                <div
+                  v-if="isVisiblePopupMoreExtraFee"
+                  class="pop-up-more-extra-fee"
+                >
+                  <div v-for="(item, i) of mapExtraFee" :key="i">
+                    <div>{{ item.extra_fee_types.name }}</div>
+                    <div>{{ item.amount | formatPrice }}</div>
+                  </div>
                 </div>
               </div>
               <div class="fee__right">
@@ -486,57 +485,6 @@
 
 #package-log {
   padding: 0 15px;
-}
-
-.fee {
-  background-color: #ffffff;
-  position: fixed;
-  width: calc(100% - 128px);
-  z-index: 1000;
-  bottom: 0;
-  right: 0;
-  box-shadow: 0px -2px 4px rgba(40, 41, 61, 0.04),
-    0px -6px 10px rgba(96, 97, 112, 0.08);
-  padding: 1.7vw;
-  display: flex;
-  justify-content: space-between;
-}
-
-.fee__left div {
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 22px;
-  color: #313232;
-  align-items: baseline;
-  margin-bottom: 8px;
-  min-width: 200px;
-}
-
-.fee__left div span:last-child {
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 22px;
-  letter-spacing: 0.2px;
-  color: #313232;
-  float: right;
-}
-
-.fee__right div:nth-child(1) {
-  font-style: normal;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: 0.2px;
-  color: #aaabab;
-}
-
-.fee__right div:nth-child(2) {
-  font-style: normal;
-  font-weight: bold;
-  font-size: 28px;
-  line-height: 34px;
-  color: #111212;
 }
 </style>
 <script>
