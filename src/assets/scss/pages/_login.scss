@@ -1,15 +1,14 @@
-$bg-start: $color-primary;
-$bg-end: #1571b1;
+.card-sign-up {
+}
+
+
+
+
 .page-login-v3 {
-    min-height: 100vh;
     display: flex;
-    align-items: center;
-    justify-content: center;
     font-family: $font-family-sans-serif;
-    background-color: transparent;
-    .page {
-        min-height: 0;
-    }
+    background-color: #FFFFFF;
+    max-height: 100vh;
     .sign-in,
     .sign-up {
         .form-control {
@@ -79,38 +78,6 @@ $bg-end: #1571b1;
             display: flex;
             padding: 0;
             margin: 0;
-            .img {
-                height: auto;
-                width: 30%;
-                background-image: url('~@/assets/img/base.svg');
-                background-size: cover;
-                position: relative;
-                .img_logo {
-                    position: absolute;
-                    top: 40px;
-                    left: 40px;
-                    .img_logo-img {
-                        width: 57px;
-                        height: 72px;
-                    }
-                }
-                .img_text {
-                    position: absolute;
-                    bottom: 40px;
-                    left: 40px;
-                    .img_text-span {
-                        color: #fff;
-                        text-transform: uppercase;
-                        font-size: 1.4rem;
-                        font-weight: $font-weight-bold;
-                        line-height: 22.4px;
-                        letter-spacing: 0.75px;
-                        display: block;
-                        max-width: 270px;
-                        min-height: 40px;
-                    }
-                }
-            }
             .content {
                 flex: 1;
                 top: 0;
@@ -252,148 +219,15 @@ $bg-end: #1571b1;
     }
 }
 
-//@include media-breakpoint-down(xs) {
-//  .page-login-v3 {
-//    .page-content {
-//      padding: 30px 20px;
-//    }
-//
-//    .panel {
-//      width: auto;
-//      padding: 10px;
-//
-//      .panel-body {
-//        padding: 35px 25px 35px;
-//      }
-//    }
-//  }
-//}
-@media(max-width:1023px) {
-    .page-login-v3 {
-        .container-fluid {
-            .row {
-                .disable-moblie {
-                    display: none;
-                }
-            }
-        }
-    }
+.login__page-error{
+    padding: 5px 20px;
+    background-color: #FFF1F0;
+    border-left: 2px solid #F5222D;
+    font-size: 12px;
+    font-style: italic;
+    margin-bottom: 10px;
+    color: #F5222D;
+
 }
 
-@media(min-width:740px) and (max-width:1023px) {
-    .page-login-v3 {
-        .hide-tablet {
-            display: none;
-        }
-        .logo_tablet {
-            position: absolute;
-            left: 50%;
-            top: 6%;
-            transform: translateX(-50%);
-            display: block;
-        }
-        .form {
-            width: 470px;
-            height: 620px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            .header-2 {
-                text-align: center !important;
-            }
-            .brand-text-little {
-                text-align: center;
-                display: block;
-            }
-        }
-    }
-}
 
-@media(max-width:739px) {
-    .page-login-v3 {
-        .container-fluid {
-            .row {
-                .content {
-                    .hide-tablet {
-                        display: none;
-                    }
-                    .logo_mobile {
-                        position: absolute;
-                        left: 50%;
-                        top: 4.9%;
-                        transform: translateX(-50%);
-                        display: block;
-                    }
-                    .form {
-                        width: 315px;
-                        height: 661px;
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                        .btn {
-                            width: 100%;
-                        }
-                        .header-2 {
-                            text-align: center !important;
-                        }
-                        .brand-text-little {
-                            text-align: center;
-                            display: block;
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@media(min-width:740px) and (max-width:1023px) {
-    .page-login-v3 {
-        .container-fluid {
-            .row {
-                .content {
-                    .hide-tablet {
-                        display: none;
-                    }
-                    .logo_tablet {
-                        position: absolute;
-                        left: 50%;
-                        top: 7.5%;
-                        transform: translateX(-50%);
-                        display: block;
-                    }
-                    .form {
-                        width: 470px;
-                        height: 620px;
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
-                    }
-                }
-            }
-        }
-    }
-}
-
-@media(max-height:570px) {
-    .page-login-v3 {
-        .container-fluid {
-            .row {
-                .content {
-                    .hide-tablet {
-                        display: none;
-                    }
-                    .logo_tablet {
-                        display: none;
-                    }
-                    .logo_mobile {
-                        display: none;
-                    }
-                }
-            }
-        }
-    }
-}

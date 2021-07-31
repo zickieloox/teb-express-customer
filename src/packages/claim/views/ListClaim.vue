@@ -1,7 +1,11 @@
 <template>
   <div class="pages list__claim">
-    <div class="page-header">
+    <div class="page-header d-flex jc-sb">
       <div class="page-header_title header-2">Đơn khiếu nại</div>
+      <a href="#" class="btn btn-primary" @click="handleModal">
+        <img src="@assets/img/Plus.svg" alt="" />
+        <span class="ml-10">Tạo khiếu nại</span>
+      </a>
     </div>
     <div class="page-content">
       <div class="card">
@@ -17,9 +21,6 @@
               @keyup.enter="handleSearch"
             >
             </p-input>
-            <a href="#" class="btn btn-primary ml-10" @click="handleModal">
-              <span>Tạo khiếu nại</span>
-            </a>
           </div>
           <div class="list__claim-list">
             <status-tab
@@ -27,7 +28,7 @@
               :status="claimStatus"
               :count="totalCount"
             />
-            <vcl-table class=" md-20" v-if="isFetching"></vcl-table>
+            <vcl-table class="mt-20" v-if="isFetching"></vcl-table>
             <template v-else-if="listclaim.length > 0">
               <div class="table-responsive">
                 <table class="table table-hover">
@@ -39,13 +40,12 @@
                       <th>NGÀY TẠO</th>
                       <th>NGÀY CẬP NHẬT</th>
                       <th>TRẠNG THÁI </th>
-                      <th></th>
                     </tr>
                   </thead>
 
                   <tbody>
                     <tr v-for="(item, i) in listclaim" :key="i">
-                      <td>
+                      <td width="150">
                         <router-link
                           class="text-no-underline"
                           :to="{
@@ -54,51 +54,39 @@
                           }"
                         >
                           {{ item.id }}
+                          <img
+                            class="ml-10"
+                            v-if="item.status_rep == claimAdminReply"
+                            src="@assets/img/messenger.svg"
+                            alt=""
+                          />
                         </router-link>
                       </td>
-                      <td>
-                        <router-link
-                          class="text-no-underline"
-                          :to="{
-                            name: 'package-detail',
-                            params: { id: item.package.code },
-                          }"
-                        >
-                          {{ item.package.code }}
-                        </router-link></td
-                      >
-                      <td width="300">
+                      <td width="150">
+                        {{ item.package.code }}
+                      </td>
+                      <td width="500">
                         <p-tooltip
                           :label="item.title"
                           size="large"
                           position="top"
                           type="dark"
-                          :active="item.title.length > 15"
+                          :active="item.title.length > 30"
                         >
-                          {{ truncate(item.title, 15) }}
+                          {{ truncate(item.title, 30) }}
                         </p-tooltip>
                       </td>
-                      <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>
-                      <td>{{ item.updated_at | datetime('dd/MM/yyyy') }}</td>
-                      <td>
+                      <td width="150">{{
+                        item.created_at | datetime('dd/MM/yyyy')
+                      }}</td>
+                      <td width="150">{{
+                        item.updated_at | datetime('dd/MM/yyyy')
+                      }}</td>
+                      <td width="150">
                         <span
                           v-status:status="converStatus(item.status)"
                         ></span>
                       </td>
-                      <td width="40">
-                        <router-link
-                          v-if="item.status_rep == claimAdminReply"
-                          class="text-no-underline"
-                          :to="{
-                            name: 'claim-detail',
-                            params: { id: item.id },
-                          }"
-                        >
-                          <img
-                            src="@assets/img/messenger.svg"
-                            alt=""
-                          /> </router-link
-                      ></td>
                     </tr>
                   </tbody>
                 </table>

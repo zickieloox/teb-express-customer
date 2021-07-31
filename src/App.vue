@@ -5,17 +5,6 @@
     <component :is="layout">
       <router-view :key="$route.name"></router-view>
     </component>
-    <notifications position="bottom center" />
-    <div
-      id="scroll-top"
-      class="scroll-top"
-      @click="scrollToTop"
-      v-show="isShowScrollTop"
-    >
-      <a href="javascript:void(0)">
-        <i class="icon md-chevron-up"></i>
-      </a>
-    </div>
   </div>
 </template>
 <script>
@@ -53,6 +42,7 @@ export default {
     Loading,
     'default-layout': () => import('@layouts/v2/Index'),
     'full-page-layout': () => import('@layouts/v2-full-page/Index'),
+    'auth-layout': () => import('@layouts/auth/Index'),
   },
   methods: {
     scrollToTop() {

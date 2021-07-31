@@ -2,91 +2,75 @@
   <nav class="site-navbar" role="navigation">
     <div class="navbar__header">
       <div class="navbar__header-left">
-        <div class="navbar-logo"> YOUR LOGO </div>
+        <img src="@assets/img/icon22.svg" alt="" />
+        <span
+          >Need help? Check out the <a href="#" class="link">FAQ</a> or
+          <a href="#" class="link" @click.prevent="addClaim"
+            >submit a ticket.</a
+          ></span
+        >
       </div>
-      <div class="navbar__header-content">
-        <div class="navbar__header-input">
-          <p-input
-            placeholder="Tra cứu theo mã vận đơn "
-            type="search"
-            clearable
-            hiddenPass="on"
-            prefixIcon="search"
-            @keyup.enter="handleSearchCode"
-            :value.sync="searchCode"
-            v-model="searchCode"
-          />
-        </div>
-        <div class="navbar__header-drop">
-          <p-dropdown>
-            <div class="nav-link  pointer" slot="trigger">
-              {{ user.full_name }}
-              <img src="@/assets/img/dropdown.svg" />
-            </div>
-            <p-dropdown-item>
-              <img
-                src="@/assets/img/Circle 16px.svg"
-                class="navbar__header-icon"
-              />
-              <router-link to="/" class="nav-item">
-                Hỏi đáp trợ giúp
-              </router-link>
-            </p-dropdown-item>
-            <p-dropdown-item>
-              <img src="@/assets/img/Logout.svg" class="navbar__header-icon" />
-              <router-link to="/logout" class="nav-item">
-                Đăng xuất
-              </router-link>
-            </p-dropdown-item>
-          </p-dropdown>
-        </div>
+      <div class="navbar__header-right">
+        <p-dropdown>
+          <div class="pointer" slot="trigger">
+            <span
+              >Xin chào, <span class="username">{{ user.full_name }}</span>
+            </span>
+            <img src="@/assets/img/dropdown.svg" />
+          </div>
+          <p-dropdown-item>
+            <img
+              src="@/assets/img/Circle 16px.svg"
+              class="navbar__header-icon"
+            />
+            <router-link to="/" class="nav-item">
+              Hỏi đáp trợ giúp
+            </router-link>
+          </p-dropdown-item>
+          <p-dropdown-item>
+            <img src="@/assets/img/Logout.svg" class="navbar__header-icon" />
+            <router-link to="/logout" class="nav-item">
+              Đăng xuất
+            </router-link>
+          </p-dropdown-item>
+        </p-dropdown>
       </div>
     </div>
+    <modal-add-claim
+      :visible.sync="visibleModal"
+      :title="`Khiếu nại`"
+      @create="init"
+    >
+    </modal-add-claim>
   </nav>
 </template>
 <script>
-import mixinDownload from '@/packages/shared/mixins/download'
-import evenBus from '../../../core/utils/evenBus'
+import ModalAddClaim from '../../../packages/claim/components/ModalAddClaim.vue'
 
 export default {
-  components: {},
-  mixins: [mixinDownload],
+  components: {
+    ModalAddClaim,
+  },
   name: 'Header',
   props: {
     user: {
       type: Object,
       default: () => {},
     },
-    isSidebarOpen: {
-      type: Boolean,
-      default: true,
-    },
   },
   mounted() {},
   created() {},
   data() {
     return {
-      isFetchNotity: false,
-      isShowNavbarOnMobile: false,
-      socket: null,
-      isVisibleAddShop: false,
-      query: '',
-      searchCode: '',
+      visibleModal: false,
     }
   },
   methods: {
-    handleSearchCode() {
-      if (this.$route.name != 'list-packages' && this.searchCode) {
-        this.$router.push({
-          name: 'list-packages',
-          query: {
-            limit: 50,
-            page: 1,
-            code: this.searchCode.trim(),
-          },
-        })
-      }
-      evenBus.$emit('code', this.searchCode.trim())
+    init() {
+      location.reload()
+    },
+    addClaim() {
+      this.visibleModal = true
     },
   },
 }

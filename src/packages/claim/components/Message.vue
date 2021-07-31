@@ -1,5 +1,5 @@
 <template>
-  <div class="cs-reply">
+  <div class="message" :class="{ 'cs-reply': roleName }">
     <div class="user-content card">
       <div class="user-title d-flex justify-content-between align-items-center">
         <div class="info-user">
@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="user-text">
-        {{ current.content }}
+        <span v-html="formatText(current.content)"></span>
       </div>
       <div class="gallery ticket-attach-files" v-if="hasFiles">
         <div class="list-item">
@@ -33,7 +33,7 @@
 <script>
 import File from './File'
 import AuthService from '@core/services/auth'
-import { ROLE_ADMIN } from '@core/constants'
+import { ROLE_ADMIN, ROLE_SUPPORT, ROLE_ACCOUNTANT } from '@core/constants'
 
 export default {
   name: 'TicketMessage',
@@ -59,14 +59,22 @@ export default {
         return this.current.full_name || 'Me'
       }
 
-      if (this.current.role === ROLE_ADMIN) {
+      if (
+        this.current.role === ROLE_ADMIN ||
+        this.current.role === ROLE_SUPPORT ||
+        this.current.role === ROLE_ACCOUNTANT
+      ) {
         return this.current.full_name || 'Support'
       }
 
       return this.current.user_name || 'Undefined'
     },
     roleName() {
-      if (this.current.role == ROLE_ADMIN) {
+      if (
+        this.current.role == ROLE_ADMIN ||
+        this.current.role === ROLE_SUPPORT ||
+        this.current.role === ROLE_ACCOUNTANT
+      ) {
         return 'CSKH'
       }
 
@@ -76,6 +84,7 @@ export default {
       return AuthService.getId()
     },
   },
+
   methods: {
     classImage(url) {
       const re = /(?:.jpg|.png|.jpeg)$/i
@@ -84,6 +93,12 @@ export default {
       }
 
       return 'gallery-item'
+    },
+    formatText(text) {
+      var urlRegex = /(https?:\/\/[^\s]+)/g
+      return text.replace(urlRegex, function(url) {
+        return '<a href="' + url + '" target="_blank">' + url + '</a>'
+      })
     },
   },
 }
