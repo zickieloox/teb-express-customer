@@ -1,4 +1,6 @@
 .package-detail {
+  height: auto;
+  padding-bottom: 120px;
   .page-header {
     margin-bottom: 12px;
     &__barcode{
@@ -49,8 +51,7 @@
 
   .more-extra-fee {
     display: flex;
-    align-items: baseline;
-    position: relative;
+    position: absolute;
   }
 
   .more-extra-fee img {
@@ -65,11 +66,9 @@
     border-radius: 8px;
     padding: 16px;
     bottom: 40%;
-    left: 100px;
-    //width: 100%;
+    left: 220px;
     z-index: 10000;
     background: #ffffff;
-    //min-width: 100px;
   }
   .pop-up-more-extra-fee > div {
     display: flex;

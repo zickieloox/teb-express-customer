@@ -92,7 +92,7 @@
         <div class="card">
           <div class="card-body">
             <div class="row">
-              <div class="col-4 p-0">
+              <div class="col-6 p-0">
                 <div class="card-block">
                   <div class="card-header">
                     <div class="card-title">Người nhận</div>
@@ -164,6 +164,8 @@
                     </div>
                   </div>
                 </div>
+              </div>
+              <div class="col-6 p-0">
                 <div class="card-block">
                   <div class="card-header">
                     <div class="card-title">Thông tin hàng hóa</div>
@@ -227,60 +229,19 @@
                     </div>
                   </div>
                 </div>
-                <div class="card-block">
-                  <div class="card-header">
-                    <div class="card-title">Phí</div>
-                  </div>
-                  <div class="card-content">
-                    <div class="row">
-                      <div class="col-8 mb-8">Phí giao hàng:</div>
-                      <div class="col-4"
-                        ><div>{{
-                          $evaluate('package_detail.package?.shipping_fee')
-                            | formatPrice
-                        }}</div></div
-                      >
-                    </div>
-                    <div class="row">
-                      <div class="col-8 mb-8">Phí phát sinh:</div>
-                      <div class="col-4 more-extra-fee"
-                        ><div>{{ sumExtraFee | formatPrice }}</div
-                        ><div v-if="extraFee.length" class="ml-2">
-                          <img
-                            @mouseover="showPopupMoreExtraFee"
-                            @mouseleave="hiddenPopupMoreExtraFee"
-                            src="~@/assets/img/InfoCircleGrey.svg"
-                            alt=""
-                          />
-                        </div>
-                        <div
-                          v-if="isVisiblePopupMoreExtraFee"
-                          class="pop-up-more-extra-fee"
-                        >
-                          <div v-for="(item, i) of mapExtraFee" :key="i">
-                            <div>{{ item.extra_fee_types.name }}</div>
-                            <div>{{ item.amount | formatPrice }}</div>
-                          </div>
-                        </div></div
-                      >
-                    </div>
-                    <div class="row sum-price">
-                      <div class="col-8">Tổng cước:</div>
-                      <div class="col-4"
-                        ><div>{{ sumFee | formatPrice }}</div></div
-                      >
-                    </div>
-                  </div>
-                </div>
               </div>
-              <div v-if="!displayDeliverDetail" class="col-8 p-0">
+            </div>
+            <div id="package-log" class="row">
+              <div v-if="!displayDeliverDetail" class="col-12 p-0">
                 <div class="row">
                   <div class="col-12 p-0">
                     <div class="card-block">
                       <div class="card-header">
                         <div class="card-title">Hành trình đơn</div>
                         <div class="card-action"
-                          ><a @click="changeDisplayDeliverDetail()" href="#"
+                          ><a
+                            @click="changeDisplayDeliverDetail()"
+                            href="#package-log"
                             >Lịch sử đơn</a
                           ></div
                         >
@@ -313,7 +274,12 @@
                             </div>
                           </div>
                         </div>
-                        <div class="timeline__next-page">
+                        <div
+                          class="timeline__next-page"
+                          :class="{
+                            'timeline__next-page_history': !displayDeliverDetail,
+                          }"
+                        >
                           <div
                             :class="{
                               'disable-next-page':
@@ -337,17 +303,19 @@
                   </div>
                 </div>
               </div>
-              <div v-if="displayDeliverDetail" class="col-8 p-0">
+              <div v-if="displayDeliverDetail" class="col-12 p-0">
                 <div class="row">
                   <div class="col-12 p-0">
                     <div class="card-block">
                       <div class="card-header">
+                        <div class="card-title">Lịch sử đơn</div>
                         <div class="card-action"
-                          ><a @click="changeDisplayDeliverDetail()" href="#"
+                          ><a
+                            @click="changeDisplayDeliverDetail()"
+                            href="#package-log"
                             >Hành trình đơn</a
                           ></div
                         >
-                        <div class="card-title">Lịch sử đơn</div>
                       </div>
                       <div class="card-content">
                         <template>
@@ -419,6 +387,48 @@
                 </div>
               </div>
             </div>
+
+            <div class="fee">
+              <div class="fee__left">
+                <div>
+                  <span>Phí giao hàng:</span>
+                  <span>{{
+                    $evaluate('package_detail.package?.shipping_fee')
+                      | formatPrice
+                  }}</span>
+                </div>
+                <div>
+                  <div class="more-extra-fee"
+                    ><div
+                      ><span>Phí phát sinh:</span>
+                      <span>{{ sumExtraFee | formatPrice }}</span></div
+                    ><div v-if="extraFee.length" class="ml-2">
+                      <img
+                        @mouseover="showPopupMoreExtraFee"
+                        @mouseleave="hiddenPopupMoreExtraFee"
+                        src="~@/assets/img/InfoCircleGrey.svg"
+                        alt=""
+                      />
+                    </div>
+                    <div
+                      v-if="isVisiblePopupMoreExtraFee"
+                      class="pop-up-more-extra-fee"
+                    >
+                      <div v-for="(item, i) of mapExtraFee" :key="i">
+                        <div>{{ item.extra_fee_types.name }}</div>
+                        <div>{{ item.amount | formatPrice }}</div>
+                      </div>
+                    </div></div
+                  >
+                </div>
+              </div>
+              <div class="fee__right">
+                <div>
+                  Tổng cước:
+                </div>
+                <div>{{ sumFee | formatPrice }}</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -473,13 +483,60 @@
 .disable-extra-fee {
   color: #cfd0d0;
 }
-.bold-line {
-  font-weight: 600;
+
+#package-log {
+  padding: 0 15px;
 }
-.through-line,
-.through-line td {
-  text-decoration-line: line-through;
-  color: #aaabab !important;
+
+.fee {
+  background-color: #ffffff;
+  position: fixed;
+  width: calc(100% - 128px);
+  z-index: 1000;
+  bottom: 0;
+  right: 0;
+  box-shadow: 0px -2px 4px rgba(40, 41, 61, 0.04),
+    0px -6px 10px rgba(96, 97, 112, 0.08);
+  padding: 1.7vw;
+  display: flex;
+  justify-content: space-between;
+}
+
+.fee__left div {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  color: #313232;
+  align-items: baseline;
+  margin-bottom: 8px;
+  min-width: 200px;
+}
+
+.fee__left div span:last-child {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: 0.2px;
+  color: #313232;
+  float: right;
+}
+
+.fee__right div:nth-child(1) {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.2px;
+  color: #aaabab;
+}
+
+.fee__right div:nth-child(2) {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 28px;
+  line-height: 34px;
+  color: #111212;
 }
 </style>
 <script>
