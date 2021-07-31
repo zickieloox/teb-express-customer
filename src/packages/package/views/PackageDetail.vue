@@ -93,7 +93,7 @@
           <div class="card-body">
             <div class="row">
               <div class="col-6 p-0">
-                <div class="card-block">
+                <div class="card-block" id="recipient-block">
                   <div class="card-header">
                     <div class="card-title">Người nhận</div>
                   </div>
@@ -166,7 +166,7 @@
                 </div>
               </div>
               <div class="col-6 p-0">
-                <div class="card-block">
+                <div class="card-block" id="item-block">
                   <div class="card-header">
                     <div class="card-title">Thông tin hàng hóa</div>
                   </div>
@@ -654,6 +654,8 @@ export default {
     this.packageID = parseInt(this.$route.params.id, 10)
   },
   mounted() {
+    let sameHeight = document.getElementById('recipient-block').offsetHeight
+    document.getElementById('item-block').style.height = sameHeight + 'px'
     this.init()
   },
   methods: {
