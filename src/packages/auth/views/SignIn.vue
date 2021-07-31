@@ -38,7 +38,7 @@
           </m-input>
         </div>
         <p-button
-          class="mb-16 btn btn-special  "
+          class="mb-16 btn btn-special"
           :loading="isLoading"
           @click="onSignIn"
           :disabled="disableBtn"
@@ -58,7 +58,7 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import mixinRoute from '@core/mixins/route'
-import { signup } from '../validate'
+import { signin } from '../validate'
 
 export default {
   components: {},
@@ -79,7 +79,7 @@ export default {
       error: '',
       errorEmail: '',
       errorPassWord: '',
-      valider: signup,
+      valider: signin,
     }
   },
   computed: {
@@ -132,7 +132,7 @@ export default {
     // },
     onInput(key) {
       if (key === 'email') {
-        this.valider.validEmailSignin(this.email)
+        this.valider.validEmail(this.email)
       }
 
       if (key === 'password') {
@@ -142,10 +142,7 @@ export default {
     async onSignIn() {
       if (this.isLoading) return
       if (
-        !this.valider.isValidSignin({
-          email: this.email,
-          password: this.password,
-        })
+        !this.valider.isValid({ email: this.email, password: this.password })
       ) {
         return
       }
@@ -159,6 +156,7 @@ export default {
       } else {
         data.phone_number = this.email.trim()
       }
+
       this.isLoading = true
       this.result = await this.signIn(data)
       setTimeout(() => {

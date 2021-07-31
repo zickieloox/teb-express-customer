@@ -24,7 +24,7 @@
           <div class="card-body">
             <div class="d-flex">
               <p-input
-                placeholder="Tìm theo mã vận đơn hoặc mã hóa đơn..."
+                placeholder="Tìm theo mã vận đơn hoặc mã đơn hàng..."
                 prefixIcon="search"
                 type="search"
                 v-model="searchCode"
@@ -138,7 +138,7 @@
                             },
                           }"
                         >
-                          {{ item.code }}
+                          {{ item.package_code ? item.package_code.code : '' }}
                         </router-link>
 
                         <span

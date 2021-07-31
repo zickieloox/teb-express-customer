@@ -1,10 +1,12 @@
 <template>
   <div class="page page-auth layout-auth">
     <div class="main-header">
-      <img alt="home" src="~@/assets/img/logo.svg" class="main-logo" />
+      <router-link :to="{ name: 'sign-in' }">
+        <img alt="home" src="~@/assets/img/logo.svg" class="main-logo" />
+      </router-link>
       <div class="help">
         <img class="help-icon" src="~@/assets/img/Support.svg" alt="help" />
-        <a target="_blank" class="help-text">Cần trợ giúp ?</a>
+        <a href="#" target="_blank" class="help-text">Cần trợ giúp ?</a>
       </div>
     </div>
     <div class="page-background">

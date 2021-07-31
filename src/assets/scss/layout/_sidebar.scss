@@ -15,12 +15,14 @@ $menubar-height:70vh;
         cursor: default;
     }
     &-sub {
-        width: 180px;
-        height: calc(#{$menubar-height}/5);
+        max-width: none;
+        margin-right: 30px;
+        // height: calc(#{$menubar-height}/5);
         background: #0F1750;
         border-radius: 4px;
         display: none;
-        padding: 1.8vh;
+        padding: 2.5vh;
+        width: fit-content;
         cursor: default;
         &.has-sub {
             display: inline-block;
@@ -38,12 +40,14 @@ $menubar-height:70vh;
             border-bottom: 5px solid transparent;
         }
         &-item {
-            padding-bottom: 0.5vh;
+            padding-bottom: 1vh;
             text-align: left;
+            width: fit-content;
+            margin-right: 15px;
         }
         &-title {
             color: #FFFFFF;
-            font-size: 14px;
+            font-size: 16px;
             transition: .3s;
             font-weight: 500;
             line-height: 22px;
