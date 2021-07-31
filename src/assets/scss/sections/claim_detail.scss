@@ -35,17 +35,17 @@
         margin-bottom: 12px;
     }
     .claim-content-page {
-        width: 56.250vw;
+        width: 1080px;
         margin: auto;
         .page-header {
             padding: 0;
             margin-bottom: 24px;
-            top: 56px;
-            width: 56.250vw;
-            position: fixed;
-            padding-top: 24px;
-            z-index: 999;
-            background: white;
+            // top: 56px;
+            // width: 1080px;
+            // position: fixed;
+            // padding-top: 24px;
+            // z-index: 999;
+            // background: white;
             .page-header_back {
                 .text {
                     color: #626363;
@@ -102,16 +102,66 @@
                 border-radius: 4px;
             }
             .menu_content {
+                .reply {
+                    background: #F6F7F7;
+                    border-radius: 8px;
+                    padding: 16px;
+                    .form-control {
+                        position: relative;
+                        height: 20vh;
+                    }
+                    .btn-reply {
+                        button {
+                            height: 48px;
+                            width: 116px;
+                            font-weight: bold;
+                        }
+                        .upload {
+                            margin-left: 16px;
+                            position: relative;
+                            .p-tooltip::after {
+                                width: 100px;
+                                left: 20px;
+                                text-align: center;
+                            }
+                            .p-tooltip::before {
+                                left: 13px;
+                            }
+                            .el-upload-dragger {
+                                height: 24px;
+                                width: 24px;
+                                background: none;
+                                border: none;
+                                position: absolute;
+                                top: 12px;
+                            }
+                        }
+                    }
+                    .btn-close {
+                        border: 1px solid #CFD0D0;
+                        box-sizing: border-box;
+                        border-radius: 12px;
+                        width: 168px;
+                        height: 48px;
+                        color: $color-neutral-7;
+                        font-weight: 600;
+                        font-size: 14px;
+                        line-height: 22px;
+                        img {
+                            margin-right: 4px;
+                        }
+                    }
+                }
                 .bookmark {
                     position: absolute;
                     left: -24px;
                     top: 0;
                 }
                 .main-claim {
-                    top: 236px;
-                    width: 56.250vw;
-                    position: fixed !important;
-                    z-index: 998;
+                    // top: 236px;
+                    // width: 1080px;
+                    // position: fixed !important;
+                    // z-index: 998;
                 }
                 .user-content {
                     position: relative;
@@ -195,32 +245,6 @@
                                 }
                             }
                         }
-                    }
-                }
-                .button-reply {
-                    position: absolute;
-                    // right: calc(-5.208vw - 12px);
-                    // width: 5.208vw;
-                    // height: 5.208vw;
-                    right: calc(-90px - 12px);
-                    width: 90px;
-                    height: 90px;
-                    padding-top: 16px;
-                    top: 0;
-                    display: flex;
-                    flex-direction: column;
-                    color: $color-turquoise-4;
-                    background: #FFFFFF;
-                    box-shadow: 0px 0px 1px rgba(40, 41, 61, 0.04), 0px 2px 4px rgba(96, 97, 112, 0.16);
-                    border-radius: 4px;
-                    text-align: center;
-                    align-items: center;
-                    font-weight: bold;
-                    font-size: 14px;
-                    line-height: 22px;
-                    img,
-                    span {
-                        cursor: pointer;
                     }
                 }
             }
@@ -334,8 +358,6 @@
     font-size: 12px;
     border: 1px solid #ED857A;
     background-color: #FFF4F3;
-    width: 95%;
-    margin: 0 auto;
     border-radius: 4px;
     &-title {
         padding: 10px;
@@ -346,14 +368,14 @@
 }
 
 .ticket__reply-files {
-    width: 95%;
-    margin: 0 auto;
+    img {
+        cursor: pointer;
+    }
 }
 
 .claim-messages {
     width: 100%;
     position: relative;
-    // padding-top: 392.312px;
 }
 
 .err-span {
