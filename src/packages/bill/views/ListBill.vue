@@ -109,7 +109,7 @@
                             },
                           }"
                         >
-                          {{ item.package_code.code }}
+                          {{ item.package_code ? item.package_code.code : '' }}
                           <img src="@/assets/img/external.svg" />
                         </router-link>
                       </td>
@@ -172,7 +172,11 @@
                             },
                           }"
                         >
-                          {{ item.package.package_code.code }}
+                          {{
+                            item.package && item.package.package_code
+                              ? item.package.package_code.code
+                              : ''
+                          }}
                           <img src="@/assets/img/external.svg" />
                         </router-link>
                       </td>
