@@ -109,7 +109,7 @@
                             },
                           }"
                         >
-                          {{ item.code }}
+                          {{ item.package_code.code }}
                           <img src="@/assets/img/external.svg" />
                         </router-link>
                       </td>
@@ -172,7 +172,7 @@
                             },
                           }"
                         >
-                          {{ item.package.code }}
+                          {{ item.package.package_code.code }}
                           <img src="@/assets/img/external.svg" />
                         </router-link>
                       </td>
