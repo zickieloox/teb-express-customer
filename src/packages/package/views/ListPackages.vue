@@ -140,7 +140,7 @@
                             },
                           }"
                         >
-                          {{ item.code }}
+                          {{ item.package_code ? item.package_code.code : '' }}
                         </router-link>
                       </td>
                       <td>{{ item.order_number }}</td>
