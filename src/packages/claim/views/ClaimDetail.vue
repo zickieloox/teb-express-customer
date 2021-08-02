@@ -27,7 +27,12 @@
           </div>
         </div>
         <div class="note-content">
-          <span v-if="claim.package"> Mã đơn: {{ claim.package.code }} </span>
+          <span v-if="claim.package">
+            Mã đơn:
+            {{
+              claim.package.package_code ? claim.package.package_code.code : ''
+            }}
+          </span>
           <span>
             Ngày tạo: {{ claim.created_at | datetime('dd/MM/yyyy') }} -
             {{ claim.created_at | datetime('HH:mm') }}
