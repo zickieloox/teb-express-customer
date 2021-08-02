@@ -148,7 +148,7 @@
                         >
                           <img
                             src="@/assets/img/Vector-barcode.png"
-                            style="margin-top: 6px;position: absolute; left: 150px;"
+                            style="margin-left: 10px;margin-bottom: 3px;"
                           />
                         </span>
                       </td>
