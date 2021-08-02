@@ -13,6 +13,7 @@
             :error="valider.hasError('email')"
             :messages="valider.error('email')"
             @input="onInput('email')"
+            @keyup.enter="onSignIn"
           >
             <template v-if="!email">
               Nhập số điện thoại hoặc email <span class="text-danger">*</span>
@@ -28,6 +29,7 @@
             :error="valider.hasError('password')"
             :messages="valider.error('password')"
             @input="onInput('password')"
+            @keyup.enter="onSignIn"
           >
             <template v-if="!password">
               Mật khẩu của bạn <span class="text-danger">*</span>
