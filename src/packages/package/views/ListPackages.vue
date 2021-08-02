@@ -76,11 +76,11 @@
                           @click="handleWayBill"
                           >Vận đơn</p-button
                         >
-                        <p-button
-                          :disabled="isFilterInitTab"
-                          class="bulk-actions__selection-status"
-                          >In đơn</p-button
-                        >
+                        <!--                        <p-button-->
+                        <!--                          :disabled="isFilterInitTab"-->
+                        <!--                          class="bulk-actions__selection-status"-->
+                        <!--                          >In đơn</p-button-->
+                        <!--                        >-->
                         <p-button
                           :disabled="cancelOrder(filter.status)"
                           class="bulk-actions__selection-status"
@@ -502,9 +502,7 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selectedIds.length
-      }. Bạn có chắc chắn muốn hủy đơn?`
+      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn hủy đơn?`
       this.visibleConfirmCancel = true
     },
     async cancelPackagesAction() {
@@ -548,9 +546,7 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selected.length
-      }. Bạn có chắc chắn muốn vận đơn?`
+      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${this.selected.length}. Bạn có chắc chắn muốn vận đơn?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {

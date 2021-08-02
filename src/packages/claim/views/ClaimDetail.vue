@@ -29,9 +29,21 @@
         <div class="note-content">
           <span v-if="claim.package">
             Mã đơn:
-            {{
-              claim.package.package_code ? claim.package.package_code.code : ''
-            }}
+            <router-link
+              class="text-no-underline"
+              :to="{
+                name: 'package-detail',
+                params: {
+                  id: claim.package.id,
+                },
+              }"
+            >
+              {{
+                claim.package.package_code
+                  ? claim.package.package_code.code
+                  : ''
+              }}
+            </router-link>
           </span>
           <span>
             Ngày tạo: {{ claim.created_at | datetime('dd/MM/yyyy') }} -
@@ -471,9 +483,7 @@ export default {
       if (!this.validateTypeFile(file)) {
         this.number = this.number - 1
         this.fileErrors.push(
-          `"${
-            file.name
-          }" định dạng không đúng.Tệp phải có định dạng:  *XLSX, *PNG, *JPG, *JPEG.`
+          `"${file.name}" định dạng không đúng.Tệp phải có định dạng:  *XLSX, *PNG, *JPG, *JPEG.`
         )
         this.fileErrors = [...new Set(this.fileErrors)]
         return
