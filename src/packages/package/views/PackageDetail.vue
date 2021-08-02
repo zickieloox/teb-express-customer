@@ -36,6 +36,22 @@
               <div>{{ $evaluate('package_detail.package.service?.name') }}</div>
             </div>
             <div>
+              <div>Tracking </div>
+              <div v-if="package_detail.package">
+                <a
+                  target="_blank"
+                  v-if="package_detail.package.tracking"
+                  :href="
+                    `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${package_detail.package.tracking.tracking_number}`
+                  "
+                >
+                  {{
+                    $evaluate('package_detail.package.tracking.tracking_number')
+                  }}
+                </a>
+              </div>
+            </div>
+            <div>
               <div>Ngày tạo </div>
               <div>{{
                 package_detail.package.created_at
