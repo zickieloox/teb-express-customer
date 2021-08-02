@@ -63,7 +63,11 @@
                         </router-link>
                       </td>
                       <td width="150">
-                        {{ item.package.code }}
+                        {{
+                          item.package.package_code
+                            ? item.package.package_code.code
+                            : ''
+                        }}
                       </td>
                       <td width="500">
                         <p-tooltip
