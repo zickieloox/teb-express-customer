@@ -165,10 +165,10 @@ export default {
               route: '/setting/account',
               title: 'Thông tin tài khoản',
             },
-            {
-              route: '',
-              title: 'Danh sách hàng hóa',
-            },
+            // {
+            //   route: '',
+            //   title: 'Danh sách hàng hóa',
+            // },
             {
               route: '/setting/api',
               title: 'API',
