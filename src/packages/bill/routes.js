@@ -18,7 +18,16 @@ export const routes = [
       import(/* webpackChunkName: "wallets" */ './views/Wallet.vue'),
   },
   {
-    path: '/bills',
+    path: '/bill/topup',
+    name: 'top-up',
+    meta: {
+      title: 'Topup',
+    },
+    component: () =>
+      import(/* webpackChunkName: "wallets" */ './views/Topup.vue'),
+  },
+  {
+    path: '/bill/list-bill',
     name: 'list-bills',
     meta: {
       title: 'List Bill',

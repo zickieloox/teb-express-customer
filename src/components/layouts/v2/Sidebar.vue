@@ -142,12 +142,6 @@ export default {
           route: { name: 'claims' },
           class: '',
         },
-        // {
-        //   title: 'Ví',
-        //   icon: require('@assets/img/Bill.png'),
-        //   route: '/wallet',
-        //   class: '',
-        // },
         {
           title: 'Cài đặt',
           icon: require('@assets/img/Setting.png'),

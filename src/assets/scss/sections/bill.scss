@@ -2,29 +2,29 @@
     margin-top: -30px;
     .page-content {
         padding: 0 32px;
-        .header_info{
+        .header_info {
             padding: 16px;
             background-color: #DDF3F4;
             border-radius: 8px;
             align-items: center;
             justify-content: space-between;
-            &-content{
+            &-content {
                 display: grid;
                 grid-column-gap: 10px;
                 grid-template-columns: auto auto auto;
                 width: 80%;
             }
         }
-        .info-number{
+        .info-number {
             color: #007E78;
-            &:not(.total-price){
+            &:not(.total-price) {
                 margin-top: 12px;
             }
         }
-        .info-bill{
+        .info-bill {
             color: $color-neutral-7;
         }
-        .total-price{
+        .total-price {
             font-size: 24px;
         }
         .card-block {
@@ -81,51 +81,82 @@
             }
         }
     }
-
 }
 
 //listbill
+.page-body-bill {
+    background-color: #ffffff;
+    padding-top: 24px
+}
 
-.list__bills{
+.list__bills {
     width: 1080px;
     margin: 0 auto;
-    .page-header{
-        &_input{
-            width: 770px;
+    .page-header {
+        &_input {
+            width: 100%;
+            img,
+            i {
+                top: 24px;
+            }
+            .form-control {
+                height: 48px;
+                border-radius: 12px;
+            }
         }
-        &_date{
+        &_date {
             flex: 1;
-            .calendars{
+            .calendars {
                 flex-wrap: nowrap;
             }
         }
     }
-    .table-header{
-        th{
+    .table-header {
+        th {
             font-size: 12px;
             color: $color-neutral-5;
         }
-
     }
-    .table-responsive{
-        tr{
-            td{
+    .table-responsive {
+        tr {
+            td {
                 border-left: 1px solid transparent;
                 border-right: 1px solid transparent;
             }
         }
     }
-    .reportrange-text[data-v-4391f606]{
-        img{
-            margin-top: 6px !important;
+    #date-search {
+        width: 300px;
+        .form-control {
+            height: 48px;
         }
-        .label-date-picker{
-            line-height: 28px;
+        &+.close {
+            width: 48px;
+            height: 48px;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            background-color: #ffffff
+        }
+        .calendars {
+            min-width: 400px;
+        }
+        .show-ranges {
+            min-width: 712px;
+        }
+        .reportrange-text>div {
+            line-height: 35px;
+            font-weight: normal;
+            .label-date-picker {
+                color: $color-neutral-5;
+            }
+        }
+        .opensleft {
+            right: 0px;
         }
     }
-
 }
-.paginate-bill{
+
+.paginate-bill {
     width: 1080px;
     margin: 0 auto;
 }

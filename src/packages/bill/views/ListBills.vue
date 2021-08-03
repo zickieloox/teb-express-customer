@@ -14,12 +14,14 @@
               <a class="nav-link active" href="#">Quản lý hóa đơn</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Nạp tiền</a>
+              <router-link class="nav-link" :to="{ name: 'top-up' }"
+                >Nạp tiền</router-link
+              >
             </li>
           </ul>
         </div>
       </div>
-      <div class="page-body">
+      <div class="page-body-bill">
         <div class="list__bills">
           <div class="page-header_action d-flex ">
             <div class="page-header_input ">

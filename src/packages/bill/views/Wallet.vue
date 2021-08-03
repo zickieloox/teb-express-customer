@@ -14,7 +14,9 @@
               </router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Nạp tiền</a>
+              <router-link class="nav-link" :to="{ name: 'top-up' }"
+                >Nạp tiền</router-link
+              >
             </li>
           </ul>
         </div>
@@ -183,8 +185,7 @@ export default {
     SearchType,
   },
   computed: {
-    ...mapState('wallet', {
-      topup: (state) => state.topup,
+    ...mapState('bill', {
       balance: (state) => state.balance,
       process_money: (state) => state.process_money,
       transactions: (state) => state.transactions,
@@ -215,7 +216,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('wallet', [FETCH_TRANSACTION]),
+    ...mapActions('bill', [FETCH_TRANSACTION]),
 
     async init() {
       this.isFetching = true
@@ -254,10 +255,6 @@ export default {
 
     handleRemoveSearch() {
       this.filter.type = ''
-    },
-
-    closeModal() {
-      this.isvisibleModalRechargeWallet = false
     },
   },
 
