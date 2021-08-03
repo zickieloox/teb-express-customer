@@ -75,8 +75,11 @@
                         <router-link
                           class="text-no-underline"
                           :to="{
-                            name: 'package-detail',
-                            params: {},
+                            name: 'bill-detail',
+                            query: {
+                              search: item.id,
+                              date_search: '',
+                            },
                           }"
                         >
                           {{ item.id }}
