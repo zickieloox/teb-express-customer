@@ -16,6 +16,7 @@ export const CANCEL_PACKAGES = 'cancelPackages'
 
 export const EXPORT_PACKAGE = 'exportPackage'
 export const GET_SERVICE = 'getService'
+export const CREATE_PACKAGE = 'createPackage'
 /**
  * State
  */
@@ -187,5 +188,17 @@ export const actions = {
       }
     }
     return result
+  },
+
+  // eslint-disable-next-line no-unused-vars
+  async createPackage({ commit }, payload) {
+    const res = await api.createPackage(payload)
+    if (res.error || res.message || !res.package) {
+      return {
+        success: false,
+        message: res.errorMessage || res.error || res.message || '',
+      }
+    }
+    return res
   },
 }

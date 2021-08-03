@@ -12,6 +12,23 @@ export default {
   },
 
   /**
+   * get list bill
+   * @param payload
+   * @return {*}
+   */
+  fetchBillList(payload) {
+    return http.get(`/bills/list?${buildQueryString(payload)}`)
+  },
+  /**
+   * get detail bill
+   * @param payload
+   * @return {*}
+   */
+  fetchBillCount(payload) {
+    return http.get(`/bills/count?${buildQueryString(payload)}`)
+  },
+
+  /**
    * get extra fee
    * @param payload
    * @return {*}

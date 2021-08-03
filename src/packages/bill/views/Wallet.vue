@@ -9,7 +9,9 @@
               <a class="nav-link active" href="#">Ví của tôi</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Quản lý hóa đơn</a>
+              <router-link class="nav-link" :to="{ name: 'list-bills' }">
+                Quản lý hóa đơn
+              </router-link>
             </li>
             <li class="nav-item">
               <router-link class="nav-link" :to="{ name: 'top-up' }"

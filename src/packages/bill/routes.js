@@ -1,12 +1,12 @@
 export const routes = [
   {
     path: '/bill',
-    name: 'list-bill',
+    name: 'bill-detail',
     meta: {
       title: 'Quản lý hóa đơn',
     },
     component: () =>
-      import(/* webpackChunkName: "settings" */ './views/ListBill.vue'),
+      import(/* webpackChunkName: "settings" */ './views/BillDetail'),
   },
   {
     path: '/bill/wallet',
@@ -25,5 +25,14 @@ export const routes = [
     },
     component: () =>
       import(/* webpackChunkName: "wallets" */ './views/Topup.vue'),
+  },
+  {
+    path: '/bill/list-bill',
+    name: 'list-bills',
+    meta: {
+      title: 'List Bill',
+    },
+    component: () =>
+      import(/* webpackChunkName: "wallets" */ './views/ListBills.vue'),
   },
 ]

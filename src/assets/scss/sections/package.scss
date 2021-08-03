@@ -8,7 +8,7 @@
     border-radius: 4px 4px 0 0 ;
   }
   &-price{
-    width: 60%;
+    width: 50%;
     align-items: center;
     padding-left: 16px;
   }
@@ -44,6 +44,24 @@
       left: -1px;
     }
   }
+  .total-title{
+    padding: 21px 16px;
+    flex: 1;
+    align-items: center;
+    color: $color-neutral-10;
+    font-weight: 600;
+    .total-number{
+      color: $color-neutral-10;
+      font-weight: 600;
+      font-size: 20px;
+      margin-left: 5px;
+      margin-bottom: 5px;
+    }
+    .text{
+      color:red;
+      font-size: 12px;
+    }
+  }
   &-total{
     width: 39%;
     padding: 16px;
@@ -64,14 +82,6 @@
        top: 3px;
      }
    }
-    .total-title{
-      color: $color-neutral-10;
-      font-weight: 600;
-      span{
-        font-weight: 700;
-        font-size: 20px;
-      }
-    }
     a.btn{
       display: block;
       margin-top: 22px;
