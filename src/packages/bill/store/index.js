@@ -7,6 +7,9 @@ export const COUNT_FEE_EXTRA = 'countFeeExtra'
 export const FETCH_FEE_EXTRA = 'fetchFeeExtra'
 export const FETCH_TRANSACTION = 'fetchTransaction'
 export const COUNT_TRANSACTION = 'countTransaction'
+export const COUNT_BILLS = 'countBills'
+export const FETCH_BILL_LIST = 'fetchBillList'
+
 export const state = {
   bill: {},
   feeEdit: [],
@@ -17,6 +20,8 @@ export const state = {
   countExtra: 0,
   transactions: [],
   count: 0,
+  countBills: 0,
+  bills: [],
 }
 
 export const mutations = {
@@ -43,9 +48,34 @@ export const mutations = {
   [COUNT_TRANSACTION]: (state, payload) => {
     state.count = payload
   },
+  [FETCH_BILL_LIST]: (state, payload) => {
+    state.bills = payload
+  },
+  [COUNT_BILLS]: (state, payload) => {
+    state.countBills = payload
+  },
 }
 
 export const actions = {
+  // eslint-disable-next-line no-unused-vars
+  async fetchBillList({ commit }, payload) {
+    let result = { success: true }
+    let [list, count] = await Promise.all([
+      api.fetchBillList(payload),
+      api.fetchBillCount(payload),
+    ])
+    if (!list.bills || !count) {
+      count = { count: 0 }
+      result = {
+        success: false,
+        message: list.errorMessage || '',
+      }
+    }
+    commit(FETCH_BILL_LIST, list.bills)
+    commit(COUNT_BILLS, count.count)
+    return result
+  },
+
   async fetchBillDetail({ commit }, payload) {
     const res = await api.fetchBillDetail(payload)
     if (!res || res.error) {
