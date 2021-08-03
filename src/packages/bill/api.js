@@ -25,4 +25,10 @@ export default {
   countTransactions(payload) {
     return http.get(`/transactions/count?${buildQueryString(payload)}`)
   },
+  createTopup() {
+    return http.post('/transactions/top-up')
+  },
+  updateTopup(payload) {
+    return http.post(`/transactions/top-up/update/${payload.id}`, payload.body)
+  },
 }

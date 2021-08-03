@@ -7,6 +7,8 @@ export const COUNT_FEE_EXTRA = 'countFeeExtra'
 export const FETCH_FEE_EXTRA = 'fetchFeeExtra'
 export const FETCH_TRANSACTION = 'fetchTransaction'
 export const COUNT_TRANSACTION = 'countTransaction'
+export const CREATE_TOPUP = 'createTopup'
+export const UPDATE_TOPUP = 'updateTopup'
 export const state = {
   bill: {},
   feeEdit: [],
@@ -17,6 +19,9 @@ export const state = {
   countExtra: 0,
   transactions: [],
   count: 0,
+  balance: 0.0,
+  process_money: 0.0,
+  topup: {},
 }
 
 export const mutations = {
@@ -42,6 +47,9 @@ export const mutations = {
   },
   [COUNT_TRANSACTION]: (state, payload) => {
     state.count = payload
+  },
+  [CREATE_TOPUP]: (state, payload) => {
+    state.topup = payload
   },
 }
 
@@ -77,5 +85,30 @@ export const actions = {
     commit(FETCH_TRANSACTION, res)
     commit(COUNT_TRANSACTION, count.count)
     return { error: false }
+  },
+  // eslint-disable-next-line no-unused-vars
+  async createTopup({ commit }, payload) {
+    const res = await api.createTopup(payload)
+    if (!res || res.error) {
+      return { success: false, message: res.errorMessage || '' }
+    }
+
+    commit(CREATE_TOPUP, res.topup)
+
+    return { success: true }
+  },
+
+  // eslint-disable-next-line
+  async updateTopup({ commit }, payload) {
+    const response = await api.updateTopup(payload)
+
+    if (response && response.success) {
+      return { success: true }
+    }
+
+    return {
+      success: false,
+      message: response.errorMessage || '',
+    }
   },
 }
