@@ -120,6 +120,11 @@ export default {
               title: 'Quản lý đơn hàng',
               alias: ['/packages', '/packages/:id'],
             },
+            {
+              route: '/packages/create',
+              title: 'Tạo đơn lẻ',
+              alias: ['/packages/create'],
+            },
           ],
         },
         {

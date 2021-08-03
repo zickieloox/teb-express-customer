@@ -58,4 +58,7 @@ export default {
   cancelPackages(payload) {
     return http.put(`/packages/cancel`, payload)
   },
+  createPackage(payload) {
+    return http.post(`/packages/create`, payload)
+  },
 }
