@@ -4,6 +4,7 @@
         width: 1080px;
         margin: 0 auto;
         padding: 0;
+        position: relative;
         .header {
             font-style: normal;
             font-weight: normal;
@@ -22,6 +23,66 @@
                         background-color: unset;
                         color: $color-neutral-10;
                     }
+                }
+            }
+        }
+        .info-money {
+            width: 528px;
+            height: 148px;
+            background: #FFFFFF;
+            box-shadow: 0px 0px 2px rgba(40, 41, 61, 0.04), 0px 4px 8px rgba(96, 97, 112, 0.16);
+            border-radius: 12px;
+            position: absolute;
+            top: 14px;
+            right: 0;
+            padding: 16px 16px 24px 16px;
+            img {
+                margin-right: 8px;
+                height: 40px;
+                margin-top: 4px;
+            }
+            .wallet {
+                display: flex;
+                flex-direction: column;
+                .title {
+                    font-weight: 500;
+                    font-size: 12px;
+                    line-height: 16px;
+                    letter-spacing: 0.2px;
+                    color: $color-neutral-6
+                }
+                .money {
+                    font-weight: 500;
+                    font-size: 18px;
+                    line-height: 28px;
+                    letter-spacing: 0.2px;
+                    color: $color-neutral-9;
+                }
+            }
+            .balance {
+                width: 55%;
+                border-right: 1px solid $color-neutral-3;
+                .money {
+                    font-weight: bold;
+                    font-size: 24px;
+                    line-height: 36px;
+                    color: $color-neutral-10
+                }
+            }
+            .process-money {
+                padding-left: 24px;
+            }
+            button {
+                margin-left: 48px;
+                margin-top: 24px;
+                border: 1px solid $color-turquoise-4;
+                color: $color-turquoise-4;
+                background-color: white;
+                &:focus,
+                &:active {
+                    color: white;
+                    border-color: $color-turquoise-4;
+                    box-shadow: none;
                 }
             }
         }
@@ -52,18 +113,18 @@
                 margin-bottom: 16px;
                 .multiselect-transaction {
                     display: flex;
-                    height: 40px;
+                    height: 48px;
                     margin-right: 8px;
                     width: 100%;
                     .multiselect__tags {
-                        height: 40px;
+                        height: 48px;
                         border: 1px solid #E5E7ED;
                         box-sizing: border-box;
-                        border-radius: 8px;
+                        border-radius: 12px;
                         background-color: #ffffff;
                         .multiselect__single,
                         .multiselect__placeholder {
-                            margin-top: 5px;
+                            margin-top: 7px;
                             background-color: #ffffff;
                             color: $color-neutral-5;
                             padding-top: 0;
@@ -71,18 +132,18 @@
                         }
                     }
                     .multiselect__select {
-                        top: -2px
+                        top: 0px
                     }
                     .multiselect--active .multiselect__select {
                         transform: none
                     }
                     .multiselect--active .multiselect__tags {
                         border: 1px solid #111212;
-                        border-radius: 8px 8px 0px 0px;
+                        border-radius: 12px 12px 0px 0px;
                     }
                     .multiselect__input {
                         font-size: 14px;
-                        margin-top: 5px;
+                        margin-top: 7px;
                         background-color: #ffffff;
                         color: #111212;
                         padding-top: 0;
@@ -96,12 +157,15 @@
                     }
                 }
                 #date-search {
-                    width: 220px;
+                    width: 300px;
+                    .form-control {
+                        height: 48px;
+                    }
                     &+.close {
-                        width: 40px;
-                        height: 40px;
+                        width: 48px;
+                        height: 48px;
                         border: 1px solid #ccc;
-                        border-radius: 8px;
+                        border-radius: 12px;
                         background-color: #ffffff
                     }
                     .calendars {
@@ -111,10 +175,10 @@
                         min-width: 712px;
                     }
                     .reportrange-text>div {
-                        line-height: 28px;
+                        line-height: 35px;
                         font-weight: normal;
                         .label-date-picker {
-                            color: $color-neutral-4;
+                            color: $color-neutral-5;
                         }
                     }
                     .opensleft {

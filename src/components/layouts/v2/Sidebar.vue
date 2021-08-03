@@ -120,25 +120,20 @@ export default {
               title: 'Quản lý đơn hàng',
               alias: ['/packages', '/packages/:id'],
             },
+            {
+              route: '/packages/create',
+              title: 'Tạo đơn lẻ',
+              alias: ['/packages/create'],
+            },
           ],
         },
         {
           title: 'Hóa đơn',
           icon: require('@assets/img/Bill.png'),
           iconActive: require('@assets/img/BillActive.png'),
-          route: { name: 'bill' },
+          route: { name: 'wallet' },
           class: '',
           isOpen: false,
-          sub: [
-            {
-              route: '/bill',
-              title: 'Hóa đơn',
-            },
-            {
-              route: '/bill/wallet',
-              title: 'Ví',
-            },
-          ],
         },
         {
           title: 'Khiếu nại',
