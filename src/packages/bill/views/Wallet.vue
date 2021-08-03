@@ -16,6 +16,27 @@
             </li>
           </ul>
         </div>
+        <div class="info-money">
+          <div class="d-flex">
+            <div class="balance d-flex">
+              <img src="@assets/img/balance.png" alt="" />
+              <div class="wallet">
+                <span class="title">Số dư trong ví</span>
+                <span class="money">{{
+                  balance > 0 ? balance : 0 | formatPrice
+                }}</span>
+              </div>
+            </div>
+            <div class="process-money d-flex">
+              <img src="@assets/img/process-money.png" alt="" />
+              <div class="wallet">
+                <span class="title">Tiền đang xử lý</span>
+                <span class="money">{{ process_money | formatPrice }}</span>
+              </div>
+            </div>
+          </div>
+          <p-button>Thanh toán</p-button>
+        </div>
       </div>
       <div class="page-body">
         <div class="transaction-log">
@@ -61,7 +82,7 @@
                 v-for="(item, i) in transactions"
                 :key="i"
               >
-                <div class=" d-flex jc-sb">
+                <div class="d-flex jc-sb">
                   <div class="info-left">
                     <img
                       :src="
@@ -114,7 +135,13 @@
           </div>
         </div>
         <div
-          class="paginate d-flex justify-content-between align-items-center mt-24"
+          class="
+            paginate
+            d-flex
+            justify-content-between
+            align-items-center
+            mt-24
+          "
           v-if="count > 0"
         >
           <p-pagination
