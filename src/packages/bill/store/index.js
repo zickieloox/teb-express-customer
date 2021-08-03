@@ -5,6 +5,8 @@ export const COUNT_FEE_CREATE = 'countFeeCreate'
 export const FETCH_FEE_CREATE = 'fetchFeeCreate'
 export const COUNT_FEE_EXTRA = 'countFeeExtra'
 export const FETCH_FEE_EXTRA = 'fetchFeeExtra'
+export const FETCH_TRANSACTION = 'fetchTransaction'
+export const COUNT_TRANSACTION = 'countTransaction'
 export const state = {
   bill: {},
   feeEdit: [],
@@ -13,6 +15,8 @@ export const state = {
   countEdit: 0,
   countCreate: 0,
   countExtra: 0,
+  transactions: [],
+  count: 0,
 }
 
 export const mutations = {
@@ -30,6 +34,14 @@ export const mutations = {
   },
   [FETCH_FEE_EXTRA]: (state, payload) => {
     state.feeExtra = payload
+  },
+  [FETCH_TRANSACTION]: (state, payload) => {
+    state.balance = payload.balance
+    state.process_money = payload.process_money
+    state.transactions = payload.transactions
+  },
+  [COUNT_TRANSACTION]: (state, payload) => {
+    state.count = payload
   },
 }
 
@@ -53,5 +65,17 @@ export const actions = {
     commit(COUNT_FEE_EXTRA, res.count)
 
     return { success: true }
+  },
+  async [FETCH_TRANSACTION]({ commit }, payload) {
+    const [res, count] = await Promise.all([
+      api.fetchTransactions(payload),
+      api.countTransactions(payload),
+    ])
+    if (!res || res.error || count.error) {
+      return { error: true, message: res.errorMessage || '' }
+    }
+    commit(FETCH_TRANSACTION, res)
+    commit(COUNT_TRANSACTION, count.count)
+    return { error: false }
   },
 }
