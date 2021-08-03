@@ -137,3 +137,21 @@
     content: url('../img/lock-o.svg');
   }
 }
+
+.icon {
+  &-clock:after {
+    content: url('../img/clock.svg');
+  }
+
+  &-plane:after {
+    content: url('../img/plane.svg');
+  }
+
+  &-box-tick:after {
+    content: url('../img/box-tick.svg');
+  }
+  
+  &-search:after {
+    content: url('../img/search.svg');
+  }
+}
