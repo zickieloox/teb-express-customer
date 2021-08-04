@@ -19,7 +19,11 @@
                 border-bottom: none;
                 .nav-link {
                     margin-right: 35px;
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 22px;
                     &.active {
+                        // font-weight: 500;
                         background-color: unset;
                         color: $color-neutral-10;
                     }
@@ -76,13 +80,17 @@
                 margin-left: 48px;
                 margin-top: 24px;
                 border: 1px solid $color-turquoise-4;
-                color: $color-turquoise-4;
                 background-color: white;
+                a {
+                    color: $color-turquoise-4;
+                }
                 &:focus,
                 &:active {
-                    color: white;
                     border-color: $color-turquoise-4;
                     box-shadow: none;
+                    a {
+                        color: white;
+                    }
                 }
             }
         }
@@ -118,7 +126,7 @@
                     width: 100%;
                     .multiselect__tags {
                         height: 48px;
-                        border: 1px solid #E5E7ED;
+                        border: 1px solid $color-neutral-4;
                         box-sizing: border-box;
                         border-radius: 12px;
                         background-color: #ffffff;
@@ -164,7 +172,7 @@
                     &+.close {
                         width: 48px;
                         height: 48px;
-                        border: 1px solid #ccc;
+                        border: 1px solid $color-neutral-4;
                         border-radius: 12px;
                         background-color: #ffffff
                     }
@@ -173,6 +181,9 @@
                     }
                     .show-ranges {
                         min-width: 712px;
+                    }
+                    .reportrange-text {
+                        border: 1px solid $color-neutral-4;
                     }
                     .reportrange-text>div {
                         line-height: 35px;

@@ -1,4 +1,4 @@
-$input-height: 40px;
+$input-height: 48px;
 $input-border-color: #f4f5f6;
 .form-control {
     height: $input-height;
@@ -121,7 +121,6 @@ input[type='search'] {
     }
     .p-input-search {
         padding-left: 40px;
-        border-radius: 8px !important;
         line-height: $input-height;
         &::placeholder {
             color: $color-neutral-6;

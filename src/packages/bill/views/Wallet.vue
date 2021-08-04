@@ -34,12 +34,18 @@
             <div class="process-money d-flex">
               <img src="@assets/img/process-money.png" alt="" />
               <div class="wallet">
-                <span class="title">Tiền đang xử lý</span>
-                <span class="money">{{ process_money | formatPrice }}</span>
+                <span class="title">Tiền chưa thanh toán</span>
+                <span class="money">{{
+                  balance > 0 ? 0 : Math.abs(balance) | formatPrice
+                }}</span>
               </div>
             </div>
           </div>
-          <p-button>Thanh toán</p-button>
+          <p-button>
+            <router-link :to="{ name: 'top-up' }">
+              Thanh toán
+            </router-link></p-button
+          >
         </div>
       </div>
       <div class="page-body">
@@ -111,10 +117,9 @@
                         <router-link
                           class="text-no-underline"
                           :to="{
-                            name: 'bill',
+                            name: 'bill-detail',
                             query: {
                               search: item.bill_id,
-                              date_search: '',
                             },
                           }"
                         >
@@ -129,7 +134,10 @@
                     </div>
                   </div>
                   <div class="info-right">
-                    <span> {{ item.amount | formatPrice }}</span>
+                    <span
+                      >{{ item.type == typePay ? '-' : '+' }}
+                      {{ item.amount | formatPrice }}</span
+                    >
                     <span v-status:status="mapStatus[item.status].value"></span>
                   </div>
                 </div>
@@ -187,7 +195,6 @@ export default {
   computed: {
     ...mapState('bill', {
       balance: (state) => state.balance,
-      process_money: (state) => state.process_money,
       transactions: (state) => state.transactions,
       count: (state) => state.count,
     }),
