@@ -12,10 +12,7 @@ export const getters = {
   messages(state) {
     return state.messages.map((item) => {
       let message = ''
-      let name =
-        AuthService.getId() == item.updated_user_id
-          ? 'Bạn'
-          : item.updated_user_name
+      let name = AuthService.getId() == item.updated_user_id ? 'Bạn' : 'CSKH'
       let ordername = item.order_number || `#${item.package_id}`
 
       const fee = item.fee > 0 ? item.fee : -item.fee
