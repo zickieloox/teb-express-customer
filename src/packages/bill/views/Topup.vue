@@ -34,12 +34,14 @@
             <div class="process-money d-flex">
               <img src="@assets/img/process-money.png" alt="" />
               <div class="wallet">
-                <span class="title">Tiền đang xử lý</span>
-                <span class="money">{{ process_money | formatPrice }}</span>
+                <span class="title">Tiền chưa thanh toán</span>
+                <span class="money">{{
+                  balance > 0 ? 0 : Math.abs(balance) | formatPrice
+                }}</span>
               </div>
             </div>
           </div>
-          <p-button>Thanh toán</p-button>
+          <p-button><a href="#">Thanh toán</a> </p-button>
         </div>
       </div>
       <div class="page-body">
@@ -142,7 +144,6 @@ export default {
     ...mapState('bill', {
       topup: (state) => state.topup,
       balance: (state) => state.balance,
-      process_money: (state) => state.process_money,
     }),
   },
   data() {
