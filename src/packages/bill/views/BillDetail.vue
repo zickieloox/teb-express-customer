@@ -38,9 +38,18 @@
                     <span class="info-number">{{
                       bill.created_at | datetime('dd/MM/yyyy HH:mm:ss ')
                     }}</span>
-                    <span class="info-number total-price font-weight-600">{{
-                      total_fee | formatPrice
-                    }}</span>
+                    <span
+                      v-if="total_fee < 0"
+                      class="info-number total-price font-weight-600"
+                    >
+                      -{{ Math.abs(total_fee) | formatPrice }}
+                    </span>
+                    <span
+                      v-else
+                      class="info-number total-price font-weight-600"
+                    >
+                      {{ total_fee | formatPrice }}
+                    </span>
                   </div>
 
                   <button class="btn-primary btn">
@@ -51,7 +60,7 @@
                 <div class="card-block  ">
                   <div class="card-content">
                     <div class="card-title">
-                      <div class="title-text"> Phí vận đơn :</div>
+                      <div class="title-text"> Phí vận đơn </div>
                       <div class="title-pagi">
                         <div
                           class="btn-pagi mr-2"
@@ -116,7 +125,7 @@
                 <div class="card-block  ">
                   <div class="card-content">
                     <div class="card-title">
-                      <div class="title-text"> Phí phát sinh :</div>
+                      <div class="title-text"> Phí phát sinh </div>
                       <div class="title-pagi">
                         <div
                           class="btn-pagi  mr-2"
@@ -203,7 +212,28 @@
                 <div class="card-block  ">
                   <div class="card-content">
                     <div class="card-title">
-                      <div class="title-text"> Phí hoàn tiền :</div>
+                      <div class="title-text"> Hoàn tiền </div>
+                      <div class="title-pagi">
+                        <div
+                          class="btn-pagi  mr-2"
+                          :class="{
+                            'disable-next-page': filterRefund.currentPage <= 1,
+                          }"
+                          @click="previousRefundPage"
+                        >
+                          <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <div
+                          class="btn-pagi"
+                          @click="nextRefundPage"
+                          :class="{
+                            'disable-next-page':
+                              filterRefund.currentPage >= totalPage,
+                          }"
+                        >
+                          <i class="fas fa-chevron-right"></i>
+                        </div>
+                      </div>
                     </div>
                     <div class="table-responsive">
                       <table class="table table-hover">
@@ -211,9 +241,8 @@
                           <tr class="table-header">
                             <th width="270">MÃ VẬN ĐƠN </th>
                             <th width="270">THỜI GIAN </th>
-                            <th>PHÍ PHÁT SINH </th>
-                            <th>LOẠI PHÍ</th>
                             <th>NỘI DUNG</th>
+                            <th>PHÍ PHÁT SINH </th>
                           </tr>
                         </thead>
 
@@ -240,15 +269,9 @@
                             <td>{{
                               item.created_at | datetime('dd/MM/yyyy HH:mm:ss')
                             }}</td>
-                            <td v-if="item.amount < 0"
-                              >-{{ Math.abs(item.amount) | formatPrice }}</td
-                            >
-                            <td v-else>{{ item.amount | formatPrice }}</td>
                             <td v-if="item.status == 10">
                               <span v-status:status="`Chưa thanh toán`"></span>
                             </td>
-                            <td>{{ item.extra_fee_types.name }}</td>
-
                             <td>
                               <p-tooltip
                                 :label="item.description"
@@ -260,6 +283,10 @@
                                 {{ truncate(item.description, 15) }}
                               </p-tooltip>
                             </td>
+                            <td v-if="item.amount < 0"
+                              >-{{ Math.abs(item.amount) | formatPrice }}</td
+                            >
+                            <td v-else>{{ item.amount | formatPrice }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -310,9 +337,14 @@ export default {
       },
       search: '',
       filterExtra: {
-        limit: 5,
+        limit: 15,
         page: 1,
         id: '',
+      },
+      filterRefund: {
+        numberPage: 0,
+        itemsPerPage: 10,
+        currentPage: 1,
       },
       total_fee: 0,
       isFetching: false,
@@ -333,13 +365,28 @@ export default {
       const totalPages = Math.ceil(this.countExtra / this.filterExtra.limit)
       return totalPages
     },
+    totalPage() {
+      const total = Math.ceil(
+        this.extraFeeRefund.length / this.filterRefund.itemsPerPage
+      )
+      return total
+    },
     extraFee() {
-      let extra = this.feeExtra.filter((item) => item.extra_fee_type_id != 9)
+      const extra = this.feeExtra.filter((item) => item.extra_fee_type_id != 9)
+      return extra
+    },
+    extraFeeRefund() {
+      const extra = this.feeExtra.filter((item) => item.extra_fee_type_id == 9)
       return extra
     },
     feeRefund() {
-      const refund = this.feeExtra.filter((item) => item.extra_fee_type_id == 9)
-      return refund
+      const start =
+        (this.filterRefund.currentPage - 1) * this.filterRefund.itemsPerPage
+      const refund2 = this.extraFeeRefund.slice(
+        start,
+        start + this.filterRefund.itemsPerPage
+      )
+      return refund2
     },
   },
   created() {
@@ -369,17 +416,6 @@ export default {
     handleSearch(e) {
       this.filter.page = 1
       this.$set(this.filter, 'search', e.target.value.trim())
-    },
-    previousTimeLinePage() {
-      this.orderPagination.currentPage <= 1
-        ? (this.orderPagination.currentPage = 1)
-        : (this.orderPagination.currentPage -= 1)
-    },
-    nextTimeLinePage() {
-      this.orderPagination.currentPage =
-        this.orderPagination.currentPage >= this.orderPagination.numberPage
-          ? this.orderPagination.numberPage
-          : this.orderPagination.currentPage + 1
     },
     async previousCreateFee() {
       let page =
@@ -417,6 +453,18 @@ export default {
         this.$set(this.filter, 'search', this.search)
       }
       this.$set(this.filter, 'date_search', date(v.startDate, 'yyyy-MM-dd'))
+    },
+
+    previousRefundPage() {
+      this.filterRefund.currentPage <= 1
+        ? (this.filterRefund.currentPage = 1)
+        : (this.filterRefund.currentPage -= 1)
+    },
+    nextRefundPage() {
+      this.filterRefund.currentPage =
+        this.filterRefund.currentPage >= this.totalPage
+          ? this.filterRefund.numberPage
+          : this.filterRefund.currentPage + 1
     },
   },
   watch: {

@@ -200,10 +200,9 @@ export default {
       if (today == itemDay) {
         return 'Tạo mới'
       } else {
-        if (item.package.length > 0) {
-          if (item.package[0].extra_fee[0].extra_fee_type_id == 9) {
-            return 'Hoàn trả'
-          }
+        if (this.total(item.shipping_fee, item.extra_fee) > 0) {
+          return 'Hoàn trả'
+        } else {
           return 'Thanh toán'
         }
       }
