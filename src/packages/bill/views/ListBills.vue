@@ -207,9 +207,9 @@ export default {
         return 'Tạo mới'
       } else {
         if (this.total(item.shipping_fee, item.extra_fee) > 0) {
-          return 'Hoàn trả'
-        } else {
           return 'Thanh toán'
+        } else {
+          return 'Hoàn trả'
         }
       }
     },
