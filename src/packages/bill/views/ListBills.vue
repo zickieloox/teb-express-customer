@@ -89,11 +89,17 @@
                         </router-link>
                       </td>
                       <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>
-                      <td>
+                      <td v-if="total(item.shipping_fee, item.extra_fee) < 0">
+                        -{{
+                          Math.abs(total(item.shipping_fee, item.extra_fee))
+                            | formatPrice
+                        }}
+                      </td>
+                      <td v-else>
                         {{
                           total(item.shipping_fee, item.extra_fee) | formatPrice
-                        }}</td
-                      >
+                        }}
+                      </td>
                       <td>
                         <span v-status:status="handleStatus(item)"></span>
                       </td>

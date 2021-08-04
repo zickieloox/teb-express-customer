@@ -1,5 +1,12 @@
 .list__bill {
     margin-top: -30px;
+    .paginate-bill{
+        .select_limit_box{
+            display: none;
+
+        }
+        padding-bottom: 70px;
+    }
     .page-content {
         padding: 0 32px;
         .header_info {
