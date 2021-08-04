@@ -68,6 +68,7 @@
                       <th>MÃ HÓA ĐƠN </th>
                       <th>NGÀY TẠO </th>
                       <th>TỔNG TIỀN </th>
+                      <th>LOẠI HÓA ĐƠN </th>
                     </tr>
                   </thead>
 
@@ -93,6 +94,9 @@
                           total(item.shipping_fee, item.extra_fee) | formatPrice
                         }}</td
                       >
+                      <td>
+                        <span v-status:status="handleStatus(item)"></span>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -122,7 +126,7 @@ import { mapState, mapActions } from 'vuex'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
-import { date } from '@core/utils/datetime'
+import { date, dateFormat } from '@core/utils/datetime'
 import { FETCH_BILL_LIST } from '../store'
 
 export default {
@@ -189,6 +193,20 @@ export default {
     handleSearch(e) {
       this.filter.page = 1
       this.$set(this.filter, 'search', e.target.value.trim())
+    },
+    handleStatus(item) {
+      let today = dateFormat(new Date())
+      let itemDay = dateFormat(item.created_at)
+      if (today == itemDay) {
+        return 'Tạo mới'
+      } else {
+        if (item.package.length > 0) {
+          if (item.package[0].extra_fee[0].extra_fee_type_id == 9) {
+            return 'Hoàn trả'
+          }
+          return 'Thanh toán'
+        }
+      }
     },
   },
 
