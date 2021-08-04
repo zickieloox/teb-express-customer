@@ -122,6 +122,7 @@
                     </div>
                   </div>
                 </div>
+
                 <div class="card-block  ">
                   <div class="card-content">
                     <div class="card-title">
@@ -337,13 +338,13 @@ export default {
       },
       search: '',
       filterExtra: {
-        limit: 15,
+        limit: 5,
         page: 1,
         id: '',
       },
       filterRefund: {
         numberPage: 0,
-        itemsPerPage: 10,
+        itemsPerPage: 5,
         currentPage: 1,
       },
       total_fee: 0,
@@ -481,11 +482,5 @@ export default {
 .disable-next-page {
   background-color: #f6f7f7;
   pointer-events: none;
-}
-.close {
-  width: 50px;
-  height: 40px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
 }
 </style>
