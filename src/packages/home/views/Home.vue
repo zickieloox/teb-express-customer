@@ -1,9 +1,9 @@
 <template>
-  <div class="home-page pages">
+  <div class="home-page pages pb-5">
     <div class="page-content">
       <div class="page-header">
         <div class="d-flex justify-content-between">
-          <h3 class="page-title">Dashborad</h3>
+          <h3 class="page-title">Dashboard</h3>
           <div class="actions">
             <select v-model="time">
               <option value="d7">7 ngày gần đây</option>
@@ -27,29 +27,44 @@
             <div class="row">
               <div class="col-4">
                 <div class="box box-warning">
-                  <div class="w-icon">
-                    <i class="icon icon-clock"></i>
-                  </div>
-                  <p class="title">Đang xử lý</p>
-                  <p class="value">{{ numbers.processing }}</p>
+                  <a
+                    @click="goListpackage('processing')"
+                    href="javascript:void(0)"
+                  >
+                    <div class="w-icon">
+                      <i class="icon icon-clock"></i>
+                    </div>
+                    <p class="title">Đang xử lý</p>
+                    <p class="value">{{ numbers.processing }}</p>
+                  </a>
                 </div>
               </div>
               <div class="col-4">
                 <div class="box box-info">
-                  <div class="w-icon">
-                    <i class="icon icon-plane"></i>
-                  </div>
-                  <p class="title">Đang giao</p>
-                  <p class="value">{{ numbers.intransit }}</p>
+                  <a
+                    @click="goListpackage('in-transit')"
+                    href="javascript:void(0)"
+                  >
+                    <div class="w-icon">
+                      <i class="icon icon-plane"></i>
+                    </div>
+                    <p class="title">Đang giao</p>
+                    <p class="value">{{ numbers.intransit }}</p>
+                  </a>
                 </div>
               </div>
               <div class="col-4">
                 <div class="box box-success">
-                  <div class="w-icon">
-                    <i class="icon icon-box-tick"></i>
-                  </div>
-                  <p class="title">Giao thành công</p>
-                  <p class="value">{{ numbers.delivered }}</p>
+                  <a
+                    @click="goListpackage('delivered')"
+                    href="javascript:void(0)"
+                  >
+                    <div class="w-icon">
+                      <i class="icon icon-box-tick"></i>
+                    </div>
+                    <p class="title">Giao thành công</p>
+                    <p class="value">{{ numbers.delivered }}</p>
+                  </a>
                 </div>
               </div>
               <div class="col-12 mt-24">
@@ -65,7 +80,7 @@
               </div>
             </div>
           </div>
-          <div class="col-3">
+          <div class="col-3 list-actions">
             <div class="card bg-gray">
               <h3 class="card-title">Hoạt động</h3>
               <div class="card-body">
@@ -94,7 +109,6 @@
 <script>
 import LineChart from '../components/LineChart'
 import { mapActions, mapState, mapGetters } from 'vuex'
-// import { date } from '@core/utils/datetime'
 import { FETCH_ANALYTICS } from '../store'
 import {
   PACKAGE_STATUS_CREATED,
@@ -103,7 +117,6 @@ import {
   PACKAGE_STATUS_WAREHOUSE_LABELED,
   PACKAGE_STATUS_WAREHOUSE_INCONTAINER,
   PACKAGE_STATUS_WAREHOUSE_INSHIPMENT,
-  PACKAGE_STATUS_WAREHOUSE_EXPORT,
   PACKAGE_STATUS_INTRANSIT,
   PACKAGE_STATUS_DELIVERED,
   PACKAGE_STATUS_RETURNED,
@@ -216,7 +229,6 @@ export default {
           case PACKAGE_STATUS_WAREHOUSE_LABELED:
           case PACKAGE_STATUS_WAREHOUSE_INCONTAINER:
           case PACKAGE_STATUS_WAREHOUSE_INSHIPMENT:
-          case PACKAGE_STATUS_WAREHOUSE_EXPORT:
             this.numbers.processing += count
             this.datavalues.processing[index] += count
             break
@@ -273,20 +285,6 @@ export default {
         labels: this.days,
         datasets: [
           {
-            label: 'Tạo mới',
-            borderColor: '#87E8DE',
-            borderWidth: 1,
-            backgroundColor: '#E6FFFB',
-            data: this.datavalues.created,
-          },
-          {
-            label: 'Chờ lấy',
-            borderColor: '#D3ADF7',
-            borderWidth: 1,
-            backgroundColor: '#F9F0FF',
-            data: this.datavalues.pendingPickup,
-          },
-          {
             label: 'Đang xử lý',
             borderColor: '#7AE2FF',
             borderWidth: 1,
@@ -307,29 +305,43 @@ export default {
             backgroundColor: '#F0FFF3',
             data: this.datavalues.delivered,
           },
-          {
-            label: 'Trả hàng',
-            borderColor: '#7F5345',
-            borderWidth: 1,
-            backgroundColor: '#F2EBE4',
-            data: this.datavalues.returned,
-          },
-          {
-            label: 'Đã huỷ',
-            borderColor: '#FFA39E',
-            borderWidth: 1,
-            backgroundColor: '#FFF1F0',
-            data: this.datavalues.cancelled,
-          },
         ],
       }
     },
 
     searchHandle(e) {
-      let keyword = e.target.value
+      let keyword = e.target.value.trim()
       if (keyword == '') return
 
       this.$router.push({ name: 'list-packages', query: { code: keyword } })
+    },
+
+    goListpackage(status) {
+      const mapdays = { d7: 7, d14: 14, d30: 30 }
+      const num = mapdays[this.time] || 14
+
+      let t = new Date()
+      let ed = this.dateformat(t)
+
+      t.setDate(t.getDate() - num + 1)
+      let sd = this.dateformat(t)
+
+      this.$router.push({
+        name: 'list-packages',
+        query: {
+          status: status,
+          start_date: sd,
+          end_date: ed,
+        },
+      })
+    },
+
+    dateformat(dt) {
+      const y = dt.getFullYear()
+      const m = dt.getMonth() + 1
+      const d = dt.getDate()
+
+      return `${y}-${m > 9 ? m : '0' + m}-${d > 9 ? d : '0' + d}`
     },
   },
   watch: {
