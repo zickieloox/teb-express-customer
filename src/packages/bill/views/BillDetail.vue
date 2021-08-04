@@ -42,13 +42,18 @@
                       v-if="total_fee < 0"
                       class="info-number total-price font-weight-600"
                     >
-                      -{{ Math.abs(total_fee) | formatPrice }}
+                      -{{
+                        Math.abs(total(bill.extra_fee, bill.shipping_fee))
+                          | formatPrice
+                      }}
                     </span>
                     <span
                       v-else
                       class="info-number total-price font-weight-600"
                     >
-                      {{ total_fee | formatPrice }}
+                      {{
+                        total(bill.extra_fee, bill.shipping_fee) | formatPrice
+                      }}
                     </span>
                   </div>
 
@@ -162,7 +167,7 @@
                         </thead>
 
                         <tbody>
-                          <tr v-for="(item, i) in extraFee" :key="i">
+                          <tr v-for="(item, i) in feeExtra" :key="i">
                             <td>
                               <router-link
                                 class="text-no-underline"
@@ -218,7 +223,7 @@
                         <div
                           class="btn-pagi  mr-2"
                           :class="{
-                            'disable-next-page': filterRefund.currentPage <= 1,
+                            'disable-next-page': filterRefund.page <= 1,
                           }"
                           @click="previousRefundPage"
                         >
@@ -228,8 +233,7 @@
                           class="btn-pagi"
                           @click="nextRefundPage"
                           :class="{
-                            'disable-next-page':
-                              filterRefund.currentPage >= totalPage,
+                            'disable-next-page': filterRefund.page >= totalPage,
                           }"
                         >
                           <i class="fas fa-chevron-right"></i>
@@ -305,7 +309,11 @@
 </template>
 <script>
 import { mapActions, mapState } from 'vuex'
-import { FETCH_BILL_DETAIL, FETCH_BILL_EXTRA } from '../store'
+import {
+  FETCH_BILL_DETAIL,
+  FETCH_BILL_EXTRA,
+  FETCH_BILL_REFUND,
+} from '../store'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import { date } from '@core/utils/datetime'
@@ -343,9 +351,10 @@ export default {
         id: '',
       },
       filterRefund: {
-        numberPage: 0,
-        itemsPerPage: 5,
-        currentPage: 1,
+        limit: 5,
+        page: 1,
+        type: 9,
+        id: '',
       },
       total_fee: 0,
       isFetching: false,
@@ -357,6 +366,8 @@ export default {
       countCreate: (state) => state.countCreate,
       feeExtra: (state) => state.feeExtra,
       countExtra: (state) => state.countExtra,
+      feeRefund: (state) => state.feeRefund,
+      countRefund: (state) => state.countRefund,
     }),
     totalPageCreate() {
       const totalPages = Math.ceil(this.countCreate / this.filter.limit)
@@ -367,37 +378,25 @@ export default {
       return totalPages
     },
     totalPage() {
-      const total = Math.ceil(
-        this.extraFeeRefund.length / this.filterRefund.itemsPerPage
-      )
+      const total = Math.ceil(this.countRefund / this.filterRefund.limit)
       return total
     },
     extraFee() {
       const extra = this.feeExtra.filter((item) => item.extra_fee_type_id != 9)
       return extra
     },
-    extraFeeRefund() {
-      const extra = this.feeExtra.filter((item) => item.extra_fee_type_id == 9)
-      return extra
-    },
-    feeRefund() {
-      const start =
-        (this.filterRefund.currentPage - 1) * this.filterRefund.itemsPerPage
-      const refund2 = this.extraFeeRefund.slice(
-        start,
-        start + this.filterRefund.itemsPerPage
-      )
-      return refund2
-    },
   },
   created() {
     this.filter = this.getRouteQuery()
   },
   methods: {
-    ...mapActions('bill', [FETCH_BILL_DETAIL, FETCH_BILL_EXTRA]),
+    ...mapActions('bill', [
+      FETCH_BILL_DETAIL,
+      FETCH_BILL_EXTRA,
+      FETCH_BILL_REFUND,
+    ]),
     truncate,
     async init() {
-      this.feeRefund
       this.isFetching = true
       this.handleUpdateRouteQuery()
       let result = await this[FETCH_BILL_DETAIL](this.filter)
@@ -405,7 +404,9 @@ export default {
       this.total_fee = result.total
       if (result.bill) {
         this.filterExtra.id = this.bill.id
+        this.filterRefund.id = this.bill.id
         await this[FETCH_BILL_EXTRA](this.filterExtra)
+        await this[FETCH_BILL_REFUND](this.filterRefund)
       }
       this.isFetching = false
     },
@@ -456,16 +457,25 @@ export default {
       this.$set(this.filter, 'date_search', date(v.startDate, 'yyyy-MM-dd'))
     },
 
-    previousRefundPage() {
-      this.filterRefund.currentPage <= 1
-        ? (this.filterRefund.currentPage = 1)
-        : (this.filterRefund.currentPage -= 1)
+    async previousRefundPage() {
+      let page =
+        this.filterRefund.page <= 1
+          ? (this.filterRefund.page = 1)
+          : (this.filterRefund.page -= 1)
+      this.$set(this.filterRefund, 'page', page)
+      await this[FETCH_BILL_REFUND](this.filterRefund)
     },
-    nextRefundPage() {
-      this.filterRefund.currentPage =
+    async nextRefundPage() {
+      let page =
         this.filterRefund.currentPage >= this.totalPage
-          ? this.filterRefund.numberPage
-          : this.filterRefund.currentPage + 1
+          ? this.filterRefund.page
+          : this.filterRefund.page + 1
+      this.$set(this.filterRefund, 'page', page)
+      await this[FETCH_BILL_REFUND](this.filterRefund)
+    },
+    total(ship, extra) {
+      let total = ship + extra
+      return total
     },
   },
   watch: {
