@@ -263,82 +263,66 @@
     }
 }
 
-//modal
-.modal-recharge-wallet {
-    .modal-body {
-        padding: 24px 16px;
-        // max-height: none;
-        .payments {
+//top-up
+.top-up {
+    width: 1080px;
+    margin: auto;
+    padding-top: 8px;
+    .method {
+        display: flex;
+        flex-direction: column;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 22px;
+        i {
+            font-size: 4px;
+            margin-right: 8px
+        }
+        .active {
             display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            line-height: 22px;
-            color: #313232;
-            margin-bottom: 16px;
-            .usd {
-                border-radius: 4px;
-                width: 167px;
-                height: 22px;
-                color: #F5222D;
-                text-align: center;
-                background-color: #FFF1F0;
+            align-items: center;
+            color: $color-neutral-10;
+        }
+        .deactive {
+            color: $color-neutral-6;
+            i {
+                visibility: hidden;
+            }
+            span {
+                font-style: italic;
+                font-size: 12px;
+                line-height: 16px;
             }
         }
-        .tab {
-            display: flex;
-            justify-content: space-between;
-            height: 40px;
-            .active {
-                padding-left: 16px;
-                padding-top: 7px;
-                width: calc(100%/3);
-                background: #00B4C3;
-                border-radius: 4px 4px 0px 0px;
-                font-weight: bold;
-                font-size: 16px;
-                line-height: 24px;
-                color: #FFFFFF;
-            }
-            .deactive {
-                padding-left: 16px;
-                padding-top: 7px;
-                width: calc(100%/3);
-                background: #F6F7F7;
-                color: #626363;
-                border-radius: 4px 4px 0px 0px;
-                font-weight: 600;
-                font-size: 14px;
-                line-height: 22px;
-                span {
-                    font-style: italic;
-                    font-weight: normal;
-                    font-size: 12px;
-                    line-height: 16px;
-                    color: #898A8A;
-                }
-            }
+    }
+    .form-topup {
+        width: 805px;
+        padding-top: 16px;
+        .title {
+            color: $color-neutral-9;
         }
         .card {
-            border: 1px solid #CFD0D0;
-            box-sizing: border-box;
-            border-radius: 0px 0px 4px 4px;
-            padding: 16px 16px 38px 16px;
-            font-size: 14px;
-            line-height: 22px;
-            color: #313232;
-            margin-bottom: 16px;
+            margin-top: 24px;
+            background: #FFFFFF;
+            box-shadow: 0px 0px 1px rgba(40, 41, 61, 0.04), 0px 2px 4px rgba(96, 97, 112, 0.16);
+            border-radius: 8px;
+            padding: 16px 24px 28px 24px;
             p {
                 position: relative;
-                &:first-child {
-                    margin-bottom: 18px;
-                }
+                margin-bottom: 12px;
+                font-size: 12px;
+                line-height: 16px;
+                color: $color-neutral-7;
                 span {
                     font-weight: 600;
-                    color: #111212;
-                    margin-right: .5rem;
+                    font-size: 14px;
+                    line-height: 22px;
+                    color: $color-neutral-10;
                 }
                 .copy {
                     position: relative;
+                    margin-left: 4px;
                     img {
                         margin-bottom: 4px;
                         cursor: pointer;
@@ -384,43 +368,63 @@
             }
             .money {
                 .title {
-                    margin-right: 12px;
-                    padding: 8px 0;
+                    font-size: 12px;
+                    line-height: 16px;
+                    color: $color-neutral-7;
+                    margin-bottom: 8px;
                 }
-                input {
-                    border: 1px solid #CFD0D0;
-                    box-sizing: border-box;
-                    border-radius: 8px;
-                    width: 80%;
-                    margin-right: 5px;
-                    padding: 13px 16px;
-                    height: 40px;
-                    font-family: "Be Vietnam";
-                    font-style: normal;
-                    font-weight: bold;
-                    font-size: 14px;
-                    line-height: 22px;
-                    color: #111212;
-                    &:focus {
-                        border-color: #80bdff;
+                .input {
+                    position: relative;
+                    width: 618px;
+                    margin-right: 8px;
+                    input {
+                        border: 1px solid $color-neutral-4;
+                        box-sizing: border-box;
+                        border-radius: 12px;
+                        padding: 13px 16px;
+                        height: 48px;
+                        font-family: "Be Vietnam";
+                        font-style: normal;
+                        font-weight: 500;
+                        font-size: 18px;
+                        line-height: 28px;
+                        color: #000000;
+                        width: 100%;
+                        &:focus {
+                            border-color: #80bdff;
+                        }
+                        &::placeholder {
+                            font-weight: normal;
+                            color: $color-neutral-4;
+                        }
                     }
-                    &::placeholder {
-                        font-weight: normal;
-                        color: #CFD0D0;
+                    span {
+                        position: absolute;
+                        right: 16px;
+                        top: 24px;
+                        transform: translateY(-50%);
+                        font-size: 14px;
+                        line-height: 22px;
+                        color: $color-neutral-4;
                     }
                 }
-                span {
-                    padding: 8px 0;
+                button {
+                    height: 48px;
+                    width: 131px;
                 }
             }
             .invalid-error {
                 margin-top: 5px;
                 text-align: center;
             }
-        }
-        .note {
-            img {
-                margin-right: .5rem;
+            .money-transfer {
+                margin-top: 14px;
+                font-size: 12px;
+                line-height: 16px;
+                color: $color-neutral-7;
+                img {
+                    margin-right: 5px;
+                }
             }
         }
     }

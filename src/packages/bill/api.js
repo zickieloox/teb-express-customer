@@ -12,6 +12,23 @@ export default {
   },
 
   /**
+   * get list bill
+   * @param payload
+   * @return {*}
+   */
+  fetchBillList(payload) {
+    return http.get(`/bills/list?${buildQueryString(payload)}`)
+  },
+  /**
+   * get detail bill
+   * @param payload
+   * @return {*}
+   */
+  fetchBillCount(payload) {
+    return http.get(`/bills/count?${buildQueryString(payload)}`)
+  },
+
+  /**
    * get extra fee
    * @param payload
    * @return {*}
@@ -24,5 +41,11 @@ export default {
   },
   countTransactions(payload) {
     return http.get(`/transactions/count?${buildQueryString(payload)}`)
+  },
+  createTopup() {
+    return http.post('/transactions/top-up')
+  },
+  updateTopup(payload) {
+    return http.post(`/transactions/top-up/update/${payload.id}`, payload.body)
   },
 }

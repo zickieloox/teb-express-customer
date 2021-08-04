@@ -9,10 +9,14 @@
               <a class="nav-link active" href="#">Ví của tôi</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Quản lý hóa đơn</a>
+              <router-link class="nav-link" :to="{ name: 'bill' }">
+                Quản lý hóa đơn
+              </router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Nạp tiền</a>
+              <router-link class="nav-link" :to="{ name: 'top-up' }"
+                >Nạp tiền</router-link
+              >
             </li>
           </ul>
         </div>
@@ -107,7 +111,7 @@
                         <router-link
                           class="text-no-underline"
                           :to="{
-                            name: 'list-bill',
+                            name: 'bill',
                             query: {
                               search: item.bill_id,
                               date_search: '',
@@ -181,8 +185,7 @@ export default {
     SearchType,
   },
   computed: {
-    ...mapState('wallet', {
-      topup: (state) => state.topup,
+    ...mapState('bill', {
       balance: (state) => state.balance,
       process_money: (state) => state.process_money,
       transactions: (state) => state.transactions,
@@ -213,7 +216,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('wallet', [FETCH_TRANSACTION]),
+    ...mapActions('bill', [FETCH_TRANSACTION]),
 
     async init() {
       this.isFetching = true
@@ -252,10 +255,6 @@ export default {
 
     handleRemoveSearch() {
       this.filter.type = ''
-    },
-
-    closeModal() {
-      this.isvisibleModalRechargeWallet = false
     },
   },
 
