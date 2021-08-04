@@ -123,7 +123,6 @@
   }
 
   ul.messages {
-    padding-bottom: 30px;
     li {
       border-bottom: 1px solid #fff;
       padding: 8px 0;
@@ -137,6 +136,12 @@
         line-height: 22px;
         color: #313232;
         margin: 0;
+      }
+
+      &:hover {
+        .icon, p {
+          color: #4a9d98;
+        }
       }
     }
   }
