@@ -343,7 +343,7 @@ export default {
       },
       filterRefund: {
         numberPage: 0,
-        itemsPerPage: 2,
+        itemsPerPage: 10,
         currentPage: 1,
       },
       total_fee: 0,
