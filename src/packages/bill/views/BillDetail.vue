@@ -11,12 +11,14 @@
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link active" :to="{ name: 'list-bills' }">
+              <router-link class="nav-link active" :to="{ name: 'bill' }">
                 Quản lý hóa đơn
               </router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Nạp tiền</a>
+              <router-link class="nav-link" :to="{ name: 'top-up' }"
+                >Nạp tiền</router-link
+              >
             </li>
           </ul>
         </div>

@@ -9,7 +9,7 @@
               <a class="nav-link active" href="#">Ví của tôi</a>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" :to="{ name: 'list-bills' }">
+              <router-link class="nav-link" :to="{ name: 'bill' }">
                 Quản lý hóa đơn
               </router-link>
             </li>
@@ -111,7 +111,7 @@
                         <router-link
                           class="text-no-underline"
                           :to="{
-                            name: 'list-bill',
+                            name: 'bill',
                             query: {
                               search: item.bill_id,
                               date_search: '',

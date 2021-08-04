@@ -11,7 +11,7 @@
               >
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" :to="{ name: 'list-bills' }">
+              <router-link class="nav-link" :to="{ name: 'bill' }">
                 Quản lý hóa đơn
               </router-link>
             </li>
