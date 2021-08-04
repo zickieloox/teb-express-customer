@@ -152,7 +152,73 @@
                         </thead>
 
                         <tbody>
-                          <tr v-for="(item, i) in feeExtra" :key="i">
+                          <tr v-for="(item, i) in extraFee" :key="i">
+                            <td>
+                              <router-link
+                                class="text-no-underline"
+                                :to="{
+                                  name: 'package-detail',
+                                  params: {
+                                    id: item.package.id,
+                                  },
+                                }"
+                              >
+                                {{
+                                  item.package && item.package.package_code
+                                    ? item.package.package_code.code
+                                    : ''
+                                }}
+                                <img src="@/assets/img/external.svg" />
+                              </router-link>
+                            </td>
+                            <td>{{
+                              item.created_at | datetime('dd/MM/yyyy HH:mm:ss')
+                            }}</td>
+                            <td v-if="item.amount < 0"
+                              >-{{ Math.abs(item.amount) | formatPrice }}</td
+                            >
+                            <td v-else>{{ item.amount | formatPrice }}</td>
+                            <td v-if="item.status == 10">
+                              <span v-status:status="`Chưa thanh toán`"></span>
+                            </td>
+                            <td>{{ item.extra_fee_types.name }}</td>
+
+                            <td>
+                              <p-tooltip
+                                :label="item.description"
+                                size="large"
+                                position="top"
+                                type="dark"
+                                :active="item.description > 15"
+                              >
+                                {{ truncate(item.description, 15) }}
+                              </p-tooltip>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-block  ">
+                  <div class="card-content">
+                    <div class="card-title">
+                      <div class="title-text"> Phí hoàn tiền :</div>
+                    </div>
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr class="table-header">
+                            <th width="270">MÃ VẬN ĐƠN </th>
+                            <th width="270">THỜI GIAN </th>
+                            <th>PHÍ PHÁT SINH </th>
+                            <th>LOẠI PHÍ</th>
+                            <th>NỘI DUNG</th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          <tr v-for="(item, i) in feeRefund" :key="i">
                             <td>
                               <router-link
                                 class="text-no-underline"
@@ -267,6 +333,14 @@ export default {
       const totalPages = Math.ceil(this.countExtra / this.filterExtra.limit)
       return totalPages
     },
+    extraFee() {
+      let extra = this.feeExtra.filter((item) => item.extra_fee_type_id != 9)
+      return extra
+    },
+    feeRefund() {
+      const refund = this.feeExtra.filter((item) => item.extra_fee_type_id == 9)
+      return refund
+    },
   },
   created() {
     this.filter = this.getRouteQuery()
@@ -275,6 +349,7 @@ export default {
     ...mapActions('bill', [FETCH_BILL_DETAIL, FETCH_BILL_EXTRA]),
     truncate,
     async init() {
+      this.feeRefund
       this.isFetching = true
       this.handleUpdateRouteQuery()
       let result = await this[FETCH_BILL_DETAIL](this.filter)
