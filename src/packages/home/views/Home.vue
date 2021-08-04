@@ -285,25 +285,25 @@ export default {
         labels: this.days,
         datasets: [
           {
-            label: 'Đang xử lý',
-            borderColor: '#7AE2FF',
-            borderWidth: 1,
-            backgroundColor: '#E6FFFB',
-            data: this.datavalues.processing,
-          },
-          {
-            label: 'Đang giao',
-            borderColor: '#00ABFB',
-            borderWidth: 1,
-            backgroundColor: '#E6FBFF',
-            data: this.datavalues.intransit,
-          },
-          {
             label: 'Giao thành công',
             borderColor: '#48BE78',
             borderWidth: 1,
             backgroundColor: '#F0FFF3',
             data: this.datavalues.delivered,
+          },
+          {
+            label: 'Đang giao',
+            borderColor: '#02BABA',
+            borderWidth: 1,
+            backgroundColor: '#E6FBFF',
+            data: this.datavalues.intransit,
+          },
+          {
+            label: 'Đang xử lý',
+            borderColor: '#FA8C16',
+            borderWidth: 1,
+            backgroundColor: '#FFF7E6',
+            data: this.datavalues.processing,
           },
         ],
       }
