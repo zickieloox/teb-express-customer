@@ -494,15 +494,6 @@ export default {
         })
         return
       }
-      if (!this.accept) {
-        this.isCreate = false
-        this.$toast.open({
-          type: 'error',
-          message: 'Bạn chưa đồng ý với điều khoản quy định',
-          duration: 3000,
-        })
-        return
-      }
       this.isCreate = true
       const params = {
         recipient: this.fullname.trim(),
