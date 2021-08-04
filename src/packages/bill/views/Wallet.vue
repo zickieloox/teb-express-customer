@@ -136,7 +136,7 @@
                   <div class="info-right">
                     <span
                       >{{ item.type == typePay ? '-' : '+' }}
-                      {{ item.amount | formatPrice }}</span
+                      {{ Math.abs(item.amount) | formatPrice }}</span
                     >
                     <span v-status:status="mapStatus[item.status].value"></span>
                   </div>
