@@ -15,7 +15,11 @@
       </div>
       <div class="page-content">
         <div class="w-search">
-          <input type="text" placeholder="Tìm kiếm theo mã vận đơn" />
+          <input
+            type="text"
+            placeholder="Tìm kiếm theo mã vận đơn"
+            @keydown.enter.prevent="searchHandle"
+          />
           <div class="icon icon-search"></div>
         </div>
         <div class="row mt-24">
@@ -27,7 +31,7 @@
                     <i class="icon icon-clock"></i>
                   </div>
                   <p class="title">Đang xử lý</p>
-                  <p class="value">1.287</p>
+                  <p class="value">{{ numbers.processing }}</p>
                 </div>
               </div>
               <div class="col-4">
@@ -36,7 +40,7 @@
                     <i class="icon icon-plane"></i>
                   </div>
                   <p class="title">Đang giao</p>
-                  <p class="value">1.287</p>
+                  <p class="value">{{ numbers.intransit }}</p>
                 </div>
               </div>
               <div class="col-4">
@@ -45,7 +49,7 @@
                     <i class="icon icon-box-tick"></i>
                   </div>
                   <p class="title">Giao thành công</p>
-                  <p class="value">1.287</p>
+                  <p class="value">{{ numbers.delivered }}</p>
                 </div>
               </div>
               <div class="col-12 mt-24">
@@ -65,34 +69,17 @@
             <div class="card bg-gray">
               <h3 class="card-title">Hoạt động</h3>
               <div class="card-body">
-                <ul class="messages">
-                  <li v-for="message in messages" :key="message.id">
-                    <i class="icon icon-export"></i>
-                    <p
-                      >Lorem ipsum dolor sit amet, consectetur adipiscing
-                      elit.</p
+                <ul class="messages pb-4">
+                  <li v-for="item in messages" :key="item.id">
+                    <router-link
+                      :to="{
+                        name: 'package-detail',
+                        params: { id: item.package_id },
+                      }"
                     >
-                  </li>
-                  <li>
-                    <i class="icon icon-export"></i>
-                    <p
-                      >Lorem ipsum dolor sit amet, consectetur adipiscing
-                      elit.</p
-                    >
-                  </li>
-                  <li>
-                    <i class="icon icon-export"></i>
-                    <p
-                      >Lorem ipsum dolor sit amet, consectetur adipiscing
-                      elit.</p
-                    >
-                  </li>
-                  <li>
-                    <i class="icon icon-export"></i>
-                    <p
-                      >Lorem ipsum dolor sit amet, consectetur adipiscing
-                      elit.</p
-                    >
+                      <i class="icon icon-export"></i>
+                      <p v-html="item.message"></p>
+                    </router-link>
                   </li>
                 </ul>
               </div>
@@ -109,6 +96,19 @@ import LineChart from '../components/LineChart'
 import { mapActions, mapState, mapGetters } from 'vuex'
 // import { date } from '@core/utils/datetime'
 import { FETCH_ANALYTICS } from '../store'
+import {
+  PACKAGE_STATUS_CREATED,
+  PACKAGE_STATUS_PENDING_PICKUP,
+  PACKAGE_STATUS_PICKED,
+  PACKAGE_STATUS_WAREHOUSE_LABELED,
+  PACKAGE_STATUS_WAREHOUSE_INCONTAINER,
+  PACKAGE_STATUS_WAREHOUSE_INSHIPMENT,
+  PACKAGE_STATUS_WAREHOUSE_EXPORT,
+  PACKAGE_STATUS_INTRANSIT,
+  PACKAGE_STATUS_DELIVERED,
+  PACKAGE_STATUS_RETURNED,
+  PACKAGE_STATUS_CANCELLED,
+} from '../constant'
 
 export default {
   name: 'Home',
@@ -124,7 +124,8 @@ export default {
         maintainAspectRatio: false,
         elements: {
           point: {
-            radius: 0,
+            style: 'circle',
+            radius: 3,
           },
         },
         legend: {
@@ -132,12 +133,28 @@ export default {
           align: 'end',
           labels: {
             usePointStyle: true,
-            pointStyle: 'rectRot',
+            pointStyle: 'circle',
           },
         },
       },
-      data1: [],
-      data2: [],
+      datavalues: {
+        created: [],
+        pendingPickup: [],
+        intransit: [],
+        delivered: [],
+        returned: [],
+        cancelled: [],
+        processing: [],
+      },
+      numbers: {
+        created: 0,
+        pendingPickup: 0,
+        intransit: 0,
+        delivered: 0,
+        returned: 0,
+        cancelled: 0,
+        processing: 0,
+      },
     }
   },
   computed: {
@@ -152,7 +169,9 @@ export default {
       const now = new Date()
       const days = []
       for (let i = 0; i < num; i++) {
-        days[num - i - 1] = `${now.getDate()}/${now.getMonth() + 1}`
+        let m = now.getMonth() + 1
+        let d = now.getDate()
+        days[num - i - 1] = `${d > 9 ? d : '0' + d}/${m > 9 ? m : '0' + m}`
         now.setDate(now.getDate() - 1)
       }
 
@@ -167,8 +186,86 @@ export default {
       fetchAnalytics: FETCH_ANALYTICS,
     }),
 
-    init() {
-      this.fetchAnalytics()
+    async init() {
+      this.createBaseData()
+
+      const res = await this.fetchAnalytics()
+      if (!res || res.error) {
+        this.fillData()
+        this.$toast.error(res.message)
+        return
+      }
+
+      for (const v of this.analytics) {
+        const day = this.dateToDay(v.date_time)
+        const index = this.days.findIndex((item) => item === day)
+        if (index === -1) continue
+
+        let count = parseInt(v.count)
+
+        switch (v.status) {
+          case PACKAGE_STATUS_CREATED:
+            this.numbers.created += count
+            this.datavalues.created[index] += count
+            break
+          case PACKAGE_STATUS_PENDING_PICKUP:
+            this.numbers.pendingPickup += count
+            this.datavalues.pendingPickup[index] += count
+            break
+          case PACKAGE_STATUS_PICKED:
+          case PACKAGE_STATUS_WAREHOUSE_LABELED:
+          case PACKAGE_STATUS_WAREHOUSE_INCONTAINER:
+          case PACKAGE_STATUS_WAREHOUSE_INSHIPMENT:
+          case PACKAGE_STATUS_WAREHOUSE_EXPORT:
+            this.numbers.processing += count
+            this.datavalues.processing[index] += count
+            break
+          case PACKAGE_STATUS_INTRANSIT:
+            this.numbers.intransit += count
+            this.datavalues.intransit[index] += count
+            break
+          case PACKAGE_STATUS_DELIVERED:
+            this.numbers.delivered += count
+            this.datavalues.delivered[index] += count
+            break
+          case PACKAGE_STATUS_RETURNED:
+            this.numbers.returned += count
+            this.datavalues.returned[index] += count
+            break
+          case PACKAGE_STATUS_CANCELLED:
+            this.numbers.cancelled += count
+            this.datavalues.cancelled[index] += count
+            break
+        }
+      }
+
+      this.fillData()
+    },
+
+    dateToDay(date) {
+      const d = date.substr(-2, 2)
+      const m = date.substr(5, 2)
+      return `${d}/${m}`
+    },
+
+    createBaseData() {
+      this.numbers = {
+        created: 0,
+        pendingPickup: 0,
+        intransit: 0,
+        delivered: 0,
+        returned: 0,
+        cancelled: 0,
+        processing: 0,
+      }
+
+      for (const key in this.datavalues) {
+        if (!Object.hasOwnProperty.call(this.datavalues, key)) continue
+        this.datavalues[key] = []
+        for (let i = 0; i < this.days.length; i++) {
+          this.datavalues[key].push(0)
+        }
+      }
     },
 
     fillData() {
@@ -176,31 +273,68 @@ export default {
         labels: this.days,
         datasets: [
           {
-            label: 'Giao thành công',
-            borderColor: 'rgba(72, 190, 120, 1)',
+            label: 'Tạo mới',
+            borderColor: '#87E8DE',
             borderWidth: 1,
-            backgroundColor: 'rgba(72, 190, 120, 0.2)',
-            pointStyle: 'rectRot',
-            data: this.data1,
+            backgroundColor: '#E6FFFB',
+            data: this.datavalues.created,
           },
           {
-            label: 'Đang giao',
-            borderColor: 'rgba(72, 190, 120, 1)',
+            label: 'Chờ lấy',
+            borderColor: '#D3ADF7',
             borderWidth: 1,
-            backgroundColor: 'rgba(72, 190, 120, 0.2)',
-            pointStyle: 'rectRot',
-            data: this.data1,
+            backgroundColor: '#F9F0FF',
+            data: this.datavalues.pendingPickup,
           },
           {
             label: 'Đang xử lý',
-            borderColor: 'rgba(230,46,10,1)',
+            borderColor: '#7AE2FF',
             borderWidth: 1,
-            backgroundColor: 'rgba(230, 46, 10, 0.2)',
-            pointStyle: 'rectRot',
-            data: this.data2,
+            backgroundColor: '#E6FFFB',
+            data: this.datavalues.processing,
+          },
+          {
+            label: 'Đang giao',
+            borderColor: '#00ABFB',
+            borderWidth: 1,
+            backgroundColor: '#E6FBFF',
+            data: this.datavalues.intransit,
+          },
+          {
+            label: 'Giao thành công',
+            borderColor: '#C5E6CF',
+            borderWidth: 1,
+            backgroundColor: '#F0FFF3',
+            data: this.datavalues.delivered,
+          },
+          {
+            label: 'Trả hàng',
+            borderColor: '#7F5345',
+            borderWidth: 1,
+            backgroundColor: '#F2EBE4',
+            data: this.datavalues.returned,
+          },
+          {
+            label: 'Đã huỷ',
+            borderColor: '#FFA39E',
+            borderWidth: 1,
+            backgroundColor: '#FFF1F0',
+            data: this.datavalues.cancelled,
           },
         ],
       }
+    },
+
+    searchHandle(e) {
+      let keyword = e.target.value
+      if (keyword == '') return
+
+      this.$router.push({ name: 'list-packages', query: { code: keyword } })
+    },
+  },
+  watch: {
+    time() {
+      this.init()
     },
   },
 }

@@ -1,31 +1,6 @@
 import api from '../api'
 import AuthService from '@core/services/auth'
 
-const CHANGE_PACKAGE_TYPE = [
-  '',
-  'thay đổi người nhận',
-  'thay đổi số điện thoại',
-  'thay đổi địa chỉ người nhận',
-  'thay đổi thành phố',
-  'thay đổi mã vùng',
-  'thay đổi mã bưu điện',
-  'thay đổi mã quốc gia',
-  'thay đổi trọng lượng',
-  'thay đổi kích thước (DxRxC)',
-  'thay đổi yêu cầu khi giao',
-  'thay đổi dịch vụ',
-  'thay đổi chi tiết hàng hóa',
-  'thay đổi địa chỉ phụ người nhận',
-  'thêm phí covid',
-  'thêm phí quá cỡ',
-  'sửa kích thước',
-  'sửa trọng lượng',
-  'dịch vụ',
-  'sửa đơn',
-  'đã hoàn tiền cho bạn',
-  'thêm phí phát sinh khác',
-]
-
 export const FETCH_ANALYTICS = 'fetchAnalytics'
 
 export const state = {
@@ -36,10 +11,84 @@ export const state = {
 export const getters = {
   messages(state) {
     return state.messages.map((item) => {
+      let message = ''
+      let name =
+        AuthService.getId() == item.updated_user_id
+          ? 'Bạn'
+          : item.updated_user_name
+      let ordername = item.order_number || `#${item.package_id}`
+
+      const fee = item.fee > 0 ? item.fee : -item.fee
+
+      switch (item.type) {
+        case 1:
+          message = `<b>${ordername}</b>: ${name} đã thay đổi người nhận từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          break
+        case 2:
+          message = `<b>${ordername}</b>: ${name} đã thay đổi số điện thoại từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          break
+        case 3:
+          message = `<b>${ordername}</b>: ${name} đã thay đổi địa chỉ người nhận từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          break
+        case 4:
+          message = `<b>${ordername}</b>: ${name} đã thay đổi thành phố từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          break
+        case 5:
+          message = `<b>${ordername}</b>: ${name} đã thay đổi mã vùng từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          break
+        case 6:
+          message = `<b>${ordername}</b>: ${name} đã thay đổi mã bưu điện từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          break
+        case 7:
+          message = `<b>${ordername}</b>: ${name} đã thay đổi mã quốc gia từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          break
+        case 8:
+          message = `<b>${ordername}</b>: ${name} đã thay đổi trọng lượng từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          break
+        case 9:
+          message = `<b>${ordername}</b>: ${name} đã thay đổi kích thước (DxRxC) từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          break
+        case 10:
+          message = `<b>${ordername}</b>: ${name} đã thay đổi yêu cầu khi giao`
+          break
+        case 11:
+          message = `<b>${ordername}</b>: ${name} đã thay đổi dịch vụ từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          break
+        case 12:
+          message = `<b>${ordername}</b>: ${name} đã thay đổi chi tiết hàng hóa từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          break
+        case 13:
+          message = `<b>${ordername}</b>: ${name} đã thay đổi địa chỉ phụ người nhận từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          break
+        case 14:
+          message = `<b>${ordername}</b> thêm phí covid <b>${item.fee}$</b>`
+          break
+        case 15:
+          message = `<b>${ordername}</b> thêm phí quá cỡ <b>${item.fee}$</b>`
+          break
+        case 16:
+          message = `<b>${ordername}</b> thêm phí sửa kích thước <b>${item.fee}$</b>`
+          break
+        case 17:
+          message = `<b>${ordername}</b> thêm phí sửa trọng lượng <b>${item.fee}$</b>`
+          break
+        case 18:
+          message = `<b>${ordername}</b> thêm phí thay đổi dịch vụ <b>${item.fee}$</b>`
+          break
+        case 19:
+          message = `<b>${ordername}</b> thêm phí sửa đơn <b>${item.fee}$</b>`
+          break
+        case 20:
+          message = `<b>${ordername}</b> đã hoàn tiền cho bạn <b>${fee}$</b>`
+          break
+        case 21:
+          message = `<b>${ordername}</b> thêm phí phát sinh khác <b>${item.fee}$</b>`
+          break
+      }
+
       return {
-        user_id: AuthService.getId(),
         package_id: item.package_id,
-        message: `${item.updated_user_name} ${CHANGE_PACKAGE_TYPE[item.type]}`,
+        message,
       }
     })
   },
@@ -61,5 +110,6 @@ export const actions = {
     }
 
     commit(FETCH_ANALYTICS, res)
+    return { error: false }
   },
 }
