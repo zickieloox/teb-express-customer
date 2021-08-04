@@ -76,7 +76,7 @@
                         v-model="city"
                         :input="city"
                         class="form-control"
-                        v-validate="'required|city'"
+                        v-validate="'required'"
                         name="city"
                         data-vv-as="Thành phố"
                         :class="{ 'error-color': errors.has('city') }"
@@ -218,6 +218,27 @@
                   </div>
                   <div class="card__w-item">
                     <label class="card__w-label">
+                      Mã đơn hàng: <span>*</span>
+                    </label>
+                    <div class="card__w-input">
+                      <input
+                        placeholder="Nhập mã đơn hàng"
+                        type="text"
+                        v-model="sku"
+                        :input="sku"
+                        class="form-control"
+                        v-validate="'required'"
+                        name="sku"
+                        data-vv-as="Mã đơn hàng"
+                        :class="{ 'error-color': errors.has('sku') }"
+                      />
+                      <span class="err-span" v-if="errors.has('sku')">{{
+                        errors.first('sku')
+                      }}</span>
+                    </div>
+                  </div>
+                  <div class="card__w-item">
+                    <label class="card__w-label">
                       Chi tiết hàng hóa: <span>*</span>
                     </label>
                     <div class="card__w-input">
@@ -346,40 +367,22 @@
               </div>
             </div>
           </div>
-          <div class="no-gutter create__package-footer">
-            <div class="create__package-price d-flex">
-              <div class="total-title">
-                Tổng cước:
-                <span class="total-number">{{ 0 | formatPrice }}</span>
-                <div class="text"
-                  >Bảng giá không áp dụng cho hành trình này!</div
-                >
-              </div>
-            </div>
-            <div class="create__package-divider">
-              <div class="create__package-notch"></div>
-            </div>
-            <div class="create__package-total">
-              <div class="rule">
-                <p-checkbox class="total-checkbox" v-model="accept">
-                  <span class="rule-text"
-                    >Tôi đã đọc và đồng ý với
-                    <a class="rule-link">điều khoản quy định.</a>
-                  </span>
-                </p-checkbox>
-              </div>
-              <a
-                :disabled="isCreate"
-                @click="handleCreate"
-                class="btn btn-primary"
-                >Tạo mới</a
-              >
-            </div>
-          </div>
         </div>
       </div>
     </div>
-    <div class="page-footer"> </div>
+    <div class="page-footer">
+      <div class="page-footer__left">
+        <div class="total">
+          <div class="total-title">Cước tạm tính:</div>
+          <span class="total-number">{{ 0 | formatPrice }}</span>
+        </div>
+      </div>
+      <div class="page-footer__right">
+        <a :disabled="isCreate" @click="handleCreate" class="btn btn-primary"
+          >Tạo mới</a
+        >
+      </div>
+    </div>
   </div>
 </template>
 
@@ -408,6 +411,7 @@ export default {
       order: null,
       fullname: '',
       phone: '',
+      sku: '',
       city: '',
       address: '',
       address2: '',
@@ -490,15 +494,6 @@ export default {
         })
         return
       }
-      if (!this.accept) {
-        this.isCreate = false
-        this.$toast.open({
-          type: 'error',
-          message: 'Bạn chưa đồng ý với điều khoản quy định',
-          duration: 3000,
-        })
-        return
-      }
       this.isCreate = true
       const params = {
         recipient: this.fullname.trim(),
@@ -515,9 +510,9 @@ export default {
         height: +this.height.trim(),
         service: this.service.name.trim(),
         address_2: this.address2.trim(),
+        sku: this.sku.trim(),
       }
       let result = await this[CREATE_PACKAGE](params)
-      debugger
       if (!result.package || result.error) {
         this.isCreate = false
         this.$toast.open({
