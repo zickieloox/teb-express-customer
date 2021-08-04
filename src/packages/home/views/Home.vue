@@ -300,7 +300,7 @@ export default {
           },
           {
             label: 'Giao thành công',
-            borderColor: '#C5E6CF',
+            borderColor: '#48BE78',
             borderWidth: 1,
             backgroundColor: '#F0FFF3',
             data: this.datavalues.delivered,
