@@ -28,7 +28,7 @@ export const routes = [
   },
   {
     path: '/bill/list-bill',
-    name: 'list-bills',
+    name: 'bill',
     meta: {
       title: 'List Bill',
     },

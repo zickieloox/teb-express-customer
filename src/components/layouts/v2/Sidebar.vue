@@ -131,9 +131,10 @@ export default {
           title: 'Hóa đơn',
           icon: require('@assets/img/Bill.png'),
           iconActive: require('@assets/img/BillActive.png'),
-          route: { name: 'wallet' },
+          route: { name: 'bill' },
           class: '',
           isOpen: false,
+          alias: ['/bill/wallet', '/bill/list-bill', 'bill/topup'],
         },
         {
           title: 'Khiếu nại',
