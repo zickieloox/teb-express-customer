@@ -106,32 +106,6 @@ export default {
     redirect() {
       return this.$router.push('/forgot')
     },
-    // onEmail() {
-    //   ;(this.requiredEmail = false), (this.errorEmail = '')
-    // },
-    // onPassword() {
-    //   ;(this.requiredPassword = false), (this.errorPassWord = '')
-    // },
-    // checkRequired() {
-    //   let result = true
-    //   if (this.password == '') {
-    //     this.requiredPassword = true
-    //     this.errorPassWord = 'Vui lòng không để trống!'
-    //     result = false
-    //   } else {
-    //     this.requiredPassword = false
-    //   }
-    //
-    //   if (this.email == '') {
-    //     this.requiredEmail = true
-    //     this.errorEmail = 'Vui lòng không để trống!'
-    //     result = false
-    //   } else {
-    //     this.requiredEmail = false
-    //   }
-    //
-    //   return result
-    // },
     onInput(key) {
       if (key === 'email') {
         this.valider.validEmail(this.email)
