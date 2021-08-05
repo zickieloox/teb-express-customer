@@ -74,8 +74,9 @@
         :class="{ 'loading spin': isSubmitting }"
         @click="onSignUp"
         :disabled="disableBtn"
+        :icon="`arrow-right`"
       >
-        Đăng ký tài khoản
+        <span class="btn-title"> Đăng ký tài khoản</span>
       </p-button>
     </form>
 
