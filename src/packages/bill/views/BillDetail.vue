@@ -389,6 +389,9 @@ export default {
   created() {
     this.filter = this.getRouteQuery()
   },
+  mounted() {
+    this.init()
+  },
   methods: {
     ...mapActions('bill', [
       FETCH_BILL_DETAIL,
@@ -402,13 +405,19 @@ export default {
       let result = await this[FETCH_BILL_DETAIL](this.filter)
       this.bill = result.bill
       this.total_fee = result.total
+      this.isFetching = false
       if (result.bill) {
         this.filterExtra.id = this.bill.id
         this.filterRefund.id = this.bill.id
         await this[FETCH_BILL_EXTRA](this.filterExtra)
         await this[FETCH_BILL_REFUND](this.filterRefund)
+        return
       }
-      this.isFetching = false
+      this.$toast.open({
+        type: 'error',
+        message: result.message,
+        duration: 4000,
+      })
     },
     clearSearchDate() {
       this.filter.date_search = ''
@@ -423,7 +432,14 @@ export default {
       let page =
         this.filter.page <= 1 ? (this.filter.page = 1) : (this.filter.page -= 1)
       this.$set(this.filter, 'page', page)
-      await this[FETCH_BILL_DETAIL](this.filter)
+      let result = await this[FETCH_BILL_DETAIL](this.filter)
+      if (!result.success) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 4000,
+        })
+      }
     },
     async nextCreateFee() {
       let page =
@@ -431,7 +447,14 @@ export default {
           ? this.filter.page
           : this.filter.page + 1
       this.$set(this.filter, 'page', page)
-      await this[FETCH_BILL_DETAIL](this.filter)
+      let result = await this[FETCH_BILL_DETAIL](this.filter)
+      if (!result.success) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 4000,
+        })
+      }
     },
     async previousExtraFee() {
       let page =
@@ -439,7 +462,14 @@ export default {
           ? (this.filterExtra.page = 1)
           : (this.filterExtra.page -= 1)
       this.$set(this.filterExtra, 'page', page)
-      await this[FETCH_BILL_EXTRA](this.filterExtra)
+      let result = await this[FETCH_BILL_EXTRA](this.filterExtra)
+      if (!result.success) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 4000,
+        })
+      }
     },
     async nextExtraFee() {
       let page =
@@ -447,7 +477,14 @@ export default {
           ? this.filterExtra.page
           : this.filterExtra.page + 1
       this.$set(this.filterExtra, 'page', page)
-      await this[FETCH_BILL_EXTRA](this.filterExtra)
+      let result = await this[FETCH_BILL_EXTRA](this.filterExtra)
+      if (!result.success) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 4000,
+        })
+      }
     },
     selectDate(v) {
       this.filter.page = 1
@@ -463,7 +500,14 @@ export default {
           ? (this.filterRefund.page = 1)
           : (this.filterRefund.page -= 1)
       this.$set(this.filterRefund, 'page', page)
-      await this[FETCH_BILL_REFUND](this.filterRefund)
+      let result = await this[FETCH_BILL_REFUND](this.filterRefund)
+      if (!result.success) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 4000,
+        })
+      }
     },
     async nextRefundPage() {
       let page =
@@ -471,21 +515,21 @@ export default {
           ? this.filterRefund.page
           : this.filterRefund.page + 1
       this.$set(this.filterRefund, 'page', page)
-      await this[FETCH_BILL_REFUND](this.filterRefund)
+      let result = await this[FETCH_BILL_REFUND](this.filterRefund)
+      if (!result.success) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 4000,
+        })
+      }
     },
     total(ship, extra) {
       let total = ship + extra
       return total
     },
   },
-  watch: {
-    filter: {
-      handler: function() {
-        this.init()
-      },
-      deep: true,
-    },
-  },
+  watch: {},
 }
 </script>
 <style lang="scss" scoped>
