@@ -1,18 +1,18 @@
 $grid: (
   container: (
-    width: 1220,
-    gap: 20
+    width: 1104,
+    gap: 12
   ),
   columns: (
     max: 12,
-    gap: 20
+    gap: 24
   ),
   breakpoints: (
     default: xs,
     ms: 500,
     tablet: 768,
     md: 992,
-    lg: 1200
+    lg: 1104
   )
 );
 
@@ -28,15 +28,6 @@ $containerGap: map-deep-get($grid, 'container', 'gap');
 $colMax: map-deep-get($grid, 'columns', 'max');
 $colGap: map-deep-get($grid, 'columns', 'gap');
 
-body {
-  margin: 0;
-  padding: 0;
-}
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-}
 .container {
   max-width: $containerWidth * 1px;
   margin: auto;
@@ -50,36 +41,13 @@ body {
   padding-right: $containerGap * 1px;
   position: relative;
 }
+
 .row {
   margin-left: -($colGap / 2) * 1px;
   margin-right: -($colGap / 2) * 1px;
-  &:after {
-    content: '';
-    display: table;
-    clear: both;
-  }
 }
+
 [class*="col-"] {
-  float: left;
   padding-left: ($colGap / 2) * 1px;
   padding-right: ($colGap / 2) * 1px;
-}
-
-@mixin column($nameCol) {
-  @for $i from 1 through $colMax {
-    .col-#{$nameCol}-#{$i} {
-      width: (100 * $i) / $colMax * 1%;
-    }
-  }
-}
-
-@each $key, $val in map-get($grid, 'breakpoints') {
-  @if ($key == 'default') {
-    $colDefault: map-deep-get($grid, 'breakpoints', 'default');
-    @include column($colDefault);
-  } @else {
-    @media (min-width: $val * 1px) {
-      @include column($key);
-    }
-  }
 }

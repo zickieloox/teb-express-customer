@@ -20,148 +20,147 @@
             </li>
           </ul>
         </div>
-        <div class="info-money">
-          <div class="d-flex">
-            <div class="balance d-flex">
-              <img src="@assets/img/balance.png" alt="" />
-              <div class="wallet">
-                <span class="title">Số dư trong ví</span>
-                <span class="money">{{
-                  balance > 0 ? balance : 0 | formatPrice
-                }}</span>
-              </div>
-            </div>
-            <div class="process-money d-flex">
-              <img src="@assets/img/process-money.png" alt="" />
-              <div class="wallet">
-                <span class="title">Tiền chưa thanh toán</span>
-                <span class="money">{{
-                  balance > 0 ? 0 : Math.abs(balance) | formatPrice
-                }}</span>
-              </div>
-            </div>
-          </div>
-          <p-button>
-            <router-link :to="{ name: 'top-up' }">
-              Thanh toán
-            </router-link></p-button
-          >
-        </div>
       </div>
       <div class="page-body">
-        <div class="transaction-log">
-          <div class="title">Lịch sử giao dịch</div>
-          <div class="search">
-            <div class="multiselect-transaction">
-              <search-type
-                class="search-type"
-                @selected="handleSearchTypeTransaction"
-                @unselected="handleRemoveSearch"
-                :optionSearch="transactionStatus"
-                :placeHolder="'Chọn loại giao dịch'"
-                :type="filter.type"
-              />
-            </div>
-            <div class="select-date d-flex">
-              <p-datepicker
-                class="p-input-group input-group"
-                :format="'dd/mm/yyyy'"
-                :label="label"
-                id="date-search"
-                :value="{
-                  startDate: this.filter.start_date,
-                  endDate: this.filter.end_date,
-                }"
-                @update="selectDate"
-              >
-              </p-datepicker>
-              <p-button
-                class="close ml-2"
-                type="default"
-                icon="close"
-                v-if="filter.start_date && filter.end_date"
-                @click="clearDate"
-              />
-            </div>
-          </div>
-          <div class="content">
-            <vcl-table class="md-20" v-if="isFetching"></vcl-table>
-            <template v-else-if="transactions.length">
-              <div
-                class="transaction-info"
-                v-for="(item, i) in transactions"
-                :key="i"
-              >
-                <div class="d-flex jc-sb">
-                  <div class="info-left">
-                    <img
-                      :src="
-                        item.type == typeTopup || item.type == typeRefund
-                          ? require('@assets/img/in.svg')
-                          : require('@assets/img/out.svg')
-                      "
-                      alt=""
-                    />
-                    <div class="infor">
-                      <span
-                        class="transaction-title"
-                        v-if="item.type == typeTopup"
-                        >Nạp tiền vào ví</span
-                      >
-                      <span class="transaction-title" v-else
-                        >{{
-                          item.type == typeRefund
-                            ? 'Hoàn tiền cho hóa đơn'
-                            : 'Thanh toán hóa đơn'
-                        }}
-                        <router-link
-                          class="text-no-underline"
-                          :to="{
-                            name: 'bill-detail',
-                            query: {
-                              search: item.bill_id,
-                            },
-                          }"
-                        >
-                          #{{ item.bill_id }}
-                        </router-link>
-                      </span>
-                      <span
-                        >{{ formatWeekday(item.created_at) }},
-                        {{ item.created_at | date('dd/MM/yyyy') }} -
-                        {{ item.created_at | datetime('HH:mm') }}</span
-                      >
-                    </div>
-                  </div>
-                  <div class="info-right">
-                    <span
-                      >{{ item.type == typePay ? '-' : '+' }}
-                      {{ Math.abs(item.amount) | formatPrice }}</span
-                    >
-                    <span v-status:status="mapStatus[item.status].value"></span>
-                  </div>
+        <div class="container">
+          <div class="row info-money mb-24">
+            <div class="col-7">
+              <div class="box balance">
+                <img src="@assets/img/balance.png" alt="" />
+                <div class="wallet">
+                  <p class="title">Số dư trong ví</p>
+                  <p class="money">{{ (balance || 0) | formatPrice }}</p>
                 </div>
               </div>
-            </template>
-            <empty-search-result v-else></empty-search-result>
+            </div>
+            <div class="col-5">
+              <div class="box process-money">
+                <img src="@assets/img/process-money.png" alt="" />
+                <div class="wallet">
+                  <p class="title">Tiền chưa thanh toán</p>
+                  <p class="money">
+                    {{ balance > 0 ? 0 : Math.abs(balance) | formatPrice }}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        <div
-          class="
-            paginate
-            d-flex
-            justify-content-between
-            align-items-center
-            mt-24
-          "
-          v-if="count > 0"
-        >
-          <p-pagination
-            :total="count"
-            :perPage.sync="filter.limit"
-            :current.sync="filter.page"
-            size="sm"
-          ></p-pagination>
+          <div class="transaction-log">
+            <div class="title">Lịch sử giao dịch</div>
+            <div class="search">
+              <div class="multiselect-transaction">
+                <search-type
+                  class="search-type"
+                  @selected="handleSearchTypeTransaction"
+                  @unselected="handleRemoveSearch"
+                  :optionSearch="transactionStatus"
+                  :placeHolder="'Chọn loại giao dịch'"
+                  :type="filter.type"
+                />
+              </div>
+              <div class="select-date d-flex">
+                <p-datepicker
+                  class="p-input-group input-group"
+                  :format="'dd/mm/yyyy'"
+                  :label="label"
+                  id="date-search"
+                  :value="{
+                    startDate: this.filter.start_date,
+                    endDate: this.filter.end_date,
+                  }"
+                  @update="selectDate"
+                >
+                </p-datepicker>
+                <p-button
+                  class="close ml-2"
+                  type="default"
+                  icon="close"
+                  v-if="filter.start_date && filter.end_date"
+                  @click="clearDate"
+                />
+              </div>
+            </div>
+            <div class="content">
+              <vcl-table class="md-20" v-if="isFetching"></vcl-table>
+              <template v-else-if="transactions.length">
+                <div
+                  class="transaction-info"
+                  v-for="(item, i) in transactions"
+                  :key="i"
+                >
+                  <div class="d-flex jc-sb">
+                    <div class="info-left">
+                      <img
+                        :src="
+                          item.type == typeTopup || item.type == typeRefund
+                            ? require('@assets/img/in.svg')
+                            : require('@assets/img/out.svg')
+                        "
+                        alt=""
+                      />
+                      <div class="infor">
+                        <span
+                          class="transaction-title"
+                          v-if="item.type == typeTopup"
+                          >Nạp tiền vào ví</span
+                        >
+                        <span class="transaction-title" v-else
+                          >{{
+                            item.type == typeRefund
+                              ? 'Hoàn tiền cho hóa đơn'
+                              : 'Thanh toán hóa đơn'
+                          }}
+                          <router-link
+                            class="text-no-underline"
+                            :to="{
+                              name: 'bill-detail',
+                              query: {
+                                search: item.bill_id,
+                              },
+                            }"
+                          >
+                            #{{ item.bill_id }}
+                          </router-link>
+                        </span>
+                        <span
+                          >{{ formatWeekday(item.created_at) }},
+                          {{ item.created_at | date('dd/MM/yyyy') }} -
+                          {{ item.created_at | datetime('HH:mm') }}</span
+                        >
+                      </div>
+                    </div>
+                    <div class="info-right">
+                      <span
+                        >{{ item.type == typePay ? '-' : '+' }}
+                        {{ Math.abs(item.amount) | formatPrice }}</span
+                      >
+                      <span
+                        v-status:status="mapStatus[item.status].value"
+                      ></span>
+                    </div>
+                  </div>
+                </div>
+              </template>
+              <empty-search-result v-else></empty-search-result>
+            </div>
+          </div>
+          <div
+            class="
+              paginate
+              d-flex
+              justify-content-between
+              align-items-center
+              mt-24
+            "
+            v-if="count > 0"
+          >
+            <p-pagination
+              :total="count"
+              :perPage.sync="filter.limit"
+              :current.sync="filter.page"
+              size="sm"
+            ></p-pagination>
+          </div>
         </div>
       </div>
     </div>

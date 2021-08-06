@@ -1,125 +1,124 @@
 <template>
-  <div class="wallet pages">
+  <div class="pages wallet top-up">
     <div class="page-content">
       <div class="page-header">
-        <div class="page-header_title header">Hóa đơn</div>
-        <div class="navtab-link">
-          <ul class="nav nav-tabs nav-tabs-line">
-            <li class="nav-item">
-              <router-link class="nav-link" :to="{ name: 'wallet' }"
-                >Ví của tôi</router-link
-              >
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" :to="{ name: 'bill' }">
-                Quản lý hóa đơn
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="#">Nạp tiền</a>
-            </li>
-          </ul>
-        </div>
-        <div class="info-money">
-          <div class="d-flex">
-            <div class="balance d-flex">
-              <img src="@assets/img/balance.png" alt="" />
-              <div class="wallet">
-                <span class="title">Số dư trong ví</span>
-                <span class="money">{{
-                  balance > 0 ? balance : 0 | formatPrice
-                }}</span>
-              </div>
-            </div>
-            <div class="process-money d-flex">
-              <img src="@assets/img/process-money.png" alt="" />
-              <div class="wallet">
-                <span class="title">Tiền chưa thanh toán</span>
-                <span class="money">{{
-                  balance > 0 ? 0 : Math.abs(balance) | formatPrice
-                }}</span>
-              </div>
-            </div>
+        <div class="container">
+          <div class="page-header_title header">Hóa đơn</div>
+          <div class="navtab-link">
+            <ul class="nav nav-tabs nav-tabs-line">
+              <li class="nav-item">
+                <router-link class="nav-link" :to="{ name: 'wallet' }"
+                  >Ví của tôi</router-link
+                >
+              </li>
+              <li class="nav-item">
+                <router-link class="nav-link" :to="{ name: 'bill' }">
+                  Quản lý hóa đơn
+                </router-link>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#">Nạp tiền</a>
+              </li>
+            </ul>
           </div>
-          <p-button><a href="#">Thanh toán</a> </p-button>
         </div>
       </div>
       <div class="page-body">
-        <div class="top-up d-flex jc-sb">
-          <div class="method">
-            <div class="active"><i class="fa fa-circle"></i> Chuyển khoản</div>
-            <div class="deactive"
-              ><i class="fa fa-circle"></i>Payoneer
-              <span>(coming soon)</span></div
-            >
-            <div class="deactive"
-              ><i class="fa fa-circle"></i>PingPong
-              <span>(coming soon)</span></div
-            >
+        <div class="container">
+          <div class="row info-money mb-24">
+            <div class="col-7">
+              <div class="box balance">
+                <img src="@assets/img/balance.png" alt="" />
+                <div class="wallet">
+                  <p class="title">Số dư trong ví</p>
+                  <p class="money">{{ (balance || 0) | formatPrice }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-5">
+              <div class="box process-money">
+                <img src="@assets/img/process-money.png" alt="" />
+                <div class="wallet">
+                  <p class="title">Tiền chưa thanh toán</p>
+                  <p class="money">
+                    {{ balance > 0 ? 0 : Math.abs(balance) | formatPrice }}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="form-topup">
-            <span class="title"
-              >Vui lòng chuyển tiền tới số tài khoản dưới đây theo nội dung
-              sau:</span
-            >
-            <div class="card">
-              <p
-                >Ngân hàng:<br /><span>{{ bank }}</span></p
+          <div class="d-flex jc-sb">
+            <div class="method">
+              <div class="active"
+                ><i class="fa fa-circle"></i> Chuyển khoản</div
               >
-              <p
-                >Chi nhánh:<br /><span>{{ branch }}</span></p
+              <div class="deactive"
+                ><i class="fa fa-circle"></i>Payoneer
+                <span>(coming soon)</span></div
               >
-              <p
-                >Tên chủ thẻ:<br /><span>{{ name }}</span></p
+              <div class="deactive"
+                ><i class="fa fa-circle"></i>PingPong
+                <span>(coming soon)</span></div
               >
-              <p
-                >Số tài khoản:<br /><span>{{ accountNumber }}</span></p
-              >
-              <p
-                >Nội dung chuyển khoản:<br /><span id="content"
-                  >Nạp topup {{ topup.id }}</span
+            </div>
+            <div class="form-topup">
+              <span class="title">
+                Vui lòng chuyển tiền tới số tài khoản dưới đây theo nội dung
+                sau:
+              </span>
+              <div class="card">
+                <p
+                  >Ngân hàng:<br /><span>{{ bank }}</span></p
                 >
-                <span
-                  class="copy"
-                  @click.prevent="copy"
-                  @mouseout="resetToolip"
+                <p
+                  >Chi nhánh:<br /><span>{{ branch }}</span></p
                 >
-                  <img src="@assets/img/copy.svg" alt="" />
-                  <span class="tooltip-text" id="myTooltip"
-                    >Sao chép nội dung</span
-                  >
-                </span>
-              </p>
-              <div class="money">
-                <span class="title">Số tiền:</span>
-                <div class="d-flex">
+                <p
+                  >Tên chủ thẻ:<br /><span>{{ name }}</span></p
+                >
+                <p
+                  >Số tài khoản:<br /><span>{{ accountNumber }}</span></p
+                >
+                <p>
+                  Nội dung chuyển khoản:<br />
+                  <span>Nạp topup {{ topup.id }}</span>
+                  <copy :value="`Nạp topup ${topup.id}`"></copy>
+                </p>
+                <div class="money">
+                  <label class="title d-flex justify-content-between">
+                    <span>Nhập số tiền:</span>
+                    <span
+                      >Tỷ giá chuyển đổi: <i>{{ currencyRate }}</i></span
+                    >
+                  </label>
                   <div class="input">
                     <input
                       id="money"
-                      @input="checkValidMoney"
+                      @input="onChangeAmount"
                       placeholder="Nhập số tiền"
-                      :v-model="amount"
+                      :value="amount"
                     />
-
-                    <span>VNĐ</span>
+                    <span>USD</span>
                   </div>
-                  <p-button @click.prevent="handlerRecharge" :loading="loading"
-                    >Chuyển Tiền</p-button
-                  >
+                  <div class="invalid-error" v-if="error == true">
+                    {{ errorText }}
+                  </div>
                 </div>
-              </div>
-              <div class="invalid-error" v-if="error == true">
-                {{ errorText }}
-              </div>
-              <div class="money-transfer d-flex">
-                <span class="d-flex align-items-center"
-                  ><img src="@assets/img/arrange-circle-2.png" alt="" /> Tương
-                  ứng: {{ amountUsd | formatPrice }} USD</span
-                >
-                <span class="ml-18 d-flex align-items-center">
-                  <img src="@assets/img/dollar-circle.png" alt="" />
-                  Tỷ giá: {{ moneyText }}
-                </span>
+                <div class="money">
+                  <label class="title">Số tiền tương ứng:</label>
+                  <div class="d-flex">
+                    <div class="w-price">
+                      <span class="price">{{ amountVND }}</span>
+                      <copy :value="amountVND" v-if="amountVND"></copy>
+                      <span class="currency">VND</span>
+                    </div>
+                  </div>
+                </div>
+                <p>
+                  <p-button @click.prevent="handlerRecharge" :loading="loading">
+                    Chuyển Tiền
+                  </p-button>
+                </p>
               </div>
             </div>
           </div>
@@ -135,21 +134,31 @@ import { FETCH_TRANSACTION, CREATE_TOPUP, UPDATE_TOPUP } from '../store/index'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import { USD_TO_VND, BANK, BRANCH, NAME, ACCOUNT_NUMBER } from '../constants'
+import { formatNumber } from '@core/utils/formatter'
+import Copy from '../components/Copy.vue'
 
 export default {
   name: 'Wallet',
   mixins: [mixinRoute, mixinTable],
-
+  components: { Copy },
   computed: {
     ...mapState('bill', {
       topup: (state) => state.topup,
       balance: (state) => state.balance,
     }),
+
+    amountVND() {
+      if (!this.amount) return ''
+      const amount = parseFloat(('' + this.amount).replace(',', ''))
+      return formatNumber(Math.ceil((amount * 1000 * USD_TO_VND) / 1000))
+    },
+    currencyRate() {
+      return formatNumber(USD_TO_VND)
+    },
   },
   data() {
     return {
       loading: false,
-      usdToVnd: USD_TO_VND,
       bank: BANK,
       branch: BRANCH,
       name: NAME,
@@ -158,15 +167,11 @@ export default {
       errorText: '',
       moneyText: '',
       amount: '',
-      amountUsd: '',
     }
   },
-
   created() {
     this.init()
-    this.moneyText = (this.usdToVnd / 1000).toString().replace('.', ',')
   },
-
   methods: {
     ...mapActions('bill', [FETCH_TRANSACTION, CREATE_TOPUP, UPDATE_TOPUP]),
 
@@ -178,34 +183,21 @@ export default {
       ])
     },
 
-    copy() {
-      var copyText = document.getElementById('content')
-      var textArea = document.createElement('textarea')
-      textArea.value = copyText.textContent
-      document.body.appendChild(textArea)
-      textArea.select()
-      document.execCommand('Copy')
-      textArea.remove()
-
-      var tooltip = document.getElementById('myTooltip')
-      tooltip.innerHTML = 'Đã sao chép!'
-    },
-
-    resetToolip() {
-      var tooltip = document.getElementById('myTooltip')
-      tooltip.innerHTML = 'Sao chép nội dung'
-    },
-
     async handlerRecharge() {
+      if (this.loading) return
+
+      this.checkValidAmount()
+      if (this.error) return
+
       this.loading = true
-      this.checkValidMoney()
-      if (this.error == true) {
-        this.loading = false
-        return
-      }
+
+      const amount = Math.ceil(
+        (parseFloat(('' + this.amount).replace(',', '')) * 100 * USD_TO_VND) /
+          100
+      )
       let params = {
         id: this.topup.id,
-        body: { amount: +this.amount.replaceAll(',', '') },
+        body: { amount },
       }
 
       const result = await this.updateTopup(params)
@@ -224,30 +216,37 @@ export default {
         message: 'Yêu cầu của bạn đang được xử lý',
         duration: 3000,
       })
-      location.reload()
+
+      this.init()
+      this.error = false
+      this.errorText = ''
+      this.moneyText = ''
+      this.amount = ''
     },
 
-    checkValidMoney() {
-      this.amount = document.getElementById('money').value
-      if (!/^[0-9,]+$/.test(this.amount)) {
-        this.error = true
-        this.errorText = 'Số tiền không hợp lệ!'
-        return
-      }
+    onChangeAmount(e) {
+      this.amount = 0
+      let value = e.target.value.trim()
+
+      value = value.replace(/,/g, '').replace(/^0+/, '')
+      value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      this.amount = value
+
+      this.checkValidAmount()
+    },
+
+    checkValidAmount() {
       if (this.amount == '') {
         this.error = true
         this.errorText = 'Số tiền không được để trống!'
         return
       }
 
-      document.getElementById('money').value = document
-        .getElementById('money')
-        .value.replace(/\D/g, '')
-        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-
-      this.amountUsd =
-        Math.floor((this.amount.replaceAll(',', '') / this.usdToVnd) * 100) /
-        100
+      if (!/^[0-9.,]+$/.test(this.amount)) {
+        this.error = true
+        this.errorText = 'Số tiền không hợp lệ!'
+        return
+      }
 
       this.error = false
       this.errorText = ''
