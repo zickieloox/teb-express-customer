@@ -218,27 +218,6 @@
                   </div>
                   <div class="card__w-item">
                     <label class="card__w-label">
-                      Mã đơn hàng: <span>*</span>
-                    </label>
-                    <div class="card__w-input">
-                      <input
-                        placeholder="Nhập mã đơn hàng"
-                        type="text"
-                        v-model="sku"
-                        :input="sku"
-                        class="form-control"
-                        v-validate="'required'"
-                        name="sku"
-                        data-vv-as="Mã đơn hàng"
-                        :class="{ 'error-color': errors.has('sku') }"
-                      />
-                      <span class="err-span" v-if="errors.has('sku')">{{
-                        errors.first('sku')
-                      }}</span>
-                    </div>
-                  </div>
-                  <div class="card__w-item">
-                    <label class="card__w-label">
                       Chi tiết hàng hóa: <span>*</span>
                     </label>
                     <div class="card__w-input">
@@ -411,7 +390,6 @@ export default {
       order: null,
       fullname: '',
       phone: '',
-      sku: '',
       city: '',
       address: '',
       address2: '',
@@ -510,7 +488,6 @@ export default {
         height: +this.height.trim(),
         service: this.service.name.trim(),
         address_2: this.address2.trim(),
-        sku: this.sku.trim(),
       }
       let result = await this[CREATE_PACKAGE](params)
       if (!result.package || result.error) {
