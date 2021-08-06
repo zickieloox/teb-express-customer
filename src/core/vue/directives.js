@@ -96,6 +96,7 @@ const getFormatStatus = (status) => {
       statusClass = 'success'
       break
     case 'Trả hàng':
+    case 'Hoàn trả':
       statusClass = 'info'
       break
     case 'Đã hủy':
@@ -108,6 +109,7 @@ const getFormatStatus = (status) => {
       statusClass = 'pending'
       break
     case 'Đã xử lý':
+    case 'Thanh toán':
       statusClass = 'done'
       break
     case 'Chưa thanh toán':

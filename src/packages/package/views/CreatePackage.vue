@@ -6,31 +6,16 @@
     <div class="page-content">
       <div class="card">
         <div class="card-body">
+          <div class="modal__edit-order-header">
+            <img
+              style="margin-bottom: 3px"
+              src="@/assets/img/InfoCircle.svg"
+              alt="alert"
+            />
+            <b>Lưu ý:</b> <i>(<span>*</span>) Là các trường bắt buộc nhập.</i>
+          </div>
           <div class="row sm-gutters  flex-nowrap">
             <div class="col-lg-6 col-xl-6 item-gutters ">
-              <!--              <div class="card__w">-->
-              <!--                <div class="card__w-header">-->
-              <!--                  Người gửi-->
-              <!--                </div>-->
-              <!--                <div class="card__w-content">-->
-              <!--                  <div class="card__w-item">-->
-              <!--                    <label class="card__w-label">-->
-              <!--                      Họ và tên: <span>*</span>-->
-              <!--                    </label>-->
-              <!--                    <div class="card__w-input">-->
-              <!--                      <multiselect-->
-              <!--                        class="multiselect-custom dropdown-reason"-->
-              <!--                        v-model="sender"-->
-              <!--                        :options="senders"-->
-              <!--                        placeholder="Chọn một "-->
-              <!--                        @select="handleSelect"-->
-              <!--                        :custom-label="customLabel"-->
-              <!--                      ></multiselect>-->
-              <!--                    </div>-->
-              <!--                  </div>-->
-              <!--                </div>-->
-              <!--              </div>-->
-
               <div class="card__w">
                 <div class="card__w-header">
                   Người nhận
@@ -91,13 +76,55 @@
                         v-model="city"
                         :input="city"
                         class="form-control"
-                        v-validate="'required|city'"
+                        v-validate="'required'"
                         name="city"
                         data-vv-as="Thành phố"
                         :class="{ 'error-color': errors.has('city') }"
                       />
                       <span class="err-span" v-if="errors.has('city')">{{
                         errors.first('city')
+                      }}</span>
+                    </div>
+                  </div>
+                  <div class="card__w-item">
+                    <label class="card__w-label">
+                      Địa chỉ: <span>*</span>
+                    </label>
+                    <div class="card__w-input">
+                      <input
+                        placeholder="Nhập địa chỉ"
+                        type="text"
+                        v-model="address"
+                        :input="address"
+                        class="form-control"
+                        v-validate="'required|address'"
+                        name="address"
+                        data-vv-as="Địa chỉ"
+                        :class="{ 'error-color': errors.has('address') }"
+                      />
+                      <span class="err-span" v-if="errors.has('address')">{{
+                        errors.first('address')
+                      }}</span>
+                    </div>
+                  </div>
+                  <div class="card__w-item">
+                    <label class="card__w-label">
+                      Địa chỉ phụ:
+                    </label>
+                    <div class="card__w-input">
+                      <input
+                        placeholder="Nhập địa chỉ phụ"
+                        type="text"
+                        v-model="address2"
+                        :input="address2"
+                        class="form-control"
+                        v-validate="'address'"
+                        name="address"
+                        data-vv-as="Địa chỉ phụ"
+                        :class="{ 'error-color': errors.has('address2') }"
+                      />
+                      <span class="err-span" v-if="errors.has('address2')">{{
+                        errors.first('address2')
                       }}</span>
                     </div>
                   </div>
@@ -167,25 +194,6 @@
                   </div>
                 </div>
               </div>
-
-              <div class="card__w">
-                <div class="card__w-header">
-                  Yêu cầu
-                </div>
-                <div class="card__w-content">
-                  <textarea
-                    class="card__w-area"
-                    placeholder="Nhập yêu cầu khi giao ..."
-                    v-validate="'note'"
-                    name="note"
-                    data-vv-as="Ghi chú"
-                    :class="{ 'error-color': errors.has('note') }"
-                  ></textarea>
-                  <span class="err-span" v-if="errors.has('note')">{{
-                    errors.first('note')
-                  }}</span>
-                </div>
-              </div>
             </div>
             <div class="col-lg-6 col-xl-6 item-gutters">
               <div class="card__w">
@@ -195,7 +203,7 @@
                 <div class="card__w-content">
                   <div class="card__w-item">
                     <label class="card__w-label">
-                      Danh sách đơn hàng: <span>*</span>
+                      Danh sách đơn hàng:
                     </label>
                     <div class="card__w-input">
                       <multiselect
@@ -210,7 +218,28 @@
                   </div>
                   <div class="card__w-item">
                     <label class="card__w-label">
-                      Chi tiết : <span>*</span>
+                      Mã đơn hàng: <span>*</span>
+                    </label>
+                    <div class="card__w-input">
+                      <input
+                        placeholder="Nhập mã đơn hàng"
+                        type="text"
+                        v-model="sku"
+                        :input="sku"
+                        class="form-control"
+                        v-validate="'required'"
+                        name="sku"
+                        data-vv-as="Mã đơn hàng"
+                        :class="{ 'error-color': errors.has('sku') }"
+                      />
+                      <span class="err-span" v-if="errors.has('sku')">{{
+                        errors.first('sku')
+                      }}</span>
+                    </div>
+                  </div>
+                  <div class="card__w-item">
+                    <label class="card__w-label">
+                      Chi tiết hàng hóa: <span>*</span>
                     </label>
                     <div class="card__w-input">
                       <input
@@ -219,9 +248,9 @@
                         v-model="detail"
                         :input="detail"
                         class="form-control"
-                        v-validate="'required|detail'"
+                        v-validate="'required'"
                         name="detail"
-                        data-vv-as="Loại hàng"
+                        data-vv-as="Chi tiết hàng hóa"
                         :class="{ 'error-color': errors.has('detail') }"
                       />
                       <span class="err-span" v-if="errors.has('detail')">{{
@@ -301,7 +330,7 @@
                         :input="height"
                         class="form-control"
                         v-validate="'required|height'"
-                        name="unit"
+                        name="height"
                         data-vv-as="Chiều cao"
                         :class="{ 'error-color': errors.has('height') }"
                       />
@@ -313,59 +342,79 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="no-gutter create__package-footer">
-            <div class="create__package-price d-flex">
-              <div class="price-title">
-                <div class="price-title-item">Phí giao hàng:</div>
-                <div class="price-title-item">Phí phát sinh:</div>
-                <div class="price-title-item">Khuyến mãi:</div>
+              <div class="card__w">
+                <div class="card__w-header">
+                  Dịch vụ gửi
+                </div>
+                <div class="card__w-content">
+                  <div class="card__w-item">
+                    <label class="card__w-label">
+                      Dịch vụ gửi: <span>*</span>
+                    </label>
+                    <div class="card__w-input">
+                      <multiselect
+                        class="multiselect-custom dropdown-reason"
+                        v-model="service"
+                        :options="services"
+                        placeholder="Chọn một "
+                        :allow-empty="false"
+                        @select="handleSelectService"
+                        :custom-label="customLabel"
+                      ></multiselect>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="price-price">
-                <div class="price-price-item">$32.80</div>
-                <div class="price-price-item">$115.99</div>
-                <div class="price-price-item">$87.00</div>
-              </div>
-            </div>
-            <div class="create__package-divider">
-              <div class="create__package-notch"></div>
-            </div>
-            <div class="create__package-total">
-              <div class="total-title mb-10">
-                Tổng cước:
-                <span class="total-number">$299.69</span>
-              </div>
-              <div class="rule">
-                <p-checkbox class="total-checkbox" v-model="accept">
-                  <span class="rule-text"
-                    >Tôi đã đọc và đồng ý với
-                    <a class="rule-link">điều khoản quy định.</a>
-                  </span>
-                </p-checkbox>
-              </div>
-              <a href="#" class="btn btn-primary">Tạo mới</a>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="page-footer"> </div>
+    <div class="page-footer">
+      <div class="page-footer__left">
+        <div class="total">
+          <div class="total-title">Cước tạm tính:</div>
+          <span class="total-number">{{ 0 | formatPrice }}</span>
+        </div>
+      </div>
+      <div class="page-footer__right">
+        <a :disabled="isCreate" @click="handleCreate" class="btn btn-primary"
+          >Tạo mới</a
+        >
+      </div>
+    </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.total-number {
+  padding: 21px 16px;
+  flex: 1;
+  align-items: center;
+  color: #111212;
+  font-weight: 600;
+}
+</style>
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
-import { FETCH_LIST_PRODUCTS } from '../store/index'
-import { GET_SENDER, LIST_SENDER } from '../../setting/store'
+import {
+  FETCH_LIST_PRODUCTS,
+  FETCH_LIST_SERVICE,
+  GET_SERVICE,
+  CREATE_PACKAGE,
+} from '../store'
 export default {
   name: 'CreatePackage',
   data() {
     return {
+      isCreate: false,
       order: null,
-      sender: null,
       fullname: '',
       phone: '',
+      sku: '',
       city: '',
+      address: '',
+      address2: '',
       state: '',
       postcode: '',
       accept: false,
@@ -375,31 +424,111 @@ export default {
       length: '',
       width: '',
       height: '',
+      service: {
+        id: 0,
+        name: 'Chọn một dịch vụ',
+      },
     }
   },
   computed: {
     ...mapState('package', {
       products: (state) => state.products,
     }),
-    ...mapGetters('setting', {
-      senders: GET_SENDER,
+    ...mapGetters('package', {
+      services: GET_SERVICE,
     }),
   },
   created() {
     this.init()
   },
   methods: {
-    ...mapActions('package', [FETCH_LIST_PRODUCTS]),
-    ...mapActions('setting', [LIST_SENDER]),
+    ...mapActions('package', [
+      FETCH_LIST_PRODUCTS,
+      FETCH_LIST_SERVICE,
+      CREATE_PACKAGE,
+    ]),
     async init() {
-      await this.listSender({})
+      await this[FETCH_LIST_SERVICE]()
       await this[FETCH_LIST_PRODUCTS]()
+      this.fullname = ''
+      this.phone = ''
+      this.city = ''
+      this.state = ''
+      this.postcode = ''
+      this.address = ''
+      this.address2 = ''
+      this.note = ''
+      this.code = ''
+      this.items = ''
+      this.weight = ''
+      this.length = ''
+      this.width = ''
+      this.height = ''
+      this.countrycode = ''
+      this.service = ''
+      this.service = {
+        id: 0,
+        name: 'Chọn một dịch vụ',
+      }
     },
     customLabel(item) {
       return item.name
     },
     handleSelect(value) {
       this.sender = value
+    },
+    handleSelectService(value) {
+      this.service = value
+    },
+    async handleCreate() {
+      const validate = await this.$validator.validateAll()
+      if (!validate) {
+        return
+      }
+      if (!this.service || !this.service.id) {
+        this.isCreate = false
+        this.$toast.open({
+          type: 'error',
+          message: 'Bạn chưa chọn dịch vụ gửi',
+          duration: 3000,
+        })
+        return
+      }
+      this.isCreate = true
+      const params = {
+        recipient: this.fullname.trim(),
+        phone_number: this.phone.trim(),
+        address_1: this.address.trim(),
+        city: this.city.trim(),
+        state_code: this.state.trim(),
+        zipcode: this.postcode.trim(),
+        country_code: this.countrycode.trim(),
+        detail: this.detail.trim(),
+        weight: +this.weight.trim(),
+        width: +this.width.trim(),
+        length: +this.length.trim(),
+        height: +this.height.trim(),
+        service: this.service.name.trim(),
+        address_2: this.address2.trim(),
+        sku: this.sku.trim(),
+      }
+      let result = await this[CREATE_PACKAGE](params)
+      if (!result.package || result.error) {
+        this.isCreate = false
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 3000,
+        })
+        return
+      }
+      this.$toast.open({
+        type: 'success',
+        message: `Tạo đơn ${result.package.package_code.code} thành công`,
+        duration: 3000,
+      })
+      this.isCreate = false
+      location.reload()
     },
   },
 }

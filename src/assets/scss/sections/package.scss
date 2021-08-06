@@ -1,92 +1,129 @@
-.create__package{
-  .card-body{
-    padding: 32px 32px 0 32px !important;
-  }
-  &-footer{
-    display: flex;
-    box-shadow: 0px 0px 1px rgba(40, 41, 61, 0.12), 0px 0.5px 2px rgba(96, 97, 112, 0.26);
-    border-radius: 4px 4px 0 0 ;
-  }
-  &-price{
-    width: 60%;
-    align-items: center;
-    padding-left: 16px;
-  }
-  &-divider{
-    width: 1%;
-    position: relative;
-    &:before{
-      content: '';
-      position: absolute;
-      height: 100%;
-      width: 100%;
-      top: 0;
-      border-left: 1px dashed $color-neutral-5;
+.create__package {
+    .card-body {
+        padding: 32px 32px 56px 32px !important;
+        .form-control {
+            height: 40px;
+        }
     }
-  }
-  &-notch{
-    position: absolute;
-    width: 24px;
-    height: 24px;
-    background-color: white;
-    left: -12px;
-    top: -11px;
-    border-radius: 50%;
-    background:linear-gradient(#ffffff 0%, #ffffff 50%);
-    box-shadow: 0px 0px 1px rgba(40, 41, 61, 0.12), 0px 0.5px 2px rgba(96, 97, 112, 0.26);
-    &::after{
-      position: absolute;
-      width: 26px;
-      height: 24px;
-      background-color: white;
-      content: "";
-      top: -50%;
-      left: -1px;
+    &-footer {
+        display: flex;
+        box-shadow: 0px 0px 1px rgba(40, 41, 61, 0.12), 0px 0.5px 2px rgba(96, 97, 112, 0.26);
+        border-radius: 4px 4px 0 0;
     }
-  }
-  &-total{
-    width: 39%;
-    padding: 16px;
-   .rule{
-     position: relative;
-     padding-bottom: 16px;
-     &-text{
-      color: $color-neutral-7;
-     }
-     &-link{
-       color: $color-java-blue-10;
-       text-decoration: underline;
-     }
-     label:before{
-       top: 3px;
-     }
-     label:after{
-       top: 3px;
-     }
-   }
-    .total-title{
-      color: $color-neutral-10;
-      font-weight: 600;
-      span{
-        font-weight: 700;
-        font-size: 20px;
-      }
+    &-price {
+        width: 50%;
+        align-items: center;
+        padding-left: 16px;
     }
-    a.btn{
-      display: block;
-      margin-top: 22px;
+    &-divider {
+        width: 1%;
+        position: relative;
+        &:before {
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            border-left: 1px dashed $color-neutral-5;
+        }
     }
-  }
-  .price-title{
-      &-item{
-        color: $color-neutral-9;
-      }
-  }
-  .price-price{
-    margin-left: 6px;
-    &-item{
-      color: $color-neutral-10;
-      font-weight: 500;
+    &-notch {
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        background-color: white;
+        left: -12px;
+        top: -11px;
+        border-radius: 50%;
+        background: linear-gradient(#ffffff 0%, #ffffff 50%);
+        box-shadow: 0px 0px 1px rgba(40, 41, 61, 0.12), 0px 0.5px 2px rgba(96, 97, 112, 0.26);
+        &::after {
+            position: absolute;
+            width: 26px;
+            height: 24px;
+            background-color: white;
+            content: "";
+            top: -50%;
+            left: -1px;
+        }
     }
-  }
+    .page-footer {
+        background-color: #ffffff;
+        position: fixed;
+        width: calc(100% - 128px);
+        z-index: 1000;
+        bottom: 0;
+        right: 0;
+        box-shadow: 0px -2px 4px rgba(40, 41, 61, 0.04), 0px -6px 10px rgba(96, 97, 112, 0.08);
+        padding: 12px 32px;
+        display: flex;
+        justify-content: space-between;
+        .page-footer__left {
+            .total {
+                .total-title {
+                    font-weight: 500;
+                    font-size: 12px;
+                    line-height: 16px;
+                    color: #AAABAB;
+                }
+                .total-number {
+                    padding: 0;
+                    color: $color-neutral-10;
+                    font-style: normal;
+                    font-weight: bold;
+                    font-size: 28px;
+                    line-height: 34px;
+                }
+                .text {
+                    color: red;
+                    font-size: 12px;
+                }
+            }
+        }
+        .btn {
+            width: 268px;
+            height: 54px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+    &-total {
+        width: 39%;
+        padding: 16px;
+        .rule {
+            position: relative;
+            padding-bottom: 16px;
+            &-text {
+                color: $color-neutral-7;
+            }
+            &-link {
+                color: $color-java-blue-10;
+                text-decoration: underline;
+            }
+            label:before {
+                top: 3px;
+            }
+            label:after {
+                top: 3px;
+            }
+        }
+        a.btn {
+            display: block;
+            margin-top: 22px;
+        }
+    }
+    .price-title {
+        &-item {
+            color: $color-neutral-9;
+        }
+    }
+    .price-price {
+        margin-left: 6px;
+        &-item {
+            color: $color-neutral-10;
+            font-weight: 500;
+        }
+    }
 }

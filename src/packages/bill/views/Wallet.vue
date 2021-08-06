@@ -2,11 +2,55 @@
   <div class="wallet pages">
     <div class="page-content">
       <div class="page-header">
-        <div class="page-header_title header">Ví</div>
-        <div class="page-header_title header-2">Lịch sử phát sinh</div>
+        <div class="page-header_title header">Hóa đơn</div>
+        <div class="navtab-link">
+          <ul class="nav nav-tabs nav-tabs-line">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Ví của tôi</a>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :to="{ name: 'bill' }">
+                Quản lý hóa đơn
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :to="{ name: 'top-up' }"
+                >Nạp tiền</router-link
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="info-money">
+          <div class="d-flex">
+            <div class="balance d-flex">
+              <img src="@assets/img/balance.png" alt="" />
+              <div class="wallet">
+                <span class="title">Số dư trong ví</span>
+                <span class="money">{{
+                  balance > 0 ? balance : 0 | formatPrice
+                }}</span>
+              </div>
+            </div>
+            <div class="process-money d-flex">
+              <img src="@assets/img/process-money.png" alt="" />
+              <div class="wallet">
+                <span class="title">Tiền chưa thanh toán</span>
+                <span class="money">{{
+                  balance > 0 ? 0 : Math.abs(balance) | formatPrice
+                }}</span>
+              </div>
+            </div>
+          </div>
+          <p-button>
+            <router-link :to="{ name: 'top-up' }">
+              Thanh toán
+            </router-link></p-button
+          >
+        </div>
       </div>
       <div class="page-body">
         <div class="transaction-log">
+          <div class="title">Lịch sử giao dịch</div>
           <div class="search">
             <div class="multiselect-transaction">
               <search-type
@@ -14,7 +58,7 @@
                 @selected="handleSearchTypeTransaction"
                 @unselected="handleRemoveSearch"
                 :optionSearch="transactionStatus"
-                :placeHolder="'Loại'"
+                :placeHolder="'Chọn loại giao dịch'"
                 :type="filter.type"
               />
             </div>
@@ -43,9 +87,13 @@
           <div class="content">
             <vcl-table class="md-20" v-if="isFetching"></vcl-table>
             <template v-else-if="transactions.length">
-              <div v-for="(item, i) in transactions" :key="i">
-                <div class="card">
-                  <div class="card-left">
+              <div
+                class="transaction-info"
+                v-for="(item, i) in transactions"
+                :key="i"
+              >
+                <div class="d-flex jc-sb">
+                  <div class="info-left">
                     <img
                       :src="
                         item.type == typeTopup || item.type == typeRefund
@@ -69,10 +117,9 @@
                         <router-link
                           class="text-no-underline"
                           :to="{
-                            name: 'list-bill',
+                            name: 'bill-detail',
                             query: {
                               search: item.bill_id,
-                              date_search: '',
                             },
                           }"
                         >
@@ -86,84 +133,44 @@
                       >
                     </div>
                   </div>
-                  <div class="card-right">
-                    <span v-if="item.amount < 0"
-                      >- {{ Math.abs(item.amount) | formatPrice }}</span
-                    >
-                    <span v-else
+                  <div class="info-right">
+                    <span
                       >{{ item.type == typePay ? '-' : '+' }}
-                      {{ item.amount | formatPrice }}</span
+                      {{ Math.abs(item.amount) | formatPrice }}</span
                     >
                     <span v-status:status="mapStatus[item.status].value"></span>
                   </div>
                 </div>
               </div>
-              <div
-                class="d-flex justify-content-between align-items-center mt-24"
-                v-if="count > 0"
-              >
-                <p-pagination
-                  :total="count"
-                  :perPage.sync="filter.limit"
-                  :current.sync="filter.page"
-                  size="sm"
-                ></p-pagination>
-              </div>
             </template>
             <empty-search-result v-else></empty-search-result>
           </div>
         </div>
-        <div class="info-money d-flex">
-          <div class="card">
-            <div class="wallet">
-              <span>Ví của tôi</span>
-              <span class="money">{{
-                balance > 0 ? balance : 0 | formatPrice
-              }}</span>
-              <p-button
-                href="#"
-                class="btn btn-primary"
-                @click.prevent="visibleModalRechargeWallet"
-                :loading="isLoading"
-              >
-                <i class="fa fa-chevron-circle-right"></i>
-                Nạp tiền
-              </p-button>
-            </div>
-          </div>
-          <div class="card d-flex">
-            <img src="@assets/img/unpaid_money.svg" alt="" />
-            <div class="wallet">
-              <span class="title">Tiền chưa thanh toán</span>
-              <span class="money">{{
-                balance > 0 ? 0 : Math.abs(balance) | formatPrice
-              }}</span>
-            </div>
-          </div>
-          <div class="card d-flex">
-            <img src="@assets/img/process_money.svg" alt="" />
-            <div class="wallet">
-              <span class="title">Tiền đang xử lý</span>
-              <span class="money">{{ process_money | formatPrice }}</span>
-            </div>
-          </div>
+        <div
+          class="
+            paginate
+            d-flex
+            justify-content-between
+            align-items-center
+            mt-24
+          "
+          v-if="count > 0"
+        >
+          <p-pagination
+            :total="count"
+            :perPage.sync="filter.limit"
+            :current.sync="filter.page"
+            size="sm"
+          ></p-pagination>
         </div>
       </div>
     </div>
-    <modal-recharge-wallet
-      :visible.sync="isvisibleModalRechargeWallet"
-      :id="topup.id"
-      @recharge="recharge"
-      @close="closeModal"
-    >
-    </modal-recharge-wallet>
   </div>
 </template>
 
 <script>
-import ModalRechargeWallet from '../components/ModalRechargeWallet'
 import { mapState, mapActions } from 'vuex'
-import { CREATE_TOPUP, UPDATE_TOPUP, FETCH_TRANSACTION } from '../store/index'
+import { FETCH_TRANSACTION } from '../store/index'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
@@ -176,28 +183,24 @@ import {
   TransactionLogTypeRefund,
   MAP_NAME_STATUS_TRANSACTION,
   TRANSACTION_STATUS,
-} from '../constant'
+} from '../constants'
 
 export default {
   name: 'Wallet',
   mixins: [mixinRoute, mixinTable],
   components: {
-    ModalRechargeWallet,
     EmptySearchResult,
     SearchType,
   },
   computed: {
-    ...mapState('wallet', {
-      topup: (state) => state.topup,
+    ...mapState('bill', {
       balance: (state) => state.balance,
-      process_money: (state) => state.process_money,
       transactions: (state) => state.transactions,
       count: (state) => state.count,
     }),
   },
   data() {
     return {
-      isvisibleModalRechargeWallet: false,
       isLoading: false,
       filter: {
         limit: 10,
@@ -220,54 +223,13 @@ export default {
   },
 
   methods: {
-    ...mapActions('wallet', [CREATE_TOPUP, UPDATE_TOPUP, FETCH_TRANSACTION]),
+    ...mapActions('bill', [FETCH_TRANSACTION]),
 
     async init() {
       this.isFetching = true
       this.handleUpdateRouteQuery()
       this.result = await this[FETCH_TRANSACTION](this.filter)
       this.isFetching = false
-    },
-
-    async visibleModalRechargeWallet() {
-      this.isLoading = true
-      const result = await this.createTopup()
-      if (!result || !result.success) {
-        this.$toast.open({
-          type: 'error',
-          message: result.message,
-          duration: 4000,
-        })
-        return
-      }
-
-      this.isvisibleModalRechargeWallet = true
-      this.isLoading = false
-    },
-
-    async recharge(amount) {
-      let params = {
-        id: this.topup.id,
-        body: { amount: +amount },
-      }
-
-      const result = await this.updateTopup(params)
-      if (!result || !result.success) {
-        this.$toast.open({
-          type: 'error',
-          message: result.message,
-          duration: 4000,
-        })
-        return
-      }
-
-      this.$toast.open({
-        type: 'success',
-        message: 'Yêu cầu của bạn đang được xử lý',
-        duration: 3000,
-      })
-
-      await this.init()
     },
 
     selectDate(v) {
@@ -300,10 +262,6 @@ export default {
 
     handleRemoveSearch() {
       this.filter.type = ''
-    },
-
-    closeModal() {
-      this.isvisibleModalRechargeWallet = false
     },
   },
 

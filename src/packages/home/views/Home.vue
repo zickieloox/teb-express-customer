@@ -1,17 +1,105 @@
 <template>
-  <div class="home-page pages">
+  <div class="home-page pages pb-5">
     <div class="page-content">
-      <div class="page-header"> Xin chào, {{ user.full_name }} </div>
+      <div class="page-header">
+        <div class="d-flex justify-content-between">
+          <h3 class="page-title">Dashboard</h3>
+          <div class="actions">
+            <select v-model="time">
+              <option value="d7">7 ngày gần đây</option>
+              <option value="d14">14 ngày gần đây</option>
+              <option value="d30">30 ngày gần đây</option>
+            </select>
+          </div>
+        </div>
+      </div>
       <div class="page-content">
-        <div class="money card">Tiền hàng</div>
-        <div class="d-flex">
-          <div class="package card">
-            <div class="card-title"> Analytics </div>
-            <div class="card-body">
-              <line-chart :chartData="chartData" :options="chartOptions" />
+        <div class="w-search">
+          <input
+            type="text"
+            placeholder="Tìm kiếm theo mã vận đơn"
+            @keydown.enter.prevent="searchHandle"
+          />
+          <div class="icon icon-search"></div>
+        </div>
+        <div class="row mt-24">
+          <div class="col-9">
+            <div class="row">
+              <div class="col-4">
+                <div class="box box-warning">
+                  <a
+                    @click="goListpackage('processing')"
+                    href="javascript:void(0)"
+                  >
+                    <div class="w-icon">
+                      <i class="icon icon-clock"></i>
+                    </div>
+                    <p class="title">Đang xử lý</p>
+                    <p class="value">{{ numbers.processing }}</p>
+                  </a>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="box box-info">
+                  <a
+                    @click="goListpackage('in-transit')"
+                    href="javascript:void(0)"
+                  >
+                    <div class="w-icon">
+                      <i class="icon icon-plane"></i>
+                    </div>
+                    <p class="title">Đang giao</p>
+                    <p class="value">{{ numbers.intransit }}</p>
+                  </a>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="box box-success">
+                  <a
+                    @click="goListpackage('delivered')"
+                    href="javascript:void(0)"
+                  >
+                    <div class="w-icon">
+                      <i class="icon icon-box-tick"></i>
+                    </div>
+                    <p class="title">Giao thành công</p>
+                    <p class="value">{{ numbers.delivered }}</p>
+                  </a>
+                </div>
+              </div>
+              <div class="col-12 mt-24">
+                <div class="card">
+                  <h3 class="card-title">Thống kê đơn hàng</h3>
+                  <div class="card-body">
+                    <line-chart
+                      :chartData="chartData"
+                      :options="chartOptions"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="news card">Tin tức</div>
+          <div class="col-3 list-actions">
+            <div class="card bg-gray">
+              <h3 class="card-title">Hoạt động</h3>
+              <div class="card-body">
+                <ul class="messages pb-4">
+                  <li v-for="item in messages" :key="item.id">
+                    <router-link
+                      :to="{
+                        name: 'package-detail',
+                        params: { id: item.package_id },
+                      }"
+                    >
+                      <i class="icon icon-export"></i>
+                      <p v-html="item.message"></p>
+                    </router-link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -20,8 +108,20 @@
 
 <script>
 import LineChart from '../components/LineChart'
-import { mapState } from 'vuex'
-import { date } from '@core/utils/datetime'
+import { mapActions, mapState, mapGetters } from 'vuex'
+import { FETCH_ANALYTICS } from '../store'
+import {
+  PACKAGE_STATUS_CREATED,
+  PACKAGE_STATUS_PENDING_PICKUP,
+  PACKAGE_STATUS_PICKED,
+  PACKAGE_STATUS_WAREHOUSE_LABELED,
+  PACKAGE_STATUS_WAREHOUSE_INCONTAINER,
+  PACKAGE_STATUS_WAREHOUSE_INSHIPMENT,
+  PACKAGE_STATUS_INTRANSIT,
+  PACKAGE_STATUS_DELIVERED,
+  PACKAGE_STATUS_RETURNED,
+  PACKAGE_STATUS_CANCELLED,
+} from '../constant'
 
 export default {
   name: 'Home',
@@ -30,13 +130,24 @@ export default {
   },
   data() {
     return {
+      time: 'd14',
       chartData: null,
       chartOptions: {
         responsive: true,
         maintainAspectRatio: false,
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
         elements: {
           point: {
-            radius: 0,
+            style: 'circle',
+            radius: 3,
           },
         },
         legend: {
@@ -44,86 +155,194 @@ export default {
           align: 'end',
           labels: {
             usePointStyle: true,
-            pointStyle: 'rectRot',
+            pointStyle: 'circle',
           },
         },
       },
-      days: [],
-      data1: [],
-      data2: [],
+      datavalues: {
+        created: [],
+        pendingPickup: [],
+        intransit: [],
+        delivered: [],
+        returned: [],
+        cancelled: [],
+        processing: [],
+      },
+      numbers: {
+        created: 0,
+        pendingPickup: 0,
+        intransit: 0,
+        delivered: 0,
+        returned: 0,
+        cancelled: 0,
+        processing: 0,
+      },
     }
   },
   computed: {
-    ...mapState('shared', {
-      user: (state) => state.user,
+    ...mapGetters('home', ['messages']),
+    ...mapState('home', {
+      analytics: (state) => state.analytics,
     }),
+    days() {
+      const mapdays = { d7: 7, d14: 14, d30: 30 }
+      const num = mapdays[this.time] || 14
+
+      const now = new Date()
+      const days = []
+      for (let i = 0; i < num; i++) {
+        let m = now.getMonth() + 1
+        let d = now.getDate()
+        days[num - i - 1] = `${d > 9 ? d : '0' + d}/${m > 9 ? m : '0' + m}`
+        now.setDate(now.getDate() - 1)
+      }
+
+      return days
+    },
   },
-  created() {},
   mounted() {
-    var day = new Date()
-    this.getDaysInMonth(day, day.getMonth(), day.getFullYear())
-    this.fetchData()
-    this.fillData()
+    this.init()
   },
   methods: {
+    ...mapActions('home', {
+      fetchAnalytics: FETCH_ANALYTICS,
+    }),
+
+    async init() {
+      this.createBaseData()
+
+      const res = await this.fetchAnalytics()
+      if (!res || res.error) {
+        this.fillData()
+        this.$toast.error(res.message)
+        return
+      }
+
+      for (const v of this.analytics) {
+        const day = this.dateToDay(v.date_time)
+        const index = this.days.findIndex((item) => item === day)
+        if (index === -1) continue
+
+        let count = parseInt(v.count)
+
+        switch (v.status) {
+          case PACKAGE_STATUS_CREATED:
+            this.numbers.created += count
+            this.datavalues.created[index] += count
+            break
+          case PACKAGE_STATUS_PENDING_PICKUP:
+            this.numbers.pendingPickup += count
+            this.datavalues.pendingPickup[index] += count
+            break
+          case PACKAGE_STATUS_PICKED:
+          case PACKAGE_STATUS_WAREHOUSE_LABELED:
+          case PACKAGE_STATUS_WAREHOUSE_INCONTAINER:
+          case PACKAGE_STATUS_WAREHOUSE_INSHIPMENT:
+            this.numbers.processing += count
+            this.datavalues.processing[index] += count
+            break
+          case PACKAGE_STATUS_INTRANSIT:
+            this.numbers.intransit += count
+            this.datavalues.intransit[index] += count
+            break
+          case PACKAGE_STATUS_DELIVERED:
+            this.numbers.delivered += count
+            this.datavalues.delivered[index] += count
+            break
+          case PACKAGE_STATUS_RETURNED:
+            this.numbers.returned += count
+            this.datavalues.returned[index] += count
+            break
+          case PACKAGE_STATUS_CANCELLED:
+            this.numbers.cancelled += count
+            this.datavalues.cancelled[index] += count
+            break
+        }
+      }
+
+      this.fillData()
+    },
+
+    dateToDay(date) {
+      const d = date.substr(-2, 2)
+      const m = date.substr(5, 2)
+      return `${d}/${m}`
+    },
+
+    createBaseData() {
+      this.numbers = {
+        created: 0,
+        pendingPickup: 0,
+        intransit: 0,
+        delivered: 0,
+        returned: 0,
+        cancelled: 0,
+        processing: 0,
+      }
+
+      for (const key in this.datavalues) {
+        if (!Object.hasOwnProperty.call(this.datavalues, key)) continue
+        this.datavalues[key] = []
+        for (let i = 0; i < this.days.length; i++) {
+          this.datavalues[key].push(0)
+        }
+      }
+    },
+
     fillData() {
       this.chartData = {
         labels: this.days,
         datasets: [
           {
             label: 'Giao thành công',
-            borderColor: 'rgba(72, 190, 120, 1)',
+            borderColor: '#48BE78',
             borderWidth: 1,
-            backgroundColor: 'rgba(72, 190, 120, 0.2)',
-            pointStyle: 'rectRot',
-            data: this.data1,
-          },
-          {
-            label: 'Hoàn trả',
-            borderColor: 'rgba(230,46,10,1)',
-            borderWidth: 1,
-            backgroundColor: 'rgba(230, 46, 10, 0.2)',
-            pointStyle: 'rectRot',
-            data: this.data2,
+            backgroundColor: '#F0FFF3',
+            data: this.datavalues.delivered,
           },
         ],
       }
     },
 
-    fetchData() {
-      for (let i = 0; i < this.days.length; i++) {
-        this.data1.push(this.getRandomInt())
-        this.data2.push(this.getRandomInt())
-      }
-    },
-    getRandomInt() {
-      return Math.floor(Math.random() * (50 - 5 + 1)) + 5
+    searchHandle(e) {
+      let keyword = e.target.value.trim()
+      if (keyword == '') return
+
+      this.$router.push({ name: 'list-packages', query: { code: keyword } })
     },
 
-    getDaysInMonth(day, month, year) {
-      var firtsDate = new Date(year, month, 1)
-      while (firtsDate.getMonth() === month) {
-        firtsDate = new Date(firtsDate)
-        var formatDate = date(firtsDate, 'dd/MM')
-        var formatCurrentDate = date(day, 'dd/MM')
+    goListpackage(status) {
+      const mapdays = { d7: 7, d14: 14, d30: 30 }
+      const num = mapdays[this.time] || 14
 
-        if (formatDate === formatCurrentDate) {
-          break
-        }
+      let t = new Date()
+      let ed = this.dateformat(t)
 
-        this.days.push(formatDate)
-        firtsDate.setDate(firtsDate.getDate() + 1)
-      }
-      return this.days
+      t.setDate(t.getDate() - num + 1)
+      let sd = this.dateformat(t)
+
+      this.$router.push({
+        name: 'list-packages',
+        query: {
+          status: status,
+          start_date: sd,
+          end_date: ed,
+        },
+      })
+    },
+
+    dateformat(dt) {
+      const y = dt.getFullYear()
+      const m = dt.getMonth() + 1
+      const d = dt.getDate()
+
+      return `${y}-${m > 9 ? m : '0' + m}-${d > 9 ? d : '0' + d}`
     },
   },
-  //   watch: {
-  //     filter: {
-  //       handler: function() {
-  //         this.init()
-  //       },
-  //       deep: true,
-  //     },
-  //   },
+  watch: {
+    time() {
+      this.init()
+    },
+  },
 }
 </script>

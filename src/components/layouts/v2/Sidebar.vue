@@ -120,6 +120,11 @@ export default {
               title: 'Quản lý đơn hàng',
               alias: ['/packages', '/packages/:id'],
             },
+            {
+              route: '/packages/create',
+              title: 'Tạo đơn lẻ',
+              alias: ['/packages/create'],
+            },
           ],
         },
         {
@@ -129,16 +134,7 @@ export default {
           route: { name: 'bill' },
           class: '',
           isOpen: false,
-          sub: [
-            {
-              route: '/bill',
-              title: 'Hóa đơn',
-            },
-            {
-              route: '/bill/wallet',
-              title: 'Ví',
-            },
-          ],
+          alias: ['/bill/wallet', '/bill/list-bill', 'bill/topup'],
         },
         {
           title: 'Khiếu nại',
@@ -147,12 +143,6 @@ export default {
           route: { name: 'claims' },
           class: '',
         },
-        // {
-        //   title: 'Ví',
-        //   icon: require('@assets/img/Bill.png'),
-        //   route: '/wallet',
-        //   class: '',
-        // },
         {
           title: 'Cài đặt',
           icon: require('@assets/img/Setting.png'),
@@ -165,10 +155,10 @@ export default {
               route: '/setting/account',
               title: 'Thông tin tài khoản',
             },
-            {
-              route: '',
-              title: 'Danh sách hàng hóa',
-            },
+            // {
+            //   route: '',
+            //   title: 'Danh sách hàng hóa',
+            // },
             {
               route: '/setting/api',
               title: 'API',

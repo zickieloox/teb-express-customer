@@ -2,143 +2,156 @@
 .wallet {
     .page-header {
         width: 1080px;
-        margin: 0 auto 10px;
-        padding: 0;
-        .header {
-            font-weight: bold;
-            font-size: 20px;
-            line-height: 28px;
-            color: #111212;
-            margin-bottom: 15px;
-        }
-        .header-2 {
-            font-weight: 500;
-            font-size: 18px;
-            line-height: 28px;
-            letter-spacing: 0.2px;
-            color: #111212;
-        }
-    }
-    .page-body {
-        width: 1080px;
-        padding-bottom: 32px;
         margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        .info-money {
-            flex-direction: column;
-            .card {
-                width: 344px;
-                height: 90px;
-                background: rgba(221, 243, 244, 0.6);
-                border-radius: 12px;
-                border: none;
-                padding: 12px 16px 24px 16px;
-                flex-direction: unset;
-                margin-bottom: 24px;
-                &:first-child {
-                    background-image: url("~@assets/img/wallet.png");
-                    color: #FFFFFF;
-                    padding: 16px 24px 24px 24px;
-                    height: 156px;
-                    span {
-                        font-weight: 500;
-                        font-size: 14px;
-                        line-height: 22px;
-                        letter-spacing: 0.2px;
-                    }
-                    .money {
-                        font-weight: bold;
-                        font-size: 28px !important;
-                        line-height: 42px !important;
-                        color: #FFFFFF !important;
-                        margin-bottom: 16px;
-                    }
-                    button {
-                        border: 2px solid #FFFFFF;
-                        box-sizing: border-box;
-                        border-radius: 12px;
-                        background: unset;
-                        width: 133px;
-                        height: 40px;
-                        padding: 0;
-                        font-weight: bold;
-                        font-size: 16px;
-                        line-height: 24px;
-                        color: #FFFFFF;
-                        &:focus,
-                        &:active {
-                            background: unset !important;
-                            box-shadow: none !important;
-                        }
-                    }
-                }
-                img {
-                    width: 48px;
-                    height: 48px;
-                    margin-right: 12px;
-                    margin-top: 5px;
-                }
-                .wallet {
-                    display: flex;
-                    flex-direction: column;
-                    .title {
-                        font-style: normal;
-                        font-weight: 500;
-                        font-size: 14px;
-                        line-height: 22px;
-                        letter-spacing: 0.2px;
-                        color: #313232;
-                    }
-                    .money {
-                        font-style: normal;
-                        font-weight: bold;
-                        font-size: 24px;
-                        line-height: 36px;
-                        color: #005149;
+        padding: 0;
+        position: relative;
+        .header {
+            font-style: normal;
+            font-weight: normal;
+            font-size: 36px;
+            line-height: 54px;
+            color: $color-neutral-10;
+            margin-top: 6px;
+            margin-bottom: 24px;
+        }
+        .navtab-link {
+            .nav-tabs {
+                border-bottom: none;
+                .nav-link {
+                    margin-right: 35px;
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 22px;
+                    &.active {
+                        // font-weight: 500;
+                        background-color: unset;
+                        color: $color-neutral-10;
                     }
                 }
             }
         }
+        .info-money {
+            width: 528px;
+            height: 148px;
+            background: #FFFFFF;
+            box-shadow: 0px 0px 2px rgba(40, 41, 61, 0.04), 0px 4px 8px rgba(96, 97, 112, 0.16);
+            border-radius: 12px;
+            position: absolute;
+            top: 14px;
+            right: 0;
+            padding: 16px 16px 24px 16px;
+            img {
+                margin-right: 8px;
+                height: 40px;
+                margin-top: 4px;
+            }
+            .wallet {
+                display: flex;
+                flex-direction: column;
+                .title {
+                    font-weight: 500;
+                    font-size: 12px;
+                    line-height: 16px;
+                    letter-spacing: 0.2px;
+                    color: $color-neutral-6
+                }
+                .money {
+                    font-weight: 500;
+                    font-size: 18px;
+                    line-height: 28px;
+                    letter-spacing: 0.2px;
+                    color: $color-neutral-9;
+                }
+            }
+            .balance {
+                width: 55%;
+                border-right: 1px solid $color-neutral-3;
+                .money {
+                    font-weight: bold;
+                    font-size: 24px;
+                    line-height: 36px;
+                    color: $color-neutral-10
+                }
+            }
+            .process-money {
+                padding-left: 24px;
+            }
+            button {
+                margin-left: 48px;
+                margin-top: 24px;
+                border: 1px solid $color-turquoise-4;
+                background-color: white;
+                a {
+                    color: $color-turquoise-4;
+                }
+                &:focus,
+                &:active {
+                    border-color: $color-turquoise-4;
+                    box-shadow: none;
+                    a {
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+    .page-body {
+        padding-top: 62px;
+        padding-bottom: 32px;
+        background-color: #ffffff;
         .transaction-log {
-            width: 712px;
+            width: 1080px;
+            margin: 0 auto;
+            box-shadow: 0px 0px 2px rgba(40, 41, 61, 0.04), 0px 4px 8px rgba(96, 97, 112, 0.16);
+            border-radius: 8px;
+            padding-top: 16px;
+            .title {
+                padding: 0 16px;
+                margin-bottom: 12px;
+                font-weight: 500;
+                font-size: 18px;
+                line-height: 28px;
+                letter-spacing: 0.2px;
+                color: #000000;
+            }
             .search {
                 display: flex;
                 justify-content: space-between;
-                margin-bottom: 8px;
+                padding: 0 16px;
+                margin-bottom: 16px;
                 .multiselect-transaction {
                     display: flex;
-                    height: 40px;
+                    height: 48px;
                     margin-right: 8px;
                     width: 100%;
                     .multiselect__tags {
-                        height: 40px;
-                        border: 1px solid #E5E7ED;
+                        height: 48px;
+                        border: 1px solid $color-neutral-4;
                         box-sizing: border-box;
-                        border-radius: 8px;
+                        border-radius: 12px;
                         background-color: #ffffff;
                         .multiselect__single,
                         .multiselect__placeholder {
-                            margin-top: 5px;
+                            margin-top: 7px;
                             background-color: #ffffff;
-                            color: #111212;
+                            color: $color-neutral-5;
                             padding-top: 0;
                             font-family: "Be VietNam", sans-serif;
                         }
                     }
                     .multiselect__select {
-                        top: -2px
+                        top: 0px
                     }
                     .multiselect--active .multiselect__select {
                         transform: none
                     }
                     .multiselect--active .multiselect__tags {
                         border: 1px solid #111212;
-                        border-radius: 8px 8px 0px 0px;
+                        border-radius: 12px 12px 0px 0px;
                     }
                     .multiselect__input {
                         font-size: 14px;
-                        margin-top: 5px;
+                        margin-top: 7px;
                         background-color: #ffffff;
                         color: #111212;
                         padding-top: 0;
@@ -152,12 +165,15 @@
                     }
                 }
                 #date-search {
-                    width: 220px;
+                    width: 300px;
+                    .form-control {
+                        height: 48px;
+                    }
                     &+.close {
-                        width: 40px;
-                        height: 40px;
-                        border: 1px solid #ccc;
-                        border-radius: 8px;
+                        width: 48px;
+                        height: 48px;
+                        border: 1px solid $color-neutral-4;
+                        border-radius: 12px;
                         background-color: #ffffff
                     }
                     .calendars {
@@ -166,11 +182,14 @@
                     .show-ranges {
                         min-width: 712px;
                     }
+                    .reportrange-text {
+                        border: 1px solid $color-neutral-4;
+                    }
                     .reportrange-text>div {
-                        line-height: 28px;
+                        line-height: 35px;
                         font-weight: normal;
                         .label-date-picker {
-                            color: $color-neutral-4;
+                            color: $color-neutral-5;
                         }
                     }
                     .opensleft {
@@ -178,23 +197,12 @@
                     }
                 }
             }
-            .title {
-                font-weight: 500;
-                font-size: 18px;
-                line-height: 28px;
-                letter-spacing: 0.2px;
-                color: #111212;
-                margin-bottom: 8px;
-            }
             .content {
-                .card {
-                    background: #FFFFFF;
+                .transaction-info {
                     padding: 16px;
-                    justify-content: space-between;
                     flex-direction: unset;
-                    box-shadow: 0px 2px 4px rgba(40, 41, 61, 0.04), 0px 8px 16px rgba(96, 97, 112, 0.16);
-                    border-radius: 4px;
-                    .card-left {
+                    border-bottom: 1px solid $color-neutral-3;
+                    .info-left {
                         display: flex;
                         img {
                             margin-right: 12px;
@@ -203,23 +211,19 @@
                             display: flex;
                             flex-direction: column;
                             .transaction-title {
-                                font-weight: 500;
                                 font-size: 14px;
                                 line-height: 22px;
-                                letter-spacing: 0.2px;
-                                color: #111212;
-                                a {
-                                    color: #006D67
-                                }
+                                color: $color-neutral-9;
                             }
                             span {
+                                font-style: italic;
                                 font-size: 12px;
                                 line-height: 16px;
-                                color: #313232;
+                                color: $color-neutral-7;
                             }
                         }
                     }
-                    .card-right {
+                    .info-right {
                         display: flex;
                         flex-direction: column;
                         span {
@@ -250,94 +254,86 @@
                             }
                         }
                     }
-                }
-                .pagination-box {
-                    margin: 0;
-                    .select_limit_box {
-                        display: none;
+                    &:last-child {
+                        border-bottom: none;
                     }
+                }
+            }
+        }
+        .paginate {
+            width: 1080px;
+            margin-left: auto;
+            margin-right: auto;
+            .pagination-box {
+                margin: 0;
+                .select_limit_box {
+                    display: none;
                 }
             }
         }
     }
 }
 
-//modal
-.modal-recharge-wallet {
-    .modal-body {
-        padding: 24px 16px;
-        // max-height: none;
-        .payments {
+//top-up
+.top-up {
+    width: 1080px;
+    margin: auto;
+    padding-top: 8px;
+    .method {
+        display: flex;
+        flex-direction: column;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 22px;
+        i {
+            font-size: 4px;
+            margin-right: 8px
+        }
+        .active {
             display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            line-height: 22px;
-            color: #313232;
-            margin-bottom: 16px;
-            .usd {
-                border-radius: 4px;
-                width: 167px;
-                height: 22px;
-                color: #F5222D;
-                text-align: center;
-                background-color: #FFF1F0;
+            align-items: center;
+            color: $color-neutral-10;
+        }
+        .deactive {
+            color: $color-neutral-6;
+            i {
+                visibility: hidden;
+            }
+            span {
+                font-style: italic;
+                font-size: 12px;
+                line-height: 16px;
             }
         }
-        .tab {
-            display: flex;
-            justify-content: space-between;
-            height: 40px;
-            .active {
-                padding-left: 16px;
-                padding-top: 7px;
-                width: calc(100%/3);
-                background: #00B4C3;
-                border-radius: 4px 4px 0px 0px;
-                font-weight: bold;
-                font-size: 16px;
-                line-height: 24px;
-                color: #FFFFFF;
-            }
-            .deactive {
-                padding-left: 16px;
-                padding-top: 7px;
-                width: calc(100%/3);
-                background: #F6F7F7;
-                color: #626363;
-                border-radius: 4px 4px 0px 0px;
-                font-weight: 600;
-                font-size: 14px;
-                line-height: 22px;
-                span {
-                    font-style: italic;
-                    font-weight: normal;
-                    font-size: 12px;
-                    line-height: 16px;
-                    color: #898A8A;
-                }
-            }
+    }
+    .form-topup {
+        width: 805px;
+        padding-top: 16px;
+        .title {
+            color: $color-neutral-9;
         }
         .card {
-            border: 1px solid #CFD0D0;
-            box-sizing: border-box;
-            border-radius: 0px 0px 4px 4px;
-            padding: 16px 16px 38px 16px;
-            font-size: 14px;
-            line-height: 22px;
-            color: #313232;
-            margin-bottom: 16px;
+            margin-top: 24px;
+            background: #FFFFFF;
+            box-shadow: 0px 0px 1px rgba(40, 41, 61, 0.04), 0px 2px 4px rgba(96, 97, 112, 0.16);
+            border-radius: 8px;
+            padding: 16px 24px 28px 24px;
             p {
                 position: relative;
-                &:first-child {
-                    margin-bottom: 18px;
-                }
+                margin-bottom: 12px;
+                font-size: 12px;
+                line-height: 16px;
+                color: $color-neutral-7;
                 span {
                     font-weight: 600;
-                    color: #111212;
-                    margin-right: .5rem;
+                    font-size: 14px;
+                    line-height: 22px;
+                    color: $color-neutral-10;
                 }
                 .copy {
                     position: relative;
+                    margin-left: 4px;
                     img {
                         margin-bottom: 4px;
                         cursor: pointer;
@@ -383,43 +379,63 @@
             }
             .money {
                 .title {
-                    margin-right: 12px;
-                    padding: 8px 0;
+                    font-size: 12px;
+                    line-height: 16px;
+                    color: $color-neutral-7;
+                    margin-bottom: 8px;
                 }
-                input {
-                    border: 1px solid #CFD0D0;
-                    box-sizing: border-box;
-                    border-radius: 8px;
-                    width: 80%;
-                    margin-right: 5px;
-                    padding: 13px 16px;
-                    height: 40px;
-                    font-family: "Be Vietnam";
-                    font-style: normal;
-                    font-weight: bold;
-                    font-size: 14px;
-                    line-height: 22px;
-                    color: #111212;
-                    &:focus {
-                        border-color: #80bdff;
+                .input {
+                    position: relative;
+                    width: 618px;
+                    margin-right: 8px;
+                    input {
+                        border: 1px solid $color-neutral-4;
+                        box-sizing: border-box;
+                        border-radius: 12px;
+                        padding: 13px 16px;
+                        height: 48px;
+                        font-family: "Be Vietnam";
+                        font-style: normal;
+                        font-weight: 500;
+                        font-size: 18px;
+                        line-height: 28px;
+                        color: #000000;
+                        width: 100%;
+                        &:focus {
+                            border-color: #80bdff;
+                        }
+                        &::placeholder {
+                            font-weight: normal;
+                            color: $color-neutral-4;
+                        }
                     }
-                    &::placeholder {
-                        font-weight: normal;
-                        color: #CFD0D0;
+                    span {
+                        position: absolute;
+                        right: 16px;
+                        top: 24px;
+                        transform: translateY(-50%);
+                        font-size: 14px;
+                        line-height: 22px;
+                        color: $color-neutral-4;
                     }
                 }
-                span {
-                    padding: 8px 0;
+                button {
+                    height: 48px;
+                    width: 131px;
                 }
             }
             .invalid-error {
                 margin-top: 5px;
                 text-align: center;
             }
-        }
-        .note {
-            img {
-                margin-right: .5rem;
+            .money-transfer {
+                margin-top: 14px;
+                font-size: 12px;
+                line-height: 16px;
+                color: $color-neutral-7;
+                img {
+                    margin-right: 5px;
+                }
             }
         }
     }

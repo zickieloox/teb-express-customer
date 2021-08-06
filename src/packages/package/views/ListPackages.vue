@@ -76,11 +76,11 @@
                           @click="handleWayBill"
                           >Vận đơn</p-button
                         >
-                        <p-button
-                          :disabled="isFilterInitTab"
-                          class="bulk-actions__selection-status"
-                          >In đơn</p-button
-                        >
+                        <!--                        <p-button-->
+                        <!--                          :disabled="isFilterInitTab"-->
+                        <!--                          class="bulk-actions__selection-status"-->
+                        <!--                          >In đơn</p-button-->
+                        <!--                        >-->
                         <p-button
                           :disabled="cancelOrder(filter.status)"
                           class="bulk-actions__selection-status"
@@ -138,7 +138,7 @@
                             },
                           }"
                         >
-                          {{ item.code }}
+                          {{ item.package_code ? item.package_code.code : '' }}
                         </router-link>
 
                         <span
@@ -148,7 +148,7 @@
                         >
                           <img
                             src="@/assets/img/Vector-barcode.png"
-                            style="margin-top: 6px;position: absolute; left: 150px;"
+                            style="margin-left: 10px;margin-bottom: 3px;"
                           />
                         </span>
                       </td>
@@ -502,9 +502,7 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selectedIds.length
-      }. Bạn có chắc chắn muốn hủy đơn?`
+      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn hủy đơn?`
       this.visibleConfirmCancel = true
     },
     async cancelPackagesAction() {
@@ -533,9 +531,10 @@ export default {
       let selectedInvalid = this.selected.filter(
         (ele) => ele.status_string !== PackageStatusCreatedText
       )
-      debugger
       if (selectedInvalid.length > 0) {
-        let codeSelectedInvalid = selectedInvalid.map((ele) => ele.code)
+        let codeSelectedInvalid = selectedInvalid.map(
+          (ele) => ele.package_code.code
+        )
         if (codeSelectedInvalid.length > 3) {
           codeSelectedInvalid = [...codeSelectedInvalid.slice(0, 3), '...']
         }
@@ -547,9 +546,7 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selected.length
-      }. Bạn có chắc chắn muốn vận đơn?`
+      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${this.selected.length}. Bạn có chắc chắn muốn vận đơn?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {

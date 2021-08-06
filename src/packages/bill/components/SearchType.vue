@@ -46,14 +46,13 @@ export default {
     return {
       selected: {
         key: 'more-filter',
-        name: 'Loại',
+        name: 'Chọn loại giao dịch',
       },
       isLoading: false,
       users: [],
     }
   },
   created() {
-    console.log(this.type)
     this.selected = this.type
       ? this.optionSearch.find((item) => item.key == this.type)
       : this.selected
