@@ -223,7 +223,7 @@
                 <div class="card__w-content">
                   <div class="card__w-item">
                     <label class="card__w-label">
-                      Danh sách đơn hàng:
+                      Danh sách hàng hóa:
                     </label>
                     <div class="card__w-input">
                       <multiselect
