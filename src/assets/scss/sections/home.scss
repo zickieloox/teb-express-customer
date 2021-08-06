@@ -1,4 +1,10 @@
 .home-page {
+
+  .container {
+    width: 111rem;
+    margin: 0 auto;
+  }
+
   .icon-search:after {
     content: url('../img/search-home.svg');
   }
@@ -7,7 +13,12 @@
     content: url('../img/export-h.svg');
   }
 
+  .row {
+    
+  }
+
   .page-header .actions {
+    text-align: right;
     select {
       font-size: 1.4rem;
       line-height: 2.2rem;
@@ -16,10 +27,15 @@
       border-radius: 0.8rem;
       padding: 3px 12px 7px;
     }
+
+    p {
+      font-size: 13px;
+      margin-top: 5px;
+    }
   }
 
   .page-header {
-    padding: 0 32px 24px 32px;
+    padding: 0 0 24px;
   }
 
   .page-title {
@@ -49,7 +65,7 @@
   }
 
   .page-content {
-    padding: 0 32px;
+    padding: 0;
   }
 
   .box {

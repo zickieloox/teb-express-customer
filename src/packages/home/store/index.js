@@ -1,5 +1,6 @@
 import api from '../api'
 import AuthService from '@core/services/auth'
+import { formatNumber } from '@core/utils/formatter'
 
 export const FETCH_ANALYTICS = 'fetchAnalytics'
 
@@ -13,7 +14,7 @@ export const getters = {
     return state.messages.map((item) => {
       let message = ''
       let name = AuthService.getId() == item.updated_user_id ? 'Bạn' : 'CSKH'
-      let ordername = item.order_number || `#${item.package_id}`
+      let ordername = item.code || `#${item.package_id}`
 
       const fee = item.fee > 0 ? item.fee : -item.fee
 
@@ -40,10 +41,14 @@ export const getters = {
           message = `<b>${ordername}</b>: ${name} đã thay đổi mã quốc gia từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
           break
         case 8:
-          message = `<b>${ordername}</b>: ${name} đã thay đổi trọng lượng từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          message = `<b>${ordername}</b>: ${name} đã thay đổi trọng lượng từ <b>${formatNumber(
+            +item.old_value
+          )}</b> sang <b>${formatNumber(+item.value)}</b>`
           break
         case 9:
-          message = `<b>${ordername}</b>: ${name} đã thay đổi kích thước (DxRxC) từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          message = `<b>${ordername}</b>: ${name} đã thay đổi kích thước (DxRxC) từ <b>${formatNumber(
+            +item.old_value
+          )}</b> sang <b>${formatNumber(+item.value)}</b>`
           break
         case 10:
           message = `<b>${ordername}</b>: ${name} đã thay đổi yêu cầu khi giao`
@@ -58,28 +63,44 @@ export const getters = {
           message = `<b>${ordername}</b>: ${name} đã thay đổi địa chỉ phụ người nhận từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
           break
         case 14:
-          message = `<b>${ordername}</b> thêm phí covid <b>${item.fee}$</b>`
+          message = `<b>${ordername}</b> thêm phí covid <b>${formatNumber(
+            +item.fee
+          )}$</b>`
           break
         case 15:
-          message = `<b>${ordername}</b> thêm phí quá cỡ <b>${item.fee}$</b>`
+          message = `<b>${ordername}</b> thêm phí quá cỡ <b>${formatNumber(
+            +item.fee
+          )}$</b>`
           break
         case 16:
-          message = `<b>${ordername}</b> thêm phí sửa kích thước <b>${item.fee}$</b>`
+          message = `<b>${ordername}</b> thêm phí sửa kích thước <b>${formatNumber(
+            +item.fee
+          )}$</b>`
           break
         case 17:
-          message = `<b>${ordername}</b> thêm phí sửa trọng lượng <b>${item.fee}$</b>`
+          message = `<b>${ordername}</b> thêm phí sửa trọng lượng <b>${formatNumber(
+            +item.fee
+          )}$</b>`
           break
         case 18:
-          message = `<b>${ordername}</b> thêm phí thay đổi dịch vụ <b>${item.fee}$</b>`
+          message = `<b>${ordername}</b> thêm phí thay đổi dịch vụ <b>${formatNumber(
+            +item.fee
+          )}$</b>`
           break
         case 19:
-          message = `<b>${ordername}</b> thêm phí sửa đơn <b>${item.fee}$</b>`
+          message = `<b>${ordername}</b> thêm phí sửa đơn <b>${formatNumber(
+            +item.fee
+          )}$</b>`
           break
         case 20:
-          message = `<b>${ordername}</b> đã hoàn tiền cho bạn <b>${fee}$</b>`
+          message = `<b>${ordername}</b> đã hoàn tiền cho bạn <b>${formatNumber(
+            +fee
+          )}$</>`
           break
         case 21:
-          message = `<b>${ordername}</b> thêm phí phát sinh khác <b>${item.fee}$</b>`
+          message = `<b>${ordername}</b> thêm phí phát sinh khác <b>${formatNumber(
+            +item.fee
+          )}$</b>`
           break
       }
 

@@ -1,102 +1,105 @@
 <template>
   <div class="home-page pages pb-5">
-    <div class="page-content">
-      <div class="page-header">
-        <div class="d-flex justify-content-between">
-          <h3 class="page-title">Dashboard</h3>
-          <div class="actions">
-            <select v-model="time">
-              <option value="d7">7 ngày gần đây</option>
-              <option value="d14">14 ngày gần đây</option>
-              <option value="d30">30 ngày gần đây</option>
-            </select>
+    <div class="container">
+      <div class="page-content">
+        <div class="page-header">
+          <div class="d-flex justify-content-between">
+            <h3 class="page-title">Dashboard</h3>
+            <div class="actions">
+              <select v-model="time">
+                <option value="d7">7 ngày gần đây</option>
+                <option value="d14">14 ngày gần đây</option>
+                <option value="d30">30 ngày gần đây</option>
+              </select>
+              <p v-if="startdate && enddate">{{ startdate }} - {{ enddate }}</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="page-content">
-        <div class="w-search">
-          <input
-            type="text"
-            placeholder="Tìm kiếm theo mã vận đơn"
-            @keydown.enter.prevent="searchHandle"
-          />
-          <div class="icon icon-search"></div>
-        </div>
-        <div class="row mt-24">
-          <div class="col-9">
-            <div class="row">
-              <div class="col-4">
-                <div class="box box-warning">
-                  <a
-                    @click="goListpackage('processing')"
-                    href="javascript:void(0)"
-                  >
-                    <div class="w-icon">
-                      <i class="icon icon-clock"></i>
-                    </div>
-                    <p class="title">Đang xử lý</p>
-                    <p class="value">{{ numbers.processing }}</p>
-                  </a>
+        <div class="page-content">
+          <div class="w-search">
+            <input
+              type="text"
+              placeholder="Tìm kiếm theo mã vận đơn"
+              @keydown.enter.prevent="searchHandle"
+            />
+            <div class="icon icon-search"></div>
+          </div>
+          <div class="row mt-24">
+            <div class="col-9">
+              <div class="row">
+                <div class="col-4">
+                  <div class="box box-warning">
+                    <a
+                      @click="goListpackage('processing')"
+                      href="javascript:void(0)"
+                    >
+                      <div class="w-icon">
+                        <i class="icon icon-clock"></i>
+                      </div>
+                      <p class="title">Đang xử lý</p>
+                      <p class="value">{{ numbers.processing }}</p>
+                    </a>
+                  </div>
                 </div>
-              </div>
-              <div class="col-4">
-                <div class="box box-info">
-                  <a
-                    @click="goListpackage('in-transit')"
-                    href="javascript:void(0)"
-                  >
-                    <div class="w-icon">
-                      <i class="icon icon-plane"></i>
-                    </div>
-                    <p class="title">Đang giao</p>
-                    <p class="value">{{ numbers.intransit }}</p>
-                  </a>
+                <div class="col-4">
+                  <div class="box box-info">
+                    <a
+                      @click="goListpackage('in-transit')"
+                      href="javascript:void(0)"
+                    >
+                      <div class="w-icon">
+                        <i class="icon icon-plane"></i>
+                      </div>
+                      <p class="title">Đang giao</p>
+                      <p class="value">{{ numbers.intransit }}</p>
+                    </a>
+                  </div>
                 </div>
-              </div>
-              <div class="col-4">
-                <div class="box box-success">
-                  <a
-                    @click="goListpackage('delivered')"
-                    href="javascript:void(0)"
-                  >
-                    <div class="w-icon">
-                      <i class="icon icon-box-tick"></i>
-                    </div>
-                    <p class="title">Giao thành công</p>
-                    <p class="value">{{ numbers.delivered }}</p>
-                  </a>
+                <div class="col-4">
+                  <div class="box box-success">
+                    <a
+                      @click="goListpackage('delivered')"
+                      href="javascript:void(0)"
+                    >
+                      <div class="w-icon">
+                        <i class="icon icon-box-tick"></i>
+                      </div>
+                      <p class="title">Giao thành công</p>
+                      <p class="value">{{ numbers.delivered }}</p>
+                    </a>
+                  </div>
                 </div>
-              </div>
-              <div class="col-12 mt-24">
-                <div class="card">
-                  <h3 class="card-title">Thống kê đơn hàng</h3>
-                  <div class="card-body">
-                    <line-chart
-                      :chartData="chartData"
-                      :options="chartOptions"
-                    />
+                <div class="col-12 mt-24">
+                  <div class="card">
+                    <h3 class="card-title">Thống kê đơn hàng</h3>
+                    <div class="card-body">
+                      <line-chart
+                        :chartData="chartData"
+                        :options="chartOptions"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-3 list-actions">
-            <div class="card bg-gray">
-              <h3 class="card-title">Hoạt động</h3>
-              <div class="card-body">
-                <ul class="messages pb-4">
-                  <li v-for="item in messages" :key="item.id">
-                    <router-link
-                      :to="{
-                        name: 'package-detail',
-                        params: { id: item.package_id },
-                      }"
-                    >
-                      <i class="icon icon-export"></i>
-                      <p v-html="item.message"></p>
-                    </router-link>
-                  </li>
-                </ul>
+            <div class="col-3 list-actions">
+              <div class="card bg-gray">
+                <h3 class="card-title">Hoạt động</h3>
+                <div class="card-body">
+                  <ul class="messages pb-4">
+                    <li v-for="item in messages" :key="item.id">
+                      <router-link
+                        :to="{
+                          name: 'package-detail',
+                          params: { id: item.package_id },
+                        }"
+                      >
+                        <i class="icon icon-export"></i>
+                        <p v-html="item.message"></p>
+                      </router-link>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -184,10 +187,28 @@ export default {
     ...mapState('home', {
       analytics: (state) => state.analytics,
     }),
-    days() {
-      const mapdays = { d7: 7, d14: 14, d30: 30 }
-      const num = mapdays[this.time] || 14
+    startdate() {
+      const t = new Date()
+      t.setDate(t.getDate() - this.numday + 1)
 
+      let m = t.getMonth() + 1
+      let d = t.getDate()
+      let y = t.getFullYear()
+      return `${d > 9 ? d : '0' + d}/${m > 9 ? m : '0' + m}/${y}`
+    },
+    enddate() {
+      const t = new Date()
+      let m = t.getMonth() + 1
+      let d = t.getDate()
+      let y = t.getFullYear()
+      return `${d > 9 ? d : '0' + d}/${m > 9 ? m : '0' + m}/${y}`
+    },
+    numday() {
+      const mapdays = { d7: 7, d14: 14, d30: 30 }
+      return mapdays[this.time] || 14
+    },
+    days() {
+      const num = this.numday
       const now = new Date()
       const days = []
       for (let i = 0; i < num; i++) {
