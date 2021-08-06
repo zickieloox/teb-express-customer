@@ -203,7 +203,7 @@
                 <div class="card__w-content">
                   <div class="card__w-item">
                     <label class="card__w-label">
-                      Danh sách đơn hàng:
+                      Danh sách hàng hóa:
                     </label>
                     <div class="card__w-input">
                       <multiselect
@@ -522,13 +522,17 @@ export default {
         })
         return
       }
+      console.log(result)
       this.$toast.open({
         type: 'success',
         message: `Tạo đơn ${result.package.package_code.code} thành công`,
         duration: 3000,
       })
       this.isCreate = false
-      location.reload()
+      this.$router.push({
+        name: 'package-detail',
+        params: { id: result.package.id },
+      })
     },
   },
 }
