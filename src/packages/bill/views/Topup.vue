@@ -193,10 +193,7 @@ export default {
 
       this.loading = true
 
-      const amount = Math.ceil(
-        (parseFloat(('' + this.amount).replace(',', '')) * 100 * USD_TO_VND) /
-          100
-      )
+      const amount = +this.amount.replaceAll(',', '')
       let params = {
         id: this.topup.id,
         body: { amount },
