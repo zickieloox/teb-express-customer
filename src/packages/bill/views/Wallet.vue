@@ -29,7 +29,9 @@
                 <img src="@assets/img/balance.png" alt="" />
                 <div class="wallet">
                   <p class="title">Số dư trong ví</p>
-                  <p class="money">{{ (balance || 0) | formatPrice }}</p>
+                  <p class="money">{{
+                    balance > 0 ? balance : 0 | formatPrice
+                  }}</p>
                 </div>
               </div>
             </div>
