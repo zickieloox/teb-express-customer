@@ -42,7 +42,9 @@
                   target="_blank"
                   v-if="package_detail.package.tracking"
                   :href="
-                    `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${package_detail.package.tracking.tracking_number}`
+                    `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${
+                      package_detail.package.tracking.tracking_number
+                    }`
                   "
                 >
                   {{
@@ -673,8 +675,6 @@ export default {
     this.packageID = parseInt(this.$route.params.id, 10)
   },
   mounted() {
-    let sameHeight = document.getElementById('recipient-block').offsetHeight
-    document.getElementById('item-block').style.height = sameHeight + 'px'
     this.init()
   },
   methods: {
@@ -689,6 +689,17 @@ export default {
       this.isFetching = true
       await this.fetchPackage(this.packageID)
       await this[FETCH_LIST_SERVICE]()
+      let recipientBlockHeight = document.getElementById('recipient-block')
+        .offsetHeight
+      let itemBlockHeight = document.getElementById('item-block').offsetHeight
+      if (
+        itemBlockHeight < recipientBlockHeight &&
+        this.package_detail.package &&
+        this.package_detail.package.detail
+      ) {
+        document.getElementById('item-block').style.height =
+          recipientBlockHeight + 'px'
+      }
       this.isFetching = false
     },
     changeDisplayDeliverDetail() {
