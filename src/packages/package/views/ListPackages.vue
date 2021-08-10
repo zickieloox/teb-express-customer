@@ -103,6 +103,7 @@
                       <template>
                         <th :class="{ hidden: hiddenClass }">Mã vận đơn</th>
                         <th :class="{ hidden: hiddenClass }">Mã đơn hàng</th>
+                        <th :class="{ hidden: hiddenClass }">Tracking</th>
                         <th :class="{ hidden: hiddenClass }">Người nhận</th>
                         <th :class="{ hidden: hiddenClass }">Dịch vụ</th>
                         <th width="100" :class="{ hidden: hiddenClass }"
@@ -153,6 +154,17 @@
                         </span>
                       </td>
                       <td>{{ item.order_number }}</td>
+                      <td>
+                        <a
+                          target="_blank"
+                          v-if="item.tracking && item"
+                          :href="
+                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${item.tracking.tracking_number}`
+                          "
+                        >
+                          {{ item.tracking.tracking_number }}
+                        </a>
+                      </td>
                       <td>
                         {{ item.recipient }}
                       </td>
@@ -242,6 +254,7 @@ import { mapState, mapActions } from 'vuex'
 import mixinDownload from '@/packages/shared/mixins/download'
 import evenBus from '../../../core/utils/evenBus'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
+import mixinChaining from '@/packages/shared/mixins/chaining'
 
 import {
   PACKAGE_STATUS_TAB,
@@ -265,7 +278,7 @@ import api from '../api'
 
 export default {
   name: 'ListPackages',
-  mixins: [mixinRoute, mixinTable, mixinDownload],
+  mixins: [mixinRoute, mixinTable, mixinDownload, mixinChaining],
   components: {
     ModalImport,
     ModalImportPreviewPackage,
