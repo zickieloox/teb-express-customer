@@ -45,7 +45,7 @@
                   </div>
                   <div class="card__w-item">
                     <label class="card__w-label">
-                      Điện thoại: <span>*</span>
+                      Điện thoại:
                     </label>
                     <div class="card__w-input">
                       <input
@@ -55,7 +55,7 @@
                         v-model="phone"
                         :input="phone"
                         class="form-control"
-                        v-validate="'required|phoneAddress'"
+                        v-validate="'phoneAddress'"
                         name="phone"
                         data-vv-as="Số điện thoại"
                         :class="{ 'error-color': errors.has('phone') }"
