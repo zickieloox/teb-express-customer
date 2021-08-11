@@ -160,9 +160,9 @@
                           <tr class="table-header">
                             <th width="270">MÃ VẬN ĐƠN </th>
                             <th width="270">THỜI GIAN </th>
-                            <th>PHÍ PHÁT SINH </th>
                             <th>LOẠI PHÍ</th>
                             <th>NỘI DUNG</th>
+                            <th>PHÍ PHÁT SINH </th>
                           </tr>
                         </thead>
 
@@ -189,15 +189,7 @@
                             <td>{{
                               item.created_at | datetime('dd/MM/yyyy HH:mm:ss')
                             }}</td>
-                            <td v-if="item.amount < 0"
-                              >-{{ Math.abs(item.amount) | formatPrice }}</td
-                            >
-                            <td v-else>{{ item.amount | formatPrice }}</td>
-                            <td v-if="item.status == 10">
-                              <span v-status:status="`Chưa thanh toán`"></span>
-                            </td>
                             <td>{{ item.extra_fee_types.name }}</td>
-
                             <td>
                               <p-tooltip
                                 :label="item.description"
@@ -208,6 +200,13 @@
                               >
                                 {{ truncate(item.description, 15) }}
                               </p-tooltip>
+                            </td>
+                            <td v-if="item.amount < 0"
+                              >-{{ Math.abs(item.amount) | formatPrice }}</td
+                            >
+                            <td v-else>{{ item.amount | formatPrice }}</td>
+                            <td v-if="item.status == 10">
+                              <span v-status:status="`Chưa thanh toán`"></span>
                             </td>
                           </tr>
                         </tbody>
@@ -247,7 +246,7 @@
                             <th width="270">MÃ VẬN ĐƠN </th>
                             <th width="270">THỜI GIAN </th>
                             <th>NỘI DUNG</th>
-                            <th>PHÍ PHÁT SINH </th>
+                            <th>PHÍ HOÀN TIỀN </th>
                           </tr>
                         </thead>
 
