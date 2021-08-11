@@ -65,10 +65,10 @@
                 <table class="table table-hover">
                   <thead>
                     <tr class="table-header">
-                      <th>MÃ HÓA ĐƠN </th>
-                      <th>NGÀY TẠO </th>
-                      <th>TỔNG TIỀN </th>
-                      <th>LOẠI HÓA ĐƠN </th>
+                      <th style="width: 25%">MÃ HÓA ĐƠN </th>
+                      <th style="width: 35%">NGÀY TẠO </th>
+                      <th style="width: 25%">LOẠI HÓA ĐƠN </th>
+                      <th style="text-align: right">TỔNG TIỀN </th>
                     </tr>
                   </thead>
 
@@ -89,19 +89,22 @@
                         </router-link>
                       </td>
                       <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>
-                      <td v-if="total(item.shipping_fee, item.extra_fee) < 0">
+                      <td>
+                        <span v-status:status="handleStatus(item)"></span>
+                      </td>
+                      <td
+                        style="text-align: right"
+                        v-if="total(item.shipping_fee, item.extra_fee) < 0"
+                      >
                         -{{
                           Math.abs(total(item.shipping_fee, item.extra_fee))
                             | formatPrice
                         }}
                       </td>
-                      <td v-else>
+                      <td style="text-align: right" v-else>
                         {{
                           total(item.shipping_fee, item.extra_fee) | formatPrice
                         }}
-                      </td>
-                      <td>
-                        <span v-status:status="handleStatus(item)"></span>
                       </td>
                     </tr>
                   </tbody>

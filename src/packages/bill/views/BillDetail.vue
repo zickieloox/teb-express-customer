@@ -162,7 +162,7 @@
                             <th width="270">THỜI GIAN </th>
                             <th>LOẠI PHÍ</th>
                             <th>NỘI DUNG</th>
-                            <th>PHÍ PHÁT SINH </th>
+                            <th style="text-align: right">PHÍ PHÁT SINH </th>
                           </tr>
                         </thead>
 
@@ -201,11 +201,16 @@
                                 {{ truncate(item.description, 15) }}
                               </p-tooltip>
                             </td>
-                            <td v-if="item.amount < 0"
+                            <td style="text-align: right" v-if="item.amount < 0"
                               >-{{ Math.abs(item.amount) | formatPrice }}</td
                             >
-                            <td v-else>{{ item.amount | formatPrice }}</td>
-                            <td v-if="item.status == 10">
+                            <td style="text-align: right" v-else>{{
+                              item.amount | formatPrice
+                            }}</td>
+                            <td
+                              style="text-align: right"
+                              v-if="item.status == 10"
+                            >
                               <span v-status:status="`Chưa thanh toán`"></span>
                             </td>
                           </tr>
@@ -246,7 +251,7 @@
                             <th width="270">MÃ VẬN ĐƠN </th>
                             <th width="270">THỜI GIAN </th>
                             <th>NỘI DUNG</th>
-                            <th>PHÍ HOÀN TIỀN </th>
+                            <th style="text-align: right">PHÍ HOÀN TIỀN </th>
                           </tr>
                         </thead>
 
@@ -287,10 +292,12 @@
                                 {{ truncate(item.description, 15) }}
                               </p-tooltip>
                             </td>
-                            <td v-if="item.amount < 0"
+                            <td style="text-align: right" v-if="item.amount < 0"
                               >-{{ Math.abs(item.amount) | formatPrice }}</td
                             >
-                            <td v-else>{{ item.amount | formatPrice }}</td>
+                            <td style="text-align: right" v-else>{{
+                              item.amount | formatPrice
+                            }}</td>
                           </tr>
                         </tbody>
                       </table>
