@@ -1,6 +1,6 @@
 import api from '../api'
 import AuthService from '@core/services/auth'
-import { formatNumber } from '@core/utils/formatter'
+import { formatNumber, formatPrice } from '@core/utils/formatter'
 
 export const FETCH_ANALYTICS = 'fetchAnalytics'
 
@@ -83,42 +83,42 @@ export const getters = {
           }</b> sang <b>${item.value}</b>`
           break
         case 14:
-          message = `<b>${ordername}</b> thêm phí covid <b>$${formatNumber(
+          message = `<b>${ordername}</b> thêm phí covid <b>${formatPrice(
             +item.fee
           )}</b>`
           break
         case 15:
-          message = `<b>${ordername}</b> thêm phí quá cỡ <b>$${formatNumber(
+          message = `<b>${ordername}</b> thêm phí quá cỡ <b>${formatPrice(
             +item.fee
           )}</b>`
           break
         case 16:
-          message = `<b>${ordername}</b> thêm phí sửa kích thước <b>$${formatNumber(
+          message = `<b>${ordername}</b> thêm phí sửa kích thước <b>${formatPrice(
             +item.fee
           )}</b>`
           break
         case 17:
-          message = `<b>${ordername}</b> thêm phí sửa trọng lượng <b>$${formatNumber(
+          message = `<b>${ordername}</b> thêm phí sửa trọng lượng <b>${formatPrice(
             +item.fee
           )}</b>`
           break
         case 18:
-          message = `<b>${ordername}</b> thêm phí thay đổi dịch vụ <b>$${formatNumber(
+          message = `<b>${ordername}</b> thêm phí thay đổi dịch vụ <b>${formatPrice(
             +item.fee
           )}</b>`
           break
         case 19:
-          message = `<b>${ordername}</b> thêm phí sửa đơn <b>$${formatNumber(
+          message = `<b>${ordername}</b> thêm phí sửa đơn <b>${formatPrice(
             +item.fee
           )}</b>`
           break
         case 20:
-          message = `<b>${ordername}</b> đã hoàn tiền cho bạn <b>$${formatNumber(
+          message = `<b>${ordername}</b> đã hoàn tiền cho bạn <b>${formatPrice(
             +fee
           )}</>`
           break
         case 21:
-          message = `<b>${ordername}</b> thêm phí phát sinh khác <b>$${formatNumber(
+          message = `<b>${ordername}</b> thêm phí phát sinh khác <b>${formatPrice(
             +item.fee
           )}</b>`
           break
