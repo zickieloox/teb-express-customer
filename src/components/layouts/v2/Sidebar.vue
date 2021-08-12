@@ -1,60 +1,79 @@
 <template>
   <div class="site-menubar">
+    <div class="site-menubar-logo">
+      <router-link to="/"><img src="@assets/img/logo.png" alt=""/></router-link>
+    </div>
     <div class="site-menubar-body">
       <ul class="site-menu">
         <li
-          v-for="(menu, i) in availableMenus"
-          class="site-menu-item  has-sub"
+          v-for="(menu, i) in menus"
+          class="site-menu-item"
           :class="{
-            active: isActive(menu.route) || childrenNameRoute(menu.title),
-            hover: hoverIndex === i,
-            open: isActive(menu.route) && menu.sub,
-            vstep2: menu.class == 'vstep2',
+            active: isActive(menu.route) || childrenNameRoute(menu.route.name),
           }"
           :key="i"
-          @mouseover="onHover(i)"
-          @mouseout="onHover(-1)"
         >
-          <router-link :to="menu.route">
+          <router-link
+            :to="handelRouter(menu)"
+            class="item-link"
+            @mouseover.native="openItem(menu)"
+            @mouseleave.native="closeItem(menu)"
+          >
             <img class="site-menu-icon default" :src="menu.icon" />
             <img class="site-menu-icon active" :src="menu.iconActive" />
             <span class="site-menu-title">{{ menu.title }}</span>
+            <div class="open-right">
+              <div
+                class="site-menu-sub"
+                :class="{
+                  'has-sub': menu.isOpen,
+                }"
+                v-if="menu.sub"
+              >
+                <div
+                  class="site-menu-sub-item"
+                  v-for="(sub, j) in menu.sub"
+                  :key="j"
+                >
+                  <router-link
+                    :to="sub.route"
+                    class="animsition-link"
+                    @click.native="closeItem(menu)"
+                  >
+                    <span
+                      :class="{
+                        active:
+                          isActive(sub.route) ||
+                          isContainAlias(sub.alias) ||
+                          childrenNameRoute(sub.title),
+                      }"
+                      class="site-menu-sub-title"
+                    >
+                      <img
+                        class="default"
+                        src="@assets/img/Arrow - Right Circle.svg"
+                        alt=""
+                      />
+                      <img
+                        class="hover"
+                        src="@assets/img/Arrow - Right CircleHover.svg"
+                        alt=""
+                      />
+
+                      {{ sub.title }}</span
+                    >
+                  </router-link>
+                </div>
+              </div>
+            </div>
           </router-link>
-          <ul class="site-menu-sub" v-if="menu.sub">
-            <li class="site-menu-item" v-for="(sub, j) in menu.sub" :key="j">
-              <router-link :to="sub.route" class="animsition-link">
-                <span class="site-menu-title">{{ sub.title }}</span>
-              </router-link>
-            </li>
-          </ul>
         </li>
       </ul>
     </div>
   </div>
 </template>
 
-<style>
-.dropdown-toggle:after {
-  content: none;
-}
-
-.package-user {
-  margin-left: 15px;
-  font-size: 12px;
-  line-height: 160%;
-  color: #b0b3b9;
-}
-
-.focus {
-  font-weight: 500;
-  color: #0554f2;
-  background: rgb(244, 246, 248, 0.6);
-  border-radius: 4px;
-}
-.shop-name {
-  padding: 9px 0px 9px 16px;
-}
-</style>
+<style></style>
 
 <script>
 import { isObject } from '@core/utils/type'
@@ -62,14 +81,6 @@ import { isObject } from '@core/utils/type'
 export default {
   name: 'Sidebar',
   props: {
-    shop: {
-      type: Object,
-      default: () => {},
-    },
-    shops: {
-      type: Array,
-      default: () => [],
-    },
     isSidebarOpen: {
       type: Boolean,
       default: true,
@@ -77,30 +88,6 @@ export default {
   },
 
   computed: {
-    validShops() {
-      return this.shop && this.shops ? this.shops : []
-    },
-    shopName() {
-      return this.shop.name
-    },
-    menus() {
-      return [
-        {
-          title: 'Home',
-          icon: require('@assets/img/layers_fill.svg'),
-          iconActive: require('@assets/img/layers_fill_active.svg'),
-          route: '/',
-          class: '',
-        },
-        {
-          title: 'Setting',
-          icon: require('@assets/img/settings.svg'),
-          iconActive: require('@assets/img/settings_active.svg'),
-          route: { name: 'setting' },
-          class: '',
-        },
-      ]
-    },
     availableMenus() {
       return this.menus.filter((menu) => menu.disable !== true)
     },
@@ -108,9 +95,77 @@ export default {
   data() {
     return {
       hoverIndex: -1,
-      chooseShop: {
-        icon: require('@assets/img/shopping-bag.svg'),
-      },
+      isActiveSub: false,
+      activeSubIndex: 0,
+      isactive: false,
+      activeItem: '',
+      menus: [
+        {
+          title: 'Trang chủ',
+          icon: require('@assets/img/Home.png'),
+          iconActive: require('@assets/img/HomeActive.png'),
+          route: '/',
+          class: '',
+        },
+        {
+          title: 'Đơn hàng',
+          icon: require('@assets/img/Order.png'),
+          iconActive: require('@assets/img/OrderActive.png'),
+          route: { name: 'packages' },
+          class: '',
+          isOpen: false,
+          sub: [
+            {
+              route: '/packages',
+              title: 'Quản lý đơn hàng',
+              alias: ['/packages', '/packages/:id'],
+            },
+            {
+              route: '/packages/create',
+              title: 'Tạo đơn lẻ',
+              alias: ['/packages/create'],
+            },
+          ],
+        },
+        {
+          title: 'Hóa đơn',
+          icon: require('@assets/img/Bill.png'),
+          iconActive: require('@assets/img/BillActive.png'),
+          route: { name: 'bill' },
+          class: '',
+          isOpen: false,
+          alias: ['/bill/wallet', '/bill/list-bill', 'bill/topup'],
+        },
+        {
+          title: 'Khiếu nại',
+          icon: require('@assets/img/Claim.png'),
+          iconActive: require('@assets/img/ClaimActive.png'),
+          route: { name: 'claims' },
+          class: '',
+        },
+        {
+          title: 'Cài đặt',
+          icon: require('@assets/img/Setting.png'),
+          iconActive: require('@assets/img/SettingActive.png'),
+          route: { name: 'setting' },
+          class: '',
+          isOpen: false,
+          sub: [
+            {
+              route: '/setting/account',
+              title: 'Thông tin tài khoản',
+            },
+            // {
+            //   route: '',
+            //   title: 'Danh sách hàng hóa',
+            // },
+            {
+              route: '/setting/api',
+              title: 'API',
+            },
+          ],
+        },
+      ],
     }
   },
 
@@ -119,25 +174,43 @@ export default {
       if (isObject(route)) {
         return this.$route.name === route.name
       }
-
       return this.$route.path === route || this.$route.fullPath === route
     },
-    childrenNameRoute(title) {
-      let fullPath = this.$route.fullPath
-      let title1 = title
-      if (title1 != null) {
-        title1 = title1.toLowerCase()
-        if (fullPath.includes(title1)) {
+
+    isContainAlias(alias) {
+      if (!this.$route.matched || !this.$route.matched.length || !alias) {
+        return false
+      }
+
+      for (let item of this.$route.matched) {
+        if (alias.includes(item.path)) {
           return true
         }
       }
       return false
     },
-    onHover(i) {
-      this.hoverIndex = i
+
+    childrenNameRoute(title) {
+      let fullPath = this.$route.fullPath
+      if (title != null) {
+        title = title.toLowerCase()
+        if (fullPath.includes(title)) {
+          return true
+        }
+      }
+      return false
     },
-    handleSelectShop(shop) {
-      this.$emit('selectShop', shop)
+    handelRouter(menu) {
+      if (menu.sub) {
+        return ''
+      }
+      return menu.route
+    },
+    openItem(menu) {
+      menu.isOpen = true
+    },
+    closeItem(menu) {
+      menu.isOpen = false
     },
   },
 }

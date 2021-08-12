@@ -13,18 +13,23 @@ import initGlobalDirectives from '@core/vue/directives'
 import router from './core/router'
 import store from './core/store'
 import '../uikit'
-//import validationMessagesVi from 'vee-validate/dist/locale/vi'
-import validationMessagesEn from 'vee-validate/dist/locale/en'
+import { VclTable } from 'vue-content-loading'
+import validationMessagesVi from 'vee-validate/dist/locale/vi'
+// import validationMessagesEn from 'vee-validate/dist/locale/en'
 
 Vue.use(VueClipboard)
-//Vue.use(VeeValidate, { locale: 'vi', dictionary: { vi: validationMessagesVi } })
-Vue.use(VeeValidate, { locale: 'en', dictionary: { en: validationMessagesEn } })
+Vue.use(VeeValidate, {
+  locale: 'vi',
+  dictionary: { vi: validationMessagesVi },
+  aria: true,
+})
+// Vue.use(VeeValidate, { locale: 'en', dictionary: { en: validationMessagesEn } })
 Vue.use(Notifications)
 Vue.use(MainPlugin)
 Vue.use(VueCarousel)
 Vue.use(VueLazyLoad)
 Vue.use(VueTour)
-
+Vue.component('VclTable', VclTable)
 // Vue.use(DashboardPlugin)
 initGlobalDirectives()
 
@@ -74,7 +79,7 @@ VeeValidate.Validator.extend('shop_email', {
 })
 
 VeeValidate.Validator.extend('fullName', {
-  getMessage: () => `Invalid Full Name`,
+  getMessage: () => `Tên không hợp lệ`,
   validate: (value) => {
     const regex = new RegExp(
       /^([^0-9!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]*){0,150}$/
@@ -90,27 +95,74 @@ VeeValidate.Validator.extend('shopName', {
   },
 })
 VeeValidate.Validator.extend('phoneAddress', {
-  getMessage: () => `Invalid phone`,
+  getMessage: () => `Số điện thoại không hợp lệ `,
   validate: (value) => {
     /* eslint-disable */
-    const regex = new RegExp(
-      /^[0-9+()-. ]+$/
-      // /\(?([0-9]{2})\)?([ .-]?)([0-9]{2})+$/
-    )
+    const regex = new RegExp(/^[0-9+\-() ]{1,}$/)
     return regex.test(value)
   },
 })
 VeeValidate.Validator.extend('city', {
-  getMessage: () => `Invalid city`,
+  getMessage: () => `Thành phố không hợp lệ`,
   validate: (value) => {
-    const regex = new RegExp(/^[\s+a-zA-Z0-9_.,\-\u00A1-\uFFFF]{0,50}$/)
+    const regex = new RegExp(/^[\s+a-zA-Z0-9_.,\-\u00A1-\uFFFF]{1,50}$/)
+    return regex.test(value)
+  },
+})
+VeeValidate.Validator.extend('state', {
+  getMessage: () => `Mã vùng không hợp lệ`,
+  validate: (value) => {
+    const regex = new RegExp(/^[\s+a-zA-Z0-9_.,\-\u00A1-\uFFFF]{1,15}$/)
     return regex.test(value)
   },
 })
 VeeValidate.Validator.extend('postcode', {
-  getMessage: () => `Invalid postcode`,
+  getMessage: () => `Mã bưu điện không hợp lệ`,
   validate: (value) => {
-    const regex = new RegExp(/^[a-zA-Z0-9\-\_\ ]{0,11}$/)
+    const regex = new RegExp(/^[0-9\-\_\ ]{1,15}$/)
+    return regex.test(value)
+  },
+})
+VeeValidate.Validator.extend('countrycode', {
+  getMessage: () => `Mã quốc gia không hợp lệ `,
+  validate: (value) => {
+    const regex = new RegExp(/^[a-zA-Z0-9\-\_\ ]{1,3}$/)
+    return regex.test(value)
+  },
+})
+
+VeeValidate.Validator.extend('weight', {
+  getMessage: () => `Số  cân nặng  không hợp lệ `,
+  validate: (value) => {
+    const regex = new RegExp(/^\s*(?=.*[1-9])\d*(?:\.\d{1,20})?\s*$/)
+    return regex.test(value)
+  },
+})
+VeeValidate.Validator.extend('length', {
+  getMessage: () => `Số đo chiều dài  không hợp lệ `,
+  validate: (value) => {
+    const regex = new RegExp(/^\s*(?=.*[1-9])\d*(?:\.\d{1,20})?\s*$/)
+    return regex.test(value)
+  },
+})
+VeeValidate.Validator.extend('height', {
+  getMessage: () => `Số đo chiều cao  không hợp lệ `,
+  validate: (value) => {
+    const regex = new RegExp(/^\s*(?=.*[1-9])\d*(?:\.\d{1,20})?\s*$/)
+    return regex.test(value)
+  },
+})
+VeeValidate.Validator.extend('width', {
+  getMessage: () => `Số đo chiều rộng  không hợp lệ `,
+  validate: (value) => {
+    const regex = new RegExp(/^\s*(?=.*[1-9])\d*(?:\.\d{1,20})?\s*$/)
+    return regex.test(value)
+  },
+})
+VeeValidate.Validator.extend('address', {
+  getMessage: () => `Địa chỉ  không hợp lệ `,
+  validate: (value) => {
+    const regex = new RegExp(/[A-Za-z0-9'\.\-\s\,]/)
     return regex.test(value)
   },
 })

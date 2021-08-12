@@ -33,7 +33,7 @@
                   aria-label="Close"
                   @click="cancel('x')"
                 >
-                  <span aria-hidden="true">
+                  <span aria-hidden="true" :disabled="disableClose">
                     <img src="~@/assets/img/x.svg" alt="close" />
                   </span>
                 </button>
@@ -48,13 +48,6 @@
           </template>
         </div>
       </div>
-      <!--      <button-->
-      <!--        type="button"-->
-      <!--        v-if="showX"-->
-      <!--        class="p-modal-close is-large"-->
-      <!--        @click="cancel('x')"-->
-      <!--      >-->
-      <!--      </button>-->
     </div>
   </transition>
 </template>
@@ -84,6 +77,10 @@ export default {
     animation: {
       type: String,
       default: 'zoom-out',
+    },
+    disableClose: {
+      type: Boolean,
+      default: false,
     },
     canCancel: {
       type: [Array, Boolean],

@@ -7,7 +7,7 @@ export default {
    * @return {*}
    */
   signIn(payload) {
-    return http.post('/fulfill/auth/sign-in/seller', payload)
+    return http.post('/auth/sign-in', payload)
   },
 
   /**
@@ -16,9 +16,8 @@ export default {
    * @return {*}
    */
   signUp(payload) {
-    return http.post('/fulfill/auth/sign-up/seller', {
+    return http.post('/auth/sign-up', {
       user: payload.user,
-      shop_name: payload.shop_name,
     })
   },
   forgot(payload) {
@@ -32,12 +31,5 @@ export default {
   },
   resendEmail(payload) {
     return http.post('/fulfill/auth/resend-email/seller', payload)
-  },
-  accessShop(payload) {
-    return http.post(
-      '/fulfill/auth/sign-in-by-token/seller',
-      {},
-      { token: `Bearer ${payload.token}` }
-    )
   },
 }

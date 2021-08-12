@@ -11,15 +11,18 @@
 
 // Import font
 @import "fonts/Mulish";
-@import "fonts/Montserrat";
+@import "fonts/BeVietNam";
 
 // Import base
 @import "base/reset";
 @import "base/setting";
 @import "base/typography";
 
+@import "layout/grid";
 
 // Import components
+@import "components/animation";
+@import "components/icon";
 @import "components/buttons";
 @import "components/carousel";
 @import "components/dropdown";
@@ -28,12 +31,16 @@
 @import "components/tab";
 @import "components/pagination";
 @import "components/checkbox";
+@import "components/card__w";
+@import "components/table";
+//@import "components/car";
 
 
 // Import layout
 @import "layout/spacing";
 @import "layout/sidebar";
 @import "layout/ticket";
+@import "layout/auth";
 
 
 // Import pages
@@ -44,27 +51,19 @@
 
 // Import sections
 @import "sections/pages";
-@import "sections/list_order_items.scss";
 @import "sections/order.scss";
-@import "sections/list_design.scss";
-@import "sections/billings.scss";
 @import "sections/analytics.scss";
 @import "sections/setting.scss";
-@import "sections/orders_avanced.scss";
 @import "sections/edit_pages";
 @import "sections/claim";
-@import "sections/notification";
 @import "sections/claim_detail";
-@import "sections/product.scss";
-@import "sections/product_detail.scss";
-@import "sections/tracking.scss";
-@import "sections/catalog.scss";
-@import "sections/product_base_detail.scss";
-@import "sections/dashboard.scss";
+@import "sections/home.scss";
 @import "sections/vue-tour.css";
-@import "sections/redeem.scss";
-
-
+@import "sections/packagedetail.scss";
+@import "sections/package.scss";
+@import "sections/list_package.scss";
+@import "sections/bill.scss";
+@import "sections/wallet.scss";
 // Import themes
 
 // Import vendors

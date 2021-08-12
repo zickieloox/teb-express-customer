@@ -17,7 +17,7 @@ export default {
 
   // Toast
   defaultNoticeQueue: true,
-  defaultToastDuration: 3000,
+  defaultToastDuration: 5000,
   defaultToastPosition: 'bottom',
 
   useHtml5Validation: true,

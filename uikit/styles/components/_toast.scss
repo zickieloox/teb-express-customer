@@ -8,6 +8,10 @@
   z-index: 999999;
   pointer-events: none;
   height: 56px;
+  &.is-home{
+    width: 70%;
+    right: 0;
+  }
   .p-toast {
     display: inline-flex;
     animation-duration: $speed-slow;
@@ -15,11 +19,11 @@
     justify-content: center;
     vertical-align: middle;
     margin: 0;
-    font-size: 1.6rem;
-    font-weight: bold;
+    font-size: 14px;
+    font-weight: 500;
     text-align: center;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
-    padding: 17px;
+    padding: 19px;
     pointer-events: auto;
     width: 100%;
     color: white;
@@ -35,10 +39,13 @@
     }
     &.is-success {
       background-color: #48BE78;
+      color: white;
     }
 
     &.is-danger {
-      background-color: #F32E10;
+      background-color: #F5222D;
+      color: white
+
     }
 
     &.is-info {

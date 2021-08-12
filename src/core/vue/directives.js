@@ -81,60 +81,39 @@ export const clickoutside = {
 const getFormatStatus = (status) => {
   let statusClass = ''
   switch (status) {
-    case 'draft':
-    case 'awaiting':
+    case 'Tạo mới':
       statusClass = 'default'
       break
-    case 'process':
-    case 'active':
-    case 'balance':
-      statusClass = 'success'
+    case 'Chờ lấy':
+      statusClass = 'await'
       break
-    case 'feedback':
-    case 'fulfilled':
-    case 'fulfill':
+    case 'Đã lấy':
+    case 'Đang giao':
       statusClass = 'primary'
       break
-    case 'open':
-    case 'in-review':
+    case 'Giao thành công':
+    case 'Thành công':
+      statusClass = 'success'
+      break
+    case 'Trả hàng':
+    case 'Hoàn trả':
       statusClass = 'info'
       break
-    case 'canceled':
-      statusClass = 'warning'
-      break
-    case 'inactive':
-    case 'rejected':
-    case 'withdrew':
+    case 'Đã hủy':
+    case 'Thất bại':
       statusClass = 'danger'
       break
-    case 'closed':
-      statusClass = 'dark'
-      break
-    case 'confirm payment':
-    case 'pending':
-    case 'unpaid':
+
+    case 'Đang xử lý':
+    case 'Chờ xác nhận':
       statusClass = 'pending'
       break
-    case 'partially paid':
-      statusClass = 'partially-paid'
-      break
-    case 'paid':
-      statusClass = 'paid'
-      break
-    case 'awaiting payment':
-      statusClass = 'awaiting-payment'
-      break
-    case 'debt':
-      statusClass = 'debt'
-      break
-    case 'cancel':
-      statusClass = 'cancel'
-      break
-    case 'done':
+    case 'Đã xử lý':
+    case 'Thanh toán':
       statusClass = 'done'
       break
-    case 'resolved':
-      statusClass = 'resolved'
+    case 'Chưa thanh toán':
+      statusClass = 'unpaid'
       break
   }
 

@@ -19,6 +19,7 @@
     "@chenfengyuan/vue-countdown": "^1.1.5",
     "@mdi/font": "^3.9.97",
     "@tweenjs/tween.js": "^17.6.0",
+    "chart.js": "^2.9.4",
     "crypto-js": "^3.3.0",
     "date-fns": "^2.16.1",
     "is-plain-object": "^2.0.4",
@@ -32,6 +33,7 @@
     "vue": "^2.6.12",
     "vue-bulma-accordion": "^0.4.8",
     "vue-carousel": "^0.18.0",
+    "vue-chartjs": "^3.5.1",
     "vue-clipboard2": "^0.3.1",
     "vue-content-loading": "^1.6.0",
     "vue-debounce": "^2.6.0",
@@ -44,7 +46,8 @@
     "vue-tour": "^2.0.0",
     "vue2-daterange-picker": "^0.6.3",
     "vue2-transitions": "^0.3.0",
-    "vuex": "^3.6.0"
+    "vuex": "^3.6.0",
+    "yarn": "^1.22.10"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^4.1.0",

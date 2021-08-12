@@ -59,7 +59,6 @@
       </div>
 
       <input
-        style="padding-left: 85px"
         :class="formControlClasses"
         v-bind="$attrs"
         :value="nativeInputValue"
@@ -83,12 +82,24 @@
         <slot name="prepend"></slot>
       </div>
 
-      <i
+      <!-- <i
         v-if="hiddenPass == 'on'"
         class="form-control-icon form-control-icon-right"
         :class="`wb-${typeInputPassword == 'password' ? 'eye' : 'eye-close'}`"
         @click.prevent="togglePasswordVisibelity()"
-      ></i>
+      ></i> -->
+      <img
+        v-if="hiddenPass == 'on'"
+        class="form-control-icon form-control-icon-right"
+        :src="
+          `${
+            typeInputPassword == 'password'
+              ? require('@assets/img/eye.svg')
+              : require('@assets/img/eye-close.svg')
+          }`
+        "
+        @click.prevent="togglePasswordVisibelity()"
+      />
 
       <input
         :class="formControlClasses"
@@ -128,18 +139,19 @@
         <slot name="prepend"></slot>
       </div>
 
-      <i
+      <img
         class="form-control-icon form-control-icon-left"
         v-if="prefixIcon"
-        :class="`wb-${prefixIcon}`"
-      >
-      </i>
+        src="@assets/img/search.svg"
+      />
 
-      <i
+      <img
         class="form-control-icon form-control-icon-right"
         v-if="suffixIcon"
-        :class="`wb-${suffixIcon}`"
-      ></i>
+        src="@assets/img/search.svg"
+        style="cursor: pointer"
+        @click="suffixFunc"
+      />
 
       <i
         class="form-control-icon form-control-icon-right wb-close"
@@ -158,6 +170,7 @@
         @change="handleChange"
         v-on="listeners"
         ref="input"
+        class="p-input-search"
       />
 
       <div class="input-group-append" v-if="$slots.append">
@@ -180,14 +193,14 @@
     </span>
 
     <span class="invalid-error" v-if="required == true && type != 'username'">
-      This field is required
+      Vui lòng không để trống!
     </span>
 
     <span
       class="invalid-error"
       v-if="required == true && type == 'username' && focusUsername == false"
     >
-      This field is required
+      Vui lòng không để trống!
     </span>
 
     <span
@@ -284,6 +297,10 @@ export default {
       type: String,
       default: '',
     },
+    suffixFunc: {
+      type: Function,
+      default: () => {},
+    },
     prefixIcon: {
       type: String,
       default: '',
@@ -324,22 +341,22 @@ export default {
         //   regex: /[^A-Za-z\d@$!%*#?& ]/,
         //   result: false,
         // },
+        // {
+        //   message: 'Mật khẩu không hợp lệ ',
+        //   regex: /^[ ].*|[ ]$/,
+        //   result: false,
+        // },
         {
-          message: "Your password can't start or end with a blank space",
-          regex: /^[ ].*|[ ]$/,
-          result: false,
-        },
-        {
-          message: 'Be between 6-50 characters.',
-          regex: /^.{6,50}$/,
+          message: 'Mật khẩu không hợp lệ',
+          regex: /^.{4,}$/,
           result: true,
         },
       ],
       validateEmail: [
         {
-          message:
-            'Email must be in a valid email format (e.g., you@example.com).',
-          regex: /^[a-z0-9A-Z_\\.]{1,32}@[a-z0-9A-Z]{2,}(\.[a-z0-9A-Z]{2,4}){1,2}$/,
+          message: 'Email không hợp lệ',
+          /* eslint-disable */
+          regex: /^[a-z0-9A-Z_\\.]{1,32}@[a-z0-9A-Z\-]{2,}(\.[a-z0-9A-Z]{2,4}){1,2}$/,
           result: true,
         },
       ],
@@ -364,20 +381,9 @@ export default {
       ],
       validatePhonenumber: [
         {
-          message: 'Phonenumber is too long (maximum is 20 characters).',
-          regex: /^.{1,20}$/,
+          message: 'Số điện thoại không hợp lệ',
+          regex: /^[+]?[0-9]{1,20}$/,
           result: true,
-        },
-        {
-          message:
-            'Phone must be in a valid phone number  (e.g., (+123) 456-789).',
-          regex: /^[0-9+()-. ]+$/,
-          result: true,
-        },
-        {
-          message: "Your phonenumber can't end with a blank space",
-          regex: /.*[ ]$/,
-          result: false,
         },
       ],
       validateShopName: [
@@ -396,6 +402,13 @@ export default {
         {
           message: ' OrderID must be in a  number format and great than 0 .',
           regex: /^[1-9][0-9]*$/,
+          result: true,
+        },
+      ],
+      validateFullName: [
+        {
+          message: 'Tên không hợp lệ',
+          regex: /^([^0-9!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]*){0,150}$/,
           result: true,
         },
       ],
@@ -541,8 +554,19 @@ export default {
         } else {
           return { valid: false, errors }
         }
-      } else if (this.type == 'phonenumber') {
+      } else if (this.type == 'emailornumber' && !this.value.match(/[a-z]/i)) {
         for (let condition of this.validatePhonenumber) {
+          if (!condition.regex.test(this.input) == condition.result) {
+            errors.push(condition.message)
+          }
+        }
+        if (errors.length == 0) {
+          return { valid: true, errors }
+        } else {
+          return { valid: false, errors }
+        }
+      } else if (this.type == 'emailornumber' && this.value.match(/[a-z]/i)) {
+        for (let condition of this.validateEmail) {
           if (!condition.regex.test(this.input) == condition.result) {
             errors.push(condition.message)
           }
@@ -576,6 +600,17 @@ export default {
         }
       } else if (this.type == 'OrderId') {
         for (let condition of this.validateOrderID) {
+          if (!condition.regex.test(this.input) == condition.result) {
+            errors.push(condition.message)
+          }
+        }
+        if (errors.length == 0) {
+          return { valid: true, errors }
+        } else {
+          return { valid: false, errors }
+        }
+      } else if (this.type == 'fullname') {
+        for (let condition of this.validateFullName) {
           if (!condition.regex.test(this.input) == condition.result) {
             errors.push(condition.message)
           }
@@ -626,7 +661,7 @@ export default {
     },
 
     clear() {
-      this.$emit('input', '')
+      this.$emit('update:value', '')
     },
   },
   watch: {

@@ -1,5 +1,8 @@
 // Roles
-export const ROLE_SELLER = 'seller'
+export const ROLE_CUSTOMER = 'customer'
+export const ROLE_ADMIN = 'admin'
+export const ROLE_SUPPORT = 'support'
+export const ROLE_ACCOUNTANT = 'accountant'
 
 // Order and order status
 export const ORDER_STATUS_DRAFT = 'draft'
@@ -23,7 +26,7 @@ export const ACL_KEYS = {
 }
 
 export const ACL = {
-  [ACL_KEYS.updateOrder]: [ROLE_SELLER],
+  [ACL_KEYS.updateOrder]: [ROLE_CUSTOMER],
 }
 
 export const NOT_STAFF_GET_LIMIT = 200

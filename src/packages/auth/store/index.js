@@ -1,7 +1,6 @@
-import { ROLE_SELLER } from '@core/constants'
+import { ROLE_CUSTOMER } from '@core/constants'
 import api from '../api'
 import AuthService from '@core/services/auth'
-import Affiliate from '@core/helpers/affiliate'
 import { HTTP_STATUS_FORBIDDEN } from '@core/constants/http'
 /**
  * Type
@@ -40,48 +39,6 @@ export const actions = {
    * @param payload
    * @returns {Promise<{success: boolean}>}
    */
-  async accessShop({ commit }, payload) {
-    let response
-    response = await api.accessShop(payload)
-    if (response && response.access_token) {
-      const data = Object.assign({}, response.user, {
-        access_token: response.access_token,
-      })
-      handleAuthenticated(commit, transformerAuthenticate(data))
-
-      return {
-        success: true,
-        permission: data.role === ROLE_SELLER,
-        user: data,
-      }
-    }
-
-    if (
-      response &&
-      response.user &&
-      response.statusCode == HTTP_STATUS_FORBIDDEN
-    ) {
-      commit(CURRENT_USER, response.user)
-      return {
-        success: false,
-        message: response.errorMessage || '',
-        userInActive: true,
-      }
-    }
-
-    return {
-      success: false,
-      message: response.errorMessage || '',
-      number_incorrect: response.number_incorrect_password || 0,
-    }
-  },
-
-  /**
-   * Sign in
-   * @param commit
-   * @param payload
-   * @returns {Promise<{success: boolean}>}
-   */
   async signIn({ commit }, payload) {
     let response
 
@@ -94,7 +51,7 @@ export const actions = {
 
       return {
         success: true,
-        permission: data.role === ROLE_SELLER,
+        permission: data.role === ROLE_CUSTOMER,
         user: data,
       }
     }
@@ -127,11 +84,6 @@ export const actions = {
    */
   // eslint-disable-next-line
   async signUp({ commit }, payload) {
-    if (Affiliate.hasRef()) {
-      payload.user_referring_code = Affiliate.getRef()
-    }
-
-    payload.user.username = payload.user.username.toLowerCase()
     const response = await api.signUp(payload)
 
     if (response && response.user && response.user.id) {
@@ -191,7 +143,7 @@ export const actions = {
 
       return {
         success: true,
-        permission: data.role === ROLE_SELLER,
+        permission: data.role === ROLE_CUSTOMER,
       }
     }
     return {
@@ -241,8 +193,8 @@ export const getters = {
   currentRole(state) {
     return state.user.role
   },
-  isSeller(state) {
-    return state.user.role === ROLE_SELLER
+  isCutomer(state) {
+    return state.user.role === ROLE_CUSTOMER
   },
 }
 
@@ -252,7 +204,7 @@ export const getters = {
  * @param payload
  */
 const handleAuthenticated = (commit, payload) => {
-  if (payload.role !== ROLE_SELLER) {
+  if (payload.role !== ROLE_CUSTOMER) {
     return
   }
 
@@ -271,11 +223,8 @@ const transformerAuthenticate = (response) => {
     accessToken: response.access_token,
     email: response.email,
     username: response.username,
+    full_name: response.full_name,
+    birthday: response.birthday,
     role: response.role,
-    canReferent: response.can_refer,
-    refCode: response.ref_code || '',
-    packageId: response.package_id,
-    packageVnId: response.package_vn_id,
-    vip: response.vip,
   }
 }

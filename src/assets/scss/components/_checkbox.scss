@@ -1,6 +1,6 @@
 // Variables
 // ========================================================================
-$checkbox-size: 18px !default;
+$checkbox-size: 20px !default;
 $checkbox-icon-size: 12px !default;
 $checkbox-label-gap: 10px !default;
 $checkbox-sm-size: 18px !default;
@@ -13,7 +13,7 @@ $checkbox-inline-gap: 20px !default;
 $color-white:#fff !default;
 $input-border:4px !default;
 $input-disabled-bg:#e9ecef !default;
-$brand-primary:#2A46B2  !default;
+$brand-primary:#015858  !default;
 $brand-danger:red !default;
 $brand-info:#00bcd4 !default;
 $brand-warning:orange !default;
@@ -230,7 +230,7 @@ $cursor-disabled: not-allowed !default;
     margin-bottom: 0;
     font-weight: $font-weight-normal;
     cursor: pointer;
-
+    margin-left: 10px;
   }
 }
 
@@ -264,16 +264,10 @@ $cursor-disabled: not-allowed !default;
 
 .checkAll {
   label::before {
-    background-color: #2A46B2;
-    border-color: #2A46B2;
+    background-color: $color-java-blue-10;
+    border-color:  $color-java-blue-10;
     background-image: url("~@/assets/img/minus.svg");
     background-position: center
 
   }
 }
-//.order-select-checkbox {
-//  top: 9px;
-//  left: 0;
-//  position: absolute;
-//  //padding-left: 25px;
-//}

@@ -1,31 +1,20 @@
 <template>
-  <div
-    class="animsition dashboard"
-    :class="{
-      'site-menubar-unfold': isSidebarOpen,
-      'site-menubar-hide': !isSidebarOpen,
-    }"
-  >
-    <p-header
-      @toggleShowSidebar="toggleShowSidebar"
-      :isSidebarOpen="isSidebarOpen"
-      :shop="shop"
-      :shops="shops"
-      @selectShop="handleSelectShop"
-    />
-    <p-sidebar :shop="shop" :shops="shops" :isSidebarOpen="isSidebarOpen" />
+  <div class="animsition dashboard site-menubar-unfold">
+    <p-header :user="user" />
+    <p-sidebar />
+
     <router-view :key="$route.path"></router-view>
   </div>
 </template>
 
 <script>
-import isMobile from 'ismobilejs'
+import { mapState, mapActions } from 'vuex'
 import '@assets/scss/main.scss'
 import '@assets/fonts/material-design/material-design.min.css'
 import '@assets/fonts/web-icons/web-icons.min.css'
 import PHeader from './Header'
 import PSidebar from './Sidebar'
-require('vue-image-lightbox/dist/vue-image-lightbox.min.css')
+import { GET_USER } from '../../../packages/shared/store'
 
 export default {
   name: 'Version2',
@@ -33,69 +22,26 @@ export default {
     PHeader,
     PSidebar,
   },
+  computed: {
+    ...mapState('shared', {
+      user: (state) => state.user,
+    }),
+  },
   data() {
     return {
       isSidebarOpen: true,
       isTicketOpen: false,
     }
   },
-  mounted() {
-    if (isMobile.phone) {
-      this.isSidebarOpen = false
-    }
+  mounted() {},
+  created() {
+    this.init()
   },
   methods: {
-    toggleShowSidebar() {
-      this.isSidebarOpen = !this.isSidebarOpen
-    },
-    toggleShowTicket() {
-      this.isTicketOpen = !this.isTicketOpen
-    },
-    async handleSelectShop(shop) {
-      const result = await this.selectShop({ id: shop.id })
-      if (!result.success) {
-        this.$toast.open({ type: 'error', message: result.message })
-        return
-      }
-
-      this.$toast.open({
-        type: 'success',
-        message: `Switch to "${shop.name}" successfully`,
-      })
-
-      if (this.$route.name === 'dashboard') {
-        setTimeout(() => {
-          location.reload()
-        }, 500)
-      } else {
-        this.$router.push('/')
-      }
+    ...mapActions('shared', [GET_USER]),
+    async init() {
+      await this.getUser()
     },
   },
 }
 </script>
-<style lang="scss">
-.icon-messenger {
-  width: 64px;
-  position: fixed;
-  height: 64px;
-  z-index: 101;
-  bottom: 99px;
-  right: 26px;
-  cursor: pointer;
-  &.onClaim {
-    display: none;
-  }
-}
-@media (max-width: 1366px) {
-  .icon-messenger {
-    width: 64px;
-    position: fixed;
-    height: 64px;
-    z-index: 101;
-    bottom: 90px;
-    right: 26px;
-    cursor: pointer;
-  }
-}
-</style>

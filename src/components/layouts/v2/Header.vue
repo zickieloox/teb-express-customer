@@ -1,125 +1,77 @@
 <template>
   <nav class="site-navbar" role="navigation">
-    <div class="navbar-header">
-      <div class="navbar-header-left">
-        <div class="navbar-logo"> </div>
-        <a
-          data-toggle="menubar"
-          @click.prevent="toggleShowSidebar"
-          class="navbar-hamburger"
+    <div class="navbar__header">
+      <div class="navbar__header-left">
+        <img src="@assets/img/icon22.svg" alt="" />
+        <span
+          >Need help? Check out the <a href="#" class="link">FAQ</a> or
+          <a href="#" class="link" @click.prevent="addClaim"
+            >submit a ticket.</a
+          ></span
         >
-          <div class="icon hamburger">
-            <svg
-              :class="{ hided: !isSidebarOpen }"
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g opacity="0.6">
-                <path
-                  d="M3 15L12 15"
-                  stroke="white"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M3 10L17 10"
-                  stroke="white"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M3 5L8 5"
-                  stroke="white"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </g>
-            </svg>
+      </div>
+      <div class="navbar__header-right">
+        <p-dropdown>
+          <div class="pointer" slot="trigger">
+            <span
+              >Xin chào, <span class="username">{{ user.full_name }}</span>
+            </span>
+            <img src="@/assets/img/dropdown.svg" />
           </div>
-          <div class="icon hamburger hamburger-arrow-left unfolded">
-            <svg
-              :class="{ hided: !!isSidebarOpen }"
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g opacity="0.6">
-                <path
-                  d="M3 15L17 15"
-                  stroke="white"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M3 10L17 10"
-                  stroke="white"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M3 5L17 5"
-                  stroke="white"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </g>
-            </svg>
-          </div>
-        </a>
+          <p-dropdown-item>
+            <img
+              src="@/assets/img/Circle 16px.svg"
+              class="navbar__header-icon"
+            />
+            <router-link to="/" class="nav-item">
+              Hỏi đáp trợ giúp
+            </router-link>
+          </p-dropdown-item>
+          <p-dropdown-item>
+            <img src="@/assets/img/Logout.svg" class="navbar__header-icon" />
+            <router-link to="/logout" class="nav-item">
+              Đăng xuất
+            </router-link>
+          </p-dropdown-item>
+        </p-dropdown>
       </div>
     </div>
-
-    <div class="navbar-container">
-      <div
-        class="navbar-collapse navbar-collapse-toolbar collapse navbar-mobile"
-        :class="{ show: isShowNavbarOnMobile }"
-      >
-      </div>
-    </div>
+    <modal-add-claim
+      :visible.sync="visibleModal"
+      :title="`Khiếu nại`"
+      @create="init"
+    >
+    </modal-add-claim>
   </nav>
 </template>
 <script>
-import mixinDownload from '@/packages/shared/mixins/download'
+import ModalAddClaim from '../../../packages/claim/components/ModalAddClaim.vue'
 
 export default {
-  components: {},
-  mixins: [mixinDownload],
+  components: {
+    ModalAddClaim,
+  },
   name: 'Header',
   props: {
-    shop: {
+    user: {
       type: Object,
       default: () => {},
-    },
-    shops: {
-      type: Array,
-      default: () => [],
-    },
-    isSidebarOpen: {
-      type: Boolean,
-      default: true,
     },
   },
   mounted() {},
   created() {},
   data() {
     return {
-      isFetchNotity: false,
-      isShowNavbarOnMobile: false,
-      socket: null,
-      isVisibleAddShop: false,
-      query: '',
+      visibleModal: false,
     }
+  },
+  methods: {
+    init() {
+      location.reload()
+    },
+    addClaim() {
+      this.visibleModal = true
+    },
   },
 }
 </script>

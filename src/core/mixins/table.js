@@ -1,5 +1,3 @@
-import { cloneDeep } from '@core/utils'
-
 export default {
   computed: {
     totalSelected() {
@@ -50,10 +48,7 @@ export default {
         : false
     },
     selectionCountText() {
-      if (this.totalSelected == 1) {
-        return '1 order selected'
-      }
-      return `${this.totalSelected} orders selected`
+      return `${this.totalSelected} đơn hàng đang được chọn`
     },
     isChecked() {
       return function(value) {
@@ -148,7 +143,7 @@ export default {
       if (this.isAllChecked) {
         selected = []
       } else {
-        selected = cloneDeep(this.items)
+        selected = this.items
       }
       this.$set(this.action, 'selected', selected)
     },

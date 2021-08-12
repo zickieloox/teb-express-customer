@@ -9,44 +9,10 @@
           style="padding-left: .5rem"
         ></span>
       </template>
-      <template v-if="shop">
-        <div class="title">Your shop</div>
-        <div class="input-shop " :class="{ onerror: error != '' }">
-          <multiselect
-            class="multiselect-custom dropdown-order"
-            v-model="selected"
-            :options="optionShop"
-            placeholder="Your shop"
-            :custom-label="customLabel"
-            @select="handleSelect"
-          >
-          </multiselect>
-          <div class="input-shop_name " :class="{ onerror: errorUrl != '' }">
-            <p-input
-              placeholder="yourstore"
-              type="search"
-              validate="on"
-              v-model="shopChoose"
-              :required="requiredShopname"
-              @change="check($event)"
-            />
-            <div class="error-link-shop">{{ errorUrl }}</div>
-          </div>
-
-          <div
-            class="domain"
-            v-if="selected && selected.key === PLATFORM_SHOPIFY"
-          >
-            myshopify.com
-          </div>
-        </div>
-        <div class="error-link-shop">{{ error }}</div>
-      </template>
-
       <template slot="footer">
         <div class="group-button modal-confirm">
           <p-button type="default" @click="handleClose">
-            Cancel
+            {{ cancel }}
           </p-button>
           <p-button
             :type="type"
@@ -66,10 +32,6 @@
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import mixinUpload from '@core/mixins/upload'
-import {
-  PLATFORM_SHOPIFY,
-  PLATFORM_WOOCOMMERCE,
-} from '../../../packages/settings/constant'
 
 export default {
   name: 'ModalConfirm',
@@ -93,10 +55,14 @@ export default {
     },
     description: {
       type: String,
-      default: '',
+      default: 'Bạn có chắc chắn không?',
     },
     actionConfirm: {
       type: String,
+    },
+    cancel: {
+      type: String,
+      default: 'Hủy',
     },
     type: {
       type: String,
@@ -123,18 +89,6 @@ export default {
   data() {
     return {
       selected: null,
-      PLATFORM_SHOPIFY: PLATFORM_SHOPIFY,
-      PLATFORM_WOOCOMMERCE: PLATFORM_WOOCOMMERCE,
-      optionShop: [
-        {
-          key: PLATFORM_SHOPIFY,
-          name: 'shopify',
-        },
-        {
-          key: PLATFORM_WOOCOMMERCE,
-          name: 'woocommerce',
-        },
-      ],
       shopChoose: '',
       requiredShopname: false,
     }

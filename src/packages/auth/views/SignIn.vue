@@ -1,103 +1,95 @@
 <template>
-  <div class="page vertical-align ">
-    <div class="vertical-align-middle">
-      <div class="mb-40">
-        <h2 class="header-2">
-          Sign in
-        </h2>
+  <div class="card sign-in">
+    <div class="form form-sign-in">
+      <div class="header">
+        <h2 class="header-text">Đăng nhập</h2>
       </div>
-      <div>
-        <form @submit.prevent="onSignIn">
-          <div class="mb-16">
-            <label class=" font-weight-bold">Email or username</label>
-            <p-input
-              placeholder="you@example.com"
-              v-model="email"
-              @keyup.enter="onSignIn"
-              :required="requiredEmail"
-            />
-          </div>
-          <div class="mb-16">
-            <div class="label">
-              <label class=" font-weight-bold">Password</label>
-
-              <span class="font-size-12 redirect" @click="redirect()">
-                Forgot your password?
-              </span>
-            </div>
-            <p-input
-              placeholder="Password"
-              type="password"
-              hiddenPass="on"
-              v-model="password"
-              :required="requiredPassword"
-              @keyup.enter="onSignIn"
-            />
-          </div>
-          <div class="captcha mt-40" v-if="count >= 1">
-            <vue-recaptcha
-              ref="recapcha"
-              @verify="onVerify"
-              :sitekey="`${recapchaKey}`"
-              :loadRecaptchaScript="true"
-            >
-            </vue-recaptcha>
-            <span class="invalid-error" v-if="check == false">
-              Please check the captcha
-            </span>
-          </div>
-          <p-button
-            class="mt-40 btn btn-special btn-primary"
-            :loading="isLoading"
-            @click="onSignIn"
+      <div class="login__page-form-content">
+        <div v-if="error" class="login__page-error">{{ error }}</div>
+        <div class="mb-16">
+          <m-input
+            icon="envelope-o"
+            v-model.trim="email"
+            :error="valider.hasError('email')"
+            :messages="valider.error('email')"
+            @input="onInput('email')"
+            @keyup.enter="onSignIn"
           >
-            Sign in
-          </p-button>
-        </form>
+            <template v-if="!email">
+              Nhập số điện thoại hoặc email <span class="text-danger">*</span>
+            </template>
+          </m-input>
+        </div>
+        <div class="mb-60">
+          <m-input
+            type="password"
+            icon="lock-o"
+            v-model.trim="password"
+            :password="true"
+            :error="valider.hasError('password')"
+            :messages="valider.error('password')"
+            @input="onInput('password')"
+            @keyup.enter="onSignIn"
+          >
+            <template v-if="!password">
+              Mật khẩu của bạn <span class="text-danger">*</span>
+            </template>
+            <template v-slot:toggle-password="{ type }">
+              {{ type === 'text' ? 'Ẩn' : 'Hiển thị' }}
+            </template>
+          </m-input>
+        </div>
+        <p-button
+          class="mb-16 btn btn-special"
+          :loading="isLoading"
+          @click="onSignIn"
+          :disabled="disableBtn"
+        >
+          Đăng nhập
+        </p-button>
+        <p class="new-member">
+          <span>Bạn là thành viên mới?</span>
+          <router-link class="create__acount" :to="{ name: 'sign-up' }">
+            Tạo tài khoản
+          </router-link>
+        </p>
       </div>
-
-      <p class="text-center ">
-        <router-link class=" creatAcount" :to="{ name: 'sign-up' }"
-          >Create an Account
-        </router-link>
-      </p>
     </div>
   </div>
 </template>
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex'
-import VueRecaptcha from 'vue-recaptcha'
+import { mapActions, mapState } from 'vuex'
 import mixinRoute from '@core/mixins/route'
-
-import { SHOW_NOTIFICATION_MESSAGE } from '@/packages/shared/store'
-import Storage from '@core/helpers/storage'
+import { signin } from '../validate'
 
 export default {
-  components: { VueRecaptcha },
+  components: {},
   mixins: [mixinRoute],
   name: 'SignIn',
+
   data() {
     return {
       email: '',
       password: '',
       isLoading: false,
       result: { success: false, message: '' },
-      form: {
-        checkCaptcha: false,
-      },
       count: 0,
       status: false,
       requiredPassword: false,
       requiredEmail: false,
       check: true,
+      error: '',
+      errorEmail: '',
+      errorPassWord: '',
+      valider: signin,
     }
   },
   computed: {
     ...mapState('auth', {
       currentUser: (state) => state.user,
     }),
-    recapchaKey() {
-      return `${process.env.VUE_APP_RECAPCHA_KEY}`
+    disableBtn() {
+      return this.isLoading || this.email === '' || this.password === ''
     },
   },
   mounted() {
@@ -110,37 +102,24 @@ export default {
   },
   methods: {
     ...mapActions('auth', ['signIn']),
-    ...mapMutations('shared', [SHOW_NOTIFICATION_MESSAGE]),
 
     redirect() {
       return this.$router.push('/forgot')
     },
-
-    checkRequired() {
-      let result = true
-      if (this.password == '') {
-        this.requiredPassword = true
-        result = false
-      } else {
-        this.requiredPassword = false
+    onInput(key) {
+      if (key === 'email') {
+        this.valider.validEmail(this.email)
       }
 
-      if (this.email == '') {
-        this.requiredEmail = true
-        result = false
-      } else {
-        this.requiredEmail = false
+      if (key === 'password') {
+        this.valider.validPassword(this.password)
       }
-
-      return result
     },
-
-    pushNoti() {
-      this.showNotificationMessage('This is message')
-    },
-
     async onSignIn() {
-      if (!this.checkRequired()) {
+      if (this.isLoading) return
+      if (
+        !this.valider.isValid({ email: this.email, password: this.password })
+      ) {
         return
       }
 
@@ -151,45 +130,16 @@ export default {
       if (this.email.includes('@')) {
         data.email = this.email.trim().toLowerCase()
       } else {
-        data.username = this.email.trim()
+        data.phone_number = this.email.trim()
       }
 
-      if (!data.email && !data.username) {
-        this.$toast.open({
-          type: 'error',
-          message: 'Username/Email required',
-        })
-        return
-      }
-
-      if (!data.password) {
-        this.$toast.open({
-          type: 'error',
-          message: 'Password required',
-        })
-        return
-      }
-      if (this.count >= 1 && !this.form.checkCaptcha) {
-        this.check = false
-        return
-      }
       this.isLoading = true
       this.result = await this.signIn(data)
       setTimeout(() => {
         this.isLoading = false
       }, 1000)
 
-      if (this.result.number_incorrect >= 3) {
-        this.count += 1
-      }
-
       if (this.result.success) {
-        if (this.result.user && this.result.user.email) {
-          // eslint-disable-next-line no-undef
-          // $crisp.push(['set', 'user:nickname', [this.result.user.username]])
-          // eslint-disable-next-line no-undef
-          // $crisp.push(['set', 'user:email', this.result.user.email])
-        }
         setTimeout(() => {
           let { path } = this.$route.query
           if (!path) {
@@ -200,31 +150,8 @@ export default {
           this.$router.push(path)
         }, 1000)
       } else {
-        if (this.result.userInActive) {
-          Storage.set('userEmail', this.currentUser.email)
-          setTimeout(() => {
-            this.$router.push('/verify-email')
-          }, 1000)
-          this.$toast.open({
-            type: 'error',
-            message: this.result.message,
-          })
-          return
-        }
-        if (this.$refs.recapcha) {
-          this.$refs.recapcha.reset()
-          this.form.checkCaptcha = false
-        }
-
-        this.$toast.open({
-          type: 'error',
-          message: this.result.message,
-        })
+        this.error = this.result.message
       }
-    },
-    onVerify: function(response) {
-      if (response) this.form.checkCaptcha = true
-      this.check = true
     },
   },
 }
