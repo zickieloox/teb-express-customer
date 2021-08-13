@@ -24,7 +24,9 @@
           v-else-if="mapCount.length != 0"
         >
           {{ item.text }} ({{
-            mapCount[i - 1].count != null ? mapCount[i - 1].count : 0
+            mapCount[i - 1].count != null
+              ? mapCount[i - 1].count
+              : 0 | numFormatter
           }})
         </a>
         <a
@@ -43,6 +45,7 @@
 
 <script>
 import { capitalize } from '@core/utils/string'
+import { numFormatter } from '@core/utils/formatter'
 
 export default {
   name: 'StatusTab',
@@ -84,7 +87,7 @@ export default {
       const arr = this.count.map((ele) => ele.count)
       const reducer = (accumulator, currentValue) => accumulator + currentValue
       const total = arr.reduce(reducer, 0)
-      return total
+      return numFormatter(total)
     },
     mapCount() {
       if (this.count.length < 1) {
