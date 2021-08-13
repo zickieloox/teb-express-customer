@@ -8,4 +8,5 @@ export {
   formatTwoDigits as twoDigits,
   formatUnitString,
   formatTobe,
+  numFormatter,
 } from '@core/utils/formatter'
