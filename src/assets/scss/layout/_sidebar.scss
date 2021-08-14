@@ -24,9 +24,9 @@ $menubar-height:510px;
         padding: 16px;
         width: fit-content;
         cursor: default;
+        z-index: 1000;
         &.has-sub {
             display: inline-block;
-            z-index: 9;
         }
         &:after {
             position: absolute;
