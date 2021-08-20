@@ -121,6 +121,7 @@ export const DELIVER_LOG_PACKAGE = {
   [PackageStatusCancelled]: 'Đơn hàng đã bị hủy',
   [PackageStatusReturned]: 'Đơn hàng bị trả trong quá trình vận chuyển',
   [PackageStatusDelivered]: 'Đơn hàng đã được giao',
+  [PackageStatusWareHouseExport]: 'Đơn hàng đã xuất kho',
 }
 
 export const ROLE_ADMIN = 'admin'
