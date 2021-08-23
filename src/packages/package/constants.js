@@ -6,7 +6,7 @@ export const PackageStatusWareHouseInContainer = 12
 export const PackageStatusWareHouseInShipment = 13
 export const PackageStatusWareHouseExport = 14
 export const PackageStatusInTransit = 30
-export const PackageStatusDelivered = 31
+export const PackageStatusDelivered = 60
 export const PackageStatusReturned = 40
 export const PackageStatusCancelled = 50
 
@@ -114,12 +114,14 @@ export const CHANGE_PACKAGE_TYPE = [
 ]
 
 export const DELIVER_LOG_PACKAGE = {
-  [PackageStatusInTransit]: 'Đơn hàng xuất kho',
+  [PackageStatusInTransit]: 'Đơn hàng đang giao',
   [PackageStatusCreated]: 'Đơn hàng được tạo mới',
   [PackageStatusPendingPickup]: 'Đơn hàng đang chờ lấy',
   [PackageStatusPicked]: 'Đơn hàng được xác nhận đã giao cho nhân viên kho',
   [PackageStatusCancelled]: 'Đơn hàng đã bị hủy',
   [PackageStatusReturned]: 'Đơn hàng bị trả trong quá trình vận chuyển',
+  [PackageStatusDelivered]: 'Đơn hàng đã được giao',
+  [PackageStatusWareHouseExport]: 'Đơn hàng đã xuất kho',
 }
 
 export const ROLE_ADMIN = 'admin'
