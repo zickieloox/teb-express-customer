@@ -122,7 +122,7 @@ export default {
             },
             {
               route: '/packages/create',
-              title: 'Tạo đơn lẻ',
+              title: 'Tạo đơn',
               alias: ['/packages/create'],
             },
           ],
