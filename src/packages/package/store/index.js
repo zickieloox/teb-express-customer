@@ -13,6 +13,7 @@ export const IMPORT_PACKAGE = 'importPackage'
 export const UPDATE_PACKAGE = 'updatePackage'
 export const PROCESS_PACKAGE = 'processPackage'
 export const CANCEL_PACKAGES = 'cancelPackages'
+export const PENDING_PICKUP_PACKAGES = 'pendingPickupPackages'
 
 export const EXPORT_PACKAGE = 'exportPackage'
 export const GET_SERVICE = 'getService'
@@ -181,6 +182,18 @@ export const actions = {
   async cancelPackages({ commit }, payload) {
     let result = { success: true }
     const res = await api.cancelPackages(payload)
+    if (res.error || res.message) {
+      result = {
+        success: false,
+        message: res.errorMessage || res.error || res.message,
+      }
+    }
+    return result
+  },
+  // eslint-disable-next-line no-unused-vars
+  async pendingPickupPackages({ commit }, payload) {
+    let result = { success: true }
+    const res = await api.pendingPickupPackages(payload)
     if (res.error || res.message) {
       result = {
         success: false,
