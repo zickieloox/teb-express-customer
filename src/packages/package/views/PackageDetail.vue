@@ -42,9 +42,7 @@
                   target="_blank"
                   v-if="package_detail.package.tracking"
                   :href="
-                    `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${
-                      package_detail.package.tracking.tracking_number
-                    }`
+                    `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${package_detail.package.tracking.tracking_number}`
                   "
                 >
                   {{
@@ -105,6 +103,15 @@
               "
             >
               <span>Vận đơn</span>
+            </a>
+            <a
+              @click="handlerReturnPackage"
+              class="btn btn-primary ml-7"
+              v-if="
+                package_detail.package.status_string === PackageStatusReturnText
+              "
+            >
+              Chuyển lại hàng
             </a>
           </div>
         </div>
@@ -484,6 +491,18 @@
       :loading="actions.cancelPackage.loading"
       @action="cancelPackageAction"
     ></modal-confirm>
+    <modal-confirm
+      :visible.sync="visibleConfirmReturn"
+      v-if="visibleConfirmReturn"
+      :actionConfirm="actions.returnPackage.button"
+      :cancel="actions.returnPackage.cancel"
+      :description="actions.returnPackage.Description"
+      :title="actions.returnPackage.title"
+      :type="actions.returnPackage.type"
+      :disabled="actions.returnPackage.disabled"
+      :loading="actions.returnPackage.loading"
+      @action="pendingPickupPackageAction"
+    ></modal-confirm>
   </div>
 </template>
 
@@ -517,6 +536,7 @@ import {
   FETCH_LIST_SERVICE,
   PROCESS_PACKAGE,
   CANCEL_PACKAGES,
+  PENDING_PICKUP_PACKAGES,
 } from '../store/index'
 import mixinChaining from '@/packages/shared/mixins/chaining'
 import ModalEditOrder from './components/ModalEditOrder'
@@ -532,6 +552,7 @@ import {
   PackageStatusCancelled,
   PackageStatusCreatedText,
   PackageStatusReturned,
+  PackageStatusReturnText,
 } from '../constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import { extension } from '@core/utils/url'
@@ -577,11 +598,22 @@ export default {
           disabled: false,
           loading: false,
         },
+        returnPackage: {
+          type: 'primary',
+          title: 'Xác nhận chuyển lại hàng',
+          button: 'Xác nhận',
+          cancel: 'Bỏ qua',
+          Description: '',
+          disabled: false,
+          loading: false,
+        },
       },
       visibleConfirmCancel: false,
       isVisibleModalLabel: false,
+      visibleConfirmReturn: false,
       blob: null,
       PackageStatusCreatedText: PackageStatusCreatedText,
+      PackageStatusReturnText: PackageStatusReturnText,
     }
   },
   computed: {
@@ -683,6 +715,7 @@ export default {
       FETCH_LIST_SERVICE,
       PROCESS_PACKAGE,
       CANCEL_PACKAGES,
+      PENDING_PICKUP_PACKAGES,
     ]),
     ...mapActions('setting', [LIST_SENDER]),
     async init() {
@@ -800,7 +833,32 @@ export default {
         duration: 3000,
       })
     },
-
+    handlerReturnPackage() {
+      this.actions.returnPackage.Description = `Bạn có chắc chắn muốn chuyển lại hàng ?`
+      this.visibleConfirmReturn = true
+    },
+    async pendingPickupPackageAction() {
+      const payload = {
+        ids: [this.packageID],
+      }
+      this.actions.returnPackage.loading = true
+      const result = await this[PENDING_PICKUP_PACKAGES](payload)
+      this.visibleConfirmReturn = false
+      this.actions.returnPackage.loading = false
+      if (!result || !result.success) {
+        return this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 3000,
+        })
+      }
+      this.init()
+      this.$toast.open({
+        type: 'success',
+        message: 'Chuyển lại hàng thành công',
+        duration: 3000,
+      })
+    },
     async showContent() {
       document.activeElement && document.activeElement.blur()
 
