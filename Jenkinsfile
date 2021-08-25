@@ -62,7 +62,7 @@ node {
                 sh """
                     KUBECONFIG=${deploySettings.kube_config} helm upgrade --install -f ${deploySettings.helm_values_file} ${deploySettings.helm_release} --set image.tag=${deployTag} deploy/helm_chart
 
-                    KUBECONFIG=${deploySettings.kube_config} kubectl rollout status deployment ${deploySettings.service_name} -n shipment-web-ui
+                    KUBECONFIG=${deploySettings.kube_config} kubectl rollout status deployment ${deploySettings.service_name} -n ${deploySettings.namespace}
                 """
             }
         }
