@@ -221,7 +221,7 @@
                   Thông tin hàng hóa
                 </div>
                 <div class="card__w-content">
-                  <div class="card__w-item">
+                  <div class="card__w-item" v-if="false">
                     <label class="card__w-label">
                       Danh sách hàng hóa:
                     </label>
