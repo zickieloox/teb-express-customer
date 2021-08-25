@@ -45,7 +45,7 @@ export const getters = {
             +item.old_value
           )}</b> sang <b>${formatNumber(+item.value)}</b>`
           if (item.old_value == '' && item.value == '') {
-            message = `<b>${ordername}</b>: ${name} thêm phí sửa trọng lượng
+            message = `<b>${ordername}</b> thêm phí sửa trọng lượng
               <b>${formatPrice(+item.fee)}</b>`
           }
           break
@@ -54,7 +54,7 @@ export const getters = {
             +item.old_value
           )}</b> sang <b>${formatNumber(+item.value)}</b>`
           if (item.old_value == '' && item.value == '') {
-            message = `<b>${ordername}</b>: ${name} thêm phí sửa kích thước
+            message = `<b>${ordername}</b> thêm phí sửa kích thước
               <b>${formatPrice(+item.fee)}</b>`
           }
           break
@@ -64,7 +64,7 @@ export const getters = {
         case 11:
           message = `<b>${ordername}</b>: ${name} đã thay đổi dịch vụ từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
           if (item.old_value == '' && item.value == '') {
-            message = `<b>${ordername}</b>: ${name} thêm phí đổi dịch vụ
+            message = `<b>${ordername}</b> thêm phí đổi dịch vụ
               <b>${formatPrice(+item.fee)}</b>`
           }
           break
