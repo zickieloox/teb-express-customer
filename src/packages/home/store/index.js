@@ -50,9 +50,7 @@ export const getters = {
           }
           break
         case 9:
-          message = `<b>${ordername}</b>: ${name} đã thay đổi kích thước (DxRxC) từ <b>${formatNumber(
-            +item.old_value
-          )}</b> sang <b>${formatNumber(+item.value)}</b>`
+          message = `<b>${ordername}</b>: ${name} đã thay đổi kích thước (DxRxC) từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
           if (item.old_value == '' && item.value == '') {
             message = `<b>${ordername}</b> thêm phí sửa kích thước
               <b>${formatPrice(+item.fee)}</b>`
