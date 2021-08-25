@@ -118,7 +118,7 @@ def getDeploySettings() {
         dockerImageTag = "sandbox-${buildNumber}"
         mode = "development"
         namespace = "sandbox-shipment-web-ui"
-
+        serviceName = "sandbox-shipment-customer"
     }
 
     // docker image info to build
