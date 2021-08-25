@@ -30,7 +30,7 @@ node {
         // Build stage: build image then push to private registry. Only build on branch master
         image = "${deploySettings.image_name}:${deploySettings.image_tag}"
         stage ('Build') {
-            if (deploySettings.branch == 'master' || deploySettings.branch == 'dev') {
+            if (deploySettings.branch == 'master' || deploySettings.branch == 'dev' || deploySettings.branch == 'sandbox') {
                 dir('shipping-customer') {
                     withDockerRegistry([
                         credentialsId: 'docker-registry-credentials',
@@ -102,14 +102,22 @@ def getDeploySettings() {
         dockerImageTag = "release-${buildNumber}"
         mode = "production"
 
-
-
     } else if (branchName == 'dev') {
         // deploy code on master branch to master
         helmValueFile = "default.values.dev.yaml"
         kubeConfig = "/var/lib/jenkins/.kube/lionnix-dev"
         dockerImageTag = "dev-${buildNumber}"
         mode = "development"
+
+    }
+
+    else if (branchName == 'sandbox') {
+        // deploy code on master branch to master
+        helmValueFile = "default.values.sandbox.yaml"
+        kubeConfig = "/var/lib/jenkins/.kube/lionnix-dev"
+        dockerImageTag = "sandbox-${buildNumber}"
+        mode = "development"
+        namespace = "sandbox-shipment-web-ui"
 
     }
 
