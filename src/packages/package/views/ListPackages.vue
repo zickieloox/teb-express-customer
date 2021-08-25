@@ -76,16 +76,17 @@
                           @click="handleWayBill"
                           >Vận đơn</p-button
                         >
-                        <!--                        <p-button-->
-                        <!--                          :disabled="isFilterInitTab"-->
-                        <!--                          class="bulk-actions__selection-status"-->
-                        <!--                          >In đơn</p-button-->
-                        <!--                        >-->
                         <p-button
                           :disabled="cancelOrder(filter.status)"
                           class="bulk-actions__selection-status"
                           @click="handlerCancelPackages"
                           >Hủy đơn</p-button
+                        >
+                        <p-button
+                          v-if="isReturnTab()"
+                          class="bulk-actions__selection-status"
+                          @click="handlerReturnPackages"
+                          >Chuyển lại hàng</p-button
                         >
                       </div>
                     </div>
@@ -163,9 +164,7 @@
                           target="_blank"
                           v-if="item.tracking && item"
                           :href="
-                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${
-                              item.tracking.tracking_number
-                            }`
+                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${item.tracking.tracking_number}`
                           "
                         >
                           {{ item.tracking.tracking_number }}
@@ -251,6 +250,18 @@
       :loading="actions.cancelPackage.loading"
       @action="cancelPackagesAction"
     ></modal-confirm>
+    <modal-confirm
+      :visible.sync="visibleConfirmReturn"
+      v-if="visibleConfirmReturn"
+      :actionConfirm="actions.returnPackage.button"
+      :cancel="actions.returnPackage.cancel"
+      :description="actions.returnPackage.Description"
+      :title="actions.returnPackage.title"
+      :type="actions.returnPackage.type"
+      :disabled="actions.returnPackage.disabled"
+      :loading="actions.returnPackage.loading"
+      @action="pendingPickupPackagesAction"
+    ></modal-confirm>
   </div>
 </template>
 <script>
@@ -267,6 +278,7 @@ import mixinChaining from '@/packages/shared/mixins/chaining'
 import {
   PACKAGE_STATUS_TAB,
   PackageStatusCreatedText,
+  PackageStatusReturnText,
   MAP_NAME_STATUS_PACKAGE,
 } from '../constants'
 import {
@@ -275,6 +287,7 @@ import {
   EXPORT_PACKAGE,
   PROCESS_PACKAGE,
   CANCEL_PACKAGES,
+  PENDING_PICKUP_PACKAGES,
 } from '@/packages/package/store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
@@ -336,9 +349,19 @@ export default {
           disabled: false,
           loading: false,
         },
+        returnPackage: {
+          type: 'primary',
+          title: 'Xác nhận chuyển lại hàng',
+          button: 'Xác nhận',
+          cancel: 'Bỏ qua',
+          Description: '',
+          disabled: false,
+          loading: false,
+        },
       },
       isVisibleConfirmWayBill: false,
       visibleConfirmCancel: false,
+      visibleConfirmReturn: false,
       selected: [],
     }
   },
@@ -376,6 +399,7 @@ export default {
       EXPORT_PACKAGE,
       PROCESS_PACKAGE,
       CANCEL_PACKAGES,
+      PENDING_PICKUP_PACKAGES,
     ]),
     truncate,
     async init() {
@@ -462,6 +486,9 @@ export default {
       )
       this.isVisibleExport = false
     },
+    isReturnTab() {
+      return this.filter.status === PackageStatusReturnText
+    },
     createOrder(value) {
       switch (value) {
         case 'created':
@@ -523,10 +550,51 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selectedIds.length
-      }. Bạn có chắc chắn muốn hủy đơn?`
+      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn hủy đơn?`
       this.visibleConfirmCancel = true
+    },
+    handlerReturnPackages() {
+      const selectedInvalid = this.selected.filter(
+        (ele) => ele.status_string !== PackageStatusReturnText
+      )
+
+      if (selectedInvalid.length > 0) {
+        let codeSelectedInvalid = selectedInvalid.map((ele) => ele.code)
+        if (codeSelectedInvalid.length > 3) {
+          codeSelectedInvalid = [...codeSelectedInvalid.slice(0, 3), '...']
+        }
+        return this.$toast.open({
+          type: 'error',
+          message: `Đơn hàng ${codeSelectedInvalid.join(
+            ', '
+          )} không thể chuyển lại hàng.`,
+          duration: 5000,
+        })
+      }
+      this.actions.returnPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn chuyển lại hàng ?`
+      this.visibleConfirmReturn = true
+    },
+    async pendingPickupPackagesAction() {
+      const payload = {
+        ids: this.selectedIds,
+      }
+      this.actions.returnPackage.loading = true
+      const result = await this[PENDING_PICKUP_PACKAGES](payload)
+      this.visibleConfirmReturn = false
+      this.actions.returnPackage.loading = false
+      if (!result || !result.success) {
+        return this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 3000,
+        })
+      }
+      this.init()
+      this.$toast.open({
+        type: 'success',
+        message: 'Chuyển lại hàng thành công',
+        duration: 3000,
+      })
     },
     async cancelPackagesAction() {
       const payload = {
@@ -569,9 +637,7 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selected.length
-      }. Bạn có chắc chắn muốn vận đơn?`
+      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${this.selected.length}. Bạn có chắc chắn muốn vận đơn?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {

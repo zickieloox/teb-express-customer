@@ -1,7 +1,7 @@
 <template>
   <div class="create__package pages">
     <div class="page-header">
-      <div class="page-header_title header-2">Tạo đơn lẻ</div>
+      <div class="page-header_title header-2">Tạo đơn</div>
     </div>
     <div class="page-content">
       <div class="card">

@@ -61,4 +61,7 @@ export default {
   createPackage(payload) {
     return http.post(`/packages/create`, payload)
   },
+  pendingPickupPackages(payload) {
+    return http.put(`/packages/pending-pickup`, payload)
+  },
 }
