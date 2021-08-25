@@ -2,7 +2,7 @@ replicaCount: 1
 
 app:
   namespace: sandbox-shipment-web-ui
-  name: shipment-customer
+  name: sandbox-shipment-customer
   port: 80
   env: dev
   image_pull_policy: Always
