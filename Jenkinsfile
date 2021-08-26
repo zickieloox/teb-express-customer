@@ -30,7 +30,7 @@ node {
         // Build stage: build image then push to private registry. Only build on branch master
         image = "${deploySettings.image_name}:${deploySettings.image_tag}"
         stage ('Build') {
-            if (deploySettings.branch == 'master' || deploySettings.branch == 'dev') {
+            if (deploySettings.branch == 'master' || deploySettings.branch == 'dev' || deploySettings.branch == 'sandbox') {
                 dir('shipping-customer') {
                     withDockerRegistry([
                         credentialsId: 'docker-registry-credentials',
@@ -62,7 +62,7 @@ node {
                 sh """
                     KUBECONFIG=${deploySettings.kube_config} helm upgrade --install -f ${deploySettings.helm_values_file} ${deploySettings.helm_release} --set image.tag=${deployTag} deploy/helm_chart
 
-                    KUBECONFIG=${deploySettings.kube_config} kubectl rollout status deployment ${deploySettings.service_name} -n shipment-web-ui
+                    KUBECONFIG=${deploySettings.kube_config} kubectl rollout status deployment ${deploySettings.service_name} -n ${deploySettings.namespace}
                 """
             }
         }
@@ -102,8 +102,6 @@ def getDeploySettings() {
         dockerImageTag = "release-${buildNumber}"
         mode = "production"
 
-
-
     } else if (branchName == 'dev') {
         // deploy code on master branch to master
         helmValueFile = "default.values.dev.yaml"
@@ -111,6 +109,16 @@ def getDeploySettings() {
         dockerImageTag = "dev-${buildNumber}"
         mode = "development"
 
+    }
+
+    else if (branchName == 'sandbox') {
+        // deploy code on master branch to master
+        helmValueFile = "default.values.sandbox.yaml"
+        kubeConfig = "/var/lib/jenkins/.kube/lionnix-dev"
+        dockerImageTag = "sandbox-${buildNumber}"
+        mode = "development"
+        namespace = "sandbox-shipment-web-ui"
+        serviceName = "sandbox-shipment-customer"
     }
 
     // docker image info to build
