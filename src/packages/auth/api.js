@@ -21,15 +21,15 @@ export default {
     })
   },
   forgot(payload) {
-    return http.post('/fulfill/auth/forgot-password/seller', payload)
+    return http.post('/auth/forgot-password', payload)
   },
   resetPass(payload) {
-    return http.post('/fulfill/auth/reset-password/seller', payload)
+    return http.post('/auth/reset-password', payload)
   },
   verifyEmail(payload) {
-    return http.post('/fulfill/auth/verify-email/seller', payload)
+    return http.post('/auth/verify-email', payload)
   },
   resendEmail(payload) {
-    return http.post('/fulfill/auth/resend-email/seller', payload)
+    return http.post('/auth/resend-email', payload)
   },
 }
