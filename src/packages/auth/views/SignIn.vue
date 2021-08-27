@@ -60,6 +60,7 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import mixinRoute from '@core/mixins/route'
+import Storage from '@core/helpers/storage'
 import { signin } from '../validate'
 
 export default {

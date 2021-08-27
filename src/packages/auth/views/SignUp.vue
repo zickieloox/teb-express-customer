@@ -103,7 +103,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-// import Storage from '@core/helpers/storage'
+import Storage from '@core/helpers/storage'
 // import VueRecaptcha from 'vue-recaptcha'
 import { signup } from '../validate'
 // import { debounce } from '@core/utils'
