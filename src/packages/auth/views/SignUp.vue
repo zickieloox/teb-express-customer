@@ -175,8 +175,15 @@ export default {
 
       if (res && res.success) {
         this.error = false
-        this.message = 'Đăng ký tài khoản thành công!'
         this.resetForm()
+        Storage.set('userEmail', this.user.email)
+        Storage.set('expried', null)
+        setTimeout(() => {
+          this.$router.push({
+            name: 'verify-email',
+          })
+        }, 1500)
+        return
       }
 
       setTimeout(() => {
@@ -191,7 +198,7 @@ export default {
         } else {
           this.$router.push({ name: 'sign-in' })
         }
-      }, 1500)
+      }, 4500)
     },
 
     resetForm() {

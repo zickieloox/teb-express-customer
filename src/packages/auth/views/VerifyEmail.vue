@@ -1,24 +1,24 @@
 <template>
   <div class="page vertical-align verify-email ">
-    <h2>Thank you for using</h2>
+    <h2>Cảm ơn bạn</h2>
     <p
-      >A verification mail has been sent to your email account. Please check
-      your inbox to verify.</p
+      >Một email xác thực đã được gửi đến hòm thư của bạn, vui lòng kiểm tra
+      email để hoàn tất đăng ký.</p
     >
-    <p>Still can't find the email?</p>
+    <p>Nếu bạn vẫn chưa nhận được email</p>
     <p-button
       class="btn btn-special btn-primary mt-20 mb-20"
       :loading="isLoading"
       :disabled="counting"
       @click="handleResendEmail"
     >
-      <span v-if="counting">Resend Email again {{ count }} </span>
-      <span v-if="!counting">Resend verification Email</span>
+      <span v-if="counting">Gửi lại email {{ count }} </span>
+      <span v-if="!counting">Gửi lại email xác thực</span>
     </p-button>
     <p class="tip">
-      Tip: If you have not received the email, please check your
+      Mẹo: Nếu bạn không tìm thấy email, vui lòng kiểm tra
       <br />
-      <b>Spam</b> or <b>Trash folder</b>
+      <b>Spam</b> hoặc <b>Thư rác</b>
     </p>
   </div>
 </template>
@@ -83,7 +83,7 @@ export default {
           }
           return this.$toast.open({
             type: 'error',
-            message: 'You are not allowed to do this action !',
+            message: 'Bạn không được phép thực hiện!',
           })
         } else {
           return this.$router.push('/404')
@@ -106,8 +106,7 @@ export default {
       if (response.success) {
         this.$toast.open({
           type: 'success',
-          message:
-            'Successfully! Please check your email to activate the account.',
+          message: 'Thành công! Vui lòng kiểm tra hòm thư của bạn.',
         })
         setTimeout(() => {
           this.isLoading = false
