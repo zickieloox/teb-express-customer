@@ -175,9 +175,9 @@ export default {
 
       if (res && res.success) {
         this.error = false
-        this.resetForm()
         Storage.set('userEmail', this.user.email)
         Storage.set('expried', null)
+        this.resetForm()
         setTimeout(() => {
           this.$router.push({
             name: 'verify-email',

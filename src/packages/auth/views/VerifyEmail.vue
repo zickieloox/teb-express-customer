@@ -1,6 +1,6 @@
 <template>
-  <div class="page vertical-align verify-email ">
-    <h2>Cảm ơn bạn</h2>
+  <div class="card sign-up">
+    <h2>Chào mừng bạn đến với Lionbay</h2>
     <p
       >Một email xác thực đã được gửi đến hòm thư của bạn, vui lòng kiểm tra
       email để hoàn tất đăng ký.</p
@@ -12,7 +12,7 @@
       :disabled="counting"
       @click="handleResendEmail"
     >
-      <span v-if="counting">Gửi lại email {{ count }} </span>
+      <span v-if="counting">Gửi lại email sau {{ count }} </span>
       <span v-if="!counting">Gửi lại email xác thực</span>
     </p-button>
     <p class="tip">
@@ -20,6 +20,7 @@
       <br />
       <b>Spam</b> hoặc <b>Thư rác</b>
     </p>
+    <a href="/">Quay trở lại trang chủ</a>
   </div>
 </template>
 
@@ -106,7 +107,8 @@ export default {
       if (response.success) {
         this.$toast.open({
           type: 'success',
-          message: 'Thành công! Vui lòng kiểm tra hòm thư của bạn.',
+          message:
+            'Yêu cầu gửi lại thành công! Vui lòng kiểm tra hòm thư của bạn.',
         })
         setTimeout(() => {
           this.isLoading = false
