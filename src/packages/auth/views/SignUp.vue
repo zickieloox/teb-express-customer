@@ -103,7 +103,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-// import Storage from '@core/helpers/storage'
+import Storage from '@core/helpers/storage'
 // import VueRecaptcha from 'vue-recaptcha'
 import { signup } from '../validate'
 // import { debounce } from '@core/utils'
@@ -175,8 +175,15 @@ export default {
 
       if (res && res.success) {
         this.error = false
-        this.message = 'Đăng ký tài khoản thành công!'
+        Storage.set('userEmail', this.user.email)
+        Storage.set('expried', null)
         this.resetForm()
+        setTimeout(() => {
+          this.$router.push({
+            name: 'verify-email',
+          })
+        }, 1500)
+        return
       }
 
       setTimeout(() => {
@@ -191,7 +198,7 @@ export default {
         } else {
           this.$router.push({ name: 'sign-in' })
         }
-      }, 1500)
+      }, 4500)
     },
 
     resetForm() {

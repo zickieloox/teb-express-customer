@@ -196,7 +196,7 @@
                                 size="large"
                                 position="top"
                                 type="dark"
-                                :active="item.description > 15"
+                                :active="item.description.length > 15"
                               >
                                 {{ truncate(item.description, 15) }}
                               </p-tooltip>
@@ -287,7 +287,7 @@
                                 size="large"
                                 position="top"
                                 type="dark"
-                                :active="item.description > 15"
+                                :active="item.description.length > 15"
                               >
                                 {{ truncate(item.description, 15) }}
                               </p-tooltip>

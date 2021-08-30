@@ -60,6 +60,7 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import mixinRoute from '@core/mixins/route'
+import Storage from '@core/helpers/storage'
 import { signin } from '../validate'
 
 export default {
@@ -150,7 +151,26 @@ export default {
           this.$router.push(path)
         }, 1000)
       } else {
-        this.error = this.result.message
+        if (this.result.userInActive) {
+          Storage.set('userEmail', this.currentUser.email)
+          setTimeout(() => {
+            this.$router.push('/verify-email')
+          }, 1000)
+          this.$toast.open({
+            type: 'error',
+            message: this.result.message,
+          })
+          return
+        }
+        if (this.$refs.recapcha) {
+          this.$refs.recapcha.reset()
+          this.form.checkCaptcha = false
+        }
+
+        this.$toast.open({
+          type: 'error',
+          message: this.result.message,
+        })
       }
     },
   },

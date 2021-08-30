@@ -34,8 +34,8 @@ export const routes = [
     name: 'forgot',
     meta: {
       title: 'Forgot',
-      layout: 'full-page',
-      class: 'page-login-v3',
+      layout: 'auth',
+      class: 'page-auth',
       ...noAuthRequired(),
     },
     component: () =>
@@ -48,8 +48,8 @@ export const routes = [
     name: 'verify-email',
     meta: {
       title: 'Verify Email',
-      layout: 'full-page',
-      class: 'page-login-v3',
+      layout: 'auth',
+      class: 'page-auth',
       ...noAuthRequired(),
     },
     component: () =>
@@ -62,8 +62,8 @@ export const routes = [
     name: 'reset-password',
     meta: {
       title: 'Reset Password',
-      layout: 'full-page',
-      class: 'page-login-v3',
+      layout: 'auth',
+      class: 'page-auth',
       ...noAuthRequired(),
     },
     component: () =>
