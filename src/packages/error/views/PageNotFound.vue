@@ -2,7 +2,7 @@
   <div class="page-content page-not-found">
     <div class="content">
       <div class="content_logo">
-        <img src="~@/assets/img/logo_dark 2.svg" alt="" />
+        <img src="https://ship.lionbay.express/img/logo.4a0f4600.svg" alt="" />
       </div>
       <div class="content_404">
         <div class="content_404-img">
