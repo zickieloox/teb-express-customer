@@ -20,7 +20,7 @@
       <br />
       <b>Spam</b> hoặc <b>Thư rác</b>
     </p>
-    <a href="/">Quay trở lại trang chủ</a>
+    <a href="/">Quay trở lại trang đăng nhập</a>
   </div>
 </template>
 
