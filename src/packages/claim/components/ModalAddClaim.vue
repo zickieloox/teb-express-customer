@@ -370,6 +370,7 @@ export default {
         if (data.error) {
           this.isUploading = false
           this.errMessage.push(data.message)
+          this.number = this.number - 1
           return
         }
         this.files.push({
