@@ -18,6 +18,7 @@ export const PENDING_PICKUP_PACKAGES = 'pendingPickupPackages'
 export const EXPORT_PACKAGE = 'exportPackage'
 export const GET_SERVICE = 'getService'
 export const CREATE_PACKAGE = 'createPackage'
+export const VALIDATE_ADDRESS = 'validateAddress'
 /**
  * State
  */
@@ -213,5 +214,18 @@ export const actions = {
       }
     }
     return res
+  },
+
+  // eslint-disable-next-line no-unused-vars
+  async [VALIDATE_ADDRESS]({ commit }, payload) {
+    let result = { success: true }
+    const res = await api.validateAddress(payload)
+    if (res.error || res.message) {
+      return {
+        success: false,
+        message: res.errorMessage || res.error || res.message || '',
+      }
+    }
+    return result
   },
 }

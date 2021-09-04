@@ -154,8 +154,29 @@
                         >
                           <img
                             src="@/assets/img/Vector-barcode.png"
-                            style="margin-left: 10px;margin-bottom: 3px;"
+                            style="margin-left: 10px; margin-bottom: 3px"
                           />
+                        </span>
+                        <span
+                          v-if="!item.validate_address"
+                          @click="handleValidateAddress(item.id)"
+                          class="
+                            list-warning
+                            badge badge-round badge-warning-order
+                          "
+                        >
+                          <p-tooltip
+                            class="item_name"
+                            :label="
+                              `Địa chỉ không hợp lệ \n Kích vào đây để kiểm tra lại`
+                            "
+                            position="top"
+                            type="dark"
+                          >
+                            <i aria-hidden="true"
+                              ><img src="@assets/img/warning.svg" />
+                            </i>
+                          </p-tooltip>
                         </span>
                       </td>
                       <td>{{ item.order_number }}</td>
@@ -164,7 +185,9 @@
                           target="_blank"
                           v-if="item.tracking && item"
                           :href="
-                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${item.tracking.tracking_number}`
+                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${
+                              item.tracking.tracking_number
+                            }`
                           "
                         >
                           {{ item.tracking.tracking_number }}
@@ -176,9 +199,7 @@
                       <td v-if="item.service">
                         {{ item.service.name }}
                       </td>
-                      <td v-if="!item.service">
-                        N/A
-                      </td>
+                      <td v-if="!item.service"> N/A </td>
                       <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
                       <td>
                         <span
@@ -262,6 +283,18 @@
       :loading="actions.returnPackage.loading"
       @action="pendingPickupPackagesAction"
     ></modal-confirm>
+    <modal-confirm
+      :visible.sync="visibleConfirmValidate"
+      v-if="visibleConfirmValidate"
+      :actionConfirm="actions.validateAddress.button"
+      :cancel="actions.validateAddress.cancel"
+      :description="actions.validateAddress.Description"
+      :title="actions.validateAddress.title"
+      :type="actions.validateAddress.type"
+      :disabled="actions.validateAddress.disabled"
+      :loading="actions.validateAddress.loading"
+      @action="validateAddressPackage"
+    ></modal-confirm>
   </div>
 </template>
 <script>
@@ -288,6 +321,7 @@ import {
   PROCESS_PACKAGE,
   CANCEL_PACKAGES,
   PENDING_PICKUP_PACKAGES,
+  VALIDATE_ADDRESS,
 } from '@/packages/package/store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
@@ -358,11 +392,22 @@ export default {
           disabled: false,
           loading: false,
         },
+        validateAddress: {
+          type: 'primary',
+          title: 'Kiểm tra lại địa chỉ',
+          button: 'Xác nhận',
+          cancel: 'Bỏ qua',
+          Description: '',
+          disabled: false,
+          loading: false,
+        },
       },
       isVisibleConfirmWayBill: false,
       visibleConfirmCancel: false,
       visibleConfirmReturn: false,
+      visibleConfirmValidate: false,
       selected: [],
+      idSelected: 0,
     }
   },
   created() {
@@ -400,6 +445,7 @@ export default {
       PROCESS_PACKAGE,
       CANCEL_PACKAGES,
       PENDING_PICKUP_PACKAGES,
+      VALIDATE_ADDRESS,
     ]),
     truncate,
     async init() {
@@ -550,7 +596,9 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn hủy đơn?`
+      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${
+        this.selectedIds.length
+      }. Bạn có chắc chắn muốn hủy đơn?`
       this.visibleConfirmCancel = true
     },
     handlerReturnPackages() {
@@ -571,7 +619,9 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.returnPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn chuyển lại hàng ?`
+      this.actions.returnPackage.Description = `Tổng số đơn hàng đang chọn là ${
+        this.selectedIds.length
+      }. Bạn có chắc chắn muốn chuyển lại hàng ?`
       this.visibleConfirmReturn = true
     },
     async pendingPickupPackagesAction() {
@@ -637,7 +687,9 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${this.selected.length}. Bạn có chắc chắn muốn vận đơn?`
+      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${
+        this.selected.length
+      }. Bạn có chắc chắn muốn vận đơn?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
@@ -692,6 +744,28 @@ export default {
         this.$toast.error('File error !!!')
       }
     },
+
+    handleValidateAddress(id) {
+      this.idSelected = id
+      this.actions.validateAddress.Description = `Bạn có chắc chắn muốn kiểm tra lại địa chỉ đơn hàng này?`
+      this.visibleConfirmValidate = true
+    },
+    async validateAddressPackage() {
+      const payload = {
+        ids: [this.idSelected],
+      }
+      const result = await this[VALIDATE_ADDRESS](payload)
+      if (!result || !result.success) {
+        this.visibleConfirmValidate = false
+        return this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 3000,
+        })
+      }
+      this.visibleConfirmValidate = false
+      this.init()
+    },
   },
   watch: {
     filter: {
@@ -704,4 +778,9 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped lang="scss">
+.p-tooltip::after {
+  width: auto !important;
+  white-space: pre;
+}
+</style>

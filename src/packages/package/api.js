@@ -64,4 +64,7 @@ export default {
   pendingPickupPackages(payload) {
     return http.put(`/packages/pending-pickup`, payload)
   },
+  validateAddress(payload) {
+    return http.post(`/packages/validate-address`, payload)
+  },
 }
