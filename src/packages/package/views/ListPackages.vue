@@ -747,7 +747,7 @@ export default {
 
     handleValidateAddress(id) {
       this.idSelected = id
-      this.actions.validateAddress.Description = `Bạn có chắc chắn muốn kiểm tra lại địa chỉ đơn hàng này?`
+      this.actions.validateAddress.Description = `Bạn chắc chắn đây là địa chỉ hợp lệ? Xin vui lòng xác nhận!`
       this.visibleConfirmValidate = true
     },
     async validateAddressPackage() {
