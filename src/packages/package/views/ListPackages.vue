@@ -769,7 +769,7 @@ export default {
         this.actions.validateAddress.loading = false
         this.visibleConfirmValidate = false
         this.init()
-      }, 2000)
+      }, 1500)
     },
   },
   watch: {
