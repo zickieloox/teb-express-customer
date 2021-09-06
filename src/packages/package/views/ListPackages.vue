@@ -751,20 +751,25 @@ export default {
       this.visibleConfirmValidate = true
     },
     async validateAddressPackage() {
+      this.actions.validateAddress.loading = true
       const payload = {
         ids: [this.idSelected],
       }
       const result = await this[VALIDATE_ADDRESS](payload)
       if (!result || !result.success) {
         this.visibleConfirmValidate = false
+        this.actions.validateAddress.loading = false
         return this.$toast.open({
           type: 'error',
           message: result.message,
           duration: 3000,
         })
       }
-      this.visibleConfirmValidate = false
-      this.init()
+      setTimeout(() => {
+        this.actions.validateAddress.loading = false
+        this.visibleConfirmValidate = false
+        this.init()
+      }, 2000)
     },
   },
   watch: {
