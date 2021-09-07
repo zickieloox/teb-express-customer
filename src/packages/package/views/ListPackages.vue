@@ -168,7 +168,7 @@
                           <p-tooltip
                             class="item_name"
                             :label="
-                              `Địa chỉ không hợp lệ \n Kích vào đây để kiểm tra lại`
+                              `Địa chỉ không hợp lệ \n Kích vào đây để xác nhận rằng địa chỉ hiện tại chắc chắn hợp lệ`
                             "
                             position="top"
                             type="dark"
