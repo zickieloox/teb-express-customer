@@ -20,25 +20,39 @@ export const getters = {
 
       switch (item.type) {
         case 1:
-          message = `<b>${ordername}</b>: ${name} đã thay đổi người nhận từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          message = `<b>${ordername}</b>: ${name} đã thay đổi người nhận từ <b>${
+            item.old_value
+          }</b> sang <b>${item.value}</b>`
           break
         case 2:
-          message = `<b>${ordername}</b>: ${name} đã thay đổi số điện thoại từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          message = `<b>${ordername}</b>: ${name} đã thay đổi số điện thoại từ <b>${
+            item.old_value
+          }</b> sang <b>${item.value}</b>`
           break
         case 3:
-          message = `<b>${ordername}</b>: ${name} đã thay đổi địa chỉ người nhận từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          message = `<b>${ordername}</b>: ${name} đã thay đổi địa chỉ người nhận từ <b>${
+            item.old_value
+          }</b> sang <b>${item.value}</b>`
           break
         case 4:
-          message = `<b>${ordername}</b>: ${name} đã thay đổi thành phố từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          message = `<b>${ordername}</b>: ${name} đã thay đổi thành phố từ <b>${
+            item.old_value
+          }</b> sang <b>${item.value}</b>`
           break
         case 5:
-          message = `<b>${ordername}</b>: ${name} đã thay đổi mã vùng từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          message = `<b>${ordername}</b>: ${name} đã thay đổi mã vùng từ <b>${
+            item.old_value
+          }</b> sang <b>${item.value}</b>`
           break
         case 6:
-          message = `<b>${ordername}</b>: ${name} đã thay đổi mã bưu điện từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          message = `<b>${ordername}</b>: ${name} đã thay đổi mã bưu điện từ <b>${
+            item.old_value
+          }</b> sang <b>${item.value}</b>`
           break
         case 7:
-          message = `<b>${ordername}</b>: ${name} đã thay đổi mã quốc gia từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          message = `<b>${ordername}</b>: ${name} đã thay đổi mã quốc gia từ <b>${
+            item.old_value
+          }</b> sang <b>${item.value}</b>`
           break
         case 8:
           message = `<b>${ordername}</b>: ${name} đã thay đổi trọng lượng từ <b>${formatNumber(
@@ -50,7 +64,9 @@ export const getters = {
           }
           break
         case 9:
-          message = `<b>${ordername}</b>: ${name} đã thay đổi kích thước (DxRxC) từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          message = `<b>${ordername}</b>: ${name} đã thay đổi kích thước (DxRxC) từ <b>${
+            item.old_value
+          }</b> sang <b>${item.value}</b>`
           if (item.old_value == '' && item.value == '') {
             message = `<b>${ordername}</b> thêm phí sửa kích thước
               <b>${formatPrice(+item.fee)}</b>`
@@ -60,17 +76,23 @@ export const getters = {
           message = `<b>${ordername}</b>: ${name} đã thay đổi yêu cầu khi giao`
           break
         case 11:
-          message = `<b>${ordername}</b>: ${name} đã thay đổi dịch vụ từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          message = `<b>${ordername}</b>: ${name} đã thay đổi dịch vụ từ <b>${
+            item.old_value
+          }</b> sang <b>${item.value}</b>`
           if (item.old_value == '' && item.value == '') {
             message = `<b>${ordername}</b> thêm phí đổi dịch vụ
               <b>${formatPrice(+item.fee)}</b>`
           }
           break
         case 12:
-          message = `<b>${ordername}</b>: ${name} đã thay đổi chi tiết hàng hóa từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          message = `<b>${ordername}</b>: ${name} đã thay đổi chi tiết hàng hóa từ <b>${
+            item.old_value
+          }</b> sang <b>${item.value}</b>`
           break
         case 13:
-          message = `<b>${ordername}</b>: ${name} đã thay đổi địa chỉ phụ người nhận từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          message = `<b>${ordername}</b>: ${name} đã thay đổi địa chỉ phụ người nhận từ <b>${
+            item.old_value
+          }</b> sang <b>${item.value}</b>`
           break
         case 14:
           message = `<b>${ordername}</b> thêm phí covid <b>${formatPrice(
@@ -111,6 +133,9 @@ export const getters = {
           message = `<b>${ordername}</b> thêm phí phát sinh khác <b>${formatPrice(
             +item.fee
           )}</b>`
+          break
+        case 22:
+          message = `<b>${ordername}</b> đã xóa cảnh báo địa chỉ không hợp lệ`
           break
       }
 
