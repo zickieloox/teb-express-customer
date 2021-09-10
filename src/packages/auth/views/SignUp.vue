@@ -67,7 +67,11 @@
       </m-input>
       <p class="police__text mb-40">
         Khi nhấn nút <b>Đăng ký tài khoản</b>, bạn đã đồng ý thực hiện mọi giao
-        dịch theo <a href="#">Điều kiện sử dụng & chính sách</a> của LionBay
+        dịch theo
+        <a target="_blank" :href="`${URL_POLICY}`"
+          >Điều kiện sử dụng & chính sách</a
+        >
+        của LionBay
       </p>
       <p-button
         class="btn-special"
@@ -118,6 +122,9 @@ export default {
         this.user.phone === '' ||
         this.user.password === ''
       )
+    },
+    URL_POLICY() {
+      return process.env.VUE_APP_POLICY_URL
     },
   },
   data() {
