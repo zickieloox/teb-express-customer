@@ -26,7 +26,7 @@
                 >
                   <img
                     src="@/assets/img/Vector-barcode.png"
-                    style="margin-top: 9px;position: absolute; left: 150px;"
+                    style=" margin-top: 9px;position: absolute; left: 150px;"
                   />
                 </span>
               </div>
