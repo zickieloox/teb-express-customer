@@ -144,6 +144,13 @@ export default {
           class: '',
         },
         {
+          title: 'Tracking',
+          icon: require('@assets/img/Claim.png'),
+          iconActive: require('@assets/img/ClaimActive.png'),
+          route: { name: 'tracking' },
+          class: '',
+        },
+        {
           title: 'Cài đặt',
           icon: require('@assets/img/Setting.png'),
           iconActive: require('@assets/img/SettingActive.png'),
