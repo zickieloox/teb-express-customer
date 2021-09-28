@@ -231,15 +231,15 @@ export default {
     ...mapState('bill', {
       topup: (state) => state.topup,
       balance: (state) => state.balance,
-      USDTOVND: (state) => state.rateExchange,
-      updatedAt: (state) => state.updated_at,
+      // USDTOVND: (state) => state.rateExchange,
+      // updatedAt: (state) => state.updated_at,
     }),
 
     amountVND() {
       if (!this.amount || this.error) return ''
-      const amount = parseFloat(('' + this.amount).replace(',', ''))
+      const amount = +this.amount.replaceAll(',', '')
       if (this.toUSD) {
-        return (amount / this.USDTOVND).toFixed(5)
+        return amount / this.USDTOVND
       }
       return formatNumber(Math.ceil((amount * 1000 * this.USDTOVND) / 1000))
     },
@@ -281,6 +281,8 @@ export default {
       VN_FLAG: { name: 'VND', icon: require('@assets/img/vn.svg') },
       US_FLAG: { name: 'USD', icon: require('@assets/img/us.svg') },
       toUSD: false,
+      USDTOVND: 0,
+      updatedAt: '',
     }
   },
   created() {
@@ -297,11 +299,21 @@ export default {
 
     async init() {
       this.handleUpdateRouteQuery()
-      await Promise.all([
+      const [transaction, exchange] = await Promise.all([
         this[FETCH_TRANSACTION](this.filter),
         this[FETCH_RATE_EXCHANGE](),
         this.createTopup(),
       ])
+      if (!exchange || !exchange.success || !transaction) {
+        this.$toast.open({
+          type: 'error',
+          message: 'Something went wrong',
+          duration: 4000,
+        })
+        return
+      }
+      this.USDTOVND = exchange.usdtovnd
+      this.updatedAt = exchange.updated_at
     },
     swapHandle() {
       let temp = this.VN_FLAG
@@ -317,7 +329,7 @@ export default {
       if (this.error) return
 
       if (this.toUSD) {
-        amount = +(amount / this.USDTOVND).toFixed(5)
+        amount = +(amount / this.USDTOVND)
       } else {
         amount = +this.amount.replaceAll(',', '')
       }
@@ -360,7 +372,9 @@ export default {
       let value = e.target.value.trim()
 
       value = value.replace(/,/g, '').replace(/^0+/, '')
-      value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      if (!this.toUSD) {
+        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      }
       this.amount = value
 
       this.checkValidAmount()
