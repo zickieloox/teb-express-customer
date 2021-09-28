@@ -19,41 +19,6 @@ export const PackageStatusDeliveredText = 'delivered'
 export const PackageStatusReturnText = 'return'
 export const PackageStatusCancelledText = 'cancelled'
 
-export const PACKAGE_STATUS_TAB = [
-  {
-    value: '',
-    text: 'Tất cả',
-  },
-  {
-    value: PackageStatusCreatedText,
-    text: 'Tạo mới',
-  },
-  {
-    value: PackageStatusPendingPickupText,
-    text: 'Chờ lấy',
-  },
-  {
-    value: PackageStatusProcessingText,
-    text: 'Đang xử lý',
-  },
-  {
-    value: PackageStatusInTransitText,
-    text: 'Đang giao',
-  },
-  {
-    value: PackageStatusDeliveredText,
-    text: 'Giao thành công',
-  },
-  {
-    value: PackageStatusReturnText,
-    text: 'Trả hàng',
-  },
-  {
-    value: PackageStatusCancelledText,
-    text: 'Đã huỷ',
-  },
-]
-
 export const MAP_NAME_STATUS_PACKAGE = {
   ['']: {
     value: '-',
@@ -77,7 +42,7 @@ export const MAP_NAME_STATUS_PACKAGE = {
   },
   [PackageStatusDeliveredText]: {
     value: 'Giao thành công',
-    class: 'badge-success',
+    class: '  ',
   },
   [PackageStatusReturnText]: {
     value: 'Trả hàng',
@@ -89,33 +54,6 @@ export const MAP_NAME_STATUS_PACKAGE = {
   },
 }
 
-export const CHANGE_PACKAGE_TYPE = [
-  '',
-  'Người nhận',
-  'Số điện thoại người nhận',
-  'Địa chỉ người nhận',
-  'Thành phố',
-  'Mã vùng',
-  'Mã bưu điện',
-  'Mã quốc gia',
-  'Trọng lượng',
-  'Kích thước (DxRxC)',
-  'Yêu cầu khi giao',
-  'Dịch vụ',
-  'Chi tiết hàng hóa',
-  'Địa chỉ phụ người nhận',
-  'Covid',
-  'Quá cỡ',
-  'Sửa kích thước',
-  'Sửa trọng lượng',
-  'Dịch vụ',
-  'Sửa đơn',
-  'Hoàn tiền',
-  'Phí phát sinh khác',
-  'Xác nhận xóa cảnh báo địa chỉ không hợp lệ',
-  'Bỏ qua kiểm tra địa chỉ bằng API',
-]
-
 export const DELIVER_LOG_PACKAGE = {
   [PackageStatusInTransit]: 'Đơn hàng đang giao',
   [PackageStatusCreated]: 'Đơn hàng được tạo mới',
@@ -123,7 +61,7 @@ export const DELIVER_LOG_PACKAGE = {
   [PackageStatusRePendingPickup]: 'Đơn hàng đã được chuyển lại',
   [PackageStatusPicked]: 'Đơn hàng được xác nhận đã giao cho nhân viên kho',
   [PackageStatusCancelled]: 'Đơn hàng đã bị hủy',
-  [PackageStatusReturned]: 'Đơn hàng bị trả lại',
+  [PackageStatusReturned]: 'Đơn hàng bị trả trong quá trình vận chuyển',
   [PackageStatusDelivered]: 'Đơn hàng đã được giao',
   [PackageStatusWareHouseExport]: 'Đơn hàng đã xuất kho',
 }

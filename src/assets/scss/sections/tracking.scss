@@ -1,0 +1,312 @@
+.tracking_page {
+  background-color: #F9FAFB;
+  min-height: 100vh;
+  padding-bottom: 100px;
+
+}
+
+.search__section {
+  position: relative;
+  top: 70px;
+  margin-bottom: 80px;
+  padding-bottom: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 588px;
+  .search {
+    display: flex;
+    justify-content: space-between;
+    height: 105px;
+    margin-bottom: 6px;
+    .input {
+      width: 472px;
+      padding-left: 14px;
+      font-size: 14px;
+      line-height: 22px;
+      color: $color-neutral-9;
+      border: 1px solid #E1E2E2;
+      display: flex;
+      flex-direction: column;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      background-color: #ffffff;
+      overflow-y: auto;
+      resize: none;
+      outline: none;
+      .txt {
+        padding-left: 14px;
+        border: none;
+        font-size: 14px;
+        line-height: 22px;
+        color: $color-neutral-9;
+        position: relative;
+        .number {
+          color: $color-neutral-5;
+          margin-right: .5rem;
+        }
+        &:focus {
+          outline: none;
+        }
+        img {
+          position: absolute;
+          right: 15px;
+          top: 16px;
+          transform: translateY(-50%);
+          cursor: pointer
+        }
+        &:nth-child(even) {
+          background-color: rgba(246, 247, 247, 0.6)
+        }
+        &:nth-child(odd) {
+          background-color: #ffffff
+        }
+        &:not(:first-child) {
+          &::placeholder {
+            color: transparent;
+          }
+        }
+      }
+    }
+    .button-group {
+      width: 100px;
+      display: flex;
+      flex-direction: column;
+      .btn {
+        width: 100px;
+        height: 48px;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 24px;
+        &-tracking {
+          color: #ffffff;
+          background-color: $color-turquoise-4;
+          margin-bottom: 9px;
+          &:hover {
+            background-color: $color-turquoise-3;
+          }
+        }
+        &-clear {
+          color: $color-neutral-5;
+          background-color: $color-neutral-3;
+          &:hover {
+            background-color: $color-neutral-2;
+          }
+        }
+        &:focus {
+          outline: none;
+          box-shadow: none;
+        }
+      }
+    }
+  }
+  .text-err {
+    width: 472px;
+    height: 32px;
+    background: #FFF1F0;
+    font-size: 14px;
+    line-height: 22px;
+    color: #F5222D;
+    display: table-cell;
+    vertical-align: middle;
+    padding-left: 10px;
+    img {
+      margin-right: 5px;
+    }
+  }
+}
+
+.tracking__section {
+  .tracking {
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: space-between;
+    .list-track {
+      width: 384px;
+      .button-package:first-child {
+        .package {
+          border: 1px solid $color-neutral-9 !important;
+          outline: none;
+        }
+      }
+      .package {
+        background: #FFFFFF;
+        height: 137px;
+        padding: 8px 12px 12px 12px;
+        border: none;
+        text-align: left;
+        font-family: BeMedium;
+        width: 100%;
+        .title {
+          font-weight: 500;
+          font-size: 20px;
+          line-height: 28px;
+          color: $color-neutral-7;
+          margin-bottom: 12px;
+        }
+        .content {
+          font-size: 14px;
+          line-height: 22px;
+          color: $color-neutral-9;
+          span {
+            font-weight: 500;
+          }
+        }
+        &:active,
+        &:focus,
+        &.active {
+          border: 1px solid $color-neutral-9 !important;
+          outline: none;
+        }
+      }
+    }
+    .log {
+      overflow-y: auto;
+      width: 792px;
+      max-height: 750px;
+      background: #FFFFFF;
+      border: 3px solid $color-turquoise-6;
+      box-sizing: border-box;
+      padding: 20px;
+      .timeline {}
+    }
+  }
+}
+//timeline tracking page
+
+.timeline {
+  position: relative;
+  margin: 0;
+  &::after {
+    content: ' ';
+    position: absolute;
+    z-index: 1;
+    top: 24px;
+    bottom: 45px;
+    left: 16%;
+    width: 2px;
+    background-color: #E1E2E2;
+  }
+}
+
+.timeline-item {
+  display: flex;
+}
+
+.timeline-item__left,
+.timeline-item__right {
+  position: relative;
+  border-radius: 4px;
+}
+
+.timeline-item__left {
+  padding: 14px 14px;
+  text-align: right;
+  width: 15%;
+}
+
+.timeline-item__left>div:first-child {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  color: $color-neutral-9;
+}
+
+.timeline-item__left>div:last-child {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  color: $color-neutral-7;
+}
+
+.timeline-item__right {
+  padding: 16px 28px;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: $color-neutral-9;
+  width: 85%;
+  span {
+    font-size: 12px;
+    svg {
+      color: #999;
+    }
+  }
+}
+
+.first-item .timeline-item__right div {
+  font-weight: bold;
+  color: $color-neutral-10;
+}
+
+.timeline-item .timeline-item__left:before {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 20px;
+  right: -17px;
+  background-color: $color-turquoise-1;
+  border: 1px solid #6ECECF;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.timeline-item .timeline-item__left::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  top: 26px;
+  right: -11px;
+  background-color: $color-turquoise-4;
+  border: none;
+  border-radius: 50%;
+  z-index: 3;
+}
+
+.first-item .timeline-item__left:before {
+  border: none;
+}
+
+.first-item .timeline-item__left::after {
+  content: ' ';
+  background-image: url("~@/assets/img/check-tracking.svg");
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 18px;
+  background-color: transparent;
+  right: -21px;
+  border: none;
+  border-radius: 50%;
+  z-index: 4;
+}
+
+.timeline__next-page {
+  display: flex;
+  justify-content: center;
+  color: #313232;
+  font-weight: bold;
+  margin-top: 50px;
+}
+
+.timeline__next-page_history {
+  width: 30%;
+}
+
+.timeline__next-page>div {
+  width: 70px;
+  text-align: center;
+  padding: 11px 12px;
+  border: 1px solid #CFD0D0;
+  box-sizing: border-box;
+  border-radius: 8px;
+  margin: 4px;
+  cursor: pointer;
+}
+
+.disable-next-page {
+  color: #CFD0D0;
+}

@@ -48,4 +48,14 @@ export default {
   updateTopup(payload) {
     return http.post(`/transactions/top-up/update/${payload.id}`, payload.body)
   },
+  createTransaction(payload) {
+    return http.post(`/transactions/`, payload)
+  },
+  /**
+   * get rate exchange
+   * @return {*}
+   */
+  fetchRateExchange() {
+    return http.get(`/transactions/rate-exchange`)
+  },
 }

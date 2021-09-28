@@ -14,6 +14,9 @@ export const CREATE_TOPUP = 'createTopup'
 export const UPDATE_TOPUP = 'updateTopup'
 export const COUNT_BILLS = 'countBills'
 export const FETCH_BILL_LIST = 'fetchBillList'
+export const CREATE_TRANSACTION = 'createTransaction'
+export const FETCH_RATE_EXCHANGE = 'fetchRateExchange'
+export const FETCH_RATE_EXCHANGE_UPDATE = 'fetchRateExchangeUpdate'
 
 export const state = {
   bill: {},
@@ -32,6 +35,8 @@ export const state = {
   topup: {},
   countBills: 0,
   bills: [],
+  rateExchage: 0,
+  updatedAt: '',
 }
 
 export const mutations = {
@@ -72,6 +77,12 @@ export const mutations = {
   },
   [COUNT_BILLS]: (state, payload) => {
     state.countBills = payload
+  },
+  [FETCH_RATE_EXCHANGE]: (state, payload) => {
+    state.rateExchange = payload
+  },
+  [FETCH_RATE_EXCHANGE_UPDATE]: (state, payload) => {
+    state.updated_at = payload
   },
 }
 
@@ -125,6 +136,15 @@ export const actions = {
 
     return { success: true }
   },
+  async fetchRateExchange({ commit }) {
+    const res = await api.fetchRateExchange()
+    if (!res || res.error) {
+      return { success: false, message: res.errorMessage || '' }
+    }
+    commit(FETCH_RATE_EXCHANGE, res.usd_to_vnd)
+    commit(FETCH_RATE_EXCHANGE_UPDATE, res.updated_at)
+    return { success: true }
+  },
   async [FETCH_TRANSACTION]({ commit }, payload) {
     const [res, count] = await Promise.all([
       api.fetchTransactions(payload),
@@ -152,6 +172,20 @@ export const actions = {
   // eslint-disable-next-line
   async updateTopup({ commit }, payload) {
     const response = await api.updateTopup(payload)
+
+    if (response && response.success) {
+      return { success: true }
+    }
+
+    return {
+      success: false,
+      message: response.errorMessage || '',
+    }
+  },
+
+  // eslint-disable-next-line
+  async [CREATE_TRANSACTION]({ commit }, payload) {
+    const response = await api.createTransaction(payload)
 
     if (response && response.success) {
       return { success: true }

@@ -51,19 +51,28 @@
           </div>
           <div class="d-flex jc-sb">
             <div class="method">
-              <div class="active"
-                ><i class="fa fa-circle"></i> Chuyển khoản</div
+              <a
+                href="javascript:void(0)"
+                @click="setMethod(topupType)"
+                :class="{ deactive: !isTopup, active: isTopup }"
+                ><i class="fa fa-circle"></i> Chuyển khoản</a
               >
-              <div class="deactive"
+              <a
+                href="javascript:void(0)"
+                @click="setMethod(payoneerType)"
+                :class="{ deactive: !isPayoneer, active: isPayoneer }"
                 ><i class="fa fa-circle"></i>Payoneer
-                <span>(coming soon)</span></div
+                <span>(coming soon)</span></a
               >
-              <div class="deactive"
+              <a
+                href="javascript:void(0)"
+                @click="setMethod(pingPongType)"
+                :class="{ deactive: !isPingPong, active: isPingPong }"
                 ><i class="fa fa-circle"></i>PingPong
-                <span>(coming soon)</span></div
+                <span>(coming soon)</span></a
               >
             </div>
-            <div class="form-topup">
+            <div class="form-topup" :class="{ hidden: !isTopup }">
               <span class="title">
                 Vui lòng chuyển tiền tới số tài khoản dưới đây theo nội dung
                 sau:
@@ -86,39 +95,100 @@
                   <span>Nạp topup {{ topup.id }}</span>
                   <copy :value="`Nạp topup ${topup.id}`"></copy>
                 </p>
-                <div class="money">
-                  <label class="title d-flex justify-content-between">
-                    <span>Nhập số tiền:</span>
-                    <span
-                      >Tỷ giá chuyển đổi: <i>{{ currencyRate }}</i></span
-                    >
-                  </label>
-                  <div class="input">
-                    <input
-                      id="money"
-                      @input="onChangeAmount"
-                      placeholder="Nhập số tiền"
-                      :value="amount"
-                    />
-                    <span>USD</span>
+                <div class="swap_money">
+                  <div class="money">
+                    <label class="title d-flex justify-content-between">
+                      <span>Nhập số tiền:</span>
+                    </label>
+                    <div class="input">
+                      <input
+                        id="money"
+                        @input="onChangeAmount"
+                        placeholder="Nhập số tiền"
+                        :value="amount"
+                      />
+                      <span>{{ US_FLAG.name }}</span>
+                      <img :src="US_FLAG.icon" alt="flag" class="flag" />
+                    </div>
                   </div>
-                  <div class="invalid-error" v-if="error == true">
-                    {{ errorText }}
+                  <div @click="swapHandle" class="btn-convert">
+                    <img src="@assets/img/convert.svg" alt="" />
                   </div>
-                </div>
-                <div class="money">
-                  <label class="title">Số tiền tương ứng:</label>
-                  <div class="d-flex">
-                    <div class="w-price">
-                      <span class="price">{{ amountVND }}</span>
-                      <copy :value="amountVND" v-if="amountVND"></copy>
-                      <span class="currency">VND</span>
+                  <div class="money">
+                    <label class="title">Số tiền tương ứng:</label>
+                    <div class="d-flex">
+                      <div class="w-price">
+                        <span class="price">{{ amountVND }}</span>
+                        <copy :value="amountVND" v-if="amountVND"></copy>
+                        <span class="currency">{{ VN_FLAG.name }}</span>
+                        <img :src="VN_FLAG.icon" alt="flag" class="flag" />
+                      </div>
                     </div>
                   </div>
                 </div>
-                <p>
+                <div class="invalid-error" v-if="error == true">
+                  {{ errorText }}
+                </div>
+                <div class="btn-exchange">
                   <p-button @click.prevent="handlerRecharge" :loading="loading">
                     Chuyển Tiền
+                  </p-button>
+                  <div class="info_exchange">
+                    <div class="rate_exchange"
+                      >Tỷ giá chuyển đổi: 1 USD = {{ currencyRate }} VND</div
+                    >
+                    <div class="rate_exchange_updated"
+                      >Cập nhật lúc {{ updatedAt }}</div
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="form-topup"
+              :class="{ hidden: !isPayoneer && !isPingPong }"
+            >
+              <div class="form-title">
+                <p
+                  ><span
+                    >Vui lòng chuyển tiền tới địa chỉ:
+                    <strong>name@lionbay.express</strong></span
+                  ></p
+                >
+                <p>
+                  <span
+                    >Copy Transaction ID nhận được từ xxx rồi nhập vào ô phía
+                    dưới.<br />
+                    Nhấn nút <strong>Xác nhận</strong> để nạp topup.</span
+                  ></p
+                >
+              </div>
+              <div class="form-body">
+                <p style="margin-bottom:8px;">Transaction ID:</p>
+                <div class="input-trans">
+                  <p>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="transactionID"
+                    />
+                  </p>
+                  <p>
+                    <img src="~@/assets/img/notice.png" />
+                    <i>
+                      Thời gian xử lý khoảng 15 phút. Nếu tiền không được chuyển
+                      vào topup sau thời gian này, vui lòng liên hệ bộ phận
+                      support của LionBay để được hỗ trợ.</i
+                    >
+                  </p>
+                </div>
+                <p>
+                  <p-button
+                    class="btn-confirm"
+                    @click="handlerCreateTransaction"
+                    :loading="loading"
+                  >
+                    Xác nhận
                   </p-button>
                 </p>
               </div>
@@ -132,10 +202,24 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import { FETCH_TRANSACTION, CREATE_TOPUP, UPDATE_TOPUP } from '../store/index'
+import {
+  FETCH_TRANSACTION,
+  CREATE_TOPUP,
+  UPDATE_TOPUP,
+  CREATE_TRANSACTION,
+  FETCH_RATE_EXCHANGE,
+} from '../store/index'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
-import { USD_TO_VND, BANK, BRANCH, NAME, ACCOUNT_NUMBER } from '../constants'
+import {
+  BANK,
+  BRANCH,
+  NAME,
+  ACCOUNT_NUMBER,
+  TransactionLogTypeTopup,
+  TransactionLogTypePayoneer,
+  TransactionLogTypePingPong,
+} from '../constants'
 import { formatNumber } from '@core/utils/formatter'
 import Copy from '../components/Copy.vue'
 
@@ -147,15 +231,38 @@ export default {
     ...mapState('bill', {
       topup: (state) => state.topup,
       balance: (state) => state.balance,
+      USDTOVND: (state) => state.rateExchange,
+      updatedAt: (state) => state.updated_at,
     }),
 
     amountVND() {
-      if (!this.amount) return ''
+      if (!this.amount || this.error) return ''
       const amount = parseFloat(('' + this.amount).replace(',', ''))
-      return formatNumber(Math.ceil((amount * 1000 * USD_TO_VND) / 1000))
+      if (this.toUSD) {
+        return (amount / this.USDTOVND).toFixed(5)
+      }
+      return formatNumber(Math.ceil((amount * 1000 * this.USDTOVND) / 1000))
     },
     currencyRate() {
-      return formatNumber(USD_TO_VND)
+      return formatNumber(this.USDTOVND)
+    },
+    isTopup() {
+      return this.method === TransactionLogTypeTopup
+    },
+    isPayoneer() {
+      return this.method === TransactionLogTypePayoneer
+    },
+    isPingPong() {
+      return this.method === TransactionLogTypePingPong
+    },
+    topupType() {
+      return TransactionLogTypeTopup
+    },
+    payoneerType() {
+      return TransactionLogTypePayoneer
+    },
+    pingPongType() {
+      return TransactionLogTypePingPong
     },
   },
   data() {
@@ -169,36 +276,61 @@ export default {
       errorText: '',
       moneyText: '',
       amount: '',
+      method: TransactionLogTypeTopup,
+      transactionID: '',
+      VN_FLAG: { name: 'VND', icon: require('@assets/img/vn.svg') },
+      US_FLAG: { name: 'USD', icon: require('@assets/img/us.svg') },
+      toUSD: false,
     }
   },
   created() {
     this.init()
   },
   methods: {
-    ...mapActions('bill', [FETCH_TRANSACTION, CREATE_TOPUP, UPDATE_TOPUP]),
+    ...mapActions('bill', [
+      FETCH_TRANSACTION,
+      CREATE_TOPUP,
+      UPDATE_TOPUP,
+      CREATE_TRANSACTION,
+      FETCH_RATE_EXCHANGE,
+    ]),
 
     async init() {
       this.handleUpdateRouteQuery()
       await Promise.all([
         this[FETCH_TRANSACTION](this.filter),
+        this[FETCH_RATE_EXCHANGE](),
         this.createTopup(),
       ])
     },
-
+    swapHandle() {
+      let temp = this.VN_FLAG
+      this.VN_FLAG = this.US_FLAG
+      this.US_FLAG = temp
+      this.toUSD = !this.toUSD
+    },
     async handlerRecharge() {
+      let amount = parseFloat(('' + this.amount).replace(',', ''))
       if (this.loading) return
 
       this.checkValidAmount()
       if (this.error) return
 
-      this.loading = true
-
-      const amount = +this.amount.replaceAll(',', '')
+      if (this.toUSD) {
+        amount = +(amount / this.USDTOVND).toFixed(5)
+      } else {
+        amount = +this.amount.replaceAll(',', '')
+      }
+      if (amount < 1) {
+        this.errorText = 'Số tiền nhập tối thiểu 1$!'
+        this.error = true
+        return
+      }
       let params = {
         id: this.topup.id,
         body: { amount },
       }
-
+      this.loading = true
       const result = await this.updateTopup(params)
       this.loading = false
       if (!result || !result.success) {
@@ -249,6 +381,37 @@ export default {
 
       this.error = false
       this.errorText = ''
+    },
+    setMethod(type) {
+      this.method = type
+    },
+
+    async handlerCreateTransaction() {
+      if (this.loading) return
+
+      this.loading = true
+      let payload = {
+        type: this.method,
+        transaction_id: this.transactionID,
+      }
+      const result = await this[CREATE_TRANSACTION](payload)
+      this.loading = false
+      if (!result || !result.success) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 4000,
+        })
+        return
+      }
+
+      this.$toast.open({
+        type: 'success',
+        message: 'Yêu cầu của bạn đang được xử lý',
+        duration: 3000,
+      })
+
+      this.$set(this, 'transactionID', '')
     },
   },
 }

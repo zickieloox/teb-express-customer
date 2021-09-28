@@ -137,6 +137,13 @@ export default {
           alias: ['/bill/wallet', '/bill/list-bill', 'bill/topup'],
         },
         {
+          title: 'Tracking',
+          icon: require('@assets/img/tracking_tab.svg'),
+          iconActive: require('@assets/img/tracking_active_tab.svg'),
+          route: { name: 'tracking' },
+          class: '',
+        },
+        {
           title: 'Khiếu nại',
           icon: require('@assets/img/Claim.png'),
           iconActive: require('@assets/img/ClaimActive.png'),

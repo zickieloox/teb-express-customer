@@ -126,7 +126,7 @@ VeeValidate.Validator.extend('postcode', {
 VeeValidate.Validator.extend('countrycode', {
   getMessage: () => `Mã quốc gia không hợp lệ `,
   validate: (value) => {
-    const regex = new RegExp(/^[a-zA-Z0-9\-\_\ ]{1,3}$/)
+    const regex = new RegExp(/^[a-zA-Z0-9\-\_\ ]{1,20}$/)
     return regex.test(value)
   },
 })
