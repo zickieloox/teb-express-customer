@@ -48,4 +48,7 @@ export default {
   updateTopup(payload) {
     return http.post(`/transactions/top-up/update/${payload.id}`, payload.body)
   },
+  createTransaction(payload) {
+    return http.post(`/transactions/`, payload)
+  },
 }

@@ -350,8 +350,38 @@
       }
     }
   }
-
+  
   .form-topup {
+    .form-title{
+      p{
+        margin-bottom: 0.8rem;
+      }
+    }
+    .input-trans{
+      max-width: 528px;
+      display: inline-block;
+      margin-bottom: 12px;
+      p{
+        margin-bottom: 0.8rem;
+      }
+      img{
+        margin-top: -5px;
+      }
+      i{
+        font-size: 12px;
+        line-height: 16px;
+      }
+    }
+    .btn-confirm{
+      width: 120px;
+      font-size: 16px;
+      line-height: 1.5;
+      padding: 10px 24px 14px;
+      height: 48px;
+    }
+    .form-control{
+      position: unset !important;
+    }
     width: 805px;
     padding-top: 16px;
     .title {

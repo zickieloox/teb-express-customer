@@ -14,6 +14,7 @@ export const CREATE_TOPUP = 'createTopup'
 export const UPDATE_TOPUP = 'updateTopup'
 export const COUNT_BILLS = 'countBills'
 export const FETCH_BILL_LIST = 'fetchBillList'
+export const CREATE_TRANSACTION = 'createTransaction'
 
 export const state = {
   bill: {},
@@ -152,6 +153,20 @@ export const actions = {
   // eslint-disable-next-line
   async updateTopup({ commit }, payload) {
     const response = await api.updateTopup(payload)
+
+    if (response && response.success) {
+      return { success: true }
+    }
+
+    return {
+      success: false,
+      message: response.errorMessage || '',
+    }
+  },
+
+  // eslint-disable-next-line
+  async [CREATE_TRANSACTION]({ commit }, payload) {
+    const response = await api.createTransaction(payload)
 
     if (response && response.success) {
       return { success: true }
