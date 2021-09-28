@@ -15,6 +15,8 @@ export const UPDATE_TOPUP = 'updateTopup'
 export const COUNT_BILLS = 'countBills'
 export const FETCH_BILL_LIST = 'fetchBillList'
 export const CREATE_TRANSACTION = 'createTransaction'
+export const FETCH_RATE_EXCHANGE = 'fetchRateExchange'
+export const FETCH_RATE_EXCHANGE_UPDATE = 'fetchRateExchangeUpdate'
 
 export const state = {
   bill: {},
@@ -33,6 +35,8 @@ export const state = {
   topup: {},
   countBills: 0,
   bills: [],
+  rateExchage: 0,
+  updatedAt: '',
 }
 
 export const mutations = {
@@ -73,6 +77,12 @@ export const mutations = {
   },
   [COUNT_BILLS]: (state, payload) => {
     state.countBills = payload
+  },
+  [FETCH_RATE_EXCHANGE]: (state, payload) => {
+    state.rateExchange = payload
+  },
+  [FETCH_RATE_EXCHANGE_UPDATE]: (state, payload) => {
+    state.updated_at = payload
   },
 }
 
@@ -124,6 +134,15 @@ export const actions = {
     commit(FETCH_FEE_REFUND, res.fees)
     commit(COUNT_FEE_REFUND, res.count)
 
+    return { success: true }
+  },
+  async fetchRateExchange({ commit }) {
+    const res = await api.fetchRateExchange()
+    if (!res || res.error) {
+      return { success: false, message: res.errorMessage || '' }
+    }
+    commit(FETCH_RATE_EXCHANGE, res.usd_to_vnd)
+    commit(FETCH_RATE_EXCHANGE_UPDATE, res.updated_at)
     return { success: true }
   },
   async [FETCH_TRANSACTION]({ commit }, payload) {
