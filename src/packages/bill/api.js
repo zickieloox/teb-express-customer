@@ -51,4 +51,11 @@ export default {
   createTransaction(payload) {
     return http.post(`/transactions/`, payload)
   },
+  /**
+   * get rate exchange
+   * @return {*}
+   */
+  fetchRateExchange() {
+    return http.get(`/transactions/rate-exchange`)
+  },
 }

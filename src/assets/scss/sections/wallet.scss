@@ -255,8 +255,17 @@
     }
   }
 
+  .swap_money{
+    display: flex;
+    align-items: center;
+    margin-top: 24px;
+  }
+  .btn-convert{
+    margin: 22px 15px 0 15px ;
+    cursor: pointer;
+  }
   .money {
-    margin-bottom: 12px;
+    flex: 1;
   }
 }
 
@@ -318,7 +327,7 @@
     border: 0;
     > p,
     .money {
-      margin-bottom: 12px;
+      margin-bottom: 3px;
     }
   }
 
@@ -425,7 +434,7 @@
             border: 1px solid $color-neutral-4;
             box-sizing: border-box;
             border-radius: 12px;
-            padding: 13px 16px;
+            padding: 13px 16px 13px 50px;
             height: 48px;
             font-weight: 500;
             font-size: 18px;
@@ -451,6 +460,7 @@
             line-height: 22px;
             color: $color-neutral-4;
           }
+
         }
         button {
           height: 48px;
@@ -458,7 +468,7 @@
         }
       }
       .invalid-error {
-        margin-top: 5px;
+        margin-top: 0px;
         margin-left: 10px;
       }
       .money-transfer {
@@ -472,7 +482,11 @@
       }
     }
   }
-
+  .flag{
+    position: absolute;
+    left: 15px;
+    top: 15px;
+  }
   .copy {
     position: relative;
     margin-left: 4px;
@@ -530,7 +544,7 @@
     background: #f6f7f7;
     border-radius: 12px;
     position: relative;
-    padding: 8px 16px 12px;
+    padding: 8px 16px 12px 50px;
     height: 4.8rem;
 
     .currency {
@@ -550,5 +564,16 @@
     font-size: 14px;
     line-height: 22px;
     height: auto;
+  }
+  .btn-exchange{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    .info_exchange{
+      font-size: 12px;
+      color: $color-neutral-7;
+      font-style: italic;
+      text-align: right;
+    }
   }
 }

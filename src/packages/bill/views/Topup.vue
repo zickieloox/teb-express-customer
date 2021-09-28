@@ -95,41 +95,53 @@
                   <span>Nạp topup {{ topup.id }}</span>
                   <copy :value="`Nạp topup ${topup.id}`"></copy>
                 </p>
-                <div class="money">
-                  <label class="title d-flex justify-content-between">
-                    <span>Nhập số tiền:</span>
-                    <span
-                      >Tỷ giá chuyển đổi: <i>{{ currencyRate }}</i></span
-                    >
-                  </label>
-                  <div class="input">
-                    <input
-                      id="money"
-                      @input="onChangeAmount"
-                      placeholder="Nhập số tiền"
-                      :value="amount"
-                    />
-                    <span>USD</span>
+                <div class="swap_money">
+                  <div class="money">
+                    <label class="title d-flex justify-content-between">
+                      <span>Nhập số tiền:</span>
+                    </label>
+                    <div class="input">
+                      <input
+                        id="money"
+                        @input="onChangeAmount"
+                        placeholder="Nhập số tiền"
+                        :value="amount"
+                      />
+                      <span>{{ US_FLAG.name }}</span>
+                      <img :src="US_FLAG.icon" alt="flag" class="flag" />
+                    </div>
                   </div>
-                  <div class="invalid-error" v-if="error == true">
-                    {{ errorText }}
+                  <div @click="swapHandle" class="btn-convert">
+                    <img src="@assets/img/convert.svg" alt="" />
                   </div>
-                </div>
-                <div class="money">
-                  <label class="title">Số tiền tương ứng:</label>
-                  <div class="d-flex">
-                    <div class="w-price">
-                      <span class="price">{{ amountVND }}</span>
-                      <copy :value="amountVND" v-if="amountVND"></copy>
-                      <span class="currency">VND</span>
+                  <div class="money">
+                    <label class="title">Số tiền tương ứng:</label>
+                    <div class="d-flex">
+                      <div class="w-price">
+                        <span class="price">{{ amountVND }}</span>
+                        <copy :value="amountVND" v-if="amountVND"></copy>
+                        <span class="currency">{{ VN_FLAG.name }}</span>
+                        <img :src="VN_FLAG.icon" alt="flag" class="flag" />
+                      </div>
                     </div>
                   </div>
                 </div>
-                <p>
+                <div class="invalid-error" v-if="error == true">
+                  {{ errorText }}
+                </div>
+                <div class="btn-exchange">
                   <p-button @click.prevent="handlerRecharge" :loading="loading">
                     Chuyển Tiền
                   </p-button>
-                </p>
+                  <div class="info_exchange">
+                    <div class="rate_exchange"
+                      >Tỷ giá chuyển đổi: 1 USD = {{ currencyRate }} VND</div
+                    >
+                    <div class="rate_exchange_updated"
+                      >Cập nhật lúc {{ updatedAt }}</div
+                    >
+                  </div>
+                </div>
               </div>
             </div>
             <div
@@ -195,11 +207,11 @@ import {
   CREATE_TOPUP,
   UPDATE_TOPUP,
   CREATE_TRANSACTION,
+  FETCH_RATE_EXCHANGE,
 } from '../store/index'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import {
-  USD_TO_VND,
   BANK,
   BRANCH,
   NAME,
@@ -219,15 +231,20 @@ export default {
     ...mapState('bill', {
       topup: (state) => state.topup,
       balance: (state) => state.balance,
+      USDTOVND: (state) => state.rateExchange,
+      updatedAt: (state) => state.updated_at,
     }),
 
     amountVND() {
-      if (!this.amount) return ''
+      if (!this.amount || this.error) return ''
       const amount = parseFloat(('' + this.amount).replace(',', ''))
-      return formatNumber(Math.ceil((amount * 1000 * USD_TO_VND) / 1000))
+      if (this.toUSD) {
+        return (amount / this.USDTOVND).toFixed(5)
+      }
+      return formatNumber(Math.ceil((amount * 1000 * this.USDTOVND) / 1000))
     },
     currencyRate() {
-      return formatNumber(USD_TO_VND)
+      return formatNumber(this.USDTOVND)
     },
     isTopup() {
       return this.method === TransactionLogTypeTopup
@@ -261,6 +278,9 @@ export default {
       amount: '',
       method: TransactionLogTypeTopup,
       transactionID: '',
+      VN_FLAG: { name: 'VND', icon: require('@assets/img/vn.svg') },
+      US_FLAG: { name: 'USD', icon: require('@assets/img/us.svg') },
+      toUSD: false,
     }
   },
   created() {
@@ -272,30 +292,45 @@ export default {
       CREATE_TOPUP,
       UPDATE_TOPUP,
       CREATE_TRANSACTION,
+      FETCH_RATE_EXCHANGE,
     ]),
 
     async init() {
       this.handleUpdateRouteQuery()
       await Promise.all([
         this[FETCH_TRANSACTION](this.filter),
+        this[FETCH_RATE_EXCHANGE](),
         this.createTopup(),
       ])
     },
-
+    swapHandle() {
+      let temp = this.VN_FLAG
+      this.VN_FLAG = this.US_FLAG
+      this.US_FLAG = temp
+      this.toUSD = !this.toUSD
+    },
     async handlerRecharge() {
+      let amount = parseFloat(('' + this.amount).replace(',', ''))
       if (this.loading) return
 
       this.checkValidAmount()
       if (this.error) return
 
-      this.loading = true
-
-      const amount = +this.amount.replaceAll(',', '')
+      if (this.toUSD) {
+        amount = +(amount / this.USDTOVND).toFixed(5)
+      } else {
+        amount = +this.amount.replaceAll(',', '')
+      }
+      if (amount < 1) {
+        this.errorText = 'Số tiền nhập tối thiểu 1$!'
+        this.error = true
+        return
+      }
       let params = {
         id: this.topup.id,
         body: { amount },
       }
-
+      this.loading = true
       const result = await this.updateTopup(params)
       this.loading = false
       if (!result || !result.success) {
@@ -353,6 +388,7 @@ export default {
 
     async handlerCreateTransaction() {
       if (this.loading) return
+
       this.loading = true
       let payload = {
         type: this.method,
