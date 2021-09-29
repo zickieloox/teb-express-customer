@@ -92,9 +92,6 @@ import { mapState, mapActions } from 'vuex'
 import { GET_LOGS } from '../store'
 import {
   MAP_NAME_STATUS_PACKAGE,
-  DELIVER_LOG_PACKAGE,
-  PackageStatusCancelled,
-  PackageStatusReturned,
   ROLE_ADMIN,
   ROLE_SUPPORT,
   ROLE_ACCOUNTANT,
@@ -135,23 +132,23 @@ export default {
     },
     ListLogs() {
       return this.logs.map((log) => {
-        let text = DELIVER_LOG_PACKAGE[log.type]
+        // let text = DELIVER_LOG_PACKAGE[log.type]
 
-        if (log.type == PackageStatusCancelled) {
-          text = `${
-            DELIVER_LOG_PACKAGE[log.type]
-          } bởi <strong>${this.displayUserName(log)}</strong>`
-        }
-        if (log.type == PackageStatusReturned) {
-          text = `${DELIVER_LOG_PACKAGE[log.type]} <p>Lí do: ${
-            log.description
-          }</p>`
-        }
+        // if (log.type == PackageStatusCancelled) {
+        //   text = `${
+        //     DELIVER_LOG_PACKAGE[log.type]
+        //   } bởi <strong>${this.displayUserName(log)}</strong>`
+        // }
+        // if (log.type == PackageStatusReturned) {
+        //   text = `${DELIVER_LOG_PACKAGE[log.type]} <p>Lí do: ${
+        //     log.description
+        //   }</p>`
+        // }
 
-        text = text || log.description
+        // text = text || log.description
         return {
           package_id: log.package_id,
-          text,
+          text: log.description,
           ship_time: log.ship_time,
           location: log.location,
         }
