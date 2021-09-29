@@ -320,16 +320,14 @@ export default {
       this.toUSD = !this.toUSD
     },
     async handlerRecharge() {
-      let amount = parseFloat(('' + this.amount).replace(',', ''))
+      let amount = +this.amount.replaceAll(',', '')
       if (this.loading) return
 
       this.checkValidAmount()
       if (this.error) return
 
       if (this.toUSD) {
-        amount = +(amount / this.USDTOVND)
-      } else {
-        amount = +this.amount.replaceAll(',', '')
+        amount = amount / +this.USDTOVND
       }
       if (amount < 1) {
         this.errorText = 'Số tiền nhập tối thiểu 1$!'
