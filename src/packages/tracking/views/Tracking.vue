@@ -31,8 +31,8 @@
               @click="selectPackage(item)"
               :class="{ active: item.isActive }"
             >
-              <div class="title" v-if="item.tracking">
-                {{ item.tracking.tracking_number }}
+              <div class="title">
+                {{ item.package_code ? item.package_code.code : '' }}
               </div>
               <div class="content">
                 <div style="margin-bottom: 4px">
