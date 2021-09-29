@@ -55,21 +55,19 @@
                 href="javascript:void(0)"
                 @click="setMethod(topupType)"
                 :class="{ deactive: !isTopup, active: isTopup }"
-                ><i class="fa fa-circle"></i> Chuyển khoản</a
+                ><i class="fa fa-circle"></i>Chuyển khoản</a
               >
               <a
                 href="javascript:void(0)"
                 @click="setMethod(payoneerType)"
                 :class="{ deactive: !isPayoneer, active: isPayoneer }"
-                ><i class="fa fa-circle"></i>Payoneer
-                <span>(coming soon)</span></a
+                ><i class="fa fa-circle"></i>Payoneer</a
               >
               <a
                 href="javascript:void(0)"
                 @click="setMethod(pingPongType)"
                 :class="{ deactive: !isPingPong, active: isPingPong }"
-                ><i class="fa fa-circle"></i>PingPong
-                <span>(coming soon)</span></a
+                ><i class="fa fa-circle"></i>PingPong</a
               >
             </div>
             <div class="form-topup" :class="{ hidden: !isTopup }">
