@@ -239,7 +239,7 @@ export default {
       if (this.toUSD) {
         return amount / this.USDTOVND
       }
-      return formatNumber(Math.ceil((amount * 1000 * this.USDTOVND) / 1000))
+      return formatNumber(Math.round(amount * this.USDTOVND))
     },
     currencyRate() {
       return formatNumber(this.USDTOVND)
