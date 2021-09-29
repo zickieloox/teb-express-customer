@@ -371,10 +371,12 @@ export default {
       this.amount = 0
       let value = e.target.value.trim()
 
-      value = value.replace(/,/g, '').replace(/^0+/, '')
-      if (!this.toUSD) {
+      if (this.toUSD) {
+        value = value.replace(/[.|,]/g, '').replace(/^0+/, '')
         value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
       }
+      value = value.replace(/,/g, '').replace(/^0+/, '')
+      value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
       this.amount = value
 
       this.checkValidAmount()
