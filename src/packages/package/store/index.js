@@ -19,6 +19,9 @@ export const EXPORT_PACKAGE = 'exportPackage'
 export const GET_SERVICE = 'getService'
 export const CREATE_PACKAGE = 'createPackage'
 export const VALIDATE_ADDRESS = 'validateAddress'
+
+export const SET_LOADING = 'setLoading'
+
 /**
  * State
  */
@@ -35,6 +38,7 @@ export const state = {
   count_status: [],
   products: [],
   service: [],
+  isLoading: false,
 }
 /**
  * Getters
@@ -66,6 +70,9 @@ export const mutations = {
   [COUNT_LIST_PACKAGES]: (state, payload) => {
     state.countPackages = payload.count
     state.count_status = payload.status_count
+  },
+  [SET_LOADING]: (state, payload) => {
+    state.isLoading = payload
   },
 }
 
@@ -227,5 +234,9 @@ export const actions = {
       }
     }
     return result
+  },
+
+  [SET_LOADING]({ commit }, payload) {
+    commit(SET_LOADING, payload)
   },
 }
