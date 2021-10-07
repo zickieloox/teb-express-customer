@@ -53,7 +53,7 @@
                             src="@/assets/img/download_template.png"
                             style="vertical-align: sub;margin-left: 5px"
                           />
-                          Download template file
+                          Tải về file template
                         </a>
                       </div>
                     </div>
@@ -171,7 +171,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('templates', [
+    ...mapActions('setting', [
       UPLOAD_TEMPLATE_FILE,
       CREATE_TEMPLATE_IMPORT_ORDER,
       DOWNLOAD_TEMPLATE_FILE,
@@ -237,7 +237,6 @@ export default {
         file: file.raw,
       }
       this.isSubmitting = true
-
       const result = await this[UPLOAD_TEMPLATE_FILE](params)
       this.isSubmitting = false
       if (result.error) {

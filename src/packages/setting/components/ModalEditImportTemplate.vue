@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-ticket">
+  <div class="modal-template">
     <p-modal
       :active="visible"
       title="View import templates"
@@ -9,26 +9,20 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-12">
-              <div class="card section-modal-ticket">
+              <div class="card section-modal-template">
                 <div class="card-block">
                   <div class="row">
                     <div class="col-12 detail">
-                      <label>Template name:</label>
+                      <label>Tên template:</label>
                       <p-input
                         type="text"
-                        placeholder="Enter template name"
+                        placeholder="Nhập tên template"
                         :input="templateName"
                         v-model="templateName"
                       />
                     </div>
                     <div class="col-12 detail">
-                      <label>Template file:</label>
-                      <a href="javascript:void(0)" @click="handleDownloadFile">
-                        <img
-                          src="@/assets/img/download_template.png"
-                          style="vertical-align: unset;margin-left: 5px"
-                        />
-                      </a>
+                      <label>File template:</label>
                       <upload
                         class="file-uploader"
                         :action="uploadFileEndpoint"
@@ -39,15 +33,29 @@
                         :max-file-size="100000000"
                       >
                         <div class="el-upload__text">
-                          Drop files to upload, or <em>browser</em>
+                          Kéo thả để upload file, hoặc <em>chọn</em>
                         </div>
                       </upload>
                     </div>
                     <div class="col-12 detail">
                       <div class="check-default mb-5">
-                        <p-checkbox v-model="isDefault"
-                          >Default template</p-checkbox
+                        <p-checkbox
+                          v-model="isDefault"
+                          :class="{ disable: !isDefault }"
+                          >Đặt làm template mặc định</p-checkbox
                         >
+                        <a
+                          class="pull-right"
+                          v-if="file.length"
+                          href="javascript:void(0)"
+                          @click="handleDownloadFile"
+                        >
+                          <img
+                            src="@/assets/img/download_template.png"
+                            style="vertical-align: sub;margin-left: 5px"
+                          />
+                          Tải về file template
+                        </a>
                       </div>
                     </div>
                     <div class="col-12 detail">
@@ -98,30 +106,6 @@
                             ></multiselect>
                           </td>
                         </tr>
-                        <tr>
-                          <td colspan="2" style="padding-left: 0">
-                            <a
-                              class="show-option"
-                              @click.prevent="toogleFullOption"
-                              v-if="!show_full_options"
-                            >
-                              <img
-                                src="@/assets/img/show_full_option.png"
-                                style="vertical-align: sub"
-                              />&nbsp;<i>Full option</i>
-                            </a>
-                            <a
-                              class="show-option"
-                              @click.prevent="toogleFullOption"
-                              v-else
-                            >
-                              <img
-                                src="@/assets/img/hide_full_option.png"
-                                style="vertical-align: sub"
-                              />&nbsp;<i>Hide option</i>
-                            </a>
-                          </td>
-                        </tr>
                       </table>
                     </div>
                   </div>
@@ -135,7 +119,7 @@
       <template slot="footer">
         <div class="group-button modal-confirm">
           <p-button type="default" @click="handleClose">
-            Discard
+            Bỏ qua
           </p-button>
           <p-button
             type="primary"
@@ -143,7 +127,7 @@
             :disabled="disabled"
             :loading="isSubmitting"
           >
-            Save
+            Lưu
           </p-button>
         </div>
       </template>
@@ -196,7 +180,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('templates', [
+    ...mapActions('setting', [
       UPLOAD_TEMPLATE_FILE,
       UPDATE_IMPORT_ORDER_TEMPLATE,
       DOWNLOAD_TEMPLATE_FILE,

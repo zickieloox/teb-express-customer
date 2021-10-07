@@ -42,7 +42,7 @@
                       <p-button
                         class="bulk-actions__selection-status"
                         @click="showConfirmDelete()"
-                        >Delete templates</p-button
+                        >Xóa templates</p-button
                       >
                     </div>
                   </div>
@@ -177,9 +177,9 @@ export default {
     }),
     selectionCountText() {
       if (this.totalSelected === 1) {
-        return '1 templates selected'
+        return '1 templates đang được lựa chọn'
       }
-      return `${this.totalSelected} templates selected`
+      return `${this.totalSelected} templates đang được lựa chọn`
     },
     items() {
       return this.templates
