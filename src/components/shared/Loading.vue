@@ -12,7 +12,7 @@ import { mapState } from 'vuex'
 export default {
   name: 'Loading',
   computed: {
-    ...mapState('shared', {
+    ...mapState('package', {
       isLoading: (state) => state.isLoading,
     }),
   },
