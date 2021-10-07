@@ -61,4 +61,30 @@ export default {
   resetUserToken() {
     return http.put(`/users/token`)
   },
+
+  uploadTemplateFile(payload) {
+    const formData = new FormData()
+    formData.append('file', payload.file)
+    return http.post(`/templates/upload`, formData)
+  },
+  createTemplateImportOrder(payload) {
+    return http.post(`/templates/create`, payload)
+  },
+  fetchListTemplates(payload) {
+    return http.get(`/templates?${buildQueryString(payload)}`)
+  },
+  countListTemplates(payload) {
+    return http.get(`/templates/count?${buildQueryString(payload)}`)
+  },
+  deleteTemplates(payload) {
+    return http.delete(`/templates`, payload)
+  },
+  updateTemplate(id, payload) {
+    return http.put(`/templates/${id}`, payload)
+  },
+  downloadTemplateFile(payload) {
+    return http.get(`/templates/file?${buildQueryString(payload)}`, {
+      type: 'blob',
+    })
+  },
 }
