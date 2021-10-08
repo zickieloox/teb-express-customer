@@ -1,27 +1,16 @@
 <template>
   <div class="list-template pages">
     <div class="container">
-      <div class="page-header">
-        <div class="container-fluid">
-          <div class="row">
-            <p-button icon="chevron-left" class="btn-pure pl-0">
-              <router-link :to="{ name: 'setting' }"
-                >Import templates</router-link
-              >
-            </p-button>
-          </div>
-        </div>
-      </div>
       <div class="page-content">
         <div class="page-header-group">
-          <div class="page-header-title">View import templates</div>
+          <div class="page-header-title">Danh sách templates</div>
           <div class="btn-group">
             <a
               href="#"
               @click.prevent="showModalCreateTemplate"
               class="btn btn-primary"
             >
-              <span>Create an Import template</span>
+              <span>Tạo Import template</span>
             </a>
           </div>
         </div>
