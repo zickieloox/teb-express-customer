@@ -71,10 +71,6 @@
                         <tr
                           v-for="(field, index) in default_fields"
                           :key="index"
-                          :class="{
-                            hidden: !field.require,
-                            unrequire: !field.require,
-                          }"
                         >
                           <td>
                             <div
