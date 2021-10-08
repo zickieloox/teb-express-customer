@@ -252,7 +252,7 @@ export default {
           name: field,
         }
       })
-      this.import_fields = this.optionFields
+      this.import_fields = cloneDeep(this.optionFields)
     },
     async handleCreate() {
       const count = this.default_fields.length

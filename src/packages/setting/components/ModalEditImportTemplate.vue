@@ -257,7 +257,7 @@ export default {
           name: field,
         }
       })
-      this.import_fields = this.optionFields
+      this.import_fields = cloneDeep(this.optionFields)
       this.isUploadNewFile = true
       this.assign_fields = []
     },
@@ -322,6 +322,12 @@ export default {
             .filter((field) => {
               assignedField[field.key] === undefined
             })
+          this.import_fields = importFields.map((field, index) => {
+            return {
+              key: index,
+              name: field,
+            }
+          })
           this.templateName = this.template.name
           this.file = this.template.file
           this.isDefault = this.template.is_default ? true : false
