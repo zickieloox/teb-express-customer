@@ -22,7 +22,7 @@
             <multiselect
               class="multiselect-custom"
               :options="optionsTemplate"
-              placeholder="Select an import template"
+              placeholder="Chọn template import"
               v-model="template"
               :custom-label="customLabel"
             >

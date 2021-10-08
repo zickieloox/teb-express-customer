@@ -161,8 +161,8 @@ export default {
       visibleModalEditTemplate: false,
       actions: {
         delete: {
-          title: 'Delete comfirmation',
-          button: 'Delete',
+          title: 'Xác nhận xóa',
+          button: 'Xóa',
           Description: ``,
           type: 'danger',
         },
@@ -201,7 +201,7 @@ export default {
       }
     },
     showConfirmDelete() {
-      this.actions.delete.Description = `You are about to delete ${this.totalSelected} templates. Are you sure you want to continute?`
+      this.actions.delete.Description = `Tổng số template đang chọn là ${this.totalSelected}. Bạn có chắc chắn muốn xóa ?`
       this.isVisibleConfirmDelete = true
     },
     async actionDelete() {
@@ -219,7 +219,7 @@ export default {
       }
       this.$toast.open({
         type: 'success',
-        message: 'Delete import order templates success',
+        message: 'Xóa template thành công',
       })
       this.init()
     },
@@ -230,7 +230,7 @@ export default {
       this.visibleModalCreateTemplate = false
       this.$toast.open({
         type: 'success',
-        message: 'Create import template success !',
+        message: 'Tạo template thành công !',
       })
       this.init()
     },
@@ -238,7 +238,7 @@ export default {
       this.visibleModalEditTemplate = false
       this.$toast.open({
         type: 'success',
-        message: 'Save import template success !',
+        message: 'Lưu template thành công !',
       })
       this.init()
     },
