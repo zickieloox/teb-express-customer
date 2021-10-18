@@ -94,7 +94,10 @@
                     <div class="info-left">
                       <img
                         :src="
-                          item.type == typeTopup || item.type == typeRefund
+                          item.type === typeTopup ||
+                          item.type === typeRefund ||
+                          item.type === typePayoneer ||
+                          item.type === typePingPong
                             ? require('@assets/img/in.svg')
                             : require('@assets/img/out.svg')
                         "
@@ -103,7 +106,11 @@
                       <div class="infor">
                         <span
                           class="transaction-title"
-                          v-if="item.type == typeTopup"
+                          v-if="
+                            item.type == typeTopup ||
+                              item.type === typePayoneer ||
+                              item.type === typePingPong
+                          "
                           >Nạp tiền vào ví</span
                         >
                         <span class="transaction-title" v-else
@@ -133,6 +140,13 @@
                     </div>
                     <div class="info-right">
                       <span
+                        style="display: block;height: 22px"
+                        v-if="
+                          item.type === typePayoneer ||
+                            item.type === typePingPong
+                        "
+                      ></span>
+                      <span v-else
                         >{{ item.type == typePay ? '-' : '+' }}
                         {{ Math.abs(item.amount) | formatPrice }}</span
                       >
@@ -182,6 +196,8 @@ import {
   TransactionLogTypeTopup,
   TransactionLogTypePay,
   TransactionLogTypeRefund,
+  TransactionLogTypePayoneer,
+  TransactionLogTypePingPong,
   MAP_NAME_STATUS_TRANSACTION,
   TRANSACTION_STATUS,
 } from '../constants'
@@ -211,6 +227,8 @@ export default {
       },
       isFetching: true,
       typeTopup: TransactionLogTypeTopup,
+      typePingPong: TransactionLogTypePingPong,
+      typePayoneer: TransactionLogTypePayoneer,
       typePay: TransactionLogTypePay,
       typeRefund: TransactionLogTypeRefund,
       label: 'Tìm theo ngày',

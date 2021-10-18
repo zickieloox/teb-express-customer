@@ -26,4 +26,13 @@ export const routes = [
     component: () =>
       import(/* webpackChunkName: "settings" */ './views/API.vue'),
   },
+  {
+    path: '/setting/templates',
+    name: 'list-template',
+    meta: {
+      title: 'View import templates',
+    },
+    component: () =>
+      import(/* webpackChunkName: "settings" */ './views/ListTemplate'),
+  },
 ]

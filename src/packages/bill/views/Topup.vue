@@ -55,21 +55,19 @@
                 href="javascript:void(0)"
                 @click="setMethod(topupType)"
                 :class="{ deactive: !isTopup, active: isTopup }"
-                ><i class="fa fa-circle"></i> Chuyển khoản</a
+                ><i class="fa fa-circle"></i>Chuyển khoản</a
               >
               <a
                 href="javascript:void(0)"
                 @click="setMethod(payoneerType)"
                 :class="{ deactive: !isPayoneer, active: isPayoneer }"
-                ><i class="fa fa-circle"></i>Payoneer
-                <span>(coming soon)</span></a
+                ><i class="fa fa-circle"></i>Payoneer</a
               >
               <a
                 href="javascript:void(0)"
                 @click="setMethod(pingPongType)"
                 :class="{ deactive: !isPingPong, active: isPingPong }"
-                ><i class="fa fa-circle"></i>PingPong
-                <span>(coming soon)</span></a
+                ><i class="fa fa-circle"></i>PingPong</a
               >
             </div>
             <div class="form-topup" :class="{ hidden: !isTopup }">
@@ -231,17 +229,17 @@ export default {
     ...mapState('bill', {
       topup: (state) => state.topup,
       balance: (state) => state.balance,
-      USDTOVND: (state) => state.rateExchange,
-      updatedAt: (state) => state.updated_at,
+      // USDTOVND: (state) => state.rateExchange,
+      // updatedAt: (state) => state.updated_at,
     }),
 
     amountVND() {
       if (!this.amount || this.error) return ''
-      const amount = parseFloat(('' + this.amount).replace(',', ''))
+      const amount = +this.amount.replaceAll(',', '')
       if (this.toUSD) {
-        return (amount / this.USDTOVND).toFixed(5)
+        return amount / this.USDTOVND
       }
-      return formatNumber(Math.ceil((amount * 1000 * this.USDTOVND) / 1000))
+      return formatNumber(Math.round(amount * this.USDTOVND))
     },
     currencyRate() {
       return formatNumber(this.USDTOVND)
@@ -281,6 +279,8 @@ export default {
       VN_FLAG: { name: 'VND', icon: require('@assets/img/vn.svg') },
       US_FLAG: { name: 'USD', icon: require('@assets/img/us.svg') },
       toUSD: false,
+      USDTOVND: 0,
+      updatedAt: '',
     }
   },
   created() {
@@ -297,11 +297,21 @@ export default {
 
     async init() {
       this.handleUpdateRouteQuery()
-      await Promise.all([
+      const [transaction, exchange] = await Promise.all([
         this[FETCH_TRANSACTION](this.filter),
         this[FETCH_RATE_EXCHANGE](),
         this.createTopup(),
       ])
+      if (!exchange || !exchange.success || !transaction) {
+        this.$toast.open({
+          type: 'error',
+          message: 'Something went wrong',
+          duration: 4000,
+        })
+        return
+      }
+      this.USDTOVND = exchange.usdtovnd
+      this.updatedAt = exchange.updated_at
     },
     swapHandle() {
       let temp = this.VN_FLAG
@@ -310,16 +320,14 @@ export default {
       this.toUSD = !this.toUSD
     },
     async handlerRecharge() {
-      let amount = parseFloat(('' + this.amount).replace(',', ''))
+      let amount = +this.amount.replaceAll(',', '')
       if (this.loading) return
 
       this.checkValidAmount()
       if (this.error) return
 
       if (this.toUSD) {
-        amount = +(amount / this.USDTOVND).toFixed(5)
-      } else {
-        amount = +this.amount.replaceAll(',', '')
+        amount = amount / +this.USDTOVND
       }
       if (amount < 1) {
         this.errorText = 'Số tiền nhập tối thiểu 1$!'
@@ -359,6 +367,10 @@ export default {
       this.amount = 0
       let value = e.target.value.trim()
 
+      if (this.toUSD) {
+        value = value.replace(/[.|,]/g, '').replace(/^0+/, '')
+        value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+      }
       value = value.replace(/,/g, '').replace(/^0+/, '')
       value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
       this.amount = value

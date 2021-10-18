@@ -43,7 +43,7 @@
         :autocomplete="autocomplete"
         @change="handleChange"
         v-on="listeners"
-        v-model="formatInput"
+        v-model="input"
         :type="type"
         ref="input"
       />

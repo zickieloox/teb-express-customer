@@ -88,6 +88,11 @@
                           @click="handlerReturnPackages"
                           >Chuyển lại hàng</p-button
                         >
+                        <p-button
+                          class="bulk-actions__selection-status"
+                          @click="handlerDownloadLables"
+                          >Tải label</p-button
+                        >
                       </div>
                     </div>
                     <tr>
@@ -185,9 +190,7 @@
                           target="_blank"
                           v-if="item.tracking && item"
                           :href="
-                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${
-                              item.tracking.tracking_number
-                            }`
+                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${item.tracking.tracking_number}`
                           "
                         >
                           {{ item.tracking.tracking_number }}
@@ -307,7 +310,6 @@ import mixinDownload from '@/packages/shared/mixins/download'
 import evenBus from '../../../core/utils/evenBus'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import mixinChaining from '@/packages/shared/mixins/chaining'
-
 import {
   PACKAGE_STATUS_TAB,
   PackageStatusCreatedText,
@@ -330,6 +332,10 @@ import { date } from '@core/utils/datetime'
 import { truncate } from '@core/utils/string'
 import { printImage } from '@core/utils/print'
 import api from '../api'
+
+import JSZip from 'jszip'
+import { saveAs } from 'file-saver'
+import { SET_LOADING } from '../store'
 
 export default {
   name: 'ListPackages',
@@ -446,6 +452,7 @@ export default {
       CANCEL_PACKAGES,
       PENDING_PICKUP_PACKAGES,
       VALIDATE_ADDRESS,
+      SET_LOADING,
     ]),
     truncate,
     async init() {
@@ -491,11 +498,12 @@ export default {
       this.filter.start_date = ''
       this.filter.page = 1
     },
-    async handleImportPackage(file) {
+    async handleImportPackage(file, template) {
       this.importData.file = file
       this.isUploading = true
       this.resultImport = await this[IMPORT_PACKAGE]({
         file: this.importData.file.raw,
+        template_id: template.id,
       })
       this.isUploading = false
       this.isVisibleImport = false
@@ -596,9 +604,7 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selectedIds.length
-      }. Bạn có chắc chắn muốn hủy đơn?`
+      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn hủy đơn?`
       this.visibleConfirmCancel = true
     },
     handlerReturnPackages() {
@@ -619,9 +625,7 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.returnPackage.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selectedIds.length
-      }. Bạn có chắc chắn muốn chuyển lại hàng ?`
+      this.actions.returnPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn chuyển lại hàng ?`
       this.visibleConfirmReturn = true
     },
     async pendingPickupPackagesAction() {
@@ -687,9 +691,7 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selected.length
-      }. Bạn có chắc chắn muốn vận đơn?`
+      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${this.selected.length}. Bạn có chắc chắn muốn vận đơn?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
@@ -770,6 +772,45 @@ export default {
         this.visibleConfirmValidate = false
         this.init()
       }, 1500)
+    },
+
+    async handlerDownloadLables() {
+      this[SET_LOADING](true)
+      var files = []
+      var selected = this.selected.map((x) => {
+        return {
+          order_number: x.order_number,
+          code: x.package_code.code,
+          url: x.label,
+        }
+      })
+      for (const item of selected) {
+        const res = await api.fetchBarcodeFile({
+          url: item.url,
+          type: 'labels',
+        })
+        if (!res && res.error) {
+          this.$toast.open({
+            type: 'error',
+            message: res.errorMessage,
+            duration: 3000,
+          })
+          continue
+        }
+        res['name'] = item.order_number + '_' + item.code + '.png'
+        files.push(res)
+      }
+
+      this[SET_LOADING](false)
+
+      var zip = new JSZip()
+      Array.from(files).forEach((file) => {
+        zip.file(file.name, file)
+      })
+      zip.generateAsync({ type: 'blob' }).then(function(content) {
+        // see FileSaver.js
+        saveAs(content, 'label.zip')
+      })
     },
   },
   watch: {

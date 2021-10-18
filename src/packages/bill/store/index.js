@@ -143,7 +143,11 @@ export const actions = {
     }
     commit(FETCH_RATE_EXCHANGE, res.usd_to_vnd)
     commit(FETCH_RATE_EXCHANGE_UPDATE, res.updated_at)
-    return { success: true }
+    return {
+      success: true,
+      usdtovnd: res.usd_to_vnd,
+      updated_at: res.updated_at,
+    }
   },
   async [FETCH_TRANSACTION]({ commit }, payload) {
     const [res, count] = await Promise.all([

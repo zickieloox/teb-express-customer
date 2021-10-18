@@ -20,7 +20,7 @@
 export default {
   name: 'Copy',
   props: {
-    value: String,
+    value: [String, Number],
     texthover: {
       type: String,
       default: 'Sao chép nội dung',

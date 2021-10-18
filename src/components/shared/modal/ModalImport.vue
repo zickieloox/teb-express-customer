@@ -16,6 +16,19 @@
         <span class="example">
           Tải về file <a :href="csvTemplate" target="_blank">mẫu XLSX</a>
         </span>
+        <div class="text-left select_template">
+          <label>Templates</label>
+          <div id="templates">
+            <multiselect
+              class="multiselect-custom"
+              :options="optionsTemplate"
+              placeholder="Chọn template import"
+              v-model="template"
+              :custom-label="customLabel"
+            >
+            </multiselect>
+          </div>
+        </div>
         <upload
           class="order-uploader"
           :action="createEndpoint(`packages/import`)"
@@ -64,7 +77,7 @@
           type="primary"
           @click.prevent="handleSave"
           :disabled="!lastItem || uploading"
-          :loading="loading"
+          :loading="loading || isLoading"
         >
           Tải lên
         </p-button>
@@ -78,6 +91,8 @@ import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import mixinUpload from '@core/mixins/upload'
 import { Upload } from '@kit/index'
+import { mapActions, mapState } from 'vuex'
+import { FETCH_IMPORT_ORDER_TEMPLATES } from '../../../packages/setting/store'
 
 export default {
   name: 'ModalImport',
@@ -111,6 +126,9 @@ export default {
         file: null,
         shop_id: null,
       },
+      template: null,
+      optionsTemplate: [],
+      isLoading: false,
       importDataErrors: {},
       isVisiblePreview: false,
       isUploading: false,
@@ -118,6 +136,9 @@ export default {
     }
   },
   computed: {
+    ...mapState('setting', {
+      templates: (state) => state.templates,
+    }),
     validFiles() {
       return this.files[this.files.length - 1]
     },
@@ -125,7 +146,44 @@ export default {
       return `${process.env.VUE_APP_ASSETS}/shipping-template.xlsx`
     },
   },
+  created() {
+    this.init()
+  },
   methods: {
+    ...mapActions('setting', [FETCH_IMPORT_ORDER_TEMPLATES]),
+    async init() {
+      this.isLoading = true
+      const payload = {
+        is_fetch_all: true,
+      }
+      const result = await this[FETCH_IMPORT_ORDER_TEMPLATES](payload)
+      this.isLoading = false
+
+      if (!result.success) {
+        this.$toast.open({ type: 'error', message: result.message })
+        return
+      }
+      const lionix_temp = {
+        id: null,
+        name: 'Lionbay Default Template',
+      }
+      this.template = lionix_temp
+      const tempsFilter = []
+      tempsFilter.push(lionix_temp)
+      this.templates.forEach((temp) => {
+        if (temp.is_default) {
+          this.template = {
+            id: temp.id,
+            name: temp.name,
+          }
+        }
+        tempsFilter.push({
+          id: temp.id,
+          name: temp.name,
+        })
+      })
+      this.optionsTemplate = tempsFilter
+    },
     handleClose() {
       if (this.isLoading === true || this.uploading) {
         return
@@ -139,11 +197,14 @@ export default {
         message: 'File upload vượt quá dung lượng cho phép',
       })
     },
+    customLabel({ name }) {
+      return name
+    },
     handleSave() {
-      if (this.loading === true) {
+      if (this.loading || this.isLoading) {
         return
       }
-      this.$emit('selected', this.lastItem)
+      this.$emit('selected', this.lastItem, this.template)
     },
     handlePreview() {
       this.$emit('preview')
@@ -181,4 +242,21 @@ export default {
   font-size: 12px;
   width: 50%;
 }
+.select_template {
+  margin-bottom: 8px;
+  line-height: 160%;
+}
+.select_template label {
+  padding-left: 0;
+  vertical-align: bottom;
+  margin-bottom: 2px;
+}
+.select_template #templates {
+  display: inline-block;
+  width: calc(100% - 90px);
+  margin-left: 16px;
+}
+/*#templates .multiselect__input {*/
+/*  background-color: inherit;*/
+/*}*/
 </style>

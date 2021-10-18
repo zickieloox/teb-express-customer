@@ -162,10 +162,10 @@ export default {
               route: '/setting/account',
               title: 'Thông tin tài khoản',
             },
-            // {
-            //   route: '',
-            //   title: 'Danh sách hàng hóa',
-            // },
+            {
+              route: '/setting/templates',
+              title: 'Import templates',
+            },
             {
               route: '/setting/api',
               title: 'API',
