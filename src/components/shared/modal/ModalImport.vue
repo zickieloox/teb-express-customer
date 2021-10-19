@@ -143,7 +143,7 @@ export default {
       return this.files[this.files.length - 1]
     },
     csvTemplate() {
-      return `${process.env.VUE_APP_ASSETS}/shipping-template.xlsx`
+      return `${process.env.VUE_APP_ASSETS}/lionbay_template.xlsx`
     },
   },
   created() {
