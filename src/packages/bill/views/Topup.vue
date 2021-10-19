@@ -87,7 +87,7 @@
                 >
                 <p>
                   Nội dung chuyển khoản:<br />
-                  <span>Nạp topup {{ topup.id }}</span>
+                  <span>Topup {{ topup.id }}</span>
                   <copy :value="`Nạp topup ${topup.id}`"></copy>
                 </p>
                 <div class="swap_money">
