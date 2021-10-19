@@ -348,6 +348,7 @@
       color: $color-neutral-10;
     }
     .deactive {
+      cursor: not-allowed;
       color: $color-neutral-6;
       i {
         visibility: hidden;
