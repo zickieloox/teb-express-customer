@@ -80,9 +80,6 @@
                   >Ngân hàng:<br /><span>{{ bank }}</span></p
                 >
                 <p
-                  >Chi nhánh:<br /><span>{{ branch }}</span></p
-                >
-                <p
                   >Tên chủ thẻ:<br /><span>{{ name }}</span></p
                 >
                 <p
@@ -211,7 +208,6 @@ import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import {
   BANK,
-  BRANCH,
   NAME,
   ACCOUNT_NUMBER,
   TransactionLogTypeTopup,
@@ -267,7 +263,6 @@ export default {
     return {
       loading: false,
       bank: BANK,
-      branch: BRANCH,
       name: NAME,
       accountNumber: ACCOUNT_NUMBER,
       error: false,
