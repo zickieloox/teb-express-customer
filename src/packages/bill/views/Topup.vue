@@ -59,13 +59,11 @@
               >
               <a
                 href="javascript:void(0)"
-                @click="setMethod(payoneerType)"
                 :class="{ deactive: !isPayoneer, active: isPayoneer }"
                 ><i class="fa fa-circle"></i>Payoneer</a
               >
               <a
                 href="javascript:void(0)"
-                @click="setMethod(pingPongType)"
                 :class="{ deactive: !isPingPong, active: isPingPong }"
                 ><i class="fa fa-circle"></i>PingPong</a
               >
@@ -80,9 +78,6 @@
                   >Ngân hàng:<br /><span>{{ bank }}</span></p
                 >
                 <p
-                  >Chi nhánh:<br /><span>{{ branch }}</span></p
-                >
-                <p
                   >Tên chủ thẻ:<br /><span>{{ name }}</span></p
                 >
                 <p
@@ -90,8 +85,8 @@
                 >
                 <p>
                   Nội dung chuyển khoản:<br />
-                  <span>Nạp topup {{ topup.id }}</span>
-                  <copy :value="`Nạp topup ${topup.id}`"></copy>
+                  <span>Topup {{ topup.id }}</span>
+                  <copy :value="`Topup ${topup.id}`"></copy>
                 </p>
                 <div class="swap_money">
                   <div class="money">
@@ -211,7 +206,6 @@ import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import {
   BANK,
-  BRANCH,
   NAME,
   ACCOUNT_NUMBER,
   TransactionLogTypeTopup,
@@ -267,7 +261,6 @@ export default {
     return {
       loading: false,
       bank: BANK,
-      branch: BRANCH,
       name: NAME,
       accountNumber: ACCOUNT_NUMBER,
       error: false,
