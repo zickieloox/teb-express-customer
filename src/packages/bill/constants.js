@@ -7,8 +7,8 @@ export const BillPay = 2
 
 export const BANK = 'Ngân hàng TMCP Hàng Hải Việt Nam - MSB'
 export const BRANCH = 'Nam Thăng Long'
-export const NAME = 'DO HAI HUNG'
-export const ACCOUNT_NUMBER = '123 4566 8888'
+export const NAME = 'PHAM QUANG TRUNG'
+export const ACCOUNT_NUMBER = '03268 01545 9999'
 
 export const TransactionLogTypeTopup = 1
 export const TransactionLogTypePay = 2
