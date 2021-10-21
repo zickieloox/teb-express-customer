@@ -32,24 +32,26 @@
                 @keyup.enter="handleSearchCode"
               >
               </p-input>
-              <p-datepicker
-                :format="'dd/mm/yyyy'"
-                class="p-input-group input-group"
-                @update="selectDate"
-                :label="labelDate"
-                id="date-search"
-                :value="{
-                  startDate: filter.start_date,
-                  endDate: filter.end_date,
-                }"
-              ></p-datepicker>
-              <p-button
-                class="close ml-2"
-                type="default"
-                icon="close"
-                @click="clearSearchDate"
-                v-if="filter.start_date && filter.end_date"
-              />
+              <div class="d-flex date-search">
+                <p-datepicker
+                  :format="'dd/mm/yyyy'"
+                  class="p-input-group input-group"
+                  @update="selectDate"
+                  :label="labelDate"
+                  id="date-search"
+                  :value="{
+                    startDate: filter.start_date,
+                    endDate: filter.end_date,
+                  }"
+                ></p-datepicker>
+                <p-button
+                  class="close ml-2"
+                  type="default"
+                  icon="close"
+                  @click="clearSearchDate"
+                  v-if="filter.start_date && filter.end_date"
+                />
+              </div>
             </div>
             <package-status-tab
               :has-all="false"
@@ -190,7 +192,9 @@
                           target="_blank"
                           v-if="item.tracking && item"
                           :href="
-                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${item.tracking.tracking_number}`
+                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${
+                              item.tracking.tracking_number
+                            }`
                           "
                         >
                           {{ item.tracking.tracking_number }}
@@ -604,7 +608,9 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn hủy đơn?`
+      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${
+        this.selectedIds.length
+      }. Bạn có chắc chắn muốn hủy đơn?`
       this.visibleConfirmCancel = true
     },
     handlerReturnPackages() {
@@ -625,7 +631,9 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.returnPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn chuyển lại hàng ?`
+      this.actions.returnPackage.Description = `Tổng số đơn hàng đang chọn là ${
+        this.selectedIds.length
+      }. Bạn có chắc chắn muốn chuyển lại hàng ?`
       this.visibleConfirmReturn = true
     },
     async pendingPickupPackagesAction() {
@@ -691,7 +699,9 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${this.selected.length}. Bạn có chắc chắn muốn vận đơn?`
+      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${
+        this.selected.length
+      }. Bạn có chắc chắn muốn vận đơn?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
