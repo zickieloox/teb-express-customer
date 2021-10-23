@@ -77,7 +77,7 @@ $menubar-height:510px;
     background: #141F65;
     &-logo {
         margin-top: 20px;
-        margin-bottom: 10vh;
+        margin-bottom: 9vh;
         img {
             display: block;
             margin-left: auto;
@@ -92,6 +92,7 @@ $menubar-height:510px;
 .site-menu-item {
     height: calc(#{$menubar-height}/6);
     position: relative;
+    margin-bottom: 5px;
     .item-link {
         height: calc(#{$menubar-height}/6);
         padding: calc(#{$menubar-height}/45) 0;

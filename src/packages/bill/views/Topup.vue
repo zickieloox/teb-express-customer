@@ -75,14 +75,16 @@
               </span>
               <div class="card">
                 <p
-                  >Ngân hàng:<br /><span>{{ bank }}</span></p
-                >
+                  >Ngân hàng:<br /><span>{{ bank }}</span>
+                </p>
                 <p
-                  >Tên chủ thẻ:<br /><span>{{ name }}</span></p
-                >
+                  >Tên chủ thẻ:<br /><span>{{ name }}</span>
+                  <copy :value="name"></copy
+                ></p>
                 <p
-                  >Số tài khoản:<br /><span>{{ accountNumber }}</span></p
-                >
+                  >Số tài khoản:<br /><span>{{ accountNumber }}</span>
+                  <copy :value="accountNumber"></copy>
+                </p>
                 <p>
                   Nội dung chuyển khoản:<br />
                   <span>Topup {{ topup.id }}</span>
