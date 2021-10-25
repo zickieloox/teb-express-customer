@@ -59,11 +59,13 @@
               >
               <a
                 href="javascript:void(0)"
+                @click="setMethod(payoneerType)"
                 :class="{ deactive: !isPayoneer, active: isPayoneer }"
                 ><i class="fa fa-circle"></i>Payoneer</a
               >
               <a
                 href="javascript:void(0)"
+                @click="setMethod(pingPongType)"
                 :class="{ deactive: !isPingPong, active: isPingPong }"
                 ><i class="fa fa-circle"></i>PingPong</a
               >
