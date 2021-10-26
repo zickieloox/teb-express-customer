@@ -118,14 +118,15 @@ export const CHANGE_PACKAGE_TYPE = [
 
 export const DELIVER_LOG_PACKAGE = {
   [PackageStatusInTransit]: 'Đơn hàng đang giao',
-  [PackageStatusCreated]: 'Đơn hàng được tạo mới',
-  [PackageStatusPendingPickup]: 'Đơn hàng đang chờ lấy',
+  [PackageStatusCreated]: ' Label created',
+  [PackageStatusPendingPickup]: 'Label confirmed',
   [PackageStatusRePendingPickup]: 'Đơn hàng đã được chuyển lại',
-  [PackageStatusPicked]: 'Đơn hàng được xác nhận đã giao cho nhân viên kho',
+  [PackageStatusPicked]: 'Your package has been received by LionBay',
   [PackageStatusCancelled]: 'Đơn hàng đã bị hủy',
   [PackageStatusReturned]: 'Đơn hàng bị trả lại',
   [PackageStatusDelivered]: 'Đơn hàng đã được giao',
-  [PackageStatusWareHouseExport]: 'Đơn hàng đã xuất kho',
+  [PackageStatusWareHouseExport]:
+    'Your package is on the way to international airport',
 }
 
 export const ROLE_ADMIN = 'admin'
