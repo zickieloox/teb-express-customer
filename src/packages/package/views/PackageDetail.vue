@@ -632,7 +632,7 @@ export default {
           if (log.type == PackageStatusCancelled) {
             text = `${
               DELIVER_LOG_PACKAGE[log.type]
-            } bởi <strong>${this.displayUserName(log)}</strong>`
+            } by <strong>${this.displayUserName(log)}</strong>`
           }
           if (log.type == PackageStatusReturned) {
             text = `${DELIVER_LOG_PACKAGE[log.type]} <p>Lí do: ${
