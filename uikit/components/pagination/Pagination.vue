@@ -135,7 +135,7 @@ export default {
     total: [Number, String],
     perPage: {
       type: [Number, String],
-      default: 20,
+      default: 25,
     },
     current: {
       type: [Number, String],
@@ -155,21 +155,25 @@ export default {
     return {
       selectpage: false,
       selected: {
-        value: '20',
-        name: '20',
+        value: '25',
+        name: '25',
       },
       limitPage: [
         {
-          value: '20',
-          name: '20',
-        },
-        {
-          value: '30',
-          name: '30',
+          value: '25',
+          name: '25',
         },
         {
           value: '50',
           name: '50',
+        },
+        {
+          value: '100',
+          name: '100',
+        },
+        {
+          value: '200',
+          name: '200',
         },
       ],
     }
