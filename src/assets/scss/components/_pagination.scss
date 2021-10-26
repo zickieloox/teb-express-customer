@@ -38,7 +38,7 @@
       span {
         color: $color-neutral-9;
         font-weight: 600;
-        padding: 4px 0 0 10px;
+        padding: 4px 6px 0 10px;
         &:hover {
           cursor: pointer;
         }
@@ -55,10 +55,9 @@
       }
       ul{
         position: absolute;
-        width: 53px;
+        width: 100%;
         border: 1px solid $color-neutral-5;
-        margin-top: -99px;
-        margin-left: -1px;
+        bottom: 103%;
         transition: 0.8s;
         background: #FFFFFF;
         li {

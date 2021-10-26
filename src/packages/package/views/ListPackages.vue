@@ -351,7 +351,7 @@ export default {
   data() {
     return {
       filter: {
-        limit: 50,
+        limit: 25,
         status: '',
         search: '',
         start_date: '',
