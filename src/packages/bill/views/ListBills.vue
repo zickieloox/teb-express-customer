@@ -154,7 +154,7 @@ export default {
     return {
       isLoading: false,
       filter: {
-        limit: 20,
+        limit: 25,
         start_date: '',
         end_date: '',
         search: '',
