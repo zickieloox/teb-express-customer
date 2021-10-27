@@ -640,7 +640,7 @@ export default {
             }</p>`
           }
 
-          text = text || log.description
+          text = log.description || text
           return {
             text,
             ship_time: log.ship_time,
