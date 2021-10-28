@@ -42,7 +42,9 @@
                   target="_blank"
                   v-if="package_detail.package.tracking"
                   :href="
-                    `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${package_detail.package.tracking.tracking_number}`
+                    `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${
+                      package_detail.package.tracking.tracking_number
+                    }`
                   "
                 >
                   {{
@@ -549,9 +551,7 @@ import {
   ROLE_ADMIN,
   ROLE_SUPPORT,
   ROLE_ACCOUNTANT,
-  PackageStatusCancelled,
   PackageStatusCreatedText,
-  PackageStatusReturned,
   PackageStatusReturnText,
 } from '../constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
@@ -627,12 +627,12 @@ export default {
       return this.package_detail.deliver_logs
         .slice(start, start + this.timelinePagination.itemsPerPage)
         .map((log) => {
-          if (log.description == "") {
-            log.description = DELIVER_LOG_PACKAGE[log.type] || ""
+          if (log.description == '') {
+            log.description = DELIVER_LOG_PACKAGE[log.type] || ''
           }
 
           return {
-            text,
+            text: log.description,
             ship_time: log.ship_time,
             location: log.location,
           }
