@@ -627,21 +627,8 @@ export default {
       return this.package_detail.deliver_logs
         .slice(start, start + this.timelinePagination.itemsPerPage)
         .map((log) => {
-          let text = log.description
-          if (log.type == PackageStatusCancelled) {
-            text = `${
-              DELIVER_LOG_PACKAGE[log.type]
-            } by <strong>${this.displayUserName(log)}</strong>`
-          }
-
-          if (log.type == PackageStatusReturned) {
-            text = `${DELIVER_LOG_PACKAGE[log.type]} <p>Lí do: ${
-              log.description
-            }</p>`
-          }
-
-          if (text == "") {
-            text = DELIVER_LOG_PACKAGE[log.type] || ""
+          if (log.description == "") {
+            log.description = DELIVER_LOG_PACKAGE[log.type] || ""
           }
 
           return {
