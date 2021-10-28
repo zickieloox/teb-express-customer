@@ -155,8 +155,7 @@
                 >
                 <p>
                   <span
-                    >Copy Transaction ID nhận được từ xxx rồi nhập vào ô phía
-                    dưới.<br />
+                    >Copy Transaction ID rồi nhập vào ô phía dưới.<br />
                     Nhấn nút <strong>Xác nhận</strong> để nạp topup.</span
                   ></p
                 >
