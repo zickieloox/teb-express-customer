@@ -26,7 +26,7 @@
                 >
                   <img
                     src="@/assets/img/Vector-barcode.png"
-                    style=" margin-top: 9px;position: absolute; left: 150px;"
+                    style="margin-top: 9px; position: absolute; left: 150px"
                   />
                 </span>
               </div>
@@ -228,33 +228,45 @@
                     <div class="row">
                       <div class="col-4 mb-8">Trọng lượng:</div>
                       <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.weight')
-                        }}</div></div
-                      >
+                        ><div
+                          >{{ $evaluate('package_detail.package.weight')
+                          }}<span v-if="isOverThanOld('weight')">
+                            ({{ $evaluate('package_detail.package.weight') }})
+                          </span></div
+                        >
+                      </div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Dài:</div>
                       <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.length')
-                        }}</div></div
+                        ><div
+                          >{{ $evaluate('package_detail.package.length')
+                          }}<span v-if="isOverThanOld('length')">
+                            ({{ $evaluate('package_detail.package.length') }})
+                          </span></div
+                        ></div
                       >
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Rộng:</div>
                       <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.width')
-                        }}</div></div
+                        ><div
+                          >{{ $evaluate('package_detail.package.width')
+                          }}<span v-if="isOverThanOld('width')">
+                            ({{ $evaluate('package_detail.package.width') }})
+                          </span></div
+                        ></div
                       >
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Cao:</div>
                       <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.height')
-                        }}</div></div
+                        ><div
+                          >{{ $evaluate('package_detail.package.height')
+                          }}<span v-if="isOverThanOld('height')">
+                            ({{ $evaluate('package_detail.package.height') }})
+                          </span></div
+                        ></div
                       >
                     </div>
                   </div>
@@ -452,9 +464,7 @@
                 </div>
               </div>
               <div class="fee__right">
-                <div>
-                  Tổng cước:
-                </div>
+                <div> Tổng cước: </div>
                 <div>{{ sumFee | formatPrice }}</div>
               </div>
             </div>
@@ -759,6 +769,19 @@ export default {
     },
     hiddenPopupMoreExtraFee() {
       this.isVisiblePopupMoreExtraFee = false
+    },
+
+    isOverThanOld(prop) {
+      if (
+        !this.package_detail.package ||
+        !this.package_detail.package.tracking
+      ) {
+        return false
+      }
+      return (
+        this.package_detail.package.tracking[prop] >
+        this.package_detail.package[prop]
+      )
     },
 
     handleWayBill() {
