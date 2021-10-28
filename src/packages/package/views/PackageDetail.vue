@@ -231,7 +231,11 @@
                         ><div
                           >{{ $evaluate('package_detail.package.weight')
                           }}<span v-if="isOverThanOld('weight')">
-                            ({{ $evaluate('package_detail.package.weight') }})
+                            ({{
+                              $evaluate(
+                                'package_detail.package.tracking.weight'
+                              )
+                            }})
                           </span></div
                         >
                       </div>
@@ -242,7 +246,11 @@
                         ><div
                           >{{ $evaluate('package_detail.package.length')
                           }}<span v-if="isOverThanOld('length')">
-                            ({{ $evaluate('package_detail.package.length') }})
+                            ({{
+                              $evaluate(
+                                'package_detail.package.tracking.length'
+                              )
+                            }})
                           </span></div
                         ></div
                       >
@@ -253,7 +261,11 @@
                         ><div
                           >{{ $evaluate('package_detail.package.width')
                           }}<span v-if="isOverThanOld('width')">
-                            ({{ $evaluate('package_detail.package.width') }})
+                            ({{
+                              $evaluate(
+                                'package_detail.package.tracking.width'
+                              )
+                            }})
                           </span></div
                         ></div
                       >
@@ -264,7 +276,11 @@
                         ><div
                           >{{ $evaluate('package_detail.package.height')
                           }}<span v-if="isOverThanOld('height')">
-                            ({{ $evaluate('package_detail.package.height') }})
+                            ({{
+                              $evaluate(
+                                'package_detail.package.tracking.height'
+                              )
+                            }})
                           </span></div
                         ></div
                       >
