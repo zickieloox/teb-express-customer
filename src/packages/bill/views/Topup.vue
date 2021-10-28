@@ -149,8 +149,9 @@
                 <p
                   ><span
                     >Vui lòng chuyển tiền tới địa chỉ:
-                    <strong>name@lionbay.express</strong></span
-                  ></p
+                    <strong v-if="isPayoneer">tungpk.izee@gmail.com</strong>
+                    <strong v-if="isPingPong">tungpk@lionnix.com</strong>
+                  </span></p
                 >
                 <p>
                   <span
