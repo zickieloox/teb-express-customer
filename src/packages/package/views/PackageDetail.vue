@@ -245,7 +245,7 @@
                       <div class="col-8"
                         ><div
                           >{{ $evaluate('package_detail.package.length')
-                          }}<span v-if="isOverThanOld('length')">
+                          }}<span v-if="isOverThanOld()">
                             ({{
                               $evaluate(
                                 'package_detail.package.tracking.length'
@@ -260,7 +260,7 @@
                       <div class="col-8"
                         ><div
                           >{{ $evaluate('package_detail.package.width')
-                          }}<span v-if="isOverThanOld('width')">
+                          }}<span v-if="isOverThanOld()">
                             ({{
                               $evaluate(
                                 'package_detail.package.tracking.width'
@@ -275,7 +275,7 @@
                       <div class="col-8"
                         ><div
                           >{{ $evaluate('package_detail.package.height')
-                          }}<span v-if="isOverThanOld('height')">
+                          }}<span v-if="isOverThanOld()">
                             ({{
                               $evaluate(
                                 'package_detail.package.tracking.height'
@@ -794,9 +794,20 @@ export default {
       ) {
         return false
       }
+
+      if (prop == 'weight') {
+        return (
+          this.package_detail.package.tracking[prop] >
+          this.package_detail.package[prop]
+        )
+      }
       return (
-        this.package_detail.package.tracking[prop] >
-        this.package_detail.package[prop]
+        this.package_detail.package.tracking.height *
+          this.package_detail.package.tracking.width *
+          this.package_detail.package.tracking.length >
+        this.package_detail.package.height *
+          this.package_detail.package.width *
+          this.package_detail.package.length
       )
     },
 
