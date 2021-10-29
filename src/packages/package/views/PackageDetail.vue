@@ -26,7 +26,7 @@
                 >
                   <img
                     src="@/assets/img/Vector-barcode.png"
-                    style=" margin-top: 9px;position: absolute; left: 150px;"
+                    style="margin-top: 9px; position: absolute; left: 150px"
                   />
                 </span>
               </div>
@@ -42,7 +42,9 @@
                   target="_blank"
                   v-if="package_detail.package.tracking"
                   :href="
-                    `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${package_detail.package.tracking.tracking_number}`
+                    `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${
+                      package_detail.package.tracking.tracking_number
+                    }`
                   "
                 >
                   {{
@@ -226,33 +228,61 @@
                     <div class="row">
                       <div class="col-4 mb-8">Trọng lượng:</div>
                       <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.weight')
-                        }}</div></div
-                      >
+                        ><div
+                          >{{ $evaluate('package_detail.package.weight')
+                          }}<span v-if="isOverThanOld('weight')">
+                            ({{
+                              $evaluate(
+                                'package_detail.package.tracking.weight'
+                              )
+                            }})
+                          </span></div
+                        >
+                      </div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Dài:</div>
                       <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.length')
-                        }}</div></div
+                        ><div
+                          >{{ $evaluate('package_detail.package.length')
+                          }}<span v-if="isOverThanOld()">
+                            ({{
+                              $evaluate(
+                                'package_detail.package.tracking.length'
+                              )
+                            }})
+                          </span></div
+                        ></div
                       >
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Rộng:</div>
                       <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.width')
-                        }}</div></div
+                        ><div
+                          >{{ $evaluate('package_detail.package.width')
+                          }}<span v-if="isOverThanOld()">
+                            ({{
+                              $evaluate(
+                                'package_detail.package.tracking.width'
+                              )
+                            }})
+                          </span></div
+                        ></div
                       >
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Cao:</div>
                       <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.height')
-                        }}</div></div
+                        ><div
+                          >{{ $evaluate('package_detail.package.height')
+                          }}<span v-if="isOverThanOld()">
+                            ({{
+                              $evaluate(
+                                'package_detail.package.tracking.height'
+                              )
+                            }})
+                          </span></div
+                        ></div
                       >
                     </div>
                   </div>
@@ -450,9 +480,7 @@
                 </div>
               </div>
               <div class="fee__right">
-                <div>
-                  Tổng cước:
-                </div>
+                <div> Tổng cước: </div>
                 <div>{{ sumFee | formatPrice }}</div>
               </div>
             </div>
@@ -549,9 +577,7 @@ import {
   ROLE_ADMIN,
   ROLE_SUPPORT,
   ROLE_ACCOUNTANT,
-  PackageStatusCancelled,
   PackageStatusCreatedText,
-  PackageStatusReturned,
   PackageStatusReturnText,
 } from '../constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
@@ -627,22 +653,12 @@ export default {
       return this.package_detail.deliver_logs
         .slice(start, start + this.timelinePagination.itemsPerPage)
         .map((log) => {
-          let text = DELIVER_LOG_PACKAGE[log.type]
-
-          if (log.type == PackageStatusCancelled) {
-            text = `${
-              DELIVER_LOG_PACKAGE[log.type]
-            } bởi <strong>${this.displayUserName(log)}</strong>`
-          }
-          if (log.type == PackageStatusReturned) {
-            text = `${DELIVER_LOG_PACKAGE[log.type]} <p>Lí do: ${
-              log.description
-            }</p>`
+          if (log.description == '') {
+            log.description = DELIVER_LOG_PACKAGE[log.type] || ''
           }
 
-          text = text || log.description
           return {
-            text,
+            text: log.description,
             ship_time: log.ship_time,
             location: log.location,
           }
@@ -769,6 +785,30 @@ export default {
     },
     hiddenPopupMoreExtraFee() {
       this.isVisiblePopupMoreExtraFee = false
+    },
+
+    isOverThanOld(prop) {
+      if (
+        !this.package_detail.package ||
+        !this.package_detail.package.tracking
+      ) {
+        return false
+      }
+
+      if (prop == 'weight') {
+        return (
+          this.package_detail.package.tracking[prop] >
+          this.package_detail.package[prop]
+        )
+      }
+      return (
+        this.package_detail.package.tracking.height *
+          this.package_detail.package.tracking.width *
+          this.package_detail.package.tracking.length >
+        this.package_detail.package.height *
+          this.package_detail.package.width *
+          this.package_detail.package.length
+      )
     },
 
     handleWayBill() {

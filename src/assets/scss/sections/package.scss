@@ -88,6 +88,12 @@
             align-items: center;
             justify-content: center;
         }
+        .page-footer__right{
+            .is-disabled{
+                pointer-events: none;
+                cursor: default;
+            }
+        }
     }
     &-total {
         width: 39%;

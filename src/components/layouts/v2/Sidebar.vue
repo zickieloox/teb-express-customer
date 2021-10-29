@@ -19,9 +19,12 @@
             @mouseover.native="openItem(menu)"
             @mouseleave.native="closeItem(menu)"
           >
-            <img class="site-menu-icon default" :src="menu.icon" />
-            <img class="site-menu-icon active" :src="menu.iconActive" />
-            <span class="site-menu-title">{{ menu.title }}</span>
+            <div class="item-link-content">
+              <img class="site-menu-icon default" :src="menu.icon" />
+              <img class="site-menu-icon active" :src="menu.iconActive" />
+              <span class="site-menu-title">{{ menu.title }}</span>
+            </div>
+
             <div class="open-right">
               <div
                 class="site-menu-sub"

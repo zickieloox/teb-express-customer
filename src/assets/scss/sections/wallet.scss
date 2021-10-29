@@ -348,7 +348,7 @@
       color: $color-neutral-10;
     }
     .deactive {
-      cursor: not-allowed;
+      // cursor: not-allowed;
       color: $color-neutral-6;
       i {
         visibility: hidden;
@@ -413,6 +413,7 @@
         font-size: 12px;
         line-height: 16px;
         color: $color-neutral-7;
+        margin-bottom: 12px;
         span {
           font-weight: 600;
           font-size: 14px;

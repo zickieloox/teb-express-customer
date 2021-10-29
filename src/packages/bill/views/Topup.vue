@@ -59,11 +59,13 @@
               >
               <a
                 href="javascript:void(0)"
+                @click="setMethod(payoneerType)"
                 :class="{ deactive: !isPayoneer, active: isPayoneer }"
                 ><i class="fa fa-circle"></i>Payoneer</a
               >
               <a
                 href="javascript:void(0)"
+                @click="setMethod(pingPongType)"
                 :class="{ deactive: !isPingPong, active: isPingPong }"
                 ><i class="fa fa-circle"></i>PingPong</a
               >
@@ -75,14 +77,16 @@
               </span>
               <div class="card">
                 <p
-                  >Ngân hàng:<br /><span>{{ bank }}</span></p
-                >
+                  >Ngân hàng:<br /><span>{{ bank }}</span>
+                </p>
                 <p
-                  >Tên chủ thẻ:<br /><span>{{ name }}</span></p
-                >
+                  >Tên chủ thẻ:<br /><span>{{ name }}</span>
+                  <copy :value="name"></copy
+                ></p>
                 <p
-                  >Số tài khoản:<br /><span>{{ accountNumber }}</span></p
-                >
+                  >Số tài khoản:<br /><span>{{ accountNumber }}</span>
+                  <copy :value="accountNumber"></copy>
+                </p>
                 <p>
                   Nội dung chuyển khoản:<br />
                   <span>Topup {{ topup.id }}</span>
@@ -145,13 +149,13 @@
                 <p
                   ><span
                     >Vui lòng chuyển tiền tới địa chỉ:
-                    <strong>name@lionbay.express</strong></span
-                  ></p
+                    <strong v-if="isPayoneer">tungpk.izee@gmail.com</strong>
+                    <strong v-if="isPingPong">tungpk@lionnix.com</strong>
+                  </span></p
                 >
                 <p>
                   <span
-                    >Copy Transaction ID nhận được từ xxx rồi nhập vào ô phía
-                    dưới.<br />
+                    >Copy Transaction ID rồi nhập vào ô phía dưới.<br />
                     Nhấn nút <strong>Xác nhận</strong> để nạp topup.</span
                   ></p
                 >

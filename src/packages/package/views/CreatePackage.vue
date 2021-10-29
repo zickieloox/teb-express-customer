@@ -357,7 +357,10 @@
         </div>
       </div>
       <div class="page-footer__right">
-        <a :disabled="isCreate" @click="handleCreate" class="btn btn-primary"
+        <a
+          :class="{ 'is-disabled': isCreate }"
+          @click="handleCreate"
+          class="btn btn-primary"
           >Tạo mới</a
         >
       </div>
@@ -499,7 +502,6 @@ export default {
         })
         return
       }
-      console.log(result)
       this.$toast.open({
         type: 'success',
         message: `Tạo đơn ${result.package.package_code.code} thành công`,
