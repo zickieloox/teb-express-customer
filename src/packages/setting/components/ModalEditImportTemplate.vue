@@ -334,6 +334,7 @@ export default {
         } else {
           this.optionFields = []
           this.assign_fields = []
+          this.show_full_options = false
         }
       },
       immediate: true,
