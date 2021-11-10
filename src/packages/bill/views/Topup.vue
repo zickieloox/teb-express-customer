@@ -149,13 +149,13 @@
                 <p
                   ><span
                     >Vui lòng chuyển tiền tới địa chỉ:
-                    <strong>name@lionbay.express</strong></span
-                  ></p
+                    <strong v-if="isPayoneer">tungpk.izee@gmail.com</strong>
+                    <strong v-if="isPingPong">tungpk@lionnix.com</strong>
+                  </span></p
                 >
                 <p>
                   <span
-                    >Copy Transaction ID nhận được từ xxx rồi nhập vào ô phía
-                    dưới.<br />
+                    >Copy Transaction ID rồi nhập vào ô phía dưới.<br />
                     Nhấn nút <strong>Xác nhận</strong> để nạp topup.</span
                   ></p
                 >

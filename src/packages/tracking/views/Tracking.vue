@@ -5,7 +5,7 @@
         <textarea
           v-model="code"
           class="input"
-          placeholder="Nhập mã vận đơn hoặc tracking number"
+          placeholder="Nhập mã vận đơn hoặc tracking number (mỗi mã một dòng và tối đa 20 mã)"
         ></textarea>
         <div class="button-group">
           <button class="btn btn-tracking" @click="verifyCode">Track</button>
