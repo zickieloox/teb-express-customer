@@ -143,7 +143,7 @@
                           @input="handleValue($event)"
                         ></p-checkbox>
                       </td>
-                      <td>
+                      <td width="230">
                         <router-link
                           class="text-no-underline"
                           :to="{
