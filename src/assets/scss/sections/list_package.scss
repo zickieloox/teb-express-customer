@@ -278,7 +278,8 @@
             letter-spacing: 0.75px;
         }
         .svg {
-            display: none;
+            // display: none;
+            opacity: 0;
         }
         tr:hover {
             td {
@@ -288,7 +289,8 @@
                 }
             }
             .svg {
-                display: inline-block;
+                // display: inline-block;
+                opacity: 1;
                 .lb-tooltip {
                     &::before,
                     &::after {

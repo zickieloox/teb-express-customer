@@ -109,19 +109,13 @@
                         ></p-checkbox>
                       </th>
                       <template>
-                        <th width="230" :class="{ hidden: hiddenClass }"
-                          >Mã vận đơn</th
-                        >
+                        <th :class="{ hidden: hiddenClass }">Mã vận đơn</th>
                         <th :class="{ hidden: hiddenClass }">Mã đơn hàng</th>
                         <th :class="{ hidden: hiddenClass }">Tracking</th>
                         <th :class="{ hidden: hiddenClass }">Người nhận</th>
                         <th :class="{ hidden: hiddenClass }">Dịch vụ</th>
-                        <th width="100" :class="{ hidden: hiddenClass }"
-                          >Ngày tạo
-                        </th>
-                        <th width="100" :class="{ hidden: hiddenClass }"
-                          >Trạng thái</th
-                        >
+                        <th :class="{ hidden: hiddenClass }">Ngày tạo </th>
+                        <th :class="{ hidden: hiddenClass }">Trạng thái</th>
                         <th
                           style="text-align: right"
                           :class="{ hidden: hiddenClass }"
@@ -143,18 +137,26 @@
                           @input="handleValue($event)"
                         ></p-checkbox>
                       </td>
-                      <td width="230">
-                        <router-link
-                          class="text-no-underline"
-                          :to="{
-                            name: 'package-detail',
-                            params: {
-                              id: item.id,
-                            },
-                          }"
+                      <td>
+                        <p-tooltip
+                          :label="item.package_code.code"
+                          size="large"
+                          position="top"
+                          type="dark"
+                          :active="item.package_code.code.length > 13"
                         >
-                          {{ item.package_code ? item.package_code.code : '' }}
-                        </router-link>
+                          <router-link
+                            class="text-no-underline"
+                            :to="{
+                              name: 'package-detail',
+                              params: {
+                                id: item.id,
+                              },
+                            }"
+                          >
+                            {{ truncate(item.package_code.code, 13) }}
+                          </router-link>
+                        </p-tooltip>
 
                         <span
                           v-if="!item.validate_address"
@@ -177,7 +179,6 @@
                             </i>
                           </p-tooltip>
                         </span>
-
                         <span style="float: right">
                           <span class="svg">
                             <p-tooltip
@@ -206,6 +207,7 @@
                               </copy>
                             </p-tooltip>
                           </span>
+
                           <span
                             @click="showContent(item)"
                             v-if="item.label"
@@ -245,6 +247,7 @@
                               </svg>
                             </p-tooltip>
                           </span>
+
                           <span class="svg">
                             <p-tooltip
                               class="item_name"
