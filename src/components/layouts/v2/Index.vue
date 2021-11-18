@@ -74,7 +74,7 @@ export default {
   width: calc(100% - 128px);
   height: 56px;
   position: fixed;
-  z-index: 1000;
+  z-index: 3;
   bottom: 0;
   right: 0;
   background-color: #fff7e6;
