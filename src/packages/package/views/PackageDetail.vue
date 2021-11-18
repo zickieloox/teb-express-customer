@@ -294,7 +294,7 @@
                 <div class="row">
                   <div class="col-12 p-0">
                     <div class="card-block">
-                      <div class="card-header">
+                      <div class="card-header new">
                         <div class="card-title">Hành trình đơn</div>
                         <div class="card-action"
                           ><a
@@ -305,7 +305,7 @@
                         >
                       </div>
                       <div class="card-content deliver-log">
-                        <div class="timeline">
+                        <div class="timeline-new">
                           <div
                             v-for="(item, i) in displayDeliverLogs"
                             :key="i"
@@ -313,21 +313,30 @@
                               'first-item':
                                 i === 0 && timelinePagination.currentPage === 1,
                             }"
-                            class="timeline-item"
+                            class="timeline-item-new"
                           >
-                            <div class="timeline-item__left">
-                              <div>{{
-                                item.ship_time | datetime('dd/MM/yyyy')
-                              }}</div>
-                              <div>{{
-                                item.ship_time | datetime('HH:mm:ss')
-                              }}</div>
+                            <div class="item__right">
+                              <div class="title">{{ item.name }}</div>
                             </div>
-                            <div class="timeline-item__right">
-                              <div v-html="item.text"></div>
-                              <span v-if="item.location"
-                                ><i class="fa fa-map-marker mr-1"></i>
-                                {{ item.location }}</span
+                            <div
+                              v-for="(it, j) in item.data"
+                              :key="j"
+                              class="item__right__data"
+                              :class="{
+                                'first-data': j === 0,
+                              }"
+                            >
+                              <div class="time">
+                                {{ it.ship_time | datetime('HH:mm:ss') }}</div
+                              >
+                              <div class="des"> {{ convertDes(it) }}</div>
+                              <span class="location" v-if="it.location">
+                                <img
+                                  src="@/assets/img/location.svg"
+                                  alt="location"
+                                  class="icon"
+                                />
+                                {{ it.location }}</span
                               >
                             </div>
                           </div>
@@ -365,7 +374,7 @@
                 <div class="row">
                   <div class="col-12 p-0">
                     <div class="card-block">
-                      <div class="card-header">
+                      <div class="card-header new">
                         <div class="card-title">Lịch sử đơn</div>
                         <div class="card-action"
                           ><a
@@ -558,6 +567,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import { printImage } from '@core/utils/print'
+import Uniq from 'lodash/uniq'
 
 import {
   FETCH_PACKAGE_DETAIL,
@@ -584,6 +594,7 @@ import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import { extension } from '@core/utils/url'
 import { cloneDeep } from '@core/utils'
 import api from '../api'
+import { datetime } from '../../../core/utils/datetime'
 export default {
   name: 'PackageDetail',
   mixins: [mixinChaining],
@@ -601,6 +612,7 @@ export default {
         itemsPerPage: 10,
         currentPage: 1,
       },
+      ConvertData: [],
       auditPagination: {
         numberPage: 0,
         itemsPerPage: 10,
@@ -650,19 +662,10 @@ export default {
       const start =
         (this.timelinePagination.currentPage - 1) *
         this.timelinePagination.itemsPerPage
-      return this.package_detail.deliver_logs
-        .slice(start, start + this.timelinePagination.itemsPerPage)
-        .map((log) => {
-          if (log.description == '') {
-            log.description = DELIVER_LOG_PACKAGE[log.type] || ''
-          }
-
-          return {
-            text: log.description,
-            ship_time: log.ship_time,
-            location: log.location,
-          }
-        })
+      return this.ConvertData.slice(
+        start,
+        start + this.timelinePagination.itemsPerPage
+      )
     },
     displayAuditLogs() {
       const start =
@@ -738,6 +741,7 @@ export default {
       this.isFetching = true
       await this.fetchPackage(this.packageID)
       await this[FETCH_LIST_SERVICE]()
+
       let recipientBlockHeight = document.getElementById('recipient-block')
         .offsetHeight
       let itemBlockHeight = document.getElementById('item-block').offsetHeight
@@ -753,6 +757,12 @@ export default {
     },
     changeDisplayDeliverDetail() {
       this.displayDeliverDetail = !this.displayDeliverDetail
+    },
+    convertDes(data) {
+      if (data.description == '') {
+        return DELIVER_LOG_PACKAGE[data.type] || ''
+      }
+      return data.description
     },
     handleModal() {
       this.isVisibleModal = true
@@ -951,8 +961,22 @@ export default {
     package_detail: {
       handler: function(val) {
         if (val.deliver_logs && val.deliver_logs.length > 0) {
+          const times = this.package_detail.deliver_logs.map((item) =>
+            datetime(item.ship_time, 'dd-MM-yyyy')
+          )
+          const uniqTimes = Uniq(times)
+          uniqTimes.forEach((element) =>
+            this.ConvertData.push({ name: element, data: [] })
+          )
+          this.ConvertData.forEach((item) =>
+            this.package_detail.deliver_logs.forEach(function(it) {
+              if (datetime(it.ship_time, 'dd-MM-yyyy') == item.name) {
+                item.data.push(it)
+              }
+            })
+          )
           this.timelinePagination.numberPage = Math.ceil(
-            val.deliver_logs.length / this.timelinePagination.itemsPerPage
+            this.ConvertData.length / this.timelinePagination.itemsPerPage
           )
         }
         if (val.audit_logs && val.audit_logs.length > 0) {

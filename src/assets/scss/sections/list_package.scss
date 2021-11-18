@@ -271,11 +271,39 @@
     }
     #tbl-packages {
         th {
-            color: $color-neutral-5;
+            color: $color-neutral-10;
             font-size: 12px;
             line-height: 16px;
             text-transform: uppercase;
             letter-spacing: 0.75px;
+        }
+        .svg {
+            display: none;
+        }
+        tr:hover {
+            td {
+                a.text-no-underline {
+                    margin-top: 5px;
+                    display: inline-block;
+                }
+            }
+            .svg {
+                display: inline-block;
+                .lb-tooltip {
+                    &::before,
+                    &::after {
+                        display: none;
+                    }
+                }
+                svg:hover {
+                    circle {
+                        fill: #E1F7FC;
+                    }
+                    path {
+                        fill: #20BDDB;
+                    }
+                }
+            }
         }
     }
 }

@@ -320,7 +320,7 @@ export default {
               }
             })
             .filter((field) => {
-              assignedField[field.key] === undefined
+              return assignedField[field.key] === undefined
             })
           this.import_fields = importFields.map((field, index) => {
             return {
@@ -334,6 +334,7 @@ export default {
         } else {
           this.optionFields = []
           this.assign_fields = []
+          this.show_full_options = false
         }
       },
       immediate: true,

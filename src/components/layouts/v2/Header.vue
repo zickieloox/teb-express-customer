@@ -13,10 +13,18 @@
       <div class="navbar__header-right">
         <p-dropdown>
           <div class="pointer" slot="trigger">
-            <span
-              >Xin chào, <span class="username">{{ user.full_name }}</span>
-            </span>
-            <img src="@/assets/img/dropdown.svg" />
+            <div class="user_info">
+              <div
+                >Xin chào, <span class="username">{{ user.full_name }}</span>
+              </div>
+              <div class="type" v-if="user && user.user_info"
+                >{{ types[user.class] }} <i class="fa fa-circle"></i>
+                {{
+                  user.user_info.debt_max_amount > 0 ? 'Trả sau' : 'Trả trước'
+                }}</div
+              >
+            </div>
+            <img src="@/assets/img/user.png" />
           </div>
           <p-dropdown-item>
             <img
@@ -29,9 +37,7 @@
           </p-dropdown-item>
           <p-dropdown-item>
             <img src="@/assets/img/Logout.svg" class="navbar__header-icon" />
-            <router-link to="/logout" class="nav-item">
-              Đăng xuất
-            </router-link>
+            <router-link to="/logout" class="nav-item"> Đăng xuất </router-link>
           </p-dropdown-item>
         </p-dropdown>
       </div>
@@ -46,6 +52,7 @@
 </template>
 <script>
 import ModalAddClaim from '../../../packages/claim/components/ModalAddClaim.vue'
+import { MAP_USER_CLASS_TEXT } from '@core/constants'
 
 export default {
   components: {
@@ -59,6 +66,11 @@ export default {
     },
   },
   mounted() {},
+  computed: {
+    types() {
+      return MAP_USER_CLASS_TEXT
+    },
+  },
   created() {},
   data() {
     return {
@@ -75,3 +87,21 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.user_info {
+  .type {
+    align-items: center;
+    display: flex;
+    float: right;
+    font-weight: 600;
+    font-size: 10px;
+    color: #626363;
+    i {
+      font-size: 4px;
+      margin-right: 4px;
+      margin-left: 4px;
+    }
+  }
+}
+</style>
