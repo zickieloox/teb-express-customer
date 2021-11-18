@@ -41,10 +41,10 @@ export default {
       warning: false,
     }
   },
-  mounted() {},
-  created() {
+  mounted() {
     this.init()
   },
+  created() {},
   methods: {
     ...mapActions('shared', [GET_USER]),
     async init() {

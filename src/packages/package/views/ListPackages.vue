@@ -155,16 +155,6 @@
                         </router-link>
 
                         <span
-                          @click="showContent(item)"
-                          v-if="item.label"
-                          class="page-header__barcode"
-                        >
-                          <img
-                            src="@/assets/img/Vector-barcode.png"
-                            style="margin-left: 10px; margin-bottom: 3px"
-                          />
-                        </span>
-                        <span
                           v-if="!item.validate_address"
                           @click="handleValidateAddress(item.id)"
                           class="
@@ -184,6 +174,99 @@
                               ><img src="@assets/img/warning.svg" />
                             </i>
                           </p-tooltip>
+                        </span>
+
+                        <span class="svg">
+                          <copy :value="item.package_code.code">
+                            <svg
+                              width="32"
+                              height="32"
+                              viewBox="0 0 32 32"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <circle cx="16" cy="16" r="16" fill="none" />
+
+                              <path
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                                d="M21.9823 11.3982H20.6372V10.0531C20.6372 8.92035 19.7168 8 18.6195 8H10.0531C8.92035 8 8 8.92035 8 10.0531V18.6195C8 19.7168 8.92035 20.6372 10.0531 20.6372H11.3982V21.9823C11.3982 23.115 12.2832 24 13.4159 24H21.9823C23.115 24 24 23.115 24 21.9823V13.4159C24 12.2832 23.115 11.3982 21.9823 11.3982ZM18.9735 11.3982H13.4159C12.2832 11.3982 11.3982 12.2832 11.3982 13.4159V18.9735H10.0531C9.9469 18.9735 9.84071 18.9381 9.80531 18.8673C9.73451 18.7965 9.69912 18.7257 9.69912 18.6195V10.0531C9.69912 9.9469 9.73451 9.84071 9.80531 9.80531C9.84071 9.73451 9.9469 9.69912 10.0531 9.69912H18.6195C18.7257 9.69912 18.7965 9.73451 18.8673 9.80531C18.9381 9.84071 18.9735 9.9469 18.9735 10.0531V11.3982Z"
+                                fill="#313232"
+                              />
+                            </svg>
+                          </copy>
+                        </span>
+
+                        <span
+                          @click="showContent(item)"
+                          v-if="item.label"
+                          class="svg"
+                        >
+                          <svg
+                            width="32"
+                            height="32"
+                            viewBox="0 0 32 32"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <circle cx="16" cy="16" r="16" fill="none" />
+
+                            <path
+                              d="M21.7143 9.14286C21.7143 8.512 21.2023 8 20.5714 8H11.4286C10.7977 8 10.2857 8.512 10.2857 9.14286V10.2857H21.7143V9.14286Z"
+                              fill="#313232"
+                            />
+                            <path
+                              d="M22.8571 11.4286H9.14286C8.512 11.4286 8 11.9406 8 12.5714V19.4286C8 20.0594 8.512 20.5714 9.14286 20.5714H10.2857V22.8572C10.2857 23.488 10.7977 24 11.4286 24H20.5714C21.2023 24 21.7143 23.488 21.7143 22.8572V20.5714H22.8571C23.488 20.5714 24 20.0594 24 19.4286V12.5714C24 11.9406 23.488 11.4286 22.8571 11.4286ZM20.5714 22.8572H11.4286V17.1429H20.5714V22.8572ZM21.7143 14.8572H19.4286V13.7143H21.7143V14.8572Z"
+                              fill="#313232"
+                            />
+                            <path
+                              d="M16 20.5714H12.5714V21.7143H16V20.5714Z"
+                              fill="#313232"
+                            />
+                            <path
+                              d="M19.4286 18.2857H12.5714V19.4286H19.4286V18.2857Z"
+                              fill="#313232"
+                            />
+                          </svg>
+                        </span>
+
+                        <span class="svg">
+                          <a
+                            target="_blank"
+                            :href="
+                              `https://t.17track.net/en#nums=${
+                                item.package_code.code
+                              }`
+                            "
+                          >
+                            <svg
+                              width="32"
+                              height="32"
+                              viewBox="0 0 32 32"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <circle cx="16" cy="16" r="16" fill="none" />
+                              <g clip-path="url(#clip0_382_4459)">
+                                <path
+                                  fill-rule="evenodd"
+                                  clip-rule="evenodd"
+                                  d="M12.0682 18.9542L8.14707 17.6451C7.95102 17.5204 7.95102 17.3957 8.14707 17.2711L23.4723 8.04502C23.6356 7.95151 23.701 8.01385 23.7337 8.13853L23.9951 22.5074C24.0278 22.7568 23.8971 22.8815 23.6356 22.7568L18.2114 20.9802L16.4795 23.9101C16.4142 24.0347 16.2508 24.0347 16.2508 23.8789L15.7607 20.0763L21.7404 11.5671L14.8784 18.2373C14.1268 18.9542 13.2119 19.2035 12.0682 18.9542Z"
+                                  fill="#313232"
+                                />
+                              </g>
+                              <defs>
+                                <clipPath id="clip0_382_4459">
+                                  <rect
+                                    width="16"
+                                    height="16"
+                                    fill="white"
+                                    transform="translate(8 8)"
+                                  />
+                                </clipPath>
+                              </defs>
+                            </svg>
+                          </a>
                         </span>
                       </td>
                       <td>{{ item.order_number }}</td>
@@ -340,6 +423,7 @@ import api from '../api'
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { SET_LOADING } from '../store'
+import Copy from '../../bill/components/Copy.vue'
 
 export default {
   name: 'ListPackages',
@@ -351,6 +435,7 @@ export default {
     PackageStatusTab,
     ModalExport,
     ModalConfirm,
+    Copy,
   },
   data() {
     return {
