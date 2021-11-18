@@ -612,6 +612,7 @@ export default {
         itemsPerPage: 10,
         currentPage: 1,
       },
+      ConvertData: [],
       auditPagination: {
         numberPage: 0,
         itemsPerPage: 10,
@@ -658,25 +659,10 @@ export default {
       package_detail: (state) => state.package_detail,
     }),
     displayDeliverLogs() {
-      const ConvertData = []
-      const times = this.package_detail.deliver_logs.map((item) =>
-        datetime(item.ship_time, 'dd-MM-yyyy')
-      )
-      const uniqTimes = Uniq(times)
-      uniqTimes.forEach((element) =>
-        ConvertData.push({ name: element, data: [] })
-      )
-      ConvertData.forEach((item) =>
-        this.package_detail.deliver_logs.forEach(function(it) {
-          if (datetime(it.ship_time, 'dd-MM-yyyy') == item.name) {
-            item.data.push(it)
-          }
-        })
-      )
       const start =
         (this.timelinePagination.currentPage - 1) *
         this.timelinePagination.itemsPerPage
-      return ConvertData.slice(
+      return this.ConvertData.slice(
         start,
         start + this.timelinePagination.itemsPerPage
       )
@@ -975,8 +961,22 @@ export default {
     package_detail: {
       handler: function(val) {
         if (val.deliver_logs && val.deliver_logs.length > 0) {
+          const times = this.package_detail.deliver_logs.map((item) =>
+            datetime(item.ship_time, 'dd-MM-yyyy')
+          )
+          const uniqTimes = Uniq(times)
+          uniqTimes.forEach((element) =>
+            this.ConvertData.push({ name: element, data: [] })
+          )
+          this.ConvertData.forEach((item) =>
+            this.package_detail.deliver_logs.forEach(function(it) {
+              if (datetime(it.ship_time, 'dd-MM-yyyy') == item.name) {
+                item.data.push(it)
+              }
+            })
+          )
           this.timelinePagination.numberPage = Math.ceil(
-            val.deliver_logs.length / this.timelinePagination.itemsPerPage
+            this.ConvertData.length / this.timelinePagination.itemsPerPage
           )
         }
         if (val.audit_logs && val.audit_logs.length > 0) {

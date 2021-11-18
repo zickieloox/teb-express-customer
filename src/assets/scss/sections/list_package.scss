@@ -281,6 +281,13 @@
             display: none;
         }
         tr:hover {
+            td{
+                a.text-no-underline{
+                    margin-top: 5px;
+                    display: inline-block;
+                }
+            }
+
             .svg {
                 display: inline-block;
                 .lb-tooltip {
