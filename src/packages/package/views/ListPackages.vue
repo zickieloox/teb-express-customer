@@ -109,7 +109,9 @@
                         ></p-checkbox>
                       </th>
                       <template>
-                        <th :class="{ hidden: hiddenClass }">Mã vận đơn</th>
+                        <th width="230" :class="{ hidden: hiddenClass }"
+                          >Mã vận đơn</th
+                        >
                         <th :class="{ hidden: hiddenClass }">Mã đơn hàng</th>
                         <th :class="{ hidden: hiddenClass }">Tracking</th>
                         <th :class="{ hidden: hiddenClass }">Người nhận</th>
