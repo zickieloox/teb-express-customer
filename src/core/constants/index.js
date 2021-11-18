@@ -32,3 +32,13 @@ export const ACL = {
 export const NOT_STAFF_GET_LIMIT = 200
 
 export const MAX_DESIGN_FILE = 15
+//user
+export const USER_CLASS_PUBLIC = 1
+export const USER_CLASS_PRIORITY = 2
+export const USER_CLASS_PARTNER = 3
+
+export const MAP_USER_CLASS_TEXT = {
+  [USER_CLASS_PUBLIC]: 'Public',
+  [USER_CLASS_PRIORITY]: 'Priority',
+  [USER_CLASS_PARTNER]: 'Partner',
+}
