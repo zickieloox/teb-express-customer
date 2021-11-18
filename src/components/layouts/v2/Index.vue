@@ -97,7 +97,8 @@ export default {
 
 .padding_page {
   padding-bottom: 56px;
-  .fee {
+  .fee,
+  .page-footer {
     bottom: 56px !important;
   }
 }
