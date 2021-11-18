@@ -133,3 +133,95 @@
 .disable-next-page {
   color: #CFD0D0;
 }
+
+//New Time Line
+.timeline-item-new{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-bottom: 6px;
+  &:before{
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 4px;
+    left: -26px;
+    background-color: #B4EBF6;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    z-index: 2;
+  }
+}
+
+.item__right{
+  .title{
+    color: #111212;
+    font-weight: bold;
+  }
+
+
+
+}
+.item__right__data{
+  display: flex;
+  color: #626363;
+  margin: 6px 0 6px 30px;
+
+    .time{
+
+    }
+
+    .des{
+      color: #313232;
+      margin-left: 24px;
+    }
+    .location{
+      text-transform: uppercase;
+      margin-left: 12px;
+    }
+    .icon{
+      margin-bottom: 4px;
+    }
+
+}
+.timeline-new {
+  position: relative;
+  margin: 0 ;
+
+  &::after {
+    content: ' ';
+    position: absolute;
+    z-index: 1;
+    top: 19px;
+    left: -19px;
+    width: 2px;
+    height: 95%;
+    background-color: #E1E2E2;
+  }
+}
+.deliver-log{
+  padding: 24px 48px !important;
+}
+.timeline-item-new.first-item{
+  .first-data{
+    .des{
+      font-weight: 600;
+    }
+  }
+  &::after {
+    content: '';
+    background-image: url('~@/assets/img/check-tracking.svg');
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    top: 1px;
+    background-color: transparent;
+    left: -28px;
+    border: none;
+    border-radius: 50%;
+    z-index: 2;
+    background-repeat: no-repeat;
+  }
+}
+
