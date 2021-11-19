@@ -254,7 +254,7 @@
                           <span class="svg">
                             <p-tooltip
                               class="item_name"
-                              :label="` Link to 17Track `"
+                              :label="` Track `"
                               position="top"
                               type="dark"
                             >
