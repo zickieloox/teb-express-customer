@@ -140,11 +140,17 @@
                       <td class="action">
                         <span class="code">
                           <p-tooltip
-                            :label="item.package_code.code"
+                            :label="
+                              item.package_code ? item.package_code.code : ''
+                            "
                             size="large"
                             position="top"
                             type="dark"
-                            :active="item.package_code.code.length > 13"
+                            :active="
+                              item.package_code
+                                ? item.package_code.code.length > 10
+                                : false
+                            "
                           >
                             <router-link
                               class="text-no-underline"
@@ -155,7 +161,14 @@
                                 },
                               }"
                             >
-                              {{ truncate(item.package_code.code, 13) }}
+                              {{
+                                truncate(
+                                  item.package_code
+                                    ? item.package_code.code
+                                    : '',
+                                  10
+                                )
+                              }}
                             </router-link>
                           </p-tooltip>
 
@@ -190,7 +203,13 @@
                               position="top"
                               type="dark"
                             >
-                              <copy :value="item.package_code.code">
+                              <copy
+                                :value="
+                                  item.package_code
+                                    ? item.package_code.code
+                                    : ''
+                                "
+                              >
                                 <svg
                                   width="32"
                                   height="32"
@@ -262,7 +281,9 @@
                                 target="_blank"
                                 :href="
                                   `https://t.17track.net/en#nums=${
-                                    item.package_code.code
+                                    item.package_code
+                                      ? item.package_code.code
+                                      : ''
                                   }`
                                 "
                               >
