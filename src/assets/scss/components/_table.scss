@@ -150,20 +150,23 @@
 //}
 .table-hover {
     tbody {
-        // td:first-child{
-        //   border-left: 1px solid $color-neutral-3;
-        // }
-        // td:last-child{
-        //   border-right: 1px solid $color-neutral-3;
-        // }
-        tr:hover {
-            td:first-child {
-                border-radius: unset;
+        tr{
+            td:first-child{
+                border-left: 1px solid transparent;
             }
-            td:last-child {
-                border-radius: unset;
+            td:last-child{
+                border-right: 1px solid transparent;
+            }
+            &:hover {
+                td:first-child {
+                    border-radius: unset;
+                }
+                td:last-child {
+                    border-radius: unset;
+                }
             }
         }
+
         tr:last-child {
             td {
                 border-bottom: 1px solid $color-neutral-3;
