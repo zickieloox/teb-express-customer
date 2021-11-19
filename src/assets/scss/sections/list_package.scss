@@ -278,34 +278,34 @@
             letter-spacing: 0.75px;
         }
         .svg {
-            // display: none;
             opacity: 0;
         }
-        tr:hover {
-            td {
-                a.text-no-underline {
-                    margin-top: 5px;
-                    display: inline-block;
-                }
+        tr{
+            span.code{
+                position: relative;
+                top: 5px;
             }
-            .svg {
-                // display: inline-block;
-                opacity: 1;
-                .lb-tooltip {
-                    &::before,
-                    &::after {
-                        display: none;
+            &:hover {
+                .svg {
+                    opacity: 1;
+                    .lb-tooltip {
+                        &::before,
+                        &::after {
+                            display: none;
+                        }
                     }
-                }
-                svg:hover {
-                    circle {
-                        fill: #E1F7FC;
-                    }
-                    path {
-                        fill: #20BDDB;
+                    svg:hover {
+                        circle {
+                            fill: #E1F7FC;
+                        }
+                        path {
+                            fill: #20BDDB;
+                        }
                     }
                 }
             }
         }
+
+
     }
 }

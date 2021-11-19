@@ -137,49 +137,52 @@
                           @input="handleValue($event)"
                         ></p-checkbox>
                       </td>
-                      <td>
-                        <p-tooltip
-                          :label="item.package_code.code"
-                          size="large"
-                          position="top"
-                          type="dark"
-                          :active="item.package_code.code.length > 13"
-                        >
-                          <router-link
-                            class="text-no-underline"
-                            :to="{
-                              name: 'package-detail',
-                              params: {
-                                id: item.id,
-                              },
-                            }"
+                      <td class="action">
+                        <span class="code">
+                          <p-tooltip
+                            :label="item.package_code.code"
+                            size="large"
+                            position="top"
+                            type="dark"
+                            :active="item.package_code.code.length > 13"
                           >
-                            {{ truncate(item.package_code.code, 13) }}
-                          </router-link>
-                        </p-tooltip>
+                            <router-link
+                              class="text-no-underline"
+                              :to="{
+                                name: 'package-detail',
+                                params: {
+                                  id: item.id,
+                                },
+                              }"
+                            >
+                              {{ truncate(item.package_code.code, 13) }}
+                            </router-link>
+                          </p-tooltip>
 
-                        <span
-                          v-if="!item.validate_address"
-                          @click="handleValidateAddress(item.id)"
-                          class="
+                          <span
+                            v-if="!item.validate_address"
+                            @click="handleValidateAddress(item.id)"
+                            class="
                             list-warning
                             badge badge-round badge-warning-order
                           "
-                        >
-                          <p-tooltip
-                            class="item_name"
-                            :label="
-                              `Địa chỉ không hợp lệ \n Kích vào đây để xác nhận rằng địa chỉ hiện tại chắc chắn hợp lệ`
-                            "
-                            position="top"
-                            type="dark"
                           >
-                            <i aria-hidden="true"
-                              ><img src="@assets/img/warning.svg" />
-                            </i>
-                          </p-tooltip>
+                            <p-tooltip
+                              class="item_name"
+                              :label="
+                                `Địa chỉ không hợp lệ \n Kích vào đây để xác nhận rằng địa chỉ hiện tại chắc chắn hợp lệ`
+                              "
+                              position="top"
+                              type="dark"
+                            >
+                              <i aria-hidden="true"
+                                ><img src="@assets/img/warning.svg" />
+                              </i>
+                            </p-tooltip>
+                          </span>
                         </span>
-                        <span style="float: right">
+
+                        <span class="link" style="float: right">
                           <span class="svg">
                             <p-tooltip
                               class="item_name"
