@@ -18,13 +18,12 @@
                 >Xin chào, <span class="username">{{ user.full_name }}</span>
               </div>
               <div class="type" v-if="user"
-                >{{ types[user.class] }}
-                <span v-if="user.user_info"
-                  ><i class="fa fa-circle"></i>
-                  {{
-                    user.user_info.debt_max_amount > 0 ? 'Trả sau' : 'Trả trước'
-                  }}</span
-                ></div
+                >{{ types[user.class] }}<i class="fa fa-circle"></i>
+                <span
+                  v-if="user.user_info && user.user_info.debt_max_amount > 0"
+                  >Trả sau</span
+                >
+                <span v-else>Trả trước</span></div
               >
             </div>
             <img src="@/assets/img/user.png" />
