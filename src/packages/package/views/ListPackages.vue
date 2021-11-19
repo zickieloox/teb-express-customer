@@ -145,14 +145,11 @@
                             :label="
                               item.package_code ? item.package_code.code : ''
                             "
+                            v-if="item.package_code"
                             size="large"
                             position="top"
                             type="dark"
-                            :active="
-                              item.package_code
-                                ? item.package_code.code.length > 18
-                                : false
-                            "
+                            :active="item.package_code.code.length > 18"
                           >
                             <router-link
                               class="text-no-underline"
