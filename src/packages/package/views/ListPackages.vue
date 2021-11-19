@@ -109,7 +109,9 @@
                         ></p-checkbox>
                       </th>
                       <template>
-                        <th :class="{ hidden: hiddenClass }">Mã vận đơn</th>
+                        <th width="300" :class="{ hidden: hiddenClass }"
+                          >Mã vận đơn</th
+                        >
                         <th :class="{ hidden: hiddenClass }">Mã đơn hàng</th>
                         <th :class="{ hidden: hiddenClass }">Tracking</th>
                         <th :class="{ hidden: hiddenClass }">Người nhận</th>
@@ -137,7 +139,7 @@
                           @input="handleValue($event)"
                         ></p-checkbox>
                       </td>
-                      <td class="action">
+                      <td width="300" class="action">
                         <span class="code">
                           <p-tooltip
                             :label="
@@ -148,7 +150,7 @@
                             type="dark"
                             :active="
                               item.package_code
-                                ? item.package_code.code.length > 10
+                                ? item.package_code.code.length > 18
                                 : false
                             "
                           >
@@ -166,7 +168,7 @@
                                   item.package_code
                                     ? item.package_code.code
                                     : '',
-                                  10
+                                  18
                                 )
                               }}
                             </router-link>
