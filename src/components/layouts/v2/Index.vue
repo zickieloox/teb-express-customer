@@ -66,7 +66,7 @@ export default {
         return
       }
       if (
-        this.user.balance > 0 ||
+        this.user.balance < 0 ||
         Math.abs(this.user.balance) > this.user.user_info.debt_max_amount
       ) {
         this.warning = true
