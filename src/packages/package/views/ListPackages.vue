@@ -133,6 +133,7 @@
                       :class="{
                         hover: isChecked(item),
                         deactive:
+                          item.package_code &&
                           item.package_code.status == PackageStatusDeactive,
                       }"
                     >
