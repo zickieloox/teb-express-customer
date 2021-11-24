@@ -1,4 +1,5 @@
 import { ROLE_CUSTOMER } from '@core/constants'
+import { UserStatusActive } from '../constants'
 import api from '../api'
 import AuthService from '@core/services/auth'
 import { HTTP_STATUS_FORBIDDEN } from '@core/constants/http'
@@ -134,12 +135,14 @@ export const actions = {
   async verifyEmail({ commit }, payload) {
     let response
     response = await api.verifyEmail(payload)
-
     if (response && response.access_token) {
       const data = Object.assign({}, response.user, {
         access_token: response.access_token,
       })
-      handleAuthenticated(commit, transformerAuthenticate(data))
+
+      if (response.user.status === UserStatusActive) {
+        handleAuthenticated(commit, transformerAuthenticate(data))
+      }
 
       return {
         success: true,
