@@ -135,7 +135,7 @@ export const actions = {
   async verifyEmail({ commit }, payload) {
     let response
     response = await api.verifyEmail(payload)
-    if (response && response.access_token) {
+    if (response && response.user) {
       const data = Object.assign({}, response.user, {
         access_token: response.access_token,
       })
