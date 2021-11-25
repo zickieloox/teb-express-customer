@@ -325,6 +325,16 @@ export default {
       if (this.error) return
 
       if (this.toUSD) {
+        const rate = await this[FETCH_RATE_EXCHANGE]()
+        if (!rate || !rate.success) {
+          this.$toast.open({
+            type: 'error',
+            message: 'Something went wrong',
+            duration: 4000,
+          })
+          return
+        }
+        this.USDTOVND = rate.usdtovnd
         amount = amount / +this.USDTOVND
       }
       if (amount < 1) {
