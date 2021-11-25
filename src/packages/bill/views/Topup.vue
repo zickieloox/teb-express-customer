@@ -135,7 +135,8 @@
                       >Tỷ giá chuyển đổi: 1 USD = {{ currencyRate }} VND</div
                     >
                     <div class="rate_exchange_updated"
-                      >Cập nhật lúc {{ updatedAt }}</div
+                      >Cập nhật lúc
+                      {{ updatedAt | datetime('dd/MM/yyyy HH:mm:ss') }}</div
                     >
                   </div>
                 </div>
