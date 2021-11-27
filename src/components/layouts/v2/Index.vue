@@ -3,7 +3,10 @@
     <p-header :user="user" />
     <p-sidebar />
 
-    <router-view :key="$route.path"></router-view>
+    <router-view
+      :key="$route.path"
+      :class="{ padding_page: warning }"
+    ></router-view>
     <div class="warning-user" v-if="warning"
       ><span
         >Tài khoản của bạn đã quá hạn mức dư nợ. Vui lòng
@@ -52,6 +55,9 @@ export default {
       this.checkDebtUser()
     },
     checkDebtUser() {
+      if (!this.user.user_info) {
+        return
+      }
       var now = new Date()
       var dt = new Date(this.user.user_info.debt_time)
       dt.setDate(dt.getDate() + this.user.user_info.debt_max_day)
@@ -59,7 +65,10 @@ export default {
         this.warning = true
         return
       }
-      if (Math.abs(this.user.balance) > this.user.user_info.debt_max_amount) {
+      if (
+        this.user.balance < 0 &&
+        Math.abs(this.user.balance) > this.user.user_info.debt_max_amount
+      ) {
         this.warning = true
         return
       }
@@ -69,7 +78,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .warning-user {
   width: calc(100% - 128px);
   height: 56px;
@@ -86,6 +95,14 @@ export default {
   a {
     color: #fa8c16;
     text-decoration: underline;
+  }
+}
+
+.padding_page {
+  padding-bottom: 56px;
+  .fee,
+  .page-footer {
+    bottom: 56px !important;
   }
 }
 </style>

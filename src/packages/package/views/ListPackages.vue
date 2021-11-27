@@ -109,19 +109,15 @@
                         ></p-checkbox>
                       </th>
                       <template>
-                        <th width="230" :class="{ hidden: hiddenClass }"
+                        <th width="300" :class="{ hidden: hiddenClass }"
                           >Mã vận đơn</th
                         >
                         <th :class="{ hidden: hiddenClass }">Mã đơn hàng</th>
                         <th :class="{ hidden: hiddenClass }">Tracking</th>
                         <th :class="{ hidden: hiddenClass }">Người nhận</th>
                         <th :class="{ hidden: hiddenClass }">Dịch vụ</th>
-                        <th width="100" :class="{ hidden: hiddenClass }"
-                          >Ngày tạo
-                        </th>
-                        <th width="100" :class="{ hidden: hiddenClass }"
-                          >Trạng thái</th
-                        >
+                        <th :class="{ hidden: hiddenClass }">Ngày tạo </th>
+                        <th :class="{ hidden: hiddenClass }">Trạng thái</th>
                         <th
                           style="text-align: right"
                           :class="{ hidden: hiddenClass }"
@@ -134,7 +130,12 @@
                     <tr
                       v-for="(item, i) in packages"
                       :key="i"
-                      :class="{ hover: isChecked(item) }"
+                      :class="{
+                        hover: isChecked(item),
+                        deactive:
+                          item.package_code &&
+                          item.package_code.status == PackageStatusDeactive,
+                      }"
                     >
                       <td width="40">
                         <p-checkbox
@@ -143,42 +144,62 @@
                           @input="handleValue($event)"
                         ></p-checkbox>
                       </td>
-                      <td width="230">
-                        <router-link
-                          class="text-no-underline"
-                          :to="{
-                            name: 'package-detail',
-                            params: {
-                              id: item.id,
-                            },
-                          }"
-                        >
-                          {{ item.package_code ? item.package_code.code : '' }}
-                        </router-link>
+                      <td width="300" class="action">
+                        <span class="code">
+                          <p-tooltip
+                            :label="
+                              item.package_code ? item.package_code.code : ''
+                            "
+                            v-if="item.package_code"
+                            size="large"
+                            position="top"
+                            type="dark"
+                            :active="item.package_code.code.length > 18"
+                          >
+                            <router-link
+                              class="text-no-underline"
+                              :to="{
+                                name: 'package-detail',
+                                params: {
+                                  id: item.id,
+                                },
+                              }"
+                            >
+                              {{
+                                truncate(
+                                  item.package_code
+                                    ? item.package_code.code
+                                    : '',
+                                  18
+                                )
+                              }}
+                            </router-link>
+                          </p-tooltip>
 
-                        <span
-                          v-if="!item.validate_address"
-                          @click="handleValidateAddress(item.id)"
-                          class="
+                          <span
+                            v-if="!item.validate_address"
+                            @click="handleValidateAddress(item.id)"
+                            class="
                             list-warning
                             badge badge-round badge-warning-order
                           "
-                        >
-                          <p-tooltip
-                            class="item_name"
-                            :label="
-                              `Địa chỉ không hợp lệ \n Kích vào đây để xác nhận rằng địa chỉ hiện tại chắc chắn hợp lệ`
-                            "
-                            position="top"
-                            type="dark"
                           >
-                            <i aria-hidden="true"
-                              ><img src="@assets/img/warning.svg" />
-                            </i>
-                          </p-tooltip>
+                            <p-tooltip
+                              class="item_name"
+                              :label="
+                                `Địa chỉ không hợp lệ \n Kích vào đây để xác nhận rằng địa chỉ hiện tại chắc chắn hợp lệ`
+                              "
+                              position="top"
+                              type="dark"
+                            >
+                              <i aria-hidden="true"
+                                ><img src="@assets/img/warning.svg" />
+                              </i>
+                            </p-tooltip>
+                          </span>
                         </span>
 
-                        <span style="float: right">
+                        <span class="link" style="float: right">
                           <span class="svg">
                             <p-tooltip
                               class="item_name"
@@ -186,7 +207,13 @@
                               position="top"
                               type="dark"
                             >
-                              <copy :value="item.package_code.code">
+                              <copy
+                                :value="
+                                  item.package_code
+                                    ? item.package_code.code
+                                    : ''
+                                "
+                              >
                                 <svg
                                   width="32"
                                   height="32"
@@ -206,6 +233,7 @@
                               </copy>
                             </p-tooltip>
                           </span>
+
                           <span
                             @click="showContent(item)"
                             v-if="item.label"
@@ -245,10 +273,11 @@
                               </svg>
                             </p-tooltip>
                           </span>
+
                           <span class="svg">
                             <p-tooltip
                               class="item_name"
-                              :label="` Link to 17Track `"
+                              :label="` Track `"
                               position="top"
                               type="dark"
                             >
@@ -256,7 +285,9 @@
                                 target="_blank"
                                 :href="
                                   `https://t.17track.net/en#nums=${
-                                    item.package_code.code
+                                    item.package_code
+                                      ? item.package_code.code
+                                      : ''
                                   }`
                                 "
                               >
@@ -425,6 +456,7 @@ import {
   PackageStatusCreatedText,
   PackageStatusReturnText,
   MAP_NAME_STATUS_PACKAGE,
+  PackageStatusDeactive,
 } from '../constants'
 import {
   FETCH_LIST_PACKAGES,
@@ -526,6 +558,7 @@ export default {
       visibleConfirmValidate: false,
       selected: [],
       idSelected: 0,
+      PackageStatusDeactive: PackageStatusDeactive,
     }
   },
   created() {
@@ -946,5 +979,10 @@ export default {
 .p-tooltip::after {
   width: auto !important;
   white-space: pre;
+}
+.deactive {
+  td {
+    opacity: 0.6;
+  }
 }
 </style>

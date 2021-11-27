@@ -26,7 +26,7 @@
                 >
                   <img
                     src="@/assets/img/Vector-barcode.png"
-                    style="margin-top: 9px; position: absolute; left: 150px"
+                    style="margin-top: 9px; position: absolute;"
                   />
                 </span>
               </div>
@@ -964,6 +964,7 @@ export default {
           const times = this.package_detail.deliver_logs.map((item) =>
             datetime(item.ship_time, 'dd-MM-yyyy')
           )
+          this.ConvertData = []
           const uniqTimes = Uniq(times)
           uniqTimes.forEach((element) =>
             this.ConvertData.push({ name: element, data: [] })
