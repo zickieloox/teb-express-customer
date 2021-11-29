@@ -2,25 +2,23 @@
   <div class="pages wallet top-up">
     <div class="page-content">
       <div class="page-header">
-        <div class="container">
-          <div class="page-header_title header">Hóa đơn</div>
-          <div class="navtab-link">
-            <ul class="nav nav-tabs nav-tabs-line">
-              <li class="nav-item">
-                <router-link class="nav-link" :to="{ name: 'wallet' }"
-                  >Ví của tôi</router-link
-                >
-              </li>
-              <li class="nav-item">
-                <router-link class="nav-link" :to="{ name: 'bill' }">
-                  Quản lý hóa đơn
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="#">Nạp tiền</a>
-              </li>
-            </ul>
-          </div>
+        <div class="page-header__title">Nạp tiền</div>
+        <div class="page-header__action">
+          <router-link
+            :to="{ name: 'wallet' }"
+            class="page-header__wallet btn btn-lb-default"
+          >
+            <img src="@/assets/img/rotate.svg" />
+            Lịch sử giao dịch</router-link
+          >
+
+          <router-link
+            :to="{ name: 'bill' }"
+            class="page-header__wallet btn btn-lb-default ml-2"
+          >
+            <img src="@/assets/img/receipt.svg" />
+            Quản lý hóa đơn</router-link
+          >
         </div>
       </div>
       <div class="page-body">
@@ -28,8 +26,8 @@
           <div class="row info-money mb-24">
             <div class="col-7">
               <div class="box balance">
-                <img src="@assets/img/balance.png" alt="" />
-                <div class="wallet">
+                <img src="@assets/img/walletLg.svg" alt="wallet" />
+                <div class="wallet ml-24">
                   <p class="title">Số dư trong ví</p>
                   <p class="money">{{
                     balance > 0 ? balance : 0 | formatPrice
@@ -39,8 +37,8 @@
             </div>
             <div class="col-5">
               <div class="box process-money">
-                <img src="@assets/img/process-money.png" alt="" />
-                <div class="wallet">
+                <img src="@assets/img/time.svg" alt="process-money" />
+                <div class="wallet ml-24">
                   <p class="title">Tiền chưa thanh toán</p>
                   <p class="money">
                     {{ balance > 0 ? 0 : Math.abs(balance) | formatPrice }}
@@ -76,22 +74,25 @@
                 sau:
               </span>
               <div class="card">
-                <p
-                  >Ngân hàng:<br /><span>{{ bank }}</span>
-                </p>
-                <p
-                  >Tên chủ thẻ:<br /><span>{{ name }}</span>
-                  <copy :value="name"></copy
-                ></p>
-                <p
-                  >Số tài khoản:<br /><span>{{ accountNumber }}</span>
-                  <copy :value="accountNumber"></copy>
-                </p>
-                <p>
-                  Nội dung chuyển khoản:<br />
-                  <span>Topup {{ topup.id }}</span>
-                  <copy :value="`Topup ${topup.id}`"></copy>
-                </p>
+                <div class="card-info">
+                  <p
+                    >Ngân hàng:<br /><span>{{ bank }}</span>
+                  </p>
+                  <p
+                    >Tên chủ thẻ:<br /><span>{{ name }}</span>
+                    <copy :value="name"></copy
+                  ></p>
+                  <p
+                    >Số tài khoản:<br /><span>{{ accountNumber }}</span>
+                    <copy :value="accountNumber"></copy>
+                  </p>
+                  <p>
+                    Nội dung chuyển khoản:<br />
+                    <span>Topup {{ topup.id }}</span>
+                    <copy :value="`Topup ${topup.id}`"></copy>
+                  </p>
+                </div>
+
                 <div class="swap_money">
                   <div class="money">
                     <label class="title d-flex justify-content-between">
@@ -126,9 +127,9 @@
                 <div class="invalid-error" v-if="error == true">
                   {{ errorText }}
                 </div>
-                <div class="btn-exchange">
+                <div class="mt-24  btn-exchange">
                   <p-button @click.prevent="handlerRecharge" :loading="loading">
-                    Chuyển Tiền
+                    Xác nhận
                   </p-button>
                   <div class="info_exchange">
                     <div class="rate_exchange"
@@ -182,7 +183,7 @@
                 </div>
                 <p>
                   <p-button
-                    class="btn-confirm"
+                    class=" btn-primary"
                     @click="handlerCreateTransaction"
                     :loading="loading"
                   >
