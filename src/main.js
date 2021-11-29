@@ -17,6 +17,9 @@ import { VclTable } from 'vue-content-loading'
 import validationMessagesVi from 'vee-validate/dist/locale/vi'
 // import validationMessagesEn from 'vee-validate/dist/locale/en'
 
+import InlineSvg from 'vue-inline-svg'
+Vue.component('inline-svg', InlineSvg)
+
 Vue.use(VueClipboard)
 Vue.use(VeeValidate, {
   locale: 'vi',

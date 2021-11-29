@@ -1,4 +1,4 @@
-$input-height: 48px;
+$input-height: 44px;
 $input-border-color: #f4f5f6;
 .form-control {
     height: $input-height;
@@ -18,7 +18,8 @@ $input-border-color: #f4f5f6;
     color: #313232;
     // Placeholder
     &::placeholder {
-        font-weight: $font-weight-light;
+        font-weight: normal;
+        color: $color-neutral-5 !important;
     }
 }
 

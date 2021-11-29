@@ -1,58 +1,72 @@
 <template>
   <div class="list-packages pages">
-    <div class="page-content">
-      <div class="page-header">
+    <div class="page-header">
+      <div class="action-header">
+        <div class="d-flex page-header__input">
+          <p-input
+            placeholder="Tìm theo mã vận đơn hoặc mã đơn hàng, tracking number..."
+            prefixIcon="search"
+            type="search"
+            v-model="searchCode"
+            :suffix-func="handleSearchCode"
+            @keyup.enter="handleSearchCode"
+          >
+          </p-input>
+          <div class="d-flex date-search">
+            <p-datepicker
+              :format="'dd/mm/yyyy'"
+              class="p-input-group input-group"
+              @update="selectDate"
+              :label="labelDate"
+              id="date-search"
+              :value="{
+                startDate: filter.start_date,
+                endDate: filter.end_date,
+              }"
+            ></p-datepicker>
+            <p-button
+              class="close ml-2"
+              type="default"
+              icon="close"
+              @click="clearSearchDate"
+              v-if="filter.start_date && filter.end_date"
+            />
+          </div>
+        </div>
         <div class="page-header__title">
-          <span class="pull-left">Quản lý đơn hàng</span>
-          <button class="pull-right btn-excel btn-import" @click="handleImport">
-            <img src="~@/assets/img/import-excel.svg" />
+          <button
+            class="pull-right btn-primary btn ml-2 "
+            @click="handleImport"
+          >
+            <inline-svg :src="require('../../../assets/img/uploadex.svg')">
+            </inline-svg>
             <span>Nhập Excel</span>
           </button>
-          <button
-            class="pull-right btn-excel btn-export"
-            @click="handleExport"
-            :disabled="!hiddenClass"
+          <router-link
+            :to="{ name: 'package-create' }"
+            class="pull-right btn-lb-secondary btn "
+            @click="handleImport"
           >
-            <img src="~@/assets/img/export-excel.svg" />
-            <span>Xuất Excel</span>
-          </button>
-          <div class="clearfix"></div>
+            <inline-svg
+              :src="require('../../../assets/img/addactive.svg')"
+            ></inline-svg>
+            <span>Tạo đơn</span>
+          </router-link>
+          <!--          <button-->
+          <!--            class="pull-right btn-excel btn-export"-->
+          <!--            @click="handleExport"-->
+          <!--            :disabled="!hiddenClass"-->
+          <!--          >-->
+          <!--            <img src="~@/assets/img/export-excel.svg" />-->
+          <!--            <span>Xuất Excel</span>-->
+          <!--          </button>-->
         </div>
       </div>
+    </div>
+    <div class="page-content">
       <div class="page-content">
         <div class="card">
           <div class="card-body">
-            <div class="d-flex">
-              <p-input
-                placeholder="Tìm theo mã vận đơn hoặc mã đơn hàng, tracking number..."
-                prefixIcon="search"
-                type="search"
-                v-model="searchCode"
-                :suffix-func="handleSearchCode"
-                @keyup.enter="handleSearchCode"
-              >
-              </p-input>
-              <div class="d-flex date-search">
-                <p-datepicker
-                  :format="'dd/mm/yyyy'"
-                  class="p-input-group input-group"
-                  @update="selectDate"
-                  :label="labelDate"
-                  id="date-search"
-                  :value="{
-                    startDate: filter.start_date,
-                    endDate: filter.end_date,
-                  }"
-                ></p-datepicker>
-                <p-button
-                  class="close ml-2"
-                  type="default"
-                  icon="close"
-                  @click="clearSearchDate"
-                  v-if="filter.start_date && filter.end_date"
-                />
-              </div>
-            </div>
             <package-status-tab
               :has-all="false"
               :status="statusTab"
@@ -135,6 +149,7 @@
                         deactive:
                           item.package_code &&
                           item.package_code.status == PackageStatusDeactive,
+                        smview: isSmScreen,
                       }"
                     >
                       <td width="40">
@@ -327,14 +342,18 @@
                       <td>
                         <a
                           target="_blank"
+                          class="tracking"
                           v-if="item.tracking && item"
                           :href="
-                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${
-                              item.tracking.tracking_number
-                            }`
+                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${item.tracking.tracking_number}`
                           "
                         >
                           {{ item.tracking.tracking_number }}
+                          <inline-svg
+                            :src="
+                              require('../../../assets/img/arrow-up-right.svg')
+                            "
+                          ></inline-svg>
                         </a>
                       </td>
                       <td>
@@ -451,6 +470,7 @@ import mixinDownload from '@/packages/shared/mixins/download'
 import evenBus from '../../../core/utils/evenBus'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import mixinChaining from '@/packages/shared/mixins/chaining'
+
 import {
   PACKAGE_STATUS_TAB,
   PackageStatusCreatedText,
@@ -559,12 +579,16 @@ export default {
       selected: [],
       idSelected: 0,
       PackageStatusDeactive: PackageStatusDeactive,
+      windowWidth: 0,
+      isSmScreen: false,
     }
   },
   created() {
     evenBus.$on('code', this.updateQuery)
     this.filter = this.getRouteQuery()
     this.searchCode = this.filter.code
+    window.addEventListener('resize', this.checkScreen)
+    this.checkScreen()
   },
   computed: {
     ...mapState('package', {
@@ -688,6 +712,14 @@ export default {
     isReturnTab() {
       return this.filter.status === PackageStatusReturnText
     },
+    checkScreen() {
+      this.windowWidth = window.innerWidth
+      if (this.windowWidth <= 1440) {
+        this.isSmScreen = true
+        return
+      }
+      this.isSmScreen = false
+    },
     createOrder(value) {
       switch (value) {
         case 'created':
@@ -749,9 +781,7 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selectedIds.length
-      }. Bạn có chắc chắn muốn hủy đơn?`
+      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn hủy đơn?`
       this.visibleConfirmCancel = true
     },
     handlerReturnPackages() {
@@ -772,9 +802,7 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.returnPackage.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selectedIds.length
-      }. Bạn có chắc chắn muốn chuyển lại hàng ?`
+      this.actions.returnPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn chuyển lại hàng ?`
       this.visibleConfirmReturn = true
     },
     async pendingPickupPackagesAction() {
@@ -840,9 +868,7 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selected.length
-      }. Bạn có chắc chắn muốn vận đơn?`
+      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${this.selected.length}. Bạn có chắc chắn muốn vận đơn?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
@@ -982,7 +1008,15 @@ export default {
 }
 .deactive {
   td {
-    opacity: 0.6;
+    color: #cfd0d0;
+
+    .badge {
+      opacity: 0.6;
+    }
+  }
+
+  a {
+    color: #cfd0d0 !important;
   }
 }
 </style>

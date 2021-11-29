@@ -1,12 +1,13 @@
 .list-packages {
+    .action-header{
+        display: flex;
+        justify-content: space-between;
+    }
+    .page-header{
+        padding: 8px 24px 25px 24px;
+    }
+
     .page-header__title {
-        margin-top: 6px;
-        font-weight: normal;
-        font-size: 36px;
-        line-height: 54px;
-        /* identical to box height, or 150% */
-        /* Neutral / Neutral 10 */
-        color: $color-neutral-10;
         .btn-excel {
             border: none;
             background-color: inherit;
@@ -14,8 +15,6 @@
             align-items: center;
             border-radius: 8px;
             padding: 10px 19.5px 10px 16px;
-            margin-left: 8px;
-            margin-top: 8px;
             span {
                 font-size: 14px;
                 line-height: 22px;
@@ -35,6 +34,9 @@
             }
             color: $color-java-blue-6;
         }
+    }
+    .page-header__input{
+        width: 65%;
     }
     .bulk-actions {
         position: absolute;
@@ -206,7 +208,7 @@
             line-height: 35px;
             font-weight: normal;
             .label-date-picker {
-                color: $color-neutral-4;
+                color: $color-neutral-5;
             }
         }
     }
@@ -307,6 +309,9 @@
                         }
                     }
                 }
+            }
+            .tracking{
+                color: $color-neutral-9;
             }
         }
 

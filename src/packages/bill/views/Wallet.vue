@@ -8,7 +8,9 @@
             :to="{ name: 'top-up' }"
             class="page-header__wallet btn btn-lb-default"
           >
-            <img src="@/assets/img/add.svg" />
+            <inline-svg
+              :src="require('../../../assets/img/add.svg')"
+            ></inline-svg>
             Nạp tiền</router-link
           >
 
@@ -16,7 +18,9 @@
             :to="{ name: 'bill' }"
             class="page-header__wallet btn btn-lb-default ml-2"
           >
-            <img src="@/assets/img/receipt.svg" />
+            <inline-svg
+              :src="require('../../../assets/img/receipt.svg')"
+            ></inline-svg>
             Quản lý hóa đơn</router-link
           >
         </div>

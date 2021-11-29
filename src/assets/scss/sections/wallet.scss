@@ -13,19 +13,10 @@
       color:$color-neutral-10;
       font-weight: bold;
     }
-    .navtab-link {
-      .nav-tabs {
-        border-bottom: none;
-        .nav-link {
-          margin-right: 35px;
-          font-weight: 500;
-          font-size: 14px;
-          line-height: 22px;
-          &.active {
-            // font-weight: 500;
-            background-color: unset;
-            color: $color-neutral-10;
-          }
+    .btn-lb-default{
+      &:hover{
+        svg path{
+          stroke: $color-turquoise-6;
         }
       }
     }

@@ -11,8 +11,11 @@
               <div
                 >Xin chào, <span class="username">{{ user.full_name }}</span>
               </div>
-              <div class="type" v-if="user"
-                >{{ types[user.class] }}<i class="fa fa-circle"></i>
+
+              <div class="type" v-if="user">
+                <inline-svg :src="require('../../../assets/img/warningsm.svg')">
+                </inline-svg>
+                {{ types[user.class] }}<i class="fa fa-circle"></i>
                 <span
                   v-if="user.user_info && user.user_info.debt_max_amount > 0"
                   >Trả sau</span
@@ -42,6 +45,7 @@
 </template>
 <script>
 import { MAP_USER_CLASS_TEXT } from '@core/constants'
+import { mapState } from 'vuex'
 
 export default {
   components: {},
@@ -54,7 +58,11 @@ export default {
   },
   mounted() {},
   computed: {
+    ...mapState('shared', {
+      isDebt: (state) => state.isDebt,
+    }),
     types() {
+      console.log(this.isDebt)
       return MAP_USER_CLASS_TEXT
     },
     handleTitle() {
@@ -70,9 +78,6 @@ export default {
   methods: {
     init() {
       location.reload()
-    },
-    addClaim() {
-      this.visibleModal = true
     },
   },
 }
@@ -91,6 +96,9 @@ export default {
       font-size: 4px;
       margin-right: 4px;
       margin-left: 4px;
+    }
+    svg {
+      margin: 0 4px 1px 0;
     }
   }
 }
