@@ -1,4 +1,4 @@
-$sidebar-width:128px;
+$sidebar-width:120px;
 .site-navbar {
     width: calc(100% - #{$sidebar-width});
     height: 56px;
@@ -11,7 +11,7 @@ $sidebar-width:128px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0 32px;
+        padding: 0 24px;
         &-left {
             position: relative;
             img {
@@ -26,6 +26,10 @@ $sidebar-width:128px;
             }
             .link {
                 color: #008E89;
+            }
+            .title{
+                color: $color-neutral-10;
+                font-weight: 500;
             }
         }
         &-right {

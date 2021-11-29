@@ -12,7 +12,7 @@ export const routes = [
     path: '/bill/wallet',
     name: 'wallet',
     meta: {
-      title: 'Wallet',
+      title: 'Ví của tôi',
     },
     component: () =>
       import(/* webpackChunkName: "wallets" */ './views/Wallet.vue'),
@@ -21,7 +21,7 @@ export const routes = [
     path: '/bill/topup',
     name: 'top-up',
     meta: {
-      title: 'Topup',
+      title: 'Ví của tôi',
     },
     component: () =>
       import(/* webpackChunkName: "wallets" */ './views/Topup.vue'),
@@ -30,7 +30,7 @@ export const routes = [
     path: '/bill/list-bill',
     name: 'bill',
     meta: {
-      title: 'List Bill',
+      title: 'Hóa đơn',
     },
     component: () =>
       import(/* webpackChunkName: "wallets" */ './views/ListBills.vue'),

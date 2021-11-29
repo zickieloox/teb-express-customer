@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <Loading />
-
     <component :is="layout">
       <router-view :key="$route.name"></router-view>
     </component>

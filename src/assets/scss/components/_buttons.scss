@@ -9,7 +9,7 @@
     font-weight: $font-weight-bold;
     border-radius: 12px;
     padding: 8px 20px;
-    height: 40px;
+    height: 44px;
     font-size: 14px;
     line-height: 22px;
     /* identical to box height, or 157% */
@@ -48,9 +48,9 @@
 }
 
 .btn-primary {
-    background: $color-turquoise-4;
+    background: $color-turquoise-6;
     &:hover {
-        background-color: $color-turquoise-3;
+        background-color: $color-turquoise-7;
     }
     &:focus,
     &:active {
@@ -114,4 +114,15 @@
     border: 2px solid white;
     border-right-color: transparent;
     border-top-color: transparent;
+}
+.btn-lb-default{
+    border-radius: 8px;
+    border: 1px solid $color-neutral-3;
+    height: 44px;
+    line-height: 27px;
+
+    &:focus{
+            outline: none !important;
+            box-shadow: none;
+    }
 }
