@@ -6,7 +6,9 @@
         :to="{ name: 'top-up' }"
         class="page-header__wallet btn btn-lb-default"
       >
-        <img src="@/assets/img/wallet-icon.svg" />
+        <inline-svg
+          :src="require('../../../assets/img/wallet-icon.svg')"
+        ></inline-svg>
         Ví của tôi</router-link
       >
     </div>

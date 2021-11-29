@@ -22,7 +22,7 @@
     <div slot="input" slot-scope="picker" style="width: 100%;">
       <img
         src="@assets/img/calendar.svg"
-        style="float: right; margin-left: 2px; margin-top: 11px;"
+        style="float: right; margin-left: 2px; margin-top: 9px;"
       />
       <span
         class="label-date-picker"

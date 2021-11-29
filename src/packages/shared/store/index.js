@@ -1,11 +1,13 @@
 import api from '../api'
 
 export const GET_USER = 'getUser'
+export const CHECKDEBT = 'checkDebt'
 export const FETCH_ADDRESSES = 'fetchAddresses'
 import addresses from '../../../assets/json/address.json'
 export const state = {
   user: {},
   addresses: [],
+  isDebt: false,
 }
 
 export const getters = {}
@@ -13,6 +15,9 @@ export const getters = {}
 export const mutations = {
   [GET_USER]: (state, payload) => {
     state.user = payload
+  },
+  [CHECKDEBT]: (state, payload) => {
+    state.isDebt = payload
   },
   [FETCH_ADDRESSES]: (state, payload) => {
     state.addresses = payload

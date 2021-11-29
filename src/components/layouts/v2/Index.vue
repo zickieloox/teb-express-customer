@@ -63,6 +63,7 @@ export default {
       dt.setDate(dt.getDate() + this.user.user_info.debt_max_day)
       if (this.user.balance < 0 && dt.getTime() < now.getTime()) {
         this.warning = true
+        this.$store.commit('shared/checkDebt', true)
         return
       }
       if (
@@ -70,9 +71,11 @@ export default {
         Math.abs(this.user.balance) > this.user.user_info.debt_max_amount
       ) {
         this.warning = true
+        this.$store.commit('shared/checkDebt', true)
         return
       }
       this.warning = false
+      this.$store.commit('shared/checkDebt', false)
     },
   },
 }
@@ -80,7 +83,7 @@ export default {
 
 <style lang="scss">
 .warning-user {
-  width: calc(100% - 128px);
+  width: calc(100% - 120px);
   height: 56px;
   position: fixed;
   z-index: 3;
