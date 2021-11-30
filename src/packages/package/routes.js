@@ -22,6 +22,8 @@ export const routes = [
     name: 'package-detail',
     meta: {
       title: 'Chi tiết đơn hàng',
+      detail: true,
+      routeParent: { name: 'list-packages' },
     },
     component: () =>
       import(/* webpackChunkName: "packages" */ './views/PackageDetail'),

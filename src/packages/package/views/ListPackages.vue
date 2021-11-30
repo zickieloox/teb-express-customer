@@ -73,14 +73,8 @@
                 startDate: filter.start_date,
                 endDate: filter.end_date,
               }"
+              @clear="clearSearchDate"
             ></p-datepicker>
-            <p-button
-              class="close ml-2"
-              type="default"
-              icon="close"
-              @click="clearSearchDate"
-              v-if="filter.start_date && filter.end_date"
-            />
           </div>
         </div>
         <div class="page-header__title">
@@ -223,7 +217,7 @@
                           </span>
                         </span>
 
-                        <span class="link" style="float: right">
+                        <span class="link">
                           <span class="svg">
                             <p-tooltip
                               class="item_name"

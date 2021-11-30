@@ -4,6 +4,8 @@ export const routes = [
     name: 'bill-detail',
     meta: {
       title: 'Quản lý hóa đơn',
+      detail: true,
+      routeParent: { name: 'bill' },
     },
     component: () =>
       import(/* webpackChunkName: "settings" */ './views/BillDetail'),
