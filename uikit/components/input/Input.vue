@@ -154,10 +154,13 @@
       />
 
       <i
-        class="form-control-icon form-control-icon-right wb-close"
+        class="form-control-icon form-control-icon-right "
         v-else-if="isShowClear"
         @click="clear"
       >
+        <inline-svg
+          :src="require('../../../src/assets/img/closesm.svg')"
+        ></inline-svg>
       </i>
 
       <input
@@ -662,6 +665,7 @@ export default {
 
     clear() {
       this.$emit('update:value', '')
+      this.$emit('reset')
     },
   },
   watch: {

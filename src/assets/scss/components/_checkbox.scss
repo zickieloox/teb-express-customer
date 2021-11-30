@@ -13,7 +13,7 @@ $checkbox-inline-gap: 20px !default;
 $color-white:#fff !default;
 $input-border:4px !default;
 $input-disabled-bg:#e9ecef !default;
-$brand-primary:#015858  !default;
+$brand-primary:#118394  !default;
 $brand-danger:red !default;
 $brand-info:#00bcd4 !default;
 $brand-warning:orange !default;
@@ -264,8 +264,8 @@ $cursor-disabled: not-allowed !default;
 
 .checkAll {
   label::before {
-    background-color: $color-java-blue-10;
-    border-color:  $color-java-blue-10;
+    background-color: $color-turquoise-9;
+    border-color:  $color-turquoise-9;
     background-image: url("~@/assets/img/minus.svg");
     background-position: center
 

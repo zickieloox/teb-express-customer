@@ -48,7 +48,7 @@ export default {
         : false
     },
     selectionCountText() {
-      return `${this.totalSelected} đơn hàng đang được chọn`
+      return this.totalSelected
     },
     isChecked() {
       return function(value) {

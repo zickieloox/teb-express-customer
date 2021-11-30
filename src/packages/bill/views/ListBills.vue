@@ -220,7 +220,7 @@ export default {
   },
 }
 </script>
-<style>
+<style scoped>
 .close {
   width: 50px;
   height: 40px;

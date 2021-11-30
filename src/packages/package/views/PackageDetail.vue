@@ -2,17 +2,6 @@
   <div class="package-detail pages">
     <div class="page-content">
       <div class="page-header">
-        <div class="page-header_back">
-          <router-link :to="{ name: 'list-packages' }" class="text">
-            <img
-              src="@/assets/img/chevron-left.svg"
-              alt=""
-              class="page-header_back_icon"
-            />
-            <span>Quản lý vận đơn</span>
-          </router-link>
-        </div>
-
         <div class="page-header__subtitle">
           <div class="page-header__info">
             <div>
@@ -42,9 +31,7 @@
                   target="_blank"
                   v-if="package_detail.package.tracking"
                   :href="
-                    `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${
-                      package_detail.package.tracking.tracking_number
-                    }`
+                    `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${package_detail.package.tracking.tracking_number}`
                   "
                 >
                   {{
@@ -73,9 +60,9 @@
             </div>
           </div>
           <div class="page-header__action">
-            <a
+            <p-button
               href="#"
-              class="btn btn-default"
+              type="lb-default"
               @click="handleCancelPackage"
               v-if="
                 package_detail.package.status_string ===
@@ -83,29 +70,29 @@
               "
             >
               <span>Hủy đơn</span>
-            </a>
-            <a
+            </p-button>
+            <p-button
               @click="handleModal"
-              href="#"
-              class="btn btn-default ml-7"
+              class=" ml-7"
+              type="lb-default"
               v-if="
                 package_detail.package.status_string ===
                   PackageStatusCreatedText
               "
             >
               <span>Sửa đơn</span>
-            </a>
-            <a
-              href="#"
-              class="btn btn-primary ml-7"
+            </p-button>
+            <p-button
+              class=" ml-7"
               @click="handleWayBill"
+              type="primary"
               v-if="
                 package_detail.package.status_string ===
                   PackageStatusCreatedText
               "
             >
               <span>Vận đơn</span>
-            </a>
+            </p-button>
             <a
               @click="handlerReturnPackage"
               class="btn btn-primary ml-7"
@@ -561,7 +548,7 @@
 }
 
 #package-log {
-  padding: 0 15px;
+  padding: 0 12px;
 }
 </style>
 <script>
@@ -595,10 +582,11 @@ import { extension } from '@core/utils/url'
 import { cloneDeep } from '@core/utils'
 import api from '../api'
 import { datetime } from '../../../core/utils/datetime'
+import PButton from '../../../../uikit/components/button/Button'
 export default {
   name: 'PackageDetail',
   mixins: [mixinChaining],
-  components: { ModalEditOrder, ModalConfirm },
+  components: { PButton, ModalEditOrder, ModalConfirm },
   data() {
     return {
       isFetching: true,
