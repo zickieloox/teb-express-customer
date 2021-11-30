@@ -13,7 +13,10 @@
               </div>
 
               <div class="type" v-if="user">
-                <inline-svg :src="require('../../../assets/img/warningsm.svg')">
+                <inline-svg
+                  v-if="isDebt"
+                  :src="require('../../../assets/img/warningsm.svg')"
+                >
                 </inline-svg>
                 {{ types[user.class] }}<i class="fa fa-circle"></i>
                 <span

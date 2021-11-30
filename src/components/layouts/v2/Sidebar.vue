@@ -114,21 +114,10 @@ export default {
           title: 'Đơn hàng',
           icon: require('@assets/img/Order.png'),
           iconActive: require('@assets/img/OrderActive.png'),
-          route: { name: 'packages' },
+          route: { name: 'list-packages' },
           class: '',
           isOpen: false,
-          sub: [
-            {
-              route: '/packages',
-              title: 'Quản lý đơn hàng',
-              alias: ['/packages', '/packages/:id'],
-            },
-            {
-              route: '/packages/create',
-              title: 'Tạo đơn',
-              alias: ['/packages/create'],
-            },
-          ],
+          alias: ['/packages', '/packages/:id', '/packages/create'],
         },
         {
           title: 'Hóa đơn',

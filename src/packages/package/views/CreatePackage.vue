@@ -1,345 +1,346 @@
 <template>
   <div class="create__package pages">
-    <div class="page-header">
-      <div class="page-header_title header-2">Tạo đơn</div>
-    </div>
-    <div class="page-content">
-      <div class="card">
-        <div class="card-body">
-          <div class="modal__edit-order-header">
-            <img
-              style="margin-bottom: 3px"
-              src="@/assets/img/InfoCircle.svg"
-              alt="alert"
-            />
-            <b>Lưu ý:</b> <i>(<span>*</span>) Là các trường bắt buộc nhập.</i>
-          </div>
-          <div class="row sm-gutters  flex-nowrap">
-            <div class="col-lg-6 col-xl-6 item-gutters ">
-              <div class="card__w">
-                <div class="card__w-header">
-                  Người nhận
-                </div>
-                <div class="card__w-content">
-                  <div class="card__w-item">
-                    <label class="card__w-label">
-                      Họ và tên: <span>*</span>
-                    </label>
-                    <div class="card__w-input">
-                      <input
-                        placeholder="vd. Nguyen Van A"
-                        type="fullname"
-                        validate="on"
-                        v-model="fullname"
-                        :input="fullname"
-                        class="form-control"
-                        v-validate="'required|fullName'"
-                        name="name"
-                        data-vv-as="Tên"
-                        :class="{ 'error-color': errors.has('name') }"
-                      />
-                      <span class="err-span" v-if="errors.has('name')">{{
-                        errors.first('name')
-                      }}</span>
-                    </div>
+    <div class="container">
+      <div class="page-header">
+        <div class="page-header_title header-2">Thông tin đơn hàng </div>
+        <div class="create__package-warning">
+          (<span>*</span>) Là các trường bắt buộc nhập.
+        </div>
+      </div>
+      <div class="page-content">
+        <div class="card">
+          <div class="card-body">
+            <div class="row sm-gutters  flex-nowrap">
+              <div class="col-lg-6 col-xl-6 item-gutters ">
+                <div class="card__w">
+                  <div class="card__w-header">
+                    Người nhận
                   </div>
-                  <div class="card__w-item">
-                    <label class="card__w-label">
-                      Điện thoại:
-                    </label>
-                    <div class="card__w-input">
-                      <input
-                        placeholder="Nhập số điện thoại"
-                        type="phonenumber"
-                        ref="email"
-                        v-model="phone"
-                        :input="phone"
-                        class="form-control"
-                        v-validate="'phoneAddress'"
-                        name="phone"
-                        data-vv-as="Số điện thoại"
-                        :class="{ 'error-color': errors.has('phone') }"
-                      />
-                      <span class="err-span" v-if="errors.has('phone')">{{
-                        errors.first('phone')
-                      }}</span>
+                  <div class="card__w-content">
+                    <div class="card__w-item">
+                      <label class="card__w-label">
+                        Họ và tên: <span>*</span>
+                      </label>
+                      <div class="card__w-input">
+                        <input
+                          placeholder="vd. Nguyen Van A"
+                          type="fullname"
+                          validate="on"
+                          v-model="fullname"
+                          :input="fullname"
+                          class="form-control"
+                          v-validate="'required|fullName'"
+                          name="name"
+                          data-vv-as="Tên"
+                          :class="{ 'error-color': errors.has('name') }"
+                        />
+                        <span class="err-span" v-if="errors.has('name')">{{
+                          errors.first('name')
+                        }}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="card__w-item">
-                    <label class="card__w-label">
-                      Thành phố: <span>*</span>
-                    </label>
-                    <div class="card__w-input">
-                      <input
-                        placeholder="Nhập thành phố"
-                        type="text"
-                        v-model="city"
-                        :input="city"
-                        class="form-control"
-                        v-validate="'required'"
-                        name="city"
-                        data-vv-as="Thành phố"
-                        :class="{ 'error-color': errors.has('city') }"
-                      />
-                      <span class="err-span" v-if="errors.has('city')">{{
-                        errors.first('city')
-                      }}</span>
+                    <div class="card__w-item">
+                      <label class="card__w-label">
+                        Điện thoại:
+                      </label>
+                      <div class="card__w-input">
+                        <input
+                          placeholder="Nhập số điện thoại"
+                          type="phonenumber"
+                          ref="email"
+                          v-model="phone"
+                          :input="phone"
+                          class="form-control"
+                          v-validate="'phoneAddress'"
+                          name="phone"
+                          data-vv-as="Số điện thoại"
+                          :class="{ 'error-color': errors.has('phone') }"
+                        />
+                        <span class="err-span" v-if="errors.has('phone')">{{
+                          errors.first('phone')
+                        }}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="card__w-item">
-                    <label class="card__w-label">
-                      Địa chỉ: <span>*</span>
-                    </label>
-                    <div class="card__w-input">
-                      <input
-                        placeholder="Nhập địa chỉ"
-                        type="text"
-                        v-model="address"
-                        :input="address"
-                        class="form-control"
-                        v-validate="'required|address'"
-                        name="address"
-                        data-vv-as="Địa chỉ"
-                        :class="{ 'error-color': errors.has('address') }"
-                      />
-                      <span class="err-span" v-if="errors.has('address')">{{
-                        errors.first('address')
-                      }}</span>
+                    <div class="card__w-item">
+                      <label class="card__w-label">
+                        Thành phố: <span>*</span>
+                      </label>
+                      <div class="card__w-input">
+                        <input
+                          placeholder="Nhập thành phố"
+                          type="text"
+                          v-model="city"
+                          :input="city"
+                          class="form-control"
+                          v-validate="'required'"
+                          name="city"
+                          data-vv-as="Thành phố"
+                          :class="{ 'error-color': errors.has('city') }"
+                        />
+                        <span class="err-span" v-if="errors.has('city')">{{
+                          errors.first('city')
+                        }}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="card__w-item">
-                    <label class="card__w-label">
-                      Địa chỉ phụ:
-                    </label>
-                    <div class="card__w-input">
-                      <input
-                        placeholder="Nhập địa chỉ phụ"
-                        type="text"
-                        v-model="address2"
-                        :input="address2"
-                        class="form-control"
-                        v-validate="'address'"
-                        name="address"
-                        data-vv-as="Địa chỉ phụ"
-                        :class="{ 'error-color': errors.has('address2') }"
-                      />
-                      <span class="err-span" v-if="errors.has('address2')">{{
-                        errors.first('address2')
-                      }}</span>
+                    <div class="card__w-item">
+                      <label class="card__w-label">
+                        Địa chỉ: <span>*</span>
+                      </label>
+                      <div class="card__w-input">
+                        <input
+                          placeholder="Nhập địa chỉ"
+                          type="text"
+                          v-model="address"
+                          :input="address"
+                          class="form-control"
+                          v-validate="'required|address'"
+                          name="address"
+                          data-vv-as="Địa chỉ"
+                          :class="{ 'error-color': errors.has('address') }"
+                        />
+                        <span class="err-span" v-if="errors.has('address')">{{
+                          errors.first('address')
+                        }}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="card__w-item">
-                    <label class="card__w-label">
-                      Mã vùng<br />
-                      (state): <span>*</span>
-                    </label>
-                    <div class="card__w-input">
-                      <input
-                        placeholder="Nhập mã vùng"
-                        type="text"
-                        class="form-control"
-                        v-model="state"
-                        :input="state"
-                        v-validate="'required|state'"
-                        name="state"
-                        data-vv-as="Mã vùng"
-                        :class="{ 'error-color': errors.has('state') }"
-                      />
-                      <span class="err-span" v-if="errors.has('state')">{{
-                        errors.first('state')
-                      }}</span>
+                    <div class="card__w-item">
+                      <label class="card__w-label">
+                        Địa chỉ phụ:
+                      </label>
+                      <div class="card__w-input">
+                        <input
+                          placeholder="Nhập địa chỉ phụ"
+                          type="text"
+                          v-model="address2"
+                          :input="address2"
+                          class="form-control"
+                          v-validate="'address'"
+                          name="address"
+                          data-vv-as="Địa chỉ phụ"
+                          :class="{ 'error-color': errors.has('address2') }"
+                        />
+                        <span class="err-span" v-if="errors.has('address2')">{{
+                          errors.first('address2')
+                        }}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="card__w-item">
-                    <label class="card__w-label">
-                      Mã bưu điện: <span>*</span>
-                    </label>
-                    <div class="card__w-input">
-                      <input
-                        placeholder="Nhập mã bưu điện"
-                        type="text"
-                        v-model="postcode"
-                        :input="postcode"
-                        class="form-control"
-                        v-validate="'required|postcode'"
-                        name="postcode"
-                        data-vv-as="Mã bưu điện"
-                        :class="{ 'error-color': errors.has('postcode') }"
-                      />
-                      <span class="err-span" v-if="errors.has('postcode')">{{
-                        errors.first('postcode')
-                      }}</span>
+                    <div class="card__w-item">
+                      <label class="card__w-label">
+                        Mã vùng<br />
+                        (state): <span>*</span>
+                      </label>
+                      <div class="card__w-input">
+                        <input
+                          placeholder="Nhập mã vùng"
+                          type="text"
+                          class="form-control"
+                          v-model="state"
+                          :input="state"
+                          v-validate="'required|state'"
+                          name="state"
+                          data-vv-as="Mã vùng"
+                          :class="{ 'error-color': errors.has('state') }"
+                        />
+                        <span class="err-span" v-if="errors.has('state')">{{
+                          errors.first('state')
+                        }}</span>
+                      </div>
                     </div>
-                  </div>
-                  <div class="card__w-item">
-                    <label class="card__w-label">
-                      Mã quốc gia: <span>*</span>
-                    </label>
-                    <div class="card__w-input">
-                      <input
-                        placeholder="Nhập mã quốc gia"
-                        type="text"
-                        v-model="countrycode"
-                        :input="countrycode"
-                        class="form-control"
-                        v-validate="'required|countrycode'"
-                        name="countrycode"
-                        data-vv-as="Mã quốc gia"
-                        :class="{ 'error-color': errors.has('countrycode') }"
-                      />
-                      <span class="err-span" v-if="errors.has('countrycode')">{{
-                        errors.first('countrycode')
-                      }}</span>
+                    <div class="card__w-item">
+                      <label class="card__w-label">
+                        Mã bưu điện: <span>*</span>
+                      </label>
+                      <div class="card__w-input">
+                        <input
+                          placeholder="Nhập mã bưu điện"
+                          type="text"
+                          v-model="postcode"
+                          :input="postcode"
+                          class="form-control"
+                          v-validate="'required|postcode'"
+                          name="postcode"
+                          data-vv-as="Mã bưu điện"
+                          :class="{ 'error-color': errors.has('postcode') }"
+                        />
+                        <span class="err-span" v-if="errors.has('postcode')">{{
+                          errors.first('postcode')
+                        }}</span>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6 col-xl-6 item-gutters">
-              <div class="card__w">
-                <div class="card__w-header">
-                  Thông tin hàng hóa
-                </div>
-                <div class="card__w-content">
-                  <div class="card__w-item" v-if="false">
-                    <label class="card__w-label">
-                      Danh sách hàng hóa:
-                    </label>
-                    <div class="card__w-input">
-                      <multiselect
-                        class="multiselect-custom dropdown-reason"
-                        v-model="order"
-                        :options="products"
-                        placeholder="Chọn một "
-                        @select="handleSelect"
-                        :custom-label="customLabel"
-                      ></multiselect>
-                    </div>
-                  </div>
-                  <div class="card__w-item">
-                    <label class="card__w-label">
-                      Chi tiết hàng hóa: <span>*</span>
-                    </label>
-                    <div class="card__w-input">
-                      <input
-                        placeholder="Nhập chi tiết hàng hóa"
-                        type="text"
-                        v-model="detail"
-                        :input="detail"
-                        class="form-control"
-                        v-validate="'required'"
-                        name="detail"
-                        data-vv-as="Chi tiết hàng hóa"
-                        :class="{ 'error-color': errors.has('detail') }"
-                      />
-                      <span class="err-span" v-if="errors.has('detail')">{{
-                        errors.first('detail')
-                      }}</span>
-                    </div>
-                  </div>
-                  <div class="card__w-item">
-                    <label class="card__w-label">
-                      Trọng lượng: <span>*</span>
-                    </label>
-                    <div class="card__w-input">
-                      <input
-                        placeholder="Nhập trọng lượng"
-                        type="text"
-                        v-model="weight"
-                        :input="weight"
-                        class="form-control"
-                        v-validate="'required|weight'"
-                        name="weight"
-                        data-vv-as="Trọng lượng"
-                        :class="{ 'error-color': errors.has('weight') }"
-                      />
-                      <span class="err-span" v-if="errors.has('weight')">{{
-                        errors.first('weight')
-                      }}</span>
-                      <div class="card__w-unit">gram</div>
-                    </div>
-                  </div>
-                  <div class="card__w-item">
-                    <label class="card__w-label"> Dài: <span>*</span> </label>
-                    <div class="card__w-input">
-                      <input
-                        placeholder="Nhập chiều dài "
-                        type="text"
-                        v-model="length"
-                        :input="length"
-                        class="form-control"
-                        v-validate="'required|length'"
-                        name="length"
-                        data-vv-as="Chiều dài"
-                        :class="{ 'error-color': errors.has('length') }"
-                      />
-                      <span class="err-span" v-if="errors.has('length')">{{
-                        errors.first('length')
-                      }}</span>
-                      <div class="card__w-unit">cm</div>
-                    </div>
-                  </div>
-                  <div class="card__w-item">
-                    <label class="card__w-label"> Rộng: <span>*</span> </label>
-                    <div class="card__w-input">
-                      <input
-                        placeholder="Nhập chiều rộng "
-                        type="text"
-                        v-model="width"
-                        :input="width"
-                        class="form-control"
-                        v-validate="'required|width'"
-                        name="width"
-                        data-vv-as="Chiều rộng"
-                        :class="{ 'error-color': errors.has('width') }"
-                      />
-                      <span class="err-span" v-if="errors.has('width')">{{
-                        errors.first('width')
-                      }}</span>
-                      <div class="card__w-unit">cm</div>
-                    </div>
-                  </div>
-                  <div class="card__w-item">
-                    <label class="card__w-label"> Cao: <span>*</span> </label>
-                    <div class="card__w-input">
-                      <input
-                        placeholder="Nhập chiều cao "
-                        type="text"
-                        v-model="height"
-                        :input="height"
-                        class="form-control"
-                        v-validate="'required|height'"
-                        name="height"
-                        data-vv-as="Chiều cao"
-                        :class="{ 'error-color': errors.has('height') }"
-                      />
-                      <span class="err-span" v-if="errors.has('height')">{{
-                        errors.first('height')
-                      }}</span>
-                      <div class="card__w-unit">cm</div>
+                    <div class="card__w-item">
+                      <label class="card__w-label">
+                        Mã quốc gia: <span>*</span>
+                      </label>
+                      <div class="card__w-input">
+                        <input
+                          placeholder="Nhập mã quốc gia"
+                          type="text"
+                          v-model="countrycode"
+                          :input="countrycode"
+                          class="form-control"
+                          v-validate="'required|countrycode'"
+                          name="countrycode"
+                          data-vv-as="Mã quốc gia"
+                          :class="{ 'error-color': errors.has('countrycode') }"
+                        />
+                        <span
+                          class="err-span"
+                          v-if="errors.has('countrycode')"
+                          >{{ errors.first('countrycode') }}</span
+                        >
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="card__w">
-                <div class="card__w-header">
-                  Dịch vụ gửi
+              <div class="col-lg-6 col-xl-6 item-gutters">
+                <div class="card__w">
+                  <div class="card__w-header">
+                    Thông tin hàng hóa
+                  </div>
+                  <div class="card__w-content">
+                    <div class="card__w-item" v-if="false">
+                      <label class="card__w-label">
+                        Danh sách hàng hóa:
+                      </label>
+                      <div class="card__w-input">
+                        <multiselect
+                          class="multiselect-custom dropdown-reason"
+                          v-model="order"
+                          :options="products"
+                          placeholder="Chọn một "
+                          @select="handleSelect"
+                          :custom-label="customLabel"
+                        ></multiselect>
+                      </div>
+                    </div>
+                    <div class="card__w-item">
+                      <label class="card__w-label">
+                        Chi tiết hàng hóa: <span>*</span>
+                      </label>
+                      <div class="card__w-input">
+                        <input
+                          placeholder="Nhập chi tiết hàng hóa"
+                          type="text"
+                          v-model="detail"
+                          :input="detail"
+                          class="form-control"
+                          v-validate="'required'"
+                          name="detail"
+                          data-vv-as="Chi tiết hàng hóa"
+                          :class="{ 'error-color': errors.has('detail') }"
+                        />
+                        <span class="err-span" v-if="errors.has('detail')">{{
+                          errors.first('detail')
+                        }}</span>
+                      </div>
+                    </div>
+                    <div class="card__w-item">
+                      <label class="card__w-label">
+                        Trọng lượng: <span>*</span>
+                      </label>
+                      <div class="card__w-input">
+                        <input
+                          placeholder="Nhập trọng lượng"
+                          type="text"
+                          v-model="weight"
+                          :input="weight"
+                          class="form-control"
+                          v-validate="'required|weight'"
+                          name="weight"
+                          data-vv-as="Trọng lượng"
+                          :class="{ 'error-color': errors.has('weight') }"
+                        />
+                        <span class="err-span" v-if="errors.has('weight')">{{
+                          errors.first('weight')
+                        }}</span>
+                        <div class="card__w-unit">gram</div>
+                      </div>
+                    </div>
+                    <div class="card__w-item">
+                      <label class="card__w-label"> Dài: <span>*</span> </label>
+                      <div class="card__w-input">
+                        <input
+                          placeholder="Nhập chiều dài "
+                          type="text"
+                          v-model="length"
+                          :input="length"
+                          class="form-control"
+                          v-validate="'required|length'"
+                          name="length"
+                          data-vv-as="Chiều dài"
+                          :class="{ 'error-color': errors.has('length') }"
+                        />
+                        <span class="err-span" v-if="errors.has('length')">{{
+                          errors.first('length')
+                        }}</span>
+                        <div class="card__w-unit">cm</div>
+                      </div>
+                    </div>
+                    <div class="card__w-item">
+                      <label class="card__w-label">
+                        Rộng: <span>*</span>
+                      </label>
+                      <div class="card__w-input">
+                        <input
+                          placeholder="Nhập chiều rộng "
+                          type="text"
+                          v-model="width"
+                          :input="width"
+                          class="form-control"
+                          v-validate="'required|width'"
+                          name="width"
+                          data-vv-as="Chiều rộng"
+                          :class="{ 'error-color': errors.has('width') }"
+                        />
+                        <span class="err-span" v-if="errors.has('width')">{{
+                          errors.first('width')
+                        }}</span>
+                        <div class="card__w-unit">cm</div>
+                      </div>
+                    </div>
+                    <div class="card__w-item">
+                      <label class="card__w-label"> Cao: <span>*</span> </label>
+                      <div class="card__w-input">
+                        <input
+                          placeholder="Nhập chiều cao "
+                          type="text"
+                          v-model="height"
+                          :input="height"
+                          class="form-control"
+                          v-validate="'required|height'"
+                          name="height"
+                          data-vv-as="Chiều cao"
+                          :class="{ 'error-color': errors.has('height') }"
+                        />
+                        <span class="err-span" v-if="errors.has('height')">{{
+                          errors.first('height')
+                        }}</span>
+                        <div class="card__w-unit">cm</div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="card__w-content">
-                  <div class="card__w-item">
-                    <label class="card__w-label">
-                      Dịch vụ gửi: <span>*</span>
-                    </label>
-                    <div class="card__w-input">
-                      <multiselect
-                        class="multiselect-custom dropdown-reason"
-                        v-model="service"
-                        :options="services"
-                        placeholder="Chọn một "
-                        :allow-empty="false"
-                        @select="handleSelectService"
-                        :custom-label="customLabel"
-                      ></multiselect>
+                <div class="card__w">
+                  <div class="card__w-header">
+                    Dịch vụ gửi
+                  </div>
+                  <div class="card__w-content">
+                    <div class="card__w-item">
+                      <label class="card__w-label">
+                        Dịch vụ gửi: <span>*</span>
+                      </label>
+                      <div class="card__w-input">
+                        <multiselect
+                          class="multiselect-custom dropdown-reason"
+                          v-model="service"
+                          :options="services"
+                          placeholder="Chọn một "
+                          :allow-empty="false"
+                          @select="handleSelectService"
+                          :custom-label="customLabel"
+                        ></multiselect>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -348,21 +349,21 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="page-footer">
-      <div class="page-footer__left">
-        <div class="total">
-          <div class="total-title">Cước tạm tính:</div>
-          <span class="total-number">{{ 0 | formatPrice }}</span>
+      <div class="page-footer">
+        <div class="page-footer__left">
+          <div class="total">
+            <div class="total-title">Cước tạm tính:</div>
+            <span class="total-number">{{ 0 | formatPrice }}</span>
+          </div>
         </div>
-      </div>
-      <div class="page-footer__right">
-        <a
-          :class="{ 'is-disabled': isCreate }"
-          @click="handleCreate"
-          class="btn btn-primary"
-          >Tạo mới</a
-        >
+        <div class="page-footer__right">
+          <a
+            :class="{ 'is-disabled': isCreate }"
+            @click="handleCreate"
+            class="btn btn-primary"
+            >Tạo mới</a
+          >
+        </div>
       </div>
     </div>
   </div>

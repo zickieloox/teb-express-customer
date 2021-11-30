@@ -20,6 +20,7 @@
         color: #B0B3B9;
         box-shadow: none;
         pointer-events: none;
+        border: none;
     }
     &-lg {
         font-size: 16px;
@@ -79,6 +80,7 @@
         background-color: transparent;
         border-color: transparent;
         box-shadow: none;
+
         &:hover,
         &:focus,
         &.focus {
@@ -105,9 +107,15 @@
 }
 
 .btn-danger {
-    background: #FFFFFF;
-    border: 1px solid #FFA39E;
+    background: #FFF1F0;
     color: #F5222D;
+    border: 1px solid transparent;
+
+    &:hover{
+        background: #FFFFFF;
+        color: #F5222D;
+        border: 1px solid #FFA39E;
+    }
 }
 
 .btn-primary-custom {

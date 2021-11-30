@@ -3,7 +3,7 @@ export const routes = [
     path: '/packages/create',
     name: 'package-create',
     meta: {
-      title: 'Tạo đơn lẻ ',
+      title: 'Tạo đơn',
     },
     component: () =>
       import(/* webpackChunkName: "packages" */ './views/CreatePackage.vue'),

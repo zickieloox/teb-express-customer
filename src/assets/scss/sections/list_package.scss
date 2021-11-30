@@ -6,6 +6,24 @@
     .page-header{
         padding: 8px 24px 25px 24px;
     }
+    .page-header-temp{
+        height: 77px;
+    }
+    .page-header.on-scroll{
+        position: fixed;
+        z-index: 4;
+        background: white;
+        width: calc(100% - 120px);
+        padding: 17px 24px;
+        background: #F9FAFB;
+        margin-top: -18px;
+        animation: fadeIn 0.3s;
+        transition: 0.3s all;
+    }
+    @keyframes fadeIn {
+        0% {opacity:0;}
+        100% {opacity:1;}
+    }
 
     .page-header__title {
         .btn-excel {
@@ -39,62 +57,29 @@
         width: 65%;
     }
     .bulk-actions {
-        position: absolute;
-        top: 159px;
+        position: unset;
         font-weight: 700;
         .bulk-actions__main-bar {
             .bulk-actions__selection-count {
-                cursor: default;
-                box-sizing: border-box;
-                z-index: -5;
-                display: inline-block;
-                white-space: nowrap;
-                vertical-align: middle;
-                background-color: #FFFFFF;
-                border: 1px solid #686B70;
-                padding: 0.429rem 1rem;
-                box-shadow: none;
-                padding-left: 3.5rem;
-                border-bottom-left-radius: 4px;
-                border-top-left-radius: 4px;
-                border-right: none;
-                font-weight: 600;
-                font-size: 14px;
-                line-height: 160%;
-                text-align: center;
-                color: #37393E;
+                margin-left: 30px;
+                font-weight: normal;
+                position: relative;
+
+                &:before{
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: -10px;
+                    width: 2px;
+                    background: $color-neutral-3;
+                    height: 20px;
+                }
             }
             .bulk-actions__selection-status {
-                font-weight: 600;
-                box-sizing: border-box;
-                z-index: -5;
-                display: inline-block;
-                text-align: center;
-                white-space: nowrap;
-                vertical-align: middle;
-                background-color: #FFFFFF;
-                color: #37393E;
-                border: 1px solid #686B70;
-                padding: 0.429rem 1rem;
-                line-height: 160%;
-                box-shadow: none;
-                border-right: none;
-                cursor: pointer;
-                height: 100%;
-                border-radius: 0 !important;
-                &:last-child {
-                    border-bottom-right-radius: 4px !important;
-                    border-top-right-radius: 4px !important;
-                    border-right: 1px solid #686B70;
-                }
-                &:hover {
-                    background-color: #f4f5f6;
-                }
+               margin-right: 8px;
             }
         }
-        .bulk-select-all {
-            margin-left: 1rem;
-        }
+
     }
     .p-modal {
         table {
@@ -289,7 +274,7 @@
             }
             .action{
                 padding: 0;
-                max-width: 21vw !important;
+                max-width: 30vw;
             }
             &:hover {
                 .svg {
@@ -312,8 +297,43 @@
             }
             .tracking{
                 color: $color-neutral-9;
+                svg{
+                    margin-bottom: 2px;
+                }
+                &:hover{
+                    color: $color-turquoise-6;
+                    svg{
+                        path{
+                            stroke: $color-turquoise-6;
+                        }
+                    }
+                }
+            }
+
+
+
+            .list-warning{
+                svg{
+                    margin-bottom: 4px;
+                }
             }
         }
+        tr.deactive{
+            a.tracking{
+                svg{
+                    path{
+                        stroke: $color-neutral-5;
+                    }
+                }
+            }
+        }
+
+     //responsive on resize screen
+     .sm-view{
+         .action{
+             max-width: 22vw !important;
+         }
+     }
 
 
     }

@@ -2,13 +2,23 @@
     height: auto;
     padding-bottom: 120px;
     .page-header {
-        margin-bottom: 12px;
+        background: white;
+        padding: 25px 24px;
         &__barcode {
             img {
                 margin: 0 0 5px 8px;
                 cursor: pointer;
             }
         }
+    }
+    .card-body{
+        background: #F9FAFB;
+    }
+    .card{
+        border: none;
+    }
+    .card-block{
+        box-shadow: none;
     }
     .new {
         justify-content: start !important;
@@ -54,7 +64,7 @@
     .fee {
         background-color: #ffffff;
         position: fixed;
-        width: calc(100% - 128px);
+        width: calc(100% - 120px);
         z-index: 3;
         bottom: 0;
         right: 0;
@@ -141,6 +151,9 @@
         font-size: 20px;
         line-height: 28px;
     }
+}
+.package-detail.pages{
+    padding-top: 0;
 }
 
 .modal__edit-order {

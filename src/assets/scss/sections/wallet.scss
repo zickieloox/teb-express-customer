@@ -16,6 +16,7 @@
     .btn-lb-default{
       &:hover{
         svg path{
+          @include transition(all 0.2s);
           stroke: $color-turquoise-6;
         }
       }

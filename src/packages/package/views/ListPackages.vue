@@ -1,7 +1,55 @@
 <template>
   <div class="list-packages pages">
-    <div class="page-header">
-      <div class="action-header">
+    <div
+      class="page-header"
+      :class="{ 'on-scroll': scrollPosition > 90 && totalSelected > 0 }"
+    >
+      <div
+        class="bulk-actions d-flex align-items-center"
+        v-if="totalSelected > 0"
+      >
+        <div class="bulk-actions__main-bar">
+          <p-button
+            :disabled="createOrder(filter.status)"
+            class="bulk-actions__selection-status"
+            @click="handleWayBill"
+            type="primary"
+            >Vận đơn</p-button
+          >
+          <p-button
+            v-if="isReturnTab()"
+            class="bulk-actions__selection-status"
+            @click="handlerReturnPackages"
+            type="lb-secondary"
+            >Chuyển lại hàng</p-button
+          >
+          <p-button
+            class="bulk-actions__selection-status"
+            @click="handlerDownloadLables"
+            type="lb-secondary"
+            >Tải label</p-button
+          >
+          <p-button
+            class="bulk-actions__selection-status"
+            @click="handleExport"
+            type="lb-secondary"
+          >
+            Tải Excel
+          </p-button>
+          <p-button
+            :disabled="cancelOrder(filter.status)"
+            class="bulk-actions__selection-status"
+            @click="handlerCancelPackages"
+            type="danger"
+            >Hủy đơn</p-button
+          >
+
+          <span class="bulk-actions__selection-count">
+            Bạn có <b>{{ selectionCountText }}</b> đơn hàng đang được chọn</span
+          >
+        </div>
+      </div>
+      <div v-else class="action-header">
         <div class="d-flex page-header__input">
           <p-input
             placeholder="Tìm theo mã vận đơn hoặc mã đơn hàng, tracking number..."
@@ -10,6 +58,8 @@
             v-model="searchCode"
             :suffix-func="handleSearchCode"
             @keyup.enter="handleSearchCode"
+            :clearable="true"
+            @reset="handleDeleteCode"
           >
           </p-input>
           <div class="d-flex date-search">
@@ -52,17 +102,13 @@
             ></inline-svg>
             <span>Tạo đơn</span>
           </router-link>
-          <!--          <button-->
-          <!--            class="pull-right btn-excel btn-export"-->
-          <!--            @click="handleExport"-->
-          <!--            :disabled="!hiddenClass"-->
-          <!--          >-->
-          <!--            <img src="~@/assets/img/export-excel.svg" />-->
-          <!--            <span>Xuất Excel</span>-->
-          <!--          </button>-->
         </div>
       </div>
     </div>
+    <div
+      v-if="scrollPosition > 100 && totalSelected > 0"
+      class="page-header-temp"
+    ></div>
     <div class="page-content">
       <div class="page-content">
         <div class="card">
@@ -78,39 +124,6 @@
               <div class="table-responsive">
                 <table class="table table-hover" id="tbl-packages">
                   <thead>
-                    <div
-                      class="bulk-actions d-flex align-items-center"
-                      v-if="totalSelected > 0"
-                    >
-                      <div class="bulk-actions__main-bar">
-                        <span class="bulk-actions__selection-count">{{
-                          selectionCountText
-                        }}</span>
-                        <p-button
-                          :disabled="createOrder(filter.status)"
-                          class="bulk-actions__selection-status"
-                          @click="handleWayBill"
-                          >Vận đơn</p-button
-                        >
-                        <p-button
-                          :disabled="cancelOrder(filter.status)"
-                          class="bulk-actions__selection-status"
-                          @click="handlerCancelPackages"
-                          >Hủy đơn</p-button
-                        >
-                        <p-button
-                          v-if="isReturnTab()"
-                          class="bulk-actions__selection-status"
-                          @click="handlerReturnPackages"
-                          >Chuyển lại hàng</p-button
-                        >
-                        <p-button
-                          class="bulk-actions__selection-status"
-                          @click="handlerDownloadLables"
-                          >Tải label</p-button
-                        >
-                      </div>
-                    </div>
                     <tr>
                       <th width="40">
                         <p-checkbox
@@ -123,20 +136,14 @@
                         ></p-checkbox>
                       </th>
                       <template>
-                        <th width="300" :class="{ hidden: hiddenClass }"
-                          >Mã vận đơn</th
-                        >
-                        <th :class="{ hidden: hiddenClass }">Mã đơn hàng</th>
-                        <th :class="{ hidden: hiddenClass }">Tracking</th>
-                        <th :class="{ hidden: hiddenClass }">Người nhận</th>
-                        <th :class="{ hidden: hiddenClass }">Dịch vụ</th>
-                        <th :class="{ hidden: hiddenClass }">Ngày tạo </th>
-                        <th :class="{ hidden: hiddenClass }">Trạng thái</th>
-                        <th
-                          style="text-align: right"
-                          :class="{ hidden: hiddenClass }"
-                          >Tổng cước</th
-                        >
+                        <th>Mã vận đơn</th>
+                        <th>Mã đơn hàng</th>
+                        <th>Tracking</th>
+                        <th>Người nhận</th>
+                        <th>Dịch vụ</th>
+                        <th>Ngày tạo </th>
+                        <th>Trạng thái</th>
+                        <th style="text-align: right">Tổng cước</th>
                       </template>
                     </tr>
                   </thead>
@@ -149,7 +156,7 @@
                         deactive:
                           item.package_code &&
                           item.package_code.status == PackageStatusDeactive,
-                        smview: isSmScreen,
+                        'sm-view': isSmScreen,
                       }"
                     >
                       <td width="40">
@@ -159,7 +166,7 @@
                           @input="handleValue($event)"
                         ></p-checkbox>
                       </td>
-                      <td width="300" class="action">
+                      <td class="action">
                         <span class="code">
                           <p-tooltip
                             :label="
@@ -193,7 +200,7 @@
 
                           <span
                             v-if="!item.validate_address"
-                            @click="handleValidateAddress(item.id)"
+                            @click="handleValidateAddress(item)"
                             class="
                             list-warning
                             badge badge-round badge-warning-order
@@ -207,9 +214,11 @@
                               position="top"
                               type="dark"
                             >
-                              <i aria-hidden="true"
-                                ><img src="@assets/img/warning.svg" />
-                              </i>
+                              <inline-svg
+                                :src="
+                                  require('../../../assets/img/warning.svg')
+                                "
+                              ></inline-svg>
                             </p-tooltip>
                           </span>
                         </span>
@@ -338,12 +347,51 @@
                           </span>
                         </span>
                       </td>
-                      <td>{{ item.order_number }}</td>
+                      <td>
+                        <p-tooltip
+                          :label="item.order_number"
+                          v-if="item.order_number"
+                          size="large"
+                          position="top"
+                          type="dark"
+                          :active="item.order_number.length > 20"
+                        >
+                          {{ truncate(item.order_number, 20) }}
+                        </p-tooltip>
+                      </td>
                       <td>
                         <a
                           target="_blank"
                           class="tracking"
-                          v-if="item.tracking && item"
+                          v-if="item.tracking && item && isSmScreen"
+                          :href="
+                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${item.tracking.tracking_number}`
+                          "
+                        >
+                          <p-tooltip
+                            :label="
+                              item.tracking ? item.tracking.tracking_number : ''
+                            "
+                            v-if="item.tracking"
+                            size="large"
+                            position="top"
+                            type="dark"
+                            :active="item.tracking.tracking_number.length > 10"
+                          >
+                            {{
+                              truncate(
+                                item.tracking
+                                  ? item.tracking.tracking_number
+                                  : '',
+                                10
+                              )
+                            }}
+                          </p-tooltip>
+                        </a>
+                        <a
+                          target="_blank"
+                          class="tracking"
+                          v-if="item.tracking && item && !isSmScreen"
                           :href="
                             `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${item.tracking.tracking_number}`
                           "
@@ -446,18 +494,14 @@
       :loading="actions.returnPackage.loading"
       @action="pendingPickupPackagesAction"
     ></modal-confirm>
-    <modal-confirm
+
+    <ModalConfirmAddress
       :visible.sync="visibleConfirmValidate"
-      v-if="visibleConfirmValidate"
-      :actionConfirm="actions.validateAddress.button"
-      :cancel="actions.validateAddress.cancel"
-      :description="actions.validateAddress.Description"
-      :title="actions.validateAddress.title"
-      :type="actions.validateAddress.type"
-      :disabled="actions.validateAddress.disabled"
-      :loading="actions.validateAddress.loading"
+      :address="confirmAddress"
+      :loading="loadingValidate"
       @action="validateAddressPackage"
-    ></modal-confirm>
+    >
+    </ModalConfirmAddress>
   </div>
 </template>
 <script>
@@ -467,9 +511,9 @@ import ModalImportPreviewPackage from './components/ModalImportPreviewPackage'
 import ModalImport from '@components/shared/modal/ModalImport'
 import { mapState, mapActions } from 'vuex'
 import mixinDownload from '@/packages/shared/mixins/download'
-import evenBus from '../../../core/utils/evenBus'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import mixinChaining from '@/packages/shared/mixins/chaining'
+import ModalConfirmAddress from './components/ModalConfirmAddress'
 
 import {
   PACKAGE_STATUS_TAB,
@@ -511,6 +555,10 @@ export default {
     ModalExport,
     ModalConfirm,
     Copy,
+    ModalConfirmAddress,
+  },
+  mounted() {
+    window.addEventListener('scroll', this.updateScroll)
   },
   data() {
     return {
@@ -562,15 +610,6 @@ export default {
           disabled: false,
           loading: false,
         },
-        validateAddress: {
-          type: 'primary',
-          title: 'Kiểm tra lại địa chỉ',
-          button: 'Xác nhận',
-          cancel: 'Bỏ qua',
-          Description: '',
-          disabled: false,
-          loading: false,
-        },
       },
       isVisibleConfirmWayBill: false,
       visibleConfirmCancel: false,
@@ -581,10 +620,12 @@ export default {
       PackageStatusDeactive: PackageStatusDeactive,
       windowWidth: 0,
       isSmScreen: false,
+      confirmAddress: '',
+      loadingValidate: false,
+      scrollPosition: null,
     }
   },
   created() {
-    evenBus.$on('code', this.updateQuery)
     this.filter = this.getRouteQuery()
     this.searchCode = this.filter.code
     window.addEventListener('resize', this.checkScreen)
@@ -661,6 +702,12 @@ export default {
     },
     handleImport() {
       this.isVisibleImport = true
+    },
+    updateScroll() {
+      this.scrollPosition = window.scrollY
+    },
+    destroy() {
+      window.removeEventListener('scroll', this.updateScroll)
     },
     clearSearchDate() {
       this.filter.end_date = ''
@@ -924,20 +971,20 @@ export default {
       }
     },
 
-    handleValidateAddress(id) {
-      this.idSelected = id
-      this.actions.validateAddress.Description = `Bạn chắc chắn đây là địa chỉ hợp lệ? Xin vui lòng xác nhận!`
+    handleValidateAddress(item) {
+      this.confirmAddress = item.address_1 ? item.address_1 : item.address_2
+      this.idSelected = item.id
       this.visibleConfirmValidate = true
     },
     async validateAddressPackage() {
-      this.actions.validateAddress.loading = true
+      this.loadingValidate = true
       const payload = {
         ids: [this.idSelected],
       }
       const result = await this[VALIDATE_ADDRESS](payload)
       if (!result || !result.success) {
         this.visibleConfirmValidate = false
-        this.actions.validateAddress.loading = false
+        this.loadingValidate = false
         return this.$toast.open({
           type: 'error',
           message: result.message,
@@ -945,10 +992,11 @@ export default {
         })
       }
       setTimeout(() => {
-        this.actions.validateAddress.loading = false
         this.visibleConfirmValidate = false
+        this.confirmAddress = ''
+        this.loadingValidate = false
         this.init()
-      }, 1500)
+      }, 1000)
     },
 
     async handlerDownloadLables() {
@@ -988,6 +1036,10 @@ export default {
         // see FileSaver.js
         saveAs(content, 'label.zip')
       })
+    },
+    handleDeleteCode() {
+      this.searchCode = ''
+      this.filter.code = ''
     },
   },
   watch: {
