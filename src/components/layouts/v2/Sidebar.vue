@@ -195,8 +195,6 @@ export default {
     childrenNameRoute(title) {
       let fullPath = this.$route.fullPath
 
-      console.log(title)
-      console.log('fullpath', fullPath)
       if (title != null) {
         title = title.toLowerCase()
         if (fullPath.includes(title)) {
