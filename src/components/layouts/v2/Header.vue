@@ -2,7 +2,17 @@
   <nav class="site-navbar" role="navigation">
     <div class="navbar__header">
       <div class="navbar__header-left">
-        <div class="title">{{ handleTitle }}</div>
+        <div class="title">
+          <router-link
+            v-if="this.$route.meta.detail && this.$route.meta.routeParent.name"
+            :to="{ name: this.$route.meta.routeParent.name }"
+          >
+            <inline-svg
+              :src="require('../../../../src/assets/img/arrow_left.svg')"
+            ></inline-svg>
+          </router-link>
+          {{ handleTitle }}</div
+        >
       </div>
       <div class="navbar__header-right">
         <p-dropdown>
@@ -65,7 +75,6 @@ export default {
       isDebt: (state) => state.isDebt,
     }),
     types() {
-      console.log(this.isDebt)
       return MAP_USER_CLASS_TEXT
     },
     handleTitle() {

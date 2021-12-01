@@ -30,6 +30,11 @@ $sidebar-width:120px;
             .title{
                 color: $color-neutral-10;
                 font-weight: 500;
+                font-size: 18px;
+
+                svg{
+                    margin-bottom: 3px;
+                }
             }
         }
         &-right {

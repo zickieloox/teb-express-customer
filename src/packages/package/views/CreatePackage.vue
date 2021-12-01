@@ -350,19 +350,21 @@
         </div>
       </div>
       <div class="page-footer">
-        <div class="page-footer__left">
-          <div class="total">
-            <div class="total-title">Cước tạm tính:</div>
-            <span class="total-number">{{ 0 | formatPrice }}</span>
+        <div class="container">
+          <div class="page-footer__left" style="float: left">
+            <div class="total">
+              <div class="total-title">Cước tạm tính:</div>
+              <span class="total-number">{{ 0 | formatPrice }}</span>
+            </div>
           </div>
-        </div>
-        <div class="page-footer__right">
-          <a
-            :class="{ 'is-disabled': isCreate }"
-            @click="handleCreate"
-            class="btn btn-primary"
-            >Tạo mới</a
-          >
+          <div class="page-footer__right" style="float: right">
+            <a
+              :class="{ 'is-disabled': isCreate }"
+              @click="handleCreate"
+              class="btn btn-primary"
+              >Tạo mới</a
+            >
+          </div>
         </div>
       </div>
     </div>

@@ -11,15 +11,18 @@
             }
         }
     }
-    .card-body{
-        background: #F9FAFB;
-    }
+
     .card{
         border: none;
+        .card-block{
+            box-shadow: none;
+            padding-bottom: 20px;
+        }
+        .card-body{
+            background: #F9FAFB;
+        }
     }
-    .card-block{
-        box-shadow: none;
-    }
+
     .new {
         justify-content: start !important;
         .card-action a {
@@ -46,11 +49,18 @@
         display: flex;
         justify-content: space-between;
         .page-header__info {
-            display: flex;
+            display: grid;
+            grid-column-gap: 47px;
+            grid-template-columns: auto auto auto auto auto;
+
+            .content-title{
+                height: 28px;
+                line-height: 33px;
+            }
         }
+
         .page-header__info> {
             div {
-                margin-right: 56px;
                 div:first-child {
                     color: $color-neutral-7;
                     font-size: 12px;
@@ -75,7 +85,21 @@
     }
     .fee__left {
         position: relative;
+        display: grid;
+        grid-column-gap: 20px;
+        grid-template-columns: auto auto;
+
+        .title{
+            color: $color-neutral-7;
+            font-size: 12px;
+        }
     }
+    .fee__number{
+        color: $color-neutral-9;
+        font-size: 18px;
+        font-weight: 500;
+    }
+
     .fee__left:nth-child(1),
     .fee__left:nth-child(2) {
         font-style: normal;
@@ -97,12 +121,8 @@
         float: right;
     }
     .fee__right div:nth-child(1) {
-        font-style: normal;
-        font-weight: 500;
+        color: $color-neutral-7;
         font-size: 12px;
-        line-height: 16px;
-        letter-spacing: 0.2px;
-        color: #aaabab;
     }
     .fee__right div:nth-child(2) {
         font-style: normal;
