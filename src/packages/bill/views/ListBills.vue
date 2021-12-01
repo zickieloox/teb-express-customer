@@ -36,18 +36,12 @@
                 id="date-search"
                 @update="selectDate"
                 :singleDatePicker="false"
+                @clear="clearDate"
                 :value="{
                   startDate: filter.start_date,
                   endDate: filter.end_date,
                 }"
               ></p-datepicker>
-              <p-button
-                class="close ml-2"
-                type="default"
-                icon="close"
-                @click="clearDate"
-                v-if="filter.end_date || filter.start_date"
-              />
             </div>
           </div>
           <div class="page-content">
