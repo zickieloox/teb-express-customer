@@ -810,7 +810,9 @@ export default {
         (ele) => ele.status_string !== PackageStatusCreatedText
       )
       if (selectedInvalid.length > 0) {
-        let codeSelectedInvalid = selectedInvalid.map((ele) => ele.code)
+        let codeSelectedInvalid = selectedInvalid.map(
+          (ele) => ele.package_code.code
+        )
         if (codeSelectedInvalid.length > 3) {
           codeSelectedInvalid = [...codeSelectedInvalid.slice(0, 3), '...']
         }

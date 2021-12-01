@@ -25,7 +25,7 @@
             <div class="content-title">{{
               $evaluate('package_detail.package.service?.name')
             }}</div>
-            <div class="content-title" v-if="package_detail.package">
+            <div class="content-title tracking" v-if="package_detail.package">
               <a
                 target="_blank"
                 v-if="package_detail.package.tracking"
@@ -36,6 +36,9 @@
                 {{
                   $evaluate('package_detail.package.tracking.tracking_number')
                 }}
+                <inline-svg
+                  :src="require('../../../assets/img/arrow-up-right.svg')"
+                ></inline-svg>
               </a>
             </div>
             <div class="content-title">{{
@@ -439,15 +442,18 @@
                     | formatPrice
                 }}</div>
 
-                <div class="fee__number">{{ sumExtraFee | formatPrice }}</div>
-                <div class="more-extra-fee" v-if="extraFee.length">
-                  <img
-                    @mouseover="showPopupMoreExtraFee"
-                    @mouseleave="hiddenPopupMoreExtraFee"
-                    src="~@/assets/img/InfoCircleGrey.svg"
-                    alt=""
-                  />
+                <div class="fee__number"
+                  >{{ sumExtraFee | formatPrice }}
+                  <div class="more-extra-fee" v-if="extraFee.length">
+                    <img
+                      @mouseover="showPopupMoreExtraFee"
+                      @mouseleave="hiddenPopupMoreExtraFee"
+                      src="~@/assets/img/InfoCircleGrey.svg"
+                      alt=""
+                    />
+                  </div>
                 </div>
+
                 <div
                   v-if="isVisiblePopupMoreExtraFee"
                   class="pop-up-more-extra-fee"
