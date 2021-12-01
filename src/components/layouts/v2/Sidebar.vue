@@ -9,7 +9,10 @@
           v-for="(menu, i) in menus"
           class="site-menu-item"
           :class="{
-            active: isActive(menu.route) || childrenNameRoute(menu.route.name),
+            active:
+              isActive(menu.route) ||
+              childrenNameRoute(menu.route.name) ||
+              isContainAlias(menu.alias),
           }"
           :key="i"
         >
@@ -191,6 +194,7 @@ export default {
 
     childrenNameRoute(title) {
       let fullPath = this.$route.fullPath
+
       if (title != null) {
         title = title.toLowerCase()
         if (fullPath.includes(title)) {

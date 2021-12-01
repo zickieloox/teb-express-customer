@@ -355,7 +355,7 @@
       }
     }
     .input-trans{
-      max-width: 528px;
+      width: 100%;
       display: inline-block;
       margin-bottom: 12px;
       p{
@@ -367,6 +367,17 @@
       i{
         font-size: 12px;
         line-height: 16px;
+      }
+    }
+
+    .accept{
+      justify-content: space-between;
+      align-items: center;
+      .note{
+        font-size: 12px;
+        text-align: right;
+        color: $color-neutral-7;
+        width: 60%;
       }
     }
     .btn-confirm{

@@ -167,33 +167,33 @@
                 >
               </div>
               <div class="form-body">
-                <p style="margin-bottom:8px;">Transaction ID:</p>
-                <div class="input-trans">
+                <p class="mb-8">Transaction ID:</p>
+                <div class="input-trans ">
                   <p>
                     <input
                       type="text"
                       class="form-control"
                       v-model="transactionID"
+                      placeholder="Nhập Transaction ID"
                     />
                   </p>
-                  <p>
-                    <img src="~@/assets/img/notice.png" />
-                    <i>
-                      Thời gian xử lý khoảng 15 phút. Nếu tiền không được chuyển
-                      vào topup sau thời gian này, vui lòng liên hệ bộ phận
-                      support của LionBay để được hỗ trợ.</i
-                    >
-                  </p>
                 </div>
-                <p>
+                <div class="accept d-flex ">
                   <p-button
-                    class=" btn-primary"
+                    type="primary"
                     @click="handlerCreateTransaction"
                     :loading="loading"
                   >
                     Xác nhận
                   </p-button>
-                </p>
+                  <div class="note">
+                    <i>
+                      Thời gian xử lý khoảng 15 phút. Nếu tiền không được chuyển
+                      vào topup sau thời gian này, vui lòng liên hệ bộ phận
+                      support của LionBay để được hỗ trợ.</i
+                    >
+                  </div>
+                </div>
               </div>
             </div>
           </div>

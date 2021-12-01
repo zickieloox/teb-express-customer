@@ -35,6 +35,11 @@
     img, svg{
         margin:0 5px 3px 0
     }
+
+    &:focus{
+        outline: none !important;
+        box-shadow: none;
+    }
 }
 
 .btn-default {
@@ -133,11 +138,6 @@
     border: 1px solid $color-neutral-3;
     height: 44px;
     line-height: 27px;
-
-    &:focus{
-            outline: none !important;
-            box-shadow: none;
-    }
 
 
     &:hover {
