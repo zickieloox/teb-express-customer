@@ -51,7 +51,7 @@
               </div>
             </div>
           </div>
-          <div class="d-flex jc-sb">
+          <div class="d-flex jc-sb topup-content">
             <div class="method">
               <a
                 href="javascript:void(0)"
