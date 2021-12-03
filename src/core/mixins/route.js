@@ -83,8 +83,7 @@ export default {
         this.filter = filters
       }
     },
-    'filter.status': function(val, old) {
-      console.log(this.filter, 'n:', val, 'o:', old)
+    'filter.status': function() {
       this.updatePageNumber()
     },
     'filter.search': function() {
