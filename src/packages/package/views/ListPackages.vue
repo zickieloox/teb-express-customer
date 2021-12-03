@@ -913,11 +913,11 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${
+      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là <b> ${
         this.selected.length
-      }. Tổng tiền là ${formatPrice(
+      } </b>. Tổng tiền là <b> ${formatPrice(
         this.selectionCountTotal
-      )} bạn có chắc chắn muốn vận đơn?`
+      )} </b> bạn có chắc chắn muốn vận đơn?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
