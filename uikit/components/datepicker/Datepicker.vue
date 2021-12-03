@@ -22,7 +22,7 @@
     <div slot="input" slot-scope="picker" style="width: 100%;">
       <img
         src="@assets/img/calendar.svg"
-        style="float: right; margin-left: 2px; margin-top: 11px;"
+        style="float: right; margin-left: 2px; margin-top: 9px;"
       />
       <span
         class="label-date-picker"
@@ -63,6 +63,15 @@
         {{ dateRange.startDate | date('dd/MM/yyyy') }}
       </span>
       <span class="label-date-picker" v-else>{{ label }}</span>
+      <span
+        class="clear-date"
+        v-if="dateRange.startDate && dateRange.endDate"
+        @click="clear"
+      >
+        <inline-svg
+          :src="require('../../../src/assets/img/closesm.svg')"
+        ></inline-svg>
+      </span>
     </div>
   </date-range-picker>
 </template>
@@ -165,6 +174,10 @@ export default {
     checkOpen(e) {
       this.$emit('check-open', e)
     },
+    clear() {
+      this.dateRange = {}
+      this.$emit('clear')
+    },
   },
   watch: {
     value: function(value) {
@@ -173,3 +186,11 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+.clear-date {
+  position: relative;
+  margin-top: 10px;
+  margin-left: 3px;
+  top: -1px;
+}
+</style>

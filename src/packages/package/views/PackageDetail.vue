@@ -2,80 +2,63 @@
   <div class="package-detail pages">
     <div class="page-content">
       <div class="page-header">
-        <div class="page-header_back">
-          <router-link :to="{ name: 'list-packages' }" class="text">
-            <img
-              src="@/assets/img/chevron-left.svg"
-              alt=""
-              class="page-header_back_icon"
-            />
-            <span>Quản lý vận đơn</span>
-          </router-link>
-        </div>
-
         <div class="page-header__subtitle">
           <div class="page-header__info">
-            <div>
-              <div>Mã vận đơn</div>
-              <div class="package-code"
-                >{{ $evaluate('package_detail.package.package_code?.code') }}
-                <span
-                  @click="showContent"
-                  v-if="package_detail.package.label"
-                  class="page-header__barcode"
-                >
-                  <img
-                    src="@/assets/img/Vector-barcode.png"
-                    style="margin-top: 9px; position: absolute;"
-                  />
-                </span>
-              </div>
+            <div class="info-package">Mã vận đơn</div>
+            <div class="info-package">Dịch vụ </div>
+            <div class="info-package">Tracking </div>
+            <div class="info-package">Ngày tạo </div>
+            <div class="info-package">Trạng thái</div>
+            <div class="package-code "
+              >{{ $evaluate('package_detail.package.package_code?.code') }}
+              <span
+                @click="showContent"
+                v-if="package_detail.package.label"
+                class="page-header__barcode"
+              >
+                <img
+                  src="@/assets/img/Vector-barcode.png"
+                  style="margin-top: 6px; position: absolute;"
+                />
+              </span>
             </div>
-            <div>
-              <div>Dịch vụ </div>
-              <div>{{ $evaluate('package_detail.package.service?.name') }}</div>
+            <div class="content-title">{{
+              $evaluate('package_detail.package.service?.name')
+            }}</div>
+            <div class="content-title tracking" v-if="package_detail.package">
+              <a
+                target="_blank"
+                v-if="package_detail.package.tracking"
+                :href="
+                  `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${package_detail.package.tracking.tracking_number}`
+                "
+              >
+                {{
+                  $evaluate('package_detail.package.tracking.tracking_number')
+                }}
+                <inline-svg
+                  :src="require('../../../assets/img/arrow-up-right.svg')"
+                ></inline-svg>
+              </a>
             </div>
-            <div>
-              <div>Tracking </div>
-              <div v-if="package_detail.package">
-                <a
-                  target="_blank"
-                  v-if="package_detail.package.tracking"
-                  :href="
-                    `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${
-                      package_detail.package.tracking.tracking_number
-                    }`
-                  "
-                >
-                  {{
-                    $evaluate('package_detail.package.tracking.tracking_number')
-                  }}
-                </a>
-              </div>
-            </div>
-            <div>
-              <div>Ngày tạo </div>
-              <div>{{
-                package_detail.package.created_at
-                  | datetime('dd/MM/yyyy HH:mm:ss')
-              }}</div>
-            </div>
-            <div>
-              <div>Trạng thái</div>
-              <div>
-                <span
-                  v-if="package_detail.package.status_string"
-                  v-status:status="
-                    mapStatus[package_detail.package.status_string].value
-                  "
-                ></span>
-              </div>
+            <div class="content-title">{{
+              package_detail.package.created_at
+                | datetime('dd/MM/yyyy HH:mm:ss')
+            }}</div>
+
+            <div class="content-title">
+              <span
+                v-if="package_detail.package.status_string"
+                v-status:status="
+                  mapStatus[package_detail.package.status_string].value
+                "
+              ></span>
             </div>
           </div>
           <div class="page-header__action">
-            <a
+            <p-button
               href="#"
-              class="btn btn-default"
+              type="lb-default"
               @click="handleCancelPackage"
               v-if="
                 package_detail.package.status_string ===
@@ -83,29 +66,29 @@
               "
             >
               <span>Hủy đơn</span>
-            </a>
-            <a
+            </p-button>
+            <p-button
               @click="handleModal"
-              href="#"
-              class="btn btn-default ml-7"
+              class=" ml-7"
+              type="lb-default"
               v-if="
                 package_detail.package.status_string ===
                   PackageStatusCreatedText
               "
             >
               <span>Sửa đơn</span>
-            </a>
-            <a
-              href="#"
-              class="btn btn-primary ml-7"
+            </p-button>
+            <p-button
+              class=" ml-7"
               @click="handleWayBill"
+              type="primary"
               v-if="
                 package_detail.package.status_string ===
                   PackageStatusCreatedText
               "
             >
               <span>Vận đơn</span>
-            </a>
+            </p-button>
             <a
               @click="handlerReturnPackage"
               class="btn btn-primary ml-7"
@@ -331,40 +314,35 @@
                               >
                               <div class="des"> {{ convertDes(it) }}</div>
                               <span class="location" v-if="it.location">
-                                <img
-                                  src="@/assets/img/location.svg"
-                                  alt="location"
-                                  class="icon"
-                                />
-                                {{ it.location }}</span
+                                ___{{ it.location }}</span
                               >
                             </div>
                           </div>
                         </div>
-                        <div
-                          class="timeline__next-page"
-                          :class="{
-                            'timeline__next-page_history': !displayDeliverDetail,
-                          }"
-                        >
-                          <div
-                            :class="{
-                              'disable-next-page':
-                                timelinePagination.currentPage <= 1,
-                            }"
-                            @click="previousTimeLinePage"
-                            >Trước</div
-                          ><div
-                            :class="{
-                              'disable-next-page':
-                                timelinePagination.currentPage >=
-                                  timelinePagination.numberPage ||
-                                timelinePagination.numberPage <= 1,
-                            }"
-                            @click="nextTimeLinePage"
-                            >Sau</div
-                          >
-                        </div>
+                        <!--                        <div-->
+                        <!--                          class="timeline__next-page"-->
+                        <!--                          :class="{-->
+                        <!--                            'timeline__next-page_history': !displayDeliverDetail,-->
+                        <!--                          }"-->
+                        <!--                        >-->
+                        <!--                          <div-->
+                        <!--                            :class="{-->
+                        <!--                              'disable-next-page':-->
+                        <!--                                timelinePagination.currentPage <= 1,-->
+                        <!--                            }"-->
+                        <!--                            @click="previousTimeLinePage"-->
+                        <!--                            >Trước</div-->
+                        <!--                          ><div-->
+                        <!--                            :class="{-->
+                        <!--                              'disable-next-page':-->
+                        <!--                                timelinePagination.currentPage >=-->
+                        <!--                                  timelinePagination.numberPage ||-->
+                        <!--                                timelinePagination.numberPage <= 1,-->
+                        <!--                            }"-->
+                        <!--                            @click="nextTimeLinePage"-->
+                        <!--                            >Sau</div-->
+                        <!--                          >-->
+                        <!--                        </div>-->
                       </div>
                     </div>
                   </div>
@@ -457,27 +435,25 @@
 
             <div class="fee">
               <div class="fee__left">
-                <div>
-                  <span>Phí giao hàng:</span>
-                  <span>{{
-                    $evaluate('package_detail.package?.shipping_fee')
-                      | formatPrice
-                  }}</span>
-                </div>
-                <div>
-                  <div>
-                    <span>Phí phát sinh:</span>
-                    <span>{{ sumExtraFee | formatPrice }}</span>
+                <div class="title">Phí giao hàng:</div>
+                <div class="title">Phí phát sinh:</div>
+                <div class="fee__number">{{
+                  $evaluate('package_detail.package?.shipping_fee')
+                    | formatPrice
+                }}</div>
+
+                <div class="fee__number"
+                  >{{ sumExtraFee | formatPrice }}
+                  <div class="more-extra-fee" v-if="extraFee.length">
+                    <img
+                      @mouseover="showPopupMoreExtraFee"
+                      @mouseleave="hiddenPopupMoreExtraFee"
+                      src="~@/assets/img/InfoCircleGrey.svg"
+                      alt=""
+                    />
                   </div>
                 </div>
-                <div class="more-extra-fee" v-if="extraFee.length">
-                  <img
-                    @mouseover="showPopupMoreExtraFee"
-                    @mouseleave="hiddenPopupMoreExtraFee"
-                    src="~@/assets/img/InfoCircleGrey.svg"
-                    alt=""
-                  />
-                </div>
+
                 <div
                   v-if="isVisiblePopupMoreExtraFee"
                   class="pop-up-more-extra-fee"
@@ -561,7 +537,7 @@
 }
 
 #package-log {
-  padding: 0 15px;
+  padding: 0 12px;
 }
 </style>
 <script>
@@ -595,10 +571,11 @@ import { extension } from '@core/utils/url'
 import { cloneDeep } from '@core/utils'
 import api from '../api'
 import { datetime } from '../../../core/utils/datetime'
+import PButton from '../../../../uikit/components/button/Button'
 export default {
   name: 'PackageDetail',
   mixins: [mixinChaining],
-  components: { ModalEditOrder, ModalConfirm },
+  components: { PButton, ModalEditOrder, ModalConfirm },
   data() {
     return {
       isFetching: true,
@@ -659,13 +636,7 @@ export default {
       package_detail: (state) => state.package_detail,
     }),
     displayDeliverLogs() {
-      const start =
-        (this.timelinePagination.currentPage - 1) *
-        this.timelinePagination.itemsPerPage
-      return this.ConvertData.slice(
-        start,
-        start + this.timelinePagination.itemsPerPage
-      )
+      return this.ConvertData
     },
     displayAuditLogs() {
       const start =
@@ -976,9 +947,9 @@ export default {
               }
             })
           )
-          this.timelinePagination.numberPage = Math.ceil(
-            this.ConvertData.length / this.timelinePagination.itemsPerPage
-          )
+          // this.timelinePagination.numberPage = Math.ceil(
+          //   this.ConvertData.length / this.timelinePagination.itemsPerPage
+          // )
         }
         if (val.audit_logs && val.audit_logs.length > 0) {
           this.auditPagination.numberPage = Math.ceil(

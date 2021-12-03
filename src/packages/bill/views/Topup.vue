@@ -2,25 +2,27 @@
   <div class="pages wallet top-up">
     <div class="page-content">
       <div class="page-header">
-        <div class="container">
-          <div class="page-header_title header">Hóa đơn</div>
-          <div class="navtab-link">
-            <ul class="nav nav-tabs nav-tabs-line">
-              <li class="nav-item">
-                <router-link class="nav-link" :to="{ name: 'wallet' }"
-                  >Ví của tôi</router-link
-                >
-              </li>
-              <li class="nav-item">
-                <router-link class="nav-link" :to="{ name: 'bill' }">
-                  Quản lý hóa đơn
-                </router-link>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="#">Nạp tiền</a>
-              </li>
-            </ul>
-          </div>
+        <div class="page-header__title">Nạp tiền</div>
+        <div class="page-header__action">
+          <router-link
+            :to="{ name: 'wallet' }"
+            class="page-header__wallet btn btn-lb-default"
+          >
+            <inline-svg
+              :src="require('../../../assets/img/rotate.svg')"
+            ></inline-svg>
+            Lịch sử giao dịch</router-link
+          >
+
+          <router-link
+            :to="{ name: 'bill' }"
+            class="page-header__wallet btn btn-lb-default ml-2"
+          >
+            <inline-svg
+              :src="require('../../../assets/img/receipt.svg')"
+            ></inline-svg>
+            Quản lý hóa đơn</router-link
+          >
         </div>
       </div>
       <div class="page-body">
@@ -28,8 +30,8 @@
           <div class="row info-money mb-24">
             <div class="col-7">
               <div class="box balance">
-                <img src="@assets/img/balance.png" alt="" />
-                <div class="wallet">
+                <img src="@assets/img/walletLg.svg" alt="wallet" />
+                <div class="wallet ml-24">
                   <p class="title">Số dư trong ví</p>
                   <p class="money">{{
                     balance > 0 ? balance : 0 | formatPrice
@@ -39,8 +41,8 @@
             </div>
             <div class="col-5">
               <div class="box process-money">
-                <img src="@assets/img/process-money.png" alt="" />
-                <div class="wallet">
+                <img src="@assets/img/time.svg" alt="process-money" />
+                <div class="wallet ml-24">
                   <p class="title">Tiền chưa thanh toán</p>
                   <p class="money">
                     {{ balance > 0 ? 0 : Math.abs(balance) | formatPrice }}
@@ -49,7 +51,7 @@
               </div>
             </div>
           </div>
-          <div class="d-flex jc-sb">
+          <div class="d-flex jc-sb topup-content">
             <div class="method">
               <a
                 href="javascript:void(0)"
@@ -76,22 +78,25 @@
                 sau:
               </span>
               <div class="card">
-                <p
-                  >Ngân hàng:<br /><span>{{ bank }}</span>
-                </p>
-                <p
-                  >Tên chủ thẻ:<br /><span>{{ name }}</span>
-                  <copy :value="name"></copy
-                ></p>
-                <p
-                  >Số tài khoản:<br /><span>{{ accountNumber }}</span>
-                  <copy :value="accountNumber"></copy>
-                </p>
-                <p>
-                  Nội dung chuyển khoản:<br />
-                  <span>Topup {{ topup.id }}</span>
-                  <copy :value="`Topup ${topup.id}`"></copy>
-                </p>
+                <div class="card-info">
+                  <p
+                    >Ngân hàng:<br /><span>{{ bank }}</span>
+                  </p>
+                  <p
+                    >Tên chủ thẻ:<br /><span>{{ name }}</span>
+                    <copy :value="name"></copy
+                  ></p>
+                  <p
+                    >Số tài khoản:<br /><span>{{ accountNumber }}</span>
+                    <copy :value="accountNumber"></copy>
+                  </p>
+                  <p>
+                    Nội dung chuyển khoản:<br />
+                    <span>Topup {{ topup.id }}</span>
+                    <copy :value="`Topup ${topup.id}`"></copy>
+                  </p>
+                </div>
+
                 <div class="swap_money">
                   <div class="money">
                     <label class="title d-flex justify-content-between">
@@ -126,9 +131,9 @@
                 <div class="invalid-error" v-if="error == true">
                   {{ errorText }}
                 </div>
-                <div class="btn-exchange">
+                <div class="mt-24  btn-exchange">
                   <p-button @click.prevent="handlerRecharge" :loading="loading">
-                    Chuyển Tiền
+                    Xác nhận
                   </p-button>
                   <div class="info_exchange">
                     <div class="rate_exchange"
@@ -162,33 +167,33 @@
                 >
               </div>
               <div class="form-body">
-                <p style="margin-bottom:8px;">Transaction ID:</p>
-                <div class="input-trans">
+                <p class="mb-8">Transaction ID:</p>
+                <div class="input-trans ">
                   <p>
                     <input
                       type="text"
                       class="form-control"
                       v-model="transactionID"
+                      placeholder="Nhập Transaction ID"
                     />
                   </p>
-                  <p>
-                    <img src="~@/assets/img/notice.png" />
-                    <i>
-                      Thời gian xử lý khoảng 15 phút. Nếu tiền không được chuyển
-                      vào topup sau thời gian này, vui lòng liên hệ bộ phận
-                      support của LionBay để được hỗ trợ.</i
-                    >
-                  </p>
                 </div>
-                <p>
+                <div class="accept d-flex ">
                   <p-button
-                    class="btn-confirm"
+                    type="primary"
                     @click="handlerCreateTransaction"
                     :loading="loading"
                   >
                     Xác nhận
                   </p-button>
-                </p>
+                  <div class="note">
+                    <i>
+                      Thời gian xử lý khoảng 15 phút. Nếu tiền không được chuyển
+                      vào topup sau thời gian này, vui lòng liên hệ bộ phận
+                      support của LionBay để được hỗ trợ.</i
+                    >
+                  </div>
+                </div>
               </div>
             </div>
           </div>

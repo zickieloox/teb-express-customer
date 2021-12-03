@@ -9,7 +9,10 @@
           v-for="(menu, i) in menus"
           class="site-menu-item"
           :class="{
-            active: isActive(menu.route) || childrenNameRoute(menu.route.name),
+            active:
+              isActive(menu.route) ||
+              childrenNameRoute(menu.route.name) ||
+              isContainAlias(menu.alias),
           }"
           :key="i"
         >
@@ -114,21 +117,10 @@ export default {
           title: 'Đơn hàng',
           icon: require('@assets/img/Order.png'),
           iconActive: require('@assets/img/OrderActive.png'),
-          route: { name: 'packages' },
+          route: { name: 'list-packages' },
           class: '',
           isOpen: false,
-          sub: [
-            {
-              route: '/packages',
-              title: 'Quản lý đơn hàng',
-              alias: ['/packages', '/packages/:id'],
-            },
-            {
-              route: '/packages/create',
-              title: 'Tạo đơn',
-              alias: ['/packages/create'],
-            },
-          ],
+          alias: ['/packages', '/packages/:id', '/packages/create'],
         },
         {
           title: 'Hóa đơn',
@@ -202,6 +194,7 @@ export default {
 
     childrenNameRoute(title) {
       let fullPath = this.$route.fullPath
+
       if (title != null) {
         title = title.toLowerCase()
         if (fullPath.includes(title)) {

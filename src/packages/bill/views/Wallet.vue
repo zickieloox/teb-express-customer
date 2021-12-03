@@ -2,23 +2,27 @@
   <div class="wallet pages">
     <div class="page-content">
       <div class="page-header">
-        <div class="page-header_title header">Hóa đơn</div>
-        <div class="navtab-link">
-          <ul class="nav nav-tabs nav-tabs-line">
-            <li class="nav-item">
-              <a class="nav-link active" href="#">Ví của tôi</a>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" :to="{ name: 'bill' }">
-                Quản lý hóa đơn
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" :to="{ name: 'top-up' }"
-                >Nạp tiền</router-link
-              >
-            </li>
-          </ul>
+        <div class="page-header__title">Lịch sử giao dịch</div>
+        <div class="page-header__action">
+          <router-link
+            :to="{ name: 'top-up' }"
+            class="page-header__wallet btn btn-lb-default"
+          >
+            <inline-svg
+              :src="require('../../../assets/img/add.svg')"
+            ></inline-svg>
+            Nạp tiền</router-link
+          >
+
+          <router-link
+            :to="{ name: 'bill' }"
+            class="page-header__wallet btn btn-lb-default ml-2"
+          >
+            <inline-svg
+              :src="require('../../../assets/img/receipt.svg')"
+            ></inline-svg>
+            Quản lý hóa đơn</router-link
+          >
         </div>
       </div>
       <div class="page-body">
@@ -26,8 +30,8 @@
           <div class="row info-money mb-24">
             <div class="col-7">
               <div class="box balance">
-                <img src="@assets/img/balance.png" alt="" />
-                <div class="wallet">
+                <img src="@assets/img/walletLg.svg" alt="wallet" />
+                <div class="wallet ml-24">
                   <p class="title">Số dư trong ví</p>
                   <p class="money">{{
                     balance > 0 ? balance : 0 | formatPrice
@@ -37,8 +41,8 @@
             </div>
             <div class="col-5">
               <div class="box process-money">
-                <img src="@assets/img/process-money.png" alt="" />
-                <div class="wallet">
+                <img src="@assets/img/time.svg" alt="process-money" />
+                <div class="wallet ml-24">
                   <p class="title">Tiền chưa thanh toán</p>
                   <p class="money">
                     {{ balance > 0 ? 0 : Math.abs(balance) | formatPrice }}
@@ -48,7 +52,6 @@
             </div>
           </div>
           <div class="transaction-log">
-            <div class="title">Lịch sử giao dịch</div>
             <div class="search">
               <div class="multiselect-transaction">
                 <search-type
@@ -128,7 +131,7 @@
                               },
                             }"
                           >
-                            #{{ item.bill_id }}
+                            {{ item.bill_id }}
                           </router-link>
                         </span>
                         <span

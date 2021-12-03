@@ -3,7 +3,7 @@ export const routes = [
     path: '/packages/create',
     name: 'package-create',
     meta: {
-      title: 'Tạo đơn lẻ ',
+      title: 'Tạo đơn',
     },
     component: () =>
       import(/* webpackChunkName: "packages" */ './views/CreatePackage.vue'),
@@ -12,7 +12,7 @@ export const routes = [
     path: '/packages',
     name: 'list-packages',
     meta: {
-      title: 'Quản lý vận đơn',
+      title: 'Quản lý đơn hàng',
     },
     component: () =>
       import(/* webpackChunkName: "packages" */ './views/ListPackages'),
@@ -22,6 +22,8 @@ export const routes = [
     name: 'package-detail',
     meta: {
       title: 'Chi tiết đơn hàng',
+      detail: true,
+      routeParent: { name: 'list-packages' },
     },
     component: () =>
       import(/* webpackChunkName: "packages" */ './views/PackageDetail'),

@@ -7,9 +7,9 @@
     text-decoration: none !important;
     outline: none;
     font-weight: $font-weight-bold;
-    border-radius: 12px;
+    border-radius: 8px;
     padding: 8px 20px;
-    height: 40px;
+    height: 44px;
     font-size: 14px;
     line-height: 22px;
     /* identical to box height, or 157% */
@@ -20,6 +20,7 @@
         color: #B0B3B9;
         box-shadow: none;
         pointer-events: none;
+        border: none;
     }
     &-lg {
         font-size: 16px;
@@ -30,6 +31,14 @@
         width: 100%;
         height: 48px;
         font-size: 16px;
+    }
+    img, svg{
+        margin:0 5px 3px 0
+    }
+
+    &:focus{
+        outline: none !important;
+        box-shadow: none;
     }
 }
 
@@ -48,13 +57,16 @@
 }
 
 .btn-primary {
-    background: $color-turquoise-4;
+    background: $color-turquoise-6;
     &:hover {
-        background-color: $color-turquoise-3;
+        background-color: $color-turquoise-7;
     }
     &:focus,
     &:active {
         background: $color-turquoise-4 !important;
+    }
+    img,svg{
+        margin:0 5px 3px 0
     }
 }
 
@@ -73,6 +85,7 @@
         background-color: transparent;
         border-color: transparent;
         box-shadow: none;
+
         &:hover,
         &:focus,
         &.focus {
@@ -99,9 +112,15 @@
 }
 
 .btn-danger {
-    background: #FFFFFF;
-    border: 1px solid #FFA39E;
+    background: #FFF1F0;
     color: #F5222D;
+    border: 1px solid transparent;
+
+    &:hover{
+        background: #FFFFFF;
+        color: #F5222D;
+        border: 1px solid #FFA39E;
+    }
 }
 
 .btn-primary-custom {
@@ -114,4 +133,32 @@
     border: 2px solid white;
     border-right-color: transparent;
     border-top-color: transparent;
+}
+.btn-lb-default{
+    border: 1px solid $color-neutral-3;
+    height: 44px;
+    line-height: 27px;
+
+
+    &:hover {
+        border: 1px solid $color-turquoise-3;
+        color: $color-turquoise-6;
+    }
+}
+
+.btn-lb-secondary{
+    border: 1px solid transparent;
+    height: 44px;
+    line-height: 27px;
+    background: $color-turquoise-1;
+    color: $color-turquoise-6;
+    &:focus{
+        outline: none !important;
+        box-shadow: none;
+    }
+
+    &:hover {
+        border: 1px solid $color-turquoise-3;
+        color: $color-turquoise-6;
+    }
 }

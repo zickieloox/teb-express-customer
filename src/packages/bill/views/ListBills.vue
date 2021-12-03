@@ -1,26 +1,18 @@
 <template>
   <div class="wallet pages">
+    <div class="page-header">
+      <div class="page-header__title">Quản lý hóa đơn</div>
+      <router-link
+        :to="{ name: 'top-up' }"
+        class="page-header__wallet btn btn-lb-default"
+      >
+        <inline-svg
+          :src="require('../../../assets/img/wallet-icon.svg')"
+        ></inline-svg>
+        Ví của tôi</router-link
+      >
+    </div>
     <div class="page-content">
-      <div class="page-header">
-        <div class="page-header_title header">Hóa đơn</div>
-        <div class="navtab-link">
-          <ul class="nav nav-tabs nav-tabs-line">
-            <li class="nav-item">
-              <router-link class="nav-link" :to="{ name: 'wallet' }">
-                Ví của tôi
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" href="#">Quản lý hóa đơn</a>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" :to="{ name: 'top-up' }"
-                >Nạp tiền</router-link
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
       <div class="page-body-bill">
         <div class="list__bills">
           <div class="page-header_action d-flex ">
@@ -44,18 +36,12 @@
                 id="date-search"
                 @update="selectDate"
                 :singleDatePicker="false"
+                @clear="clearDate"
                 :value="{
                   startDate: filter.start_date,
                   endDate: filter.end_date,
                 }"
               ></p-datepicker>
-              <p-button
-                class="close ml-2"
-                type="default"
-                icon="close"
-                @click="clearDate"
-                v-if="filter.end_date || filter.start_date"
-              />
             </div>
           </div>
           <div class="page-content">
@@ -228,7 +214,7 @@ export default {
   },
 }
 </script>
-<style>
+<style scoped>
 .close {
   width: 50px;
   height: 40px;

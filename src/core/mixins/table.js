@@ -48,7 +48,12 @@ export default {
         : false
     },
     selectionCountText() {
-      return `${this.totalSelected} đơn hàng đang được chọn`
+      return this.totalSelected
+    },
+    selectionCountTotal() {
+      return this.action.selected
+        .map((it) => it.shipping_fee)
+        .reduce((accumulator, item) => accumulator + item)
     },
     isChecked() {
       return function(value) {

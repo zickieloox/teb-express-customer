@@ -2,7 +2,8 @@
     height: auto;
     padding-bottom: 120px;
     .page-header {
-        margin-bottom: 12px;
+        background: white;
+        padding: 25px 24px;
         &__barcode {
             img {
                 margin: 0 0 5px 8px;
@@ -10,6 +11,18 @@
             }
         }
     }
+
+    .card{
+        border: none;
+        .card-block{
+            box-shadow: none;
+            padding-bottom: 20px;
+        }
+        .card-body{
+            background: #F9FAFB;
+        }
+    }
+
     .new {
         justify-content: start !important;
         .card-action a {
@@ -36,11 +49,37 @@
         display: flex;
         justify-content: space-between;
         .page-header__info {
-            display: flex;
+            display: grid;
+            grid-column-gap: 47px;
+            grid-template-columns: auto auto auto auto auto;
+
+            .content-title{
+                height: 28px;
+                line-height: 33px;
+            }
+            .content-title.tracking{
+                a{
+                    color: $color-neutral-10;
+
+                    &:hover{
+                        color: $color-turquoise-6;
+
+                        svg{
+                            path{
+                                stroke: $color-turquoise-6;
+                            }
+                        }
+                    }
+                    svg{
+                        margin-bottom: 2px;
+                    }
+                }
+
+            }
         }
+
         .page-header__info> {
             div {
-                margin-right: 56px;
                 div:first-child {
                     color: $color-neutral-7;
                     font-size: 12px;
@@ -54,7 +93,7 @@
     .fee {
         background-color: #ffffff;
         position: fixed;
-        width: calc(100% - 128px);
+        width: calc(100% - 120px);
         z-index: 3;
         bottom: 0;
         right: 0;
@@ -65,7 +104,21 @@
     }
     .fee__left {
         position: relative;
+        display: grid;
+        grid-column-gap: 20px;
+        grid-template-columns: auto auto;
+
+        .title{
+            color: $color-neutral-7;
+            font-size: 12px;
+        }
     }
+    .fee__number{
+        color: $color-neutral-9;
+        font-size: 18px;
+        font-weight: 500;
+    }
+
     .fee__left:nth-child(1),
     .fee__left:nth-child(2) {
         font-style: normal;
@@ -87,12 +140,8 @@
         float: right;
     }
     .fee__right div:nth-child(1) {
-        font-style: normal;
-        font-weight: 500;
+        color: $color-neutral-7;
         font-size: 12px;
-        line-height: 16px;
-        letter-spacing: 0.2px;
-        color: #aaabab;
     }
     .fee__right div:nth-child(2) {
         font-style: normal;
@@ -103,8 +152,8 @@
     }
     .more-extra-fee {
         position: absolute;
-        top: 22px;
-        left: 204px;
+        top: 20px;
+        left: 170px;
         z-index: 1001;
         width: 18px;
         height: 18px;
@@ -116,7 +165,7 @@
         border-radius: 8px;
         padding: 16px;
         bottom: 40%;
-        left: 220px;
+        left: 200px;
         z-index: 10000;
         background: #ffffff;
         min-width: 100px;
@@ -141,6 +190,9 @@
         font-size: 20px;
         line-height: 28px;
     }
+}
+.package-detail.pages{
+    padding-top: 0;
 }
 
 .modal__edit-order {

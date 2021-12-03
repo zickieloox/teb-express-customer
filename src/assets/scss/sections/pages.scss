@@ -1,4 +1,4 @@
-$sidebar-width:128px;
+$sidebar-width:120px;
 .pages {
     position: absolute;
     margin-top: 56px;
@@ -41,17 +41,17 @@ $sidebar-width:128px;
         }
     }
     .page-header {
-        padding: 0 32px 18px 32px;
+        padding: 0 24px 18px 24px;
     }
     .page-content {
         .card-body {
-            padding: 24px 32px 48px;
+            padding: 24px 24px 48px;
         }
         .text-no-underline,
         .router-link-active {
             font-weight: 500;
             line-height: 160%;
-            color: $color-turquoise-8
+            color: $color-turquoise-9;
         }
         .order-list {
             box-shadow: 0px 4px 32px -14px rgba(0, 0, 0, 0.12);
@@ -183,8 +183,9 @@ $sidebar-width:128px;
         }
     }
     .jc-sb {
-        justify-content: space-between
+        justify-content: space-between;
     }
+
 }
 
 .site-menubar-hide {

@@ -2,12 +2,16 @@
   <nav class="site-navbar" role="navigation">
     <div class="navbar__header">
       <div class="navbar__header-left">
-        <img src="@assets/img/icon22.svg" alt="" />
-        <span
-          >Need help? Check out the <a href="#" class="link">FAQ</a> or
-          <a href="#" class="link" @click.prevent="addClaim"
-            >submit a ticket.</a
-          ></span
+        <div class="title">
+          <router-link
+            v-if="this.$route.meta.detail && this.$route.meta.routeParent.name"
+            :to="{ name: this.$route.meta.routeParent.name }"
+          >
+            <inline-svg
+              :src="require('../../../../src/assets/img/arrow_left.svg')"
+            ></inline-svg>
+          </router-link>
+          {{ handleTitle }}</div
         >
       </div>
       <div class="navbar__header-right">
@@ -17,8 +21,14 @@
               <div
                 >Xin chào, <span class="username">{{ user.full_name }}</span>
               </div>
-              <div class="type" v-if="user"
-                >{{ types[user.class] }}<i class="fa fa-circle"></i>
+
+              <div class="type" v-if="user">
+                <inline-svg
+                  v-if="isDebt"
+                  :src="require('../../../assets/img/warningsm.svg')"
+                >
+                </inline-svg>
+                {{ types[user.class] }}<i class="fa fa-circle"></i>
                 <span
                   v-if="user.user_info && user.user_info.debt_max_amount > 0"
                   >Trả sau</span
@@ -44,22 +54,14 @@
         </p-dropdown>
       </div>
     </div>
-    <modal-add-claim
-      :visible.sync="visibleModal"
-      :title="`Khiếu nại`"
-      @create="init"
-    >
-    </modal-add-claim>
   </nav>
 </template>
 <script>
-import ModalAddClaim from '../../../packages/claim/components/ModalAddClaim.vue'
 import { MAP_USER_CLASS_TEXT } from '@core/constants'
+import { mapState } from 'vuex'
 
 export default {
-  components: {
-    ModalAddClaim,
-  },
+  components: {},
   name: 'Header',
   props: {
     user: {
@@ -69,8 +71,14 @@ export default {
   },
   mounted() {},
   computed: {
+    ...mapState('shared', {
+      isDebt: (state) => state.isDebt,
+    }),
     types() {
       return MAP_USER_CLASS_TEXT
+    },
+    handleTitle() {
+      return this.$route.meta.title || ''
     },
   },
   created() {},
@@ -82,9 +90,6 @@ export default {
   methods: {
     init() {
       location.reload()
-    },
-    addClaim() {
-      this.visibleModal = true
     },
   },
 }
@@ -103,6 +108,9 @@ export default {
       font-size: 4px;
       margin-right: 4px;
       margin-left: 4px;
+    }
+    svg {
+      margin: 0 4px 1px 0;
     }
   }
 }

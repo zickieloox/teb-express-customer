@@ -2,26 +2,7 @@
   <div class="wallet pages">
     <div class="page-content">
       <div class="page-header">
-        <div class="page-header_title header">Hóa đơn</div>
-        <div class="navtab-link">
-          <ul class="nav nav-tabs nav-tabs-line">
-            <li class="nav-item">
-              <router-link class="nav-link" :to="{ name: 'wallet' }">
-                Ví của tôi
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link active" :to="{ name: 'bill' }">
-                Quản lý hóa đơn
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" :to="{ name: 'top-up' }"
-                >Nạp tiền</router-link
-              >
-            </li>
-          </ul>
-        </div>
+        <div class="page-header__title ">Chi tiết hóa đơn</div>
       </div>
       <div class="page-body">
         <div class=" list__bill">
