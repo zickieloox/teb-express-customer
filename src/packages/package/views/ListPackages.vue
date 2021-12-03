@@ -45,7 +45,8 @@
           >
 
           <span class="bulk-actions__selection-count">
-            Bạn có <b>{{ selectionCountText }}</b> đơn hàng đang được chọn</span
+            Bạn có <b>{{ selectionCountText }} </b> đơn hàng đang được chọn.
+            Tổng tiền : <b>{{ selectionCountTotal | formatPrice }} </b></span
           >
         </div>
       </div>
@@ -508,6 +509,7 @@ import mixinDownload from '@/packages/shared/mixins/download'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import mixinChaining from '@/packages/shared/mixins/chaining'
 import ModalConfirmAddress from './components/ModalConfirmAddress'
+import { formatPrice } from '@core/utils/formatter'
 
 import {
   PACKAGE_STATUS_TAB,
@@ -911,7 +913,11 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${this.selected.length}. Bạn có chắc chắn muốn vận đơn?`
+      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là ${
+        this.selected.length
+      }. Tổng tiền là ${formatPrice(
+        this.selectionCountTotal
+      )} bạn có chắc chắn muốn vận đơn?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
