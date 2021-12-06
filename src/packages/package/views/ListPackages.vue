@@ -370,16 +370,21 @@
                             size="large"
                             position="top"
                             type="dark"
-                            :active="item.tracking.tracking_number.length > 10"
+                            :active="item.tracking.tracking_number.length > 25"
                           >
                             {{
                               truncate(
                                 item.tracking
                                   ? item.tracking.tracking_number
                                   : '',
-                                10
+                                25
                               )
                             }}
+                            <inline-svg
+                              :src="
+                                require('../../../assets/img/arrow-up-right.svg')
+                              "
+                            ></inline-svg>
                           </p-tooltip>
                         </a>
                         <a
