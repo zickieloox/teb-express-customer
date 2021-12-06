@@ -134,7 +134,6 @@
                         <th>Mã vận đơn</th>
                         <th>Mã đơn hàng</th>
                         <th>Tracking</th>
-                        <th>Người nhận</th>
                         <th>Dịch vụ</th>
                         <th>Ngày tạo </th>
                         <th>Trạng thái</th>
@@ -398,9 +397,6 @@
                             "
                           ></inline-svg>
                         </a>
-                      </td>
-                      <td>
-                        {{ item.recipient }}
                       </td>
                       <td v-if="item.service">
                         {{ item.service.name }}
