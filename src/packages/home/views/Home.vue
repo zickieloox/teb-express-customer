@@ -25,7 +25,7 @@
             <div class="icon icon-search"></div>
           </div>
           <div class="row mt-24">
-            <div class="col-9">
+            <div class="col-12">
               <div class="row">
                 <div class="col-4">
                   <div class="box box-warning">
@@ -82,26 +82,26 @@
                 </div>
               </div>
             </div>
-            <div class="col-3 list-actions">
-              <div class="card bg-gray">
-                <h3 class="card-title">Hoạt động</h3>
-                <div class="card-body">
-                  <ul class="messages pb-4">
-                    <li v-for="item in messages" :key="item.id">
-                      <router-link
-                        :to="{
-                          name: 'package-detail',
-                          params: { id: item.package_id },
-                        }"
-                      >
-                        <i class="icon icon-export"></i>
-                        <p v-html="item.message"></p>
-                      </router-link>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            <!--            <div class="col-3 list-actions">-->
+            <!--              <div class="card bg-gray">-->
+            <!--                <h3 class="card-title">Hoạt động</h3>-->
+            <!--                <div class="card-body">-->
+            <!--                  <ul class="messages pb-4">-->
+            <!--                    <li v-for="item in messages" :key="item.id">-->
+            <!--                      <router-link-->
+            <!--                        :to="{-->
+            <!--                          name: 'package-detail',-->
+            <!--                          params: { id: item.package_id },-->
+            <!--                        }"-->
+            <!--                      >-->
+            <!--                        <i class="icon icon-export"></i>-->
+            <!--                        <p v-html="item.message"></p>-->
+            <!--                      </router-link>-->
+            <!--                    </li>-->
+            <!--                  </ul>-->
+            <!--                </div>-->
+            <!--              </div>-->
+            <!--            </div>-->
           </div>
         </div>
       </div>

@@ -2,10 +2,10 @@
   <div class="pages list__claim">
     <div class="page-header d-flex jc-sb">
       <div class="page-header_title header-2">Đơn khiếu nại</div>
-      <a href="#" class="btn btn-primary" @click="handleModal">
-        <img src="@assets/img/Plus.svg" alt="" />
-        <span class="ml-10">Tạo khiếu nại</span>
-      </a>
+      <p-button type="primary" @click="handleModal">
+        <inline-svg :src="require('../../../assets/img/plus.svg')"></inline-svg>
+        Tạo khiếu nại
+      </p-button>
     </div>
     <div class="page-content">
       <div class="card">
@@ -141,11 +141,13 @@ import mixinTable from '@core/mixins/table'
 import ModalAddClaim from '../components/ModalAddClaim'
 import { FETCH_CLAIMS } from '../store'
 import { mapActions, mapState } from 'vuex'
+import PButton from '../../../../uikit/components/button/Button'
 
 export default {
   name: 'ListClaim',
   mixins: [mixinRoute, mixinTable],
   components: {
+    PButton,
     EmptySearchResult,
     ModalAddClaim,
   },
