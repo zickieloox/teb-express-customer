@@ -61,7 +61,7 @@ export default {
       var now = new Date()
       var dt = new Date(this.user.user_info.debt_time)
       dt.setDate(dt.getDate() + this.user.user_info.debt_max_day)
-      if (this.user.balance < 0 && dt.getTime() < now.getTime()) {
+      if (this.user.user_info.debt_time !== null && this.user.balance < 0 && dt.getTime() < now.getTime()) {
         this.warning = true
         this.$store.commit('shared/checkDebt', true)
         return
