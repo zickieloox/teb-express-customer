@@ -12,7 +12,6 @@ async function fetchToken() {
     return ''
   }
 }
-
 export async function setup() {
   const token = await fetchToken()
   if (!token) return
