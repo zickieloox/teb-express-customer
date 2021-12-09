@@ -8,7 +8,6 @@
 </template>
 <script>
 import Loading from '@components/shared/Loading'
-import * as firebase from './core/services/firebase'
 
 export default {
   name: 'App',
@@ -24,8 +23,6 @@ export default {
     }
   },
   created() {
-    firebase.setup()
-
     window.onscroll = () => {
       let pos = window.pageYOffset
       if (pos > window.innerHeight) {
