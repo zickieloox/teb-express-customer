@@ -3,7 +3,7 @@
     <div class="page-header d-flex jc-sb">
       <div class="page-header_title header-2">Đơn khiếu nại</div>
       <p-button type="primary" @click="handleModal">
-        <inline-svg :src="require('../../../assets/img/plus.svg')"></inline-svg>
+        <inline-svg :src="require('../../../assets/img/Plus.svg')"></inline-svg>
         Tạo khiếu nại
       </p-button>
     </div>
