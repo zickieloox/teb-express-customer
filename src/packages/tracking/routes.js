@@ -3,7 +3,7 @@ export const routes = [
     path: '/tracking',
     name: 'tracking',
     meta: {
-      title: 'Hành trình đơn hàng   ',
+      title: 'Tracking ',
     },
     component: () =>
       import(/* webpackChunkName: "packages" */ './views/Tracking.vue'),
