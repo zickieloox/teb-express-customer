@@ -89,10 +89,12 @@ const getFormatStatus = (status) => {
       break
     case 'Đã lấy':
     case 'Đang giao':
+    case 'processing':
       statusClass = 'primary'
       break
     case 'Giao thành công':
     case 'Thành công':
+    case 'delivered':
       statusClass = 'success'
       break
     case 'Trả hàng':
@@ -106,6 +108,7 @@ const getFormatStatus = (status) => {
 
     case 'Đang xử lý':
     case 'Chờ xác nhận':
+    case 'in-transit':
       statusClass = 'pending'
       break
     case 'Đã xử lý':
