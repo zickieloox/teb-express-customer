@@ -334,7 +334,7 @@ export default {
                 })
               )
               return Object.assign({}, item, {
-                data: this.ConvertData,
+                data: ConvertData,
               })
             })
       },
