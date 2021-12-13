@@ -1,582 +1,555 @@
 //wallet
 .wallet {
-  .page-header {
-    width: 1080px;
-    margin: 0 auto;
-    padding: 30px 0;
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-
-    &__title{
-      font-size: 24px;
-      color:$color-neutral-10;
-      font-weight: bold;
-    }
-    .btn-lb-default{
-      &:hover{
-        svg path{
-          @include transition(all 0.2s);
-          stroke: $color-turquoise-6;
-        }
-      }
-    }
-  }
-
-  .info-money {
-    align-items: stretch;
-    .box {
-      padding: 2.4rem;
-      border-radius: 12px;
-      height: 100%;
-      background: $color-turquoise-1;
-
-      img {
-        float: left;
-      }
-
-      p {
-        padding-left: 5.2rem;
-        margin-bottom: 0;
-        font-weight: 500;
-        font-size: 12px;
-        line-height: 16px;
-      }
-
-      .title {
-        letter-spacing: 0.2px;
-        color: $color-turquoise-6;
-      }
-
-      .money {
-        font-size: 18px;
-        line-height: 28px;
-        letter-spacing: 0.2px;
-        color: #313232;
-        font-weight: bold;
-      }
-    }
-    .box.process-money{
-      background: #FFF7E6;
-      .title {
-        color: #FA8C16;
-      }
-
-    }
-
-
-  }
-
-  .page-body {
-    padding-top: 24px;
-    padding-bottom: 32px;
-    background-color: #ffffff;
-    .transaction-log {
-      padding-top: 16px;
-      .title {
-        padding: 0 16px;
-        margin-bottom: 12px;
-        font-weight: 500;
-        font-size: 18px;
-        line-height: 28px;
-        letter-spacing: 0.2px;
-        color: #000000;
-      }
-      .search {
+    .page-header {
+        width: 1080px;
+        margin: 0 auto;
+        padding: 30px 0;
+        position: relative;
         display: flex;
         justify-content: space-between;
-        margin-bottom: 16px;
-        .multiselect-transaction {
-          display: flex;
-          height: 48px;
-          margin-right: 8px;
-          width: 100%;
-          .multiselect__tags {
-            height: 48px;
-            border: 1px solid $color-neutral-4;
-            box-sizing: border-box;
-            border-radius: 12px;
-            background-color: #ffffff;
-            .multiselect__single,
-            .multiselect__placeholder {
-              margin-top: 7px;
-              background-color: #ffffff;
-              color: $color-neutral-5;
-              padding-top: 0;
-              font-family: 'Be Vietnam Pro', sans-serif;
-            }
-          }
-          .multiselect__select {
-            top: 0px;
-          }
-          .multiselect--active .multiselect__select {
-            transform: none;
-          }
-          .multiselect--active .multiselect__tags {
-            border: 1px solid #111212;
-            border-radius: 12px 12px 0px 0px;
-          }
-          .multiselect__input {
-            font-size: 14px;
-            margin-top: 7px;
-            background-color: #ffffff;
-            color: #111212;
-            padding-top: 0;
-            padding-left: 5px;
-            font-family: 'Be Vietnam Pro', sans-serif;
-          }
-          .multiselect__content-wrapper {
-            border: 1px solid #111212;
-            border-radius: 0px 0px 8px 8px;
-            max-height: none;
-          }
+        &__title {
+            font-size: 24px;
+            color: $color-neutral-10;
+            font-weight: bold;
         }
-
-        #date-search {
-          width: 300px;
-          .form-control {
-            height: 48px;
-          }
-          & + .close {
-            width: 48px;
-            height: 48px;
-            border: 1px solid $color-neutral-4;
-            border-radius: 12px;
-            background-color: #ffffff;
-          }
-          .calendars {
-            min-width: 400px;
-          }
-          .show-ranges {
-            min-width: 712px;
-          }
-          .reportrange-text {
-            border: 1px solid $color-neutral-4;
-          }
-          .reportrange-text > div {
-            line-height: 35px;
-            font-weight: normal;
-            .label-date-picker {
-              color: $color-neutral-5;
+        .btn-lb-default {
+            &:hover {
+                svg path {
+                    @include transition(all 0.2s);
+                    stroke: $color-turquoise-6;
+                }
             }
-          }
-          .opensleft {
-            right: 0px;
-          }
         }
-      }
-      .content {
-        .transaction-info {
-          padding: 16px;
-          flex-direction: unset;
-          border-bottom: 1px solid $color-neutral-3;
-          .info-left {
-            display: flex;
+    }
+    .info-money {
+        align-items: stretch;
+        .box {
+            padding: 2.4rem;
+            border-radius: 12px;
+            height: 100%;
+            background: $color-turquoise-1;
             img {
-              margin-right: 12px;
+                float: left;
             }
-            .infor {
-              display: flex;
-              flex-direction: column;
-              .transaction-title {
-                font-size: 14px;
-                line-height: 22px;
-                color: $color-neutral-9;
-              }
-              span {
+            p {
+                padding-left: 5.2rem;
+                margin-bottom: 0;
+                font-weight: 500;
                 font-size: 12px;
                 line-height: 16px;
-                color: $color-neutral-7;
-              }
             }
-          }
-          .info-right {
-            display: flex;
-            flex-direction: column;
-            span {
-              font-weight: bold;
-              font-size: 14px;
-              line-height: 22px;
-              text-align: right;
-              color: #111212;
+            .title {
+                letter-spacing: 0.2px;
+                color: $color-turquoise-6;
             }
-            .badge {
-              font-weight: normal;
-              background: #ffffff;
-              padding: 0;
-              font-size: 12px;
-              line-height: 16px;
-              border: none;
-              &-success {
-                color: #48be78;
-              }
-              &-pending {
-                color: #aaabab;
-              }
-              &-danger {
-                color: #f5222d;
-              }
-              &-info {
-                color: #17a2b8;
-              }
+            .money {
+                font-size: 18px;
+                line-height: 28px;
+                letter-spacing: 0.2px;
+                color: #313232;
+                font-weight: bold;
             }
-          }
-          &:last-child {
-            border-bottom: none;
-          }
         }
-      }
-    }
-    .paginate {
-      width: 1080px;
-      margin-left: auto;
-      margin-right: auto;
-      .pagination-box {
-        margin: 0;
-        .select_limit_box {
-          display: none;
+        .box.process-money {
+            background: #FFF7E6;
+            .title {
+                color: #FA8C16;
+            }
         }
-      }
     }
-  }
-
-  .swap_money{
-    display: flex;
-    align-items: center;
-    margin-top: 24px;
-  }
-  .btn-convert{
-    margin: 22px 35px 0 35px ;
-    cursor: pointer;
-  }
-  .money {
-    flex: 1;
-  }
+    .page-body {
+        padding-top: 24px;
+        padding-bottom: 32px;
+        background-color: #ffffff;
+        .transaction-log {
+            padding-top: 16px;
+            .title {
+                padding: 0 16px;
+                margin-bottom: 12px;
+                font-weight: 500;
+                font-size: 18px;
+                line-height: 28px;
+                letter-spacing: 0.2px;
+                color: #000000;
+            }
+            .search {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 16px;
+                .multiselect-transaction {
+                    display: flex;
+                    height: 48px;
+                    margin-right: 8px;
+                    width: 100%;
+                    .multiselect__tags {
+                        height: 48px;
+                        border: 1px solid $color-neutral-4;
+                        box-sizing: border-box;
+                        border-radius: 12px;
+                        background-color: #ffffff;
+                        .multiselect__single,
+                        .multiselect__placeholder {
+                            margin-top: 7px;
+                            background-color: #ffffff;
+                            color: $color-neutral-5;
+                            padding-top: 0;
+                            font-family: 'Be Vietnam Pro', sans-serif;
+                        }
+                    }
+                    .multiselect__select {
+                        top: 0px;
+                    }
+                    .multiselect--active .multiselect__select {
+                        transform: none;
+                    }
+                    .multiselect--active .multiselect__tags {
+                        border: 1px solid #111212;
+                        border-radius: 12px 12px 0px 0px;
+                    }
+                    .multiselect__input {
+                        font-size: 14px;
+                        margin-top: 7px;
+                        background-color: #ffffff;
+                        color: #111212;
+                        padding-top: 0;
+                        padding-left: 5px;
+                        font-family: 'Be Vietnam Pro', sans-serif;
+                    }
+                    .multiselect__content-wrapper {
+                        border: 1px solid #111212;
+                        border-radius: 0px 0px 8px 8px;
+                        max-height: none;
+                    }
+                }
+                #date-search {
+                    width: 300px;
+                    .form-control {
+                        height: 48px;
+                    }
+                    &+.close {
+                        width: 48px;
+                        height: 48px;
+                        border: 1px solid $color-neutral-4;
+                        border-radius: 12px;
+                        background-color: #ffffff;
+                    }
+                    .calendars {
+                        min-width: 400px;
+                    }
+                    .show-ranges {
+                        min-width: 712px;
+                    }
+                    .reportrange-text {
+                        border: 1px solid $color-neutral-4;
+                    }
+                    .reportrange-text>div {
+                        line-height: 35px;
+                        font-weight: normal;
+                        .label-date-picker {
+                            color: $color-neutral-5;
+                        }
+                    }
+                    .opensleft {
+                        right: 0px;
+                    }
+                }
+            }
+            .content {
+                .transaction-info {
+                    padding: 16px;
+                    flex-direction: unset;
+                    border-bottom: 1px solid $color-neutral-3;
+                    .info-left {
+                        display: flex;
+                        img {
+                            margin-right: 12px;
+                        }
+                        .infor {
+                            display: flex;
+                            flex-direction: column;
+                            .transaction-title {
+                                font-size: 14px;
+                                line-height: 22px;
+                                color: $color-neutral-9;
+                            }
+                            span {
+                                font-size: 12px;
+                                line-height: 16px;
+                                color: $color-neutral-7;
+                            }
+                        }
+                    }
+                    .info-right {
+                        display: flex;
+                        flex-direction: column;
+                        span {
+                            font-weight: bold;
+                            font-size: 14px;
+                            line-height: 22px;
+                            text-align: right;
+                            color: #111212;
+                        }
+                        .badge {
+                            font-weight: normal;
+                            background: #ffffff;
+                            padding: 0;
+                            font-size: 12px;
+                            line-height: 16px;
+                            border: none;
+                            &-success {
+                                color: #48be78;
+                            }
+                            &-pending {
+                                color: #aaabab;
+                            }
+                            &-danger {
+                                color: #f5222d;
+                            }
+                            &-info {
+                                color: #17a2b8;
+                            }
+                        }
+                    }
+                    &:last-child {
+                        border-bottom: none;
+                    }
+                }
+            }
+        }
+        .paginate {
+            width: 1080px;
+            margin-left: auto;
+            margin-right: auto;
+            .pagination-box {
+                margin: 0;
+                .select_limit_box {
+                    display: none;
+                }
+            }
+        }
+    }
+    .swap_money {
+        display: flex;
+        align-items: center;
+        margin-top: 24px;
+    }
+    .btn-convert {
+        margin: 22px 35px 0 35px;
+        cursor: pointer;
+    }
+    .money {
+        flex: 1;
+    }
 }
 
-.wallet.pages{
-  padding-top: 0;
+.wallet.pages {
+    padding-top: 0;
 }
+
 .lb-tooltip {
-  position: relative;
-  display: inline-block;
-  img {
-    cursor: pointer;
-  }
-
-  &:after {
-    font-style: italic;
-    font-weight: normal;
-    font-size: 12px;
-    line-height: 16px;
-    color: #313232;
-    background: #fff;
-    padding: 7px 12px 9px;
-    border-radius: 4px;
-    box-shadow: 0px 0px 2px rgba(40, 41, 61, 0.04),
-      0px 4px 8px rgba(96, 97, 112, 0.16);
-    bottom: calc(100% + 2px);
-    position: absolute;
-    white-space: nowrap;
-    left: -10px;
-  }
-
-  &.hover:before {
-    content: '';
-    border-top: 8px solid #fff;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom-color: transparent;
-    position: absolute;
-    top: -3px;
-    left: -3px;
-    z-index: 3;
-  }
-
-  &.hover:after {
-    content: attr(data-text-hover);
-  }
-
-  &.copied:after {
-    content: attr(data-text-copied);
-  }
+    position: relative;
+    display: inline-block;
+    img {
+        cursor: pointer;
+    }
+    &:after {
+        font-style: italic;
+        font-weight: normal;
+        font-size: 12px;
+        line-height: 16px;
+        color: #313232;
+        background: #fff;
+        padding: 7px 12px 9px;
+        border-radius: 4px;
+        box-shadow: 0px 0px 2px rgba(40, 41, 61, 0.04), 0px 4px 8px rgba(96, 97, 112, 0.16);
+        bottom: calc(100% + 2px);
+        position: absolute;
+        white-space: nowrap;
+        left: -10px;
+    }
+    &.hover:before,
+    &:hover:before {
+        content: '';
+        border-top: 8px solid #fff;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom-color: transparent;
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        z-index: 3;
+    }
+    &.hover:after,
+    &:hover:after {
+        content: attr(data-text-hover);
+    }
+    &.copied:after {
+        content: attr(data-text-copied);
+    }
 }
 
 //top-up
 .top-up {
-
-  .lb-tooltip {
-    vertical-align: text-bottom;
-    margin-left: 3px;
-  }
-
-  .jc-sb .card {
-    border: 0;
-    > p,
-    .money {
-      margin-bottom: 3px;
+    .lb-tooltip {
+        vertical-align: text-bottom;
+        margin-left: 3px;
     }
-  }
-  .topup-content{
-    height: 80vh;
-  }
-
-  .method {
-    display: flex;
-    flex-direction: column;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 22px;
-    i {
-      font-size: 4px;
-      margin-right: 8px;
+    .jc-sb .card {
+        border: 0;
+        >p,
+        .money {
+            margin-bottom: 3px;
+        }
     }
-    .active {
-      display: flex;
-      align-items: center;
-      color: $color-neutral-10;
+    .topup-content {
+        height: 80vh;
     }
-    .deactive {
-      // cursor: not-allowed;
-      color: $color-neutral-6;
-      i {
-        visibility: hidden;
-      }
-      span {
-        font-style: italic;
-        font-size: 12px;
-        line-height: 16px;
-      }
-    }
-  }
-  
-  .form-topup {
-    .form-title{
-      p{
-        margin-bottom: 0.8rem;
-      }
-    }
-    .input-trans{
-      width: 100%;
-      display: inline-block;
-      margin-bottom: 12px;
-      p{
-        margin-bottom: 0.8rem;
-      }
-      img{
-        margin-top: -5px;
-      }
-      i{
-        font-size: 12px;
-        line-height: 16px;
-      }
-    }
-
-    .accept{
-      justify-content: space-between;
-      align-items: center;
-      .note{
-        font-size: 12px;
-        text-align: right;
-        color: $color-neutral-7;
-        width: 60%;
-      }
-    }
-    .btn-confirm{
-      width: 120px;
-      font-size: 16px;
-      line-height: 1.5;
-      padding: 10px 24px 14px;
-      height: 48px;
-    }
-    .form-control{
-      position: unset !important;
-    }
-    width: 805px;
-    padding-top: 16px;
-    .title {
-      color: $color-neutral-9;
-      i {
+    .method {
+        display: flex;
+        flex-direction: column;
         font-style: normal;
-        color: #02baba;
-      }
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 22px;
+        i {
+            font-size: 4px;
+            margin-right: 8px;
+        }
+        .active {
+            display: flex;
+            align-items: center;
+            color: $color-neutral-10;
+        }
+        .deactive {
+            // cursor: not-allowed;
+            color: $color-neutral-6;
+            i {
+                visibility: hidden;
+            }
+            span {
+                font-style: italic;
+                font-size: 12px;
+                line-height: 16px;
+            }
+        }
     }
-    .card {
-      margin-top: 24px;
-
-      &-info{
-        position: relative;
-        left: 16px;
-        &:before{
-          position: absolute;
-          width: 1px;
-          height: 100%;
-          content: '';
-          left: -16px;
-          background: $color-neutral-3;
+    .form-topup {
+        .form-title {
+            p {
+                margin-bottom: 0.8rem;
+            }
         }
-      }
-
-      p {
-        position: relative;
-        font-size: 12px;
-        line-height: 16px;
-        color: $color-neutral-7;
-        margin-bottom: 12px;
-        span {
-          font-weight: 600;
-          font-size: 14px;
-          line-height: 22px;
-          color: $color-neutral-10;
-        }
-      }
-      .money {
-        .title {
-          font-size: 12px;
-          line-height: 16px;
-          color: $color-neutral-7;
-          margin-bottom: 8px;
-        }
-        .input {
-          position: relative;
-          width: 100%;
-          margin-right: 8px;
-          input {
-            border: 1px solid $color-neutral-4;
-            box-sizing: border-box;
-            border-radius: 8px;
-            padding: 13px 16px 13px 50px;
-            height: 48px;
-            font-weight: 500;
-            font-size: 18px;
-            line-height: 28px;
-            color: #111212;
+        .input-trans {
             width: 100%;
-            letter-spacing: 0.2px;
-
-            &:focus {
-              border-color: #80bdff;
+            display: inline-block;
+            margin-bottom: 12px;
+            p {
+                margin-bottom: 0.8rem;
             }
-            &::placeholder {
-              font-weight: normal;
-              color: $color-neutral-4;
+            img {
+                margin-top: -5px;
             }
-          }
-          span {
+            i {
+                font-size: 12px;
+                line-height: 16px;
+            }
+        }
+        .accept {
+            justify-content: space-between;
+            align-items: center;
+            .note {
+                font-size: 12px;
+                text-align: right;
+                color: $color-neutral-7;
+                width: 60%;
+            }
+        }
+        .btn-confirm {
+            width: 120px;
+            font-size: 16px;
+            line-height: 1.5;
+            padding: 10px 24px 14px;
+            height: 48px;
+        }
+        .form-control {
+            position: unset !important;
+        }
+        width: 805px;
+        padding-top: 16px;
+        .title {
+            color: $color-neutral-9;
+            i {
+                font-style: normal;
+                color: #02baba;
+            }
+        }
+        .card {
+            margin-top: 24px;
+            &-info {
+                position: relative;
+                left: 16px;
+                &:before {
+                    position: absolute;
+                    width: 1px;
+                    height: 100%;
+                    content: '';
+                    left: -16px;
+                    background: $color-neutral-3;
+                }
+            }
+            p {
+                position: relative;
+                font-size: 12px;
+                line-height: 16px;
+                color: $color-neutral-7;
+                margin-bottom: 12px;
+                span {
+                    font-weight: 600;
+                    font-size: 14px;
+                    line-height: 22px;
+                    color: $color-neutral-10;
+                }
+            }
+            .money {
+                .title {
+                    font-size: 12px;
+                    line-height: 16px;
+                    color: $color-neutral-7;
+                    margin-bottom: 8px;
+                }
+                .input {
+                    position: relative;
+                    width: 100%;
+                    margin-right: 8px;
+                    input {
+                        border: 1px solid $color-neutral-4;
+                        box-sizing: border-box;
+                        border-radius: 8px;
+                        padding: 13px 16px 13px 50px;
+                        height: 48px;
+                        font-weight: 500;
+                        font-size: 18px;
+                        line-height: 28px;
+                        color: #111212;
+                        width: 100%;
+                        letter-spacing: 0.2px;
+                        &:focus {
+                            border-color: #80bdff;
+                        }
+                        &::placeholder {
+                            font-weight: normal;
+                            color: $color-neutral-4;
+                        }
+                    }
+                    span {
+                        position: absolute;
+                        right: 16px;
+                        top: 24px;
+                        transform: translateY(-50%);
+                        font-size: 14px;
+                        line-height: 22px;
+                        color: $color-neutral-4;
+                    }
+                }
+                button {
+                    height: 48px;
+                    width: 131px;
+                }
+            }
+            .invalid-error {
+                margin-top: 0px;
+                margin-left: 10px;
+            }
+            .money-transfer {
+                margin-top: 14px;
+                font-size: 12px;
+                line-height: 16px;
+                color: $color-neutral-7;
+                img {
+                    margin-right: 5px;
+                }
+            }
+        }
+    }
+    .flag {
+        position: absolute;
+        left: 15px;
+        top: 15px;
+    }
+    .copy {
+        position: relative;
+        margin-left: 4px;
+        img {
+            margin-bottom: 4px;
+            cursor: pointer;
+        }
+        .tooltip-text {
+            visibility: hidden;
+            width: 129px;
+            height: 32px;
+            background: #ffffff;
+            box-shadow: 0px 0px 2px rgba(40, 41, 61, 0.04), 0px 4px 8px rgba(96, 97, 112, 0.16);
+            border-radius: 4px;
+            font-style: italic;
+            font-weight: normal;
+            font-size: 12px;
+            line-height: 16px;
+            color: #313232;
             position: absolute;
+            bottom: 25px;
+            left: -12px;
+            text-align: center;
+            padding-top: 7px;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s;
+            &:after {
+                content: '';
+                position: absolute;
+                top: 100%;
+                left: 20px;
+                margin-left: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: #fff transparent transparent transparent;
+            }
+        }
+        &:hover {
+            .tooltip-text {
+                visibility: visible;
+                opacity: 1;
+            }
+        }
+    }
+    .w-price {
+        width: 100%;
+        font-weight: 500;
+        font-size: 1.8rem;
+        line-height: 2.8rem;
+        letter-spacing: 0.2px;
+        color: #626363;
+        background: #f6f7f7;
+        border-radius: 8px;
+        position: relative;
+        padding: 8px 16px 12px 50px;
+        height: 4.8rem;
+        .currency {
+            position: absolute;
+            top: 13px;
             right: 16px;
-            top: 24px;
-            transform: translateY(-50%);
             font-size: 14px;
             line-height: 22px;
-            color: $color-neutral-4;
-          }
-
+            color: #898a8a;
         }
-        button {
-          height: 48px;
-          width: 131px;
+    }
+    .btn-exchange {
+        display: flex;
+        justify-content: space-between;
+        .info_exchange {
+            font-size: 12px;
+            color: $color-neutral-7;
+            font-style: italic;
+            text-align: right;
         }
-      }
-      .invalid-error {
-        margin-top: 0px;
-        margin-left: 10px;
-      }
-      .money-transfer {
-        margin-top: 14px;
-        font-size: 12px;
-        line-height: 16px;
-        color: $color-neutral-7;
-        img {
-          margin-right: 5px;
-        }
-      }
     }
-  }
-  .flag{
-    position: absolute;
-    left: 15px;
-    top: 15px;
-  }
-  .copy {
-    position: relative;
-    margin-left: 4px;
-    img {
-      margin-bottom: 4px;
-      cursor: pointer;
-    }
-    .tooltip-text {
-      visibility: hidden;
-      width: 129px;
-      height: 32px;
-      background: #ffffff;
-      box-shadow: 0px 0px 2px rgba(40, 41, 61, 0.04),
-        0px 4px 8px rgba(96, 97, 112, 0.16);
-      border-radius: 4px;
-      font-style: italic;
-      font-weight: normal;
-      font-size: 12px;
-      line-height: 16px;
-      color: #313232;
-      position: absolute;
-      bottom: 25px;
-      left: -12px;
-      text-align: center;
-      padding-top: 7px;
-      z-index: 1;
-      opacity: 0;
-      transition: opacity 0.3s;
-      &:after {
-        content: '';
-        position: absolute;
-        top: 100%;
-        left: 20px;
-        margin-left: -5px;
-        border-width: 5px;
-        border-style: solid;
-        border-color: #fff transparent transparent transparent;
-      }
-    }
-    &:hover {
-      .tooltip-text {
-        visibility: visible;
-        opacity: 1;
-      }
-    }
-  }
-
-  .w-price {
-    width: 100%;
-    font-weight: 500;
-    font-size: 1.8rem;
-    line-height: 2.8rem;
-    letter-spacing: 0.2px;
-    color: #626363;
-    background: #f6f7f7;
-    border-radius: 8px;
-    position: relative;
-    padding: 8px 16px 12px 50px;
-    height: 4.8rem;
-
-    .currency {
-      position: absolute;
-      top: 13px;
-      right: 16px;
-      font-size: 14px;
-      line-height: 22px;
-      color: #898a8a;
-    }
-  }
-
-  .btn-exchange{
-    display: flex;
-    justify-content: space-between;
-    .info_exchange{
-      font-size: 12px;
-      color: $color-neutral-7;
-      font-style: italic;
-      text-align: right;
-    }
-  }
 }

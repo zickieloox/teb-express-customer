@@ -23,7 +23,7 @@
               class="txt"
               type="text"
               v-model="code"
-              :placeholder="`Vui lòng nhập mã vận đơn`"
+              :placeholder="`Vui lòng nhập mã vận đơn hoặc tracking number`"
               @keyup.enter="addCode()"
             />
             <div class="showNum" id="num">{{ listCode.length }}/50</div>
@@ -83,10 +83,11 @@ export default {
     },
     verifyCode() {
       if (this.listCode.length < 1) {
-        this.errText = 'Vui lòng nhập mã vận đơn'
+        this.errText = 'Vui lòng nhập mã vận đơn hoặc tracking number'
         this.$toast.open({ type: 'error', message: this.errText })
         return
       }
+      this.addCode()
       this.$emit('track', this.listCode)
       this.$emit('update:visible', false)
     },
