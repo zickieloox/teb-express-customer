@@ -87,7 +87,27 @@ export default {
         this.$toast.open({ type: 'error', message: this.errText })
         return
       }
-      this.addCode()
+      if (this.code != '') {
+        const i = this.listCode.some((element) => this.code === element)
+        if (i) {
+          this.errText = 'Mã vận đơn/Tracking number đã tồn tại!'
+          this.$toast.open({ type: 'error', message: this.errText })
+          return
+        }
+        var regex = /^[A-Za-z0-9\n ]+$/
+        var isValid = regex.test(this.code.trim())
+        if (!isValid) {
+          this.errText = 'Mã vận đơn/Tracking number không hợp lệ'
+          this.$toast.open({ type: 'error', message: this.errText })
+          return
+        }
+        if (this.listCode.length == this.limit) {
+          this.errText = 'Vượt quá số lượng mã vận đơn/tracking number cho phép'
+          this.$toast.open({ type: 'error', message: this.errText })
+          return
+        }
+        this.listCode = this.listCode.concat(this.code.trim().split(/[\n ]/))
+      }
       this.$emit('track', this.listCode)
       this.$emit('update:visible', false)
     },
@@ -99,7 +119,7 @@ export default {
     addCode() {
       const i = this.listCode.some((element) => this.code === element)
       if (i) {
-        this.errText = 'Code đã tồn tại!'
+        this.errText = 'Mã vận đơn/Tracking number đã tồn tại!'
         this.$toast.open({ type: 'error', message: this.errText })
         return
       }
@@ -111,7 +131,7 @@ export default {
         return
       }
       if (this.listCode.length == this.limit) {
-        this.errText = 'Vượt quá số lượng mã vận đơn cho phép'
+        this.errText = 'Vượt quá số lượng mã vận đơn/tracking number cho phép'
         this.$toast.open({ type: 'error', message: this.errText })
         return
       }
