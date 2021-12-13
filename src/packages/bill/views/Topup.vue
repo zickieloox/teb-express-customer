@@ -155,7 +155,7 @@
                 <p
                   ><span
                     >Vui lòng chuyển tiền tới địa chỉ:
-                    <strong v-if="isPayoneer">tungpk.izee@gmail.com</strong>
+                    <strong v-if="isPayoneer">trungpq.ftu@gmail.com</strong>
                     <strong v-if="isPingPong">tungpk@lionnix.com</strong>
                   </span></p
                 >
