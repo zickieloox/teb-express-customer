@@ -117,8 +117,8 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
               <thead>
                 <tr>
                   <th width="40"></th>
-                  <th width="100">TRACKING NUMBER</th>
-                  <th width="150">EXPECTED DELIVERY</th>
+                  <th width="100">MÃ VẬN ĐƠN</th>
+                  <th width="150">TRACKING</th>
                   <th width="350">STATUS</th>
                   <th width="80">
                     <div class="d-flex btn-action-icon">
@@ -167,11 +167,14 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
                       />
                     </td>
                     <td
-                      >{{ item.tracking ? item.tracking.tracking_number : '' }}
+                      >{{ item.package_code.code }}
                       <br />
                       <span v-status:status="item.status_string"></span>
                     </td>
-                    <td>N/A</td>
+                    <td
+                      >{{ item.tracking ? item.tracking.tracking_number : '' }}
+                      <br /><span>&nbsp;</span></td
+                    >
                     <td v-if="item.log">
                       {{ item.log[0].description }}
                       <br />
