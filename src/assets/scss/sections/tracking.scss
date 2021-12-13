@@ -1,5 +1,5 @@
 .tracking_page {
-    background-color: #F9FAFB;
+    background-color: #FFFFFF;
     min-height: 100vh;
 }
 
@@ -221,21 +221,39 @@
                         cursor: pointer;
                     }
                 }
-                .lb-tooltip.hover:before {
-                    top: -5px;
-                    left: 8px;
-                }
-                .lb-tooltip.hover:after {
-                    bottom: calc(100% + 5px);
-                    left: -10px;
+                .lb-tooltip {
+                    &.hover,
+                    &:hover {
+                        &:before {
+                            top: -5px;
+                            left: 8px;
+                        }
+                        &:after {
+                            bottom: calc(100% + 5px);
+                            left: -10px;
+                        }
+                    }
                 }
             }
             tr {
-                height: 84px
+                height: 84px;
+                td {
+                    &:first-child {
+                        padding-left: 12px
+                    }
+                }
+            }
+            .sperate {
+                height: 10px;
             }
             .icon {
                 text-align: right;
                 padding-right: 24px;
+                div {
+                    height: 24px;
+                    width: 24px;
+                    float: right;
+                }
             }
             .log-detail {
                 display: none;

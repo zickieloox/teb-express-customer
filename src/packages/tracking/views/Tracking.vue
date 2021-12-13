@@ -12,7 +12,7 @@
             class="input-1"
             @click="openInput()"
             v-model="code"
-            placeholder="Vui lòng nhập mã vận đơn"
+            placeholder="Vui lòng nhập mã vận đơn hoặc tracking number"
             :class="{ hidden: openTextarea }"
           />
           <textarea
@@ -21,7 +21,7 @@
             v-model="code"
             class="input"
             :placeholder="
-              `Vui lòng nhập mã vận đơn
+              `Vui lòng nhập mã vận đơn hoặc tracking number
 Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
             "
             @input="onChange"
@@ -111,30 +111,36 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
       </div>
 
       <div class="tracking">
-        <VclTable class="mt-20" v-if="isFetching"></VclTable>
-        <template v-else>
+        <template>
           <div class="table">
             <table class="table table-hover">
               <thead>
                 <tr>
                   <th width="40"></th>
                   <th width="100">TRACKING NUMBER</th>
-                  <th width="100">EXPECTED DELIVERY</th>
-                  <th width="300">STATUS</th>
+                  <th width="150">EXPECTED DELIVERY</th>
+                  <th width="350">STATUS</th>
                   <th width="80">
                     <div class="d-flex btn-action-icon">
                       <copy :value="dataCopy">
                         <img src="~@/assets/img/copy_tracking.png" />
                       </copy>
-                      <img
-                        v-if="!open"
-                        @click="openTrackingDetail"
-                        src="~@/assets/img/expand_tracking.png"/>
-                      <img
-                        v-else
-                        @click="closeTrackingDetail"
-                        src="~@/assets/img/close_tracking.png"
-                    /></div>
+                      <a
+                        data-text-hover="Mở rộng hoặc thu gọn"
+                        class="lb-tooltip"
+                      >
+                        <img
+                          v-if="!open"
+                          @click="openTrackingDetail"
+                          src="~@/assets/img/expand_tracking.png"
+                        />
+                        <img
+                          v-else
+                          @click="closeTrackingDetail"
+                          src="~@/assets/img/close_tracking.png"
+                        />
+                      </a>
+                    </div>
                   </th>
                 </tr>
               </thead>
@@ -171,14 +177,15 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
                       <br />
                       <span class="location">{{ item.log[0].location }}</span>
                     </td>
-                    <td class="icon" @click="deletePackage(item)"
-                      ><i class="fa fa-times"></i
+                    <td class="icon"
+                      ><div @click="deletePackage(item)"
+                        ><i class="fa fa-times"></i></div
                     ></td>
                   </tr>
                   <transition :key="'A' + i" name="fade" mode="out-in">
                     <tr
                       class="tracking-detail"
-                      v-if="opened.includes(item.id) && !deleting"
+                      v-show="opened.includes(item.id) && !deleting"
                     >
                       <td colspan="5">
                         <div class="status">{{ item.status_string }}</div>
@@ -218,6 +225,8 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
                       </td>
                     </tr>
                   </transition>
+
+                  <tr :key="'B' + i" v-if="open" class="sperate"> </tr>
                 </template>
               </tbody>
             </table>
@@ -241,7 +250,7 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
     <modal-tracking
       :visible.sync="visibleModal"
       :codes="listCode"
-      @track="track(listCode)"
+      @track="track"
     >
     </modal-tracking>
   </div>
@@ -260,13 +269,11 @@ import {
   PackageStatusProcessingText,
   PackageStatusInTransitText,
 } from '../constant'
-import mixinTable from '@core/mixins/table'
 import ModalTracking from '../components/ModalTracking.vue'
 import Copy from '../../bill/components/Copy.vue'
 
 export default {
   name: 'Tracking',
-  mixins: [mixinTable],
   components: {
     ModalTracking,
     Copy,
@@ -277,7 +284,6 @@ export default {
       listCode: [],
       logPackage: [],
       errText: '',
-      placeholder: 'Vui lòng nhập mã vận đơn',
       open: false,
       opened: [],
       statusProcessing: PackageStatusProcessingText,
@@ -365,6 +371,7 @@ export default {
     ...mapActions('tracking', [GET_LOGS]),
 
     async track(codes) {
+      this.listCode = codes
       this.isFetching = true
       let payload = codes.filter((x) => x != '')
       const result = await this[GET_LOGS](payload)
