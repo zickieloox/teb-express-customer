@@ -49,7 +49,7 @@ export default {
     return http.post(`/transactions/top-up/update/${payload.id}`, payload.body)
   },
   createTransaction(payload) {
-    return http.post(`/transactions/`, payload)
+    return http.post(`/transactions`, payload)
   },
   /**
    * get rate exchange
