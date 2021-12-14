@@ -144,93 +144,94 @@ Với nhiều mã, các mã được phân cách bằng dấu enter`
                   </th>
                 </tr>
               </thead>
-              <tbody>
-                <template v-for="(item, i) in newListPackages">
-                  <tr
-                    class="clickable-row"
-                    :key="i"
-                    @click="toggle(item.id)"
-                    :class="{ opened: opened.includes(item.id) && !deleting }"
-                  >
-                    <td>
-                      <img
-                        v-if="item.status_string == statusDelivered"
-                        src="~@/assets/img/iconDelivered.png"
-                      />
-                      <img
-                        v-if="item.status_string == statusProcessing"
-                        src="~@/assets/img/iconProcessing.png"
-                      />
-                      <img
-                        v-if="item.status_string == statusInTransit"
-                        src="~@/assets/img/iconInTransit.png"
-                      />
-                    </td>
-                    <td
-                      >{{ item.package_code.code }}
-                      <br />
-                      <span v-status:status="item.status_string"></span>
-                    </td>
-                    <td
-                      >{{ item.tracking ? item.tracking.tracking_number : '' }}
-                      <br /><span>&nbsp;</span></td
-                    >
-                    <td v-if="item.log">
-                      {{ item.log[0].description }}
-                      <br />
-                      <span class="location">{{ item.log[0].location }}</span>
-                    </td>
-                    <td class="icon"
-                      ><div @click="deletePackage(item)"
-                        ><i class="fa fa-times"></i></div
-                    ></td>
-                  </tr>
-                  <transition :key="'A' + i" name="fade" mode="out-in">
-                    <tr
-                      class="tracking-detail"
-                      v-show="opened.includes(item.id) && !deleting"
-                    >
-                      <td colspan="5">
-                        <div class="status">{{ item.status_string }}</div>
+              <tbody
+                v-for="(item, i) in newListPackages"
+                :key="i"
+                :class="{ 'tbody-opened': opened.includes(item.id) }"
+              >
+                <tr class="sperate"> </tr>
 
-                        <div class="timeline-new">
+                <tr
+                  class="clickable-row"
+                  @click="toggle(item.id)"
+                  :class="{ opened: opened.includes(item.id) && !deleting }"
+                >
+                  <td>
+                    <img
+                      v-if="item.status_string == statusDelivered"
+                      src="~@/assets/img/iconDelivered.png"
+                    />
+                    <img
+                      v-if="item.status_string == statusProcessing"
+                      src="~@/assets/img/iconProcessing.png"
+                    />
+                    <img
+                      v-if="item.status_string == statusInTransit"
+                      src="~@/assets/img/iconInTransit.png"
+                    />
+                  </td>
+                  <td
+                    >{{ item.package_code.code }}
+                    <br />
+                    <span v-status:status="item.status_string"></span>
+                  </td>
+                  <td
+                    >{{ item.tracking ? item.tracking.tracking_number : '' }}
+                    <br /><span>&nbsp;</span></td
+                  >
+                  <td v-if="item.log">
+                    {{ item.log[0].description }}
+                    <br />
+                    <span class="location">{{ item.log[0].location }}</span>
+                  </td>
+                  <td class="icon"
+                    ><div @click="deletePackage(item)"
+                      ><i class="fa fa-times"></i></div
+                  ></td>
+                </tr>
+                <transition :key="'A' + i" name="fade" mode="out-in">
+                  <tr
+                    class="tracking-detail"
+                    v-show="opened.includes(item.id) && !deleting"
+                  >
+                    <td colspan="5">
+                      <div class="status">{{ item.status_string }}</div>
+
+                      <div class="timeline-new">
+                        <div
+                          v-for="(item, i) in item.data"
+                          :key="i"
+                          :class="{
+                            'first-item': i === 0,
+                          }"
+                          class="timeline-item-new"
+                        >
+                          <div class="item__right">
+                            <div class="title">{{ item.name }}</div>
+                          </div>
                           <div
-                            v-for="(item, i) in item.data"
-                            :key="i"
+                            v-for="(it, j) in item.data"
+                            :key="j"
+                            class="item__right__data"
                             :class="{
-                              'first-item': i === 0,
+                              'first-data': j === 0,
                             }"
-                            class="timeline-item-new"
                           >
-                            <div class="item__right">
-                              <div class="title">{{ item.name }}</div>
-                            </div>
-                            <div
-                              v-for="(it, j) in item.data"
-                              :key="j"
-                              class="item__right__data"
-                              :class="{
-                                'first-data': j === 0,
-                              }"
+                            <div class="time">
+                              {{ it.ship_time | datetime('HH:mm:ss') }}</div
                             >
-                              <div class="time">
-                                {{ it.ship_time | datetime('HH:mm:ss') }}</div
-                              >
-                              <div class="des">
-                                {{ convertDes(it) }}
-                                <span class="location" v-if="it.location">
-                                  ___{{ it.location }}</span
-                                ></div
-                              >
-                            </div>
+                            <div class="des">
+                              {{ convertDes(it) }}
+                              <span class="location" v-if="it.location">
+                                ___{{ it.location }}</span
+                              ></div
+                            >
                           </div>
                         </div>
-                      </td>
-                    </tr>
-                  </transition>
-
-                  <tr :key="'B' + i" v-if="open" class="sperate"> </tr>
-                </template>
+                      </div>
+                    </td>
+                  </tr>
+                </transition>
               </tbody>
             </table>
 

@@ -209,6 +209,13 @@
             font-size: 16px;
             line-height: 24px;
             color: $color-neutral-9;
+            .tbody-opened {
+                +.tbody-opened {
+                    .sperate {
+                        display: table-cell;
+                    }
+                }
+            }
             th {
                 font-weight: bold;
                 font-size: 12px;
@@ -245,6 +252,7 @@
             }
             .sperate {
                 height: 10px;
+                display: none;
             }
             .icon {
                 text-align: right;
