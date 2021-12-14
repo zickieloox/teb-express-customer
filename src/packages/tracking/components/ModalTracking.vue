@@ -74,7 +74,7 @@ export default {
     },
   },
   mounted() {
-    this.listCode = this.codes
+    this.listCode = this.codes.map((num) => num)
   },
   methods: {
     handleClose() {
@@ -82,11 +82,6 @@ export default {
       this.$emit('close')
     },
     verifyCode() {
-      if (this.listCode.length < 1) {
-        this.errText = 'Vui lòng nhập mã vận đơn hoặc tracking number'
-        this.$toast.open({ type: 'error', message: this.errText })
-        return
-      }
       if (this.code != '') {
         const i = this.listCode.some((element) => this.code === element)
         if (i) {
@@ -94,7 +89,7 @@ export default {
           this.$toast.open({ type: 'error', message: this.errText })
           return
         }
-        var regex = /^[A-Za-z0-9\n ]+$/
+        var regex = /^[A-Za-z0-9\n\t ]+$/
         var isValid = regex.test(this.code.trim())
         if (!isValid) {
           this.errText = 'Mã vận đơn/Tracking number không hợp lệ'
@@ -107,6 +102,11 @@ export default {
           return
         }
         this.listCode = this.listCode.concat(this.code.trim().split(/[\n ]/))
+      }
+      if (this.listCode.length < 1) {
+        this.errText = 'Vui lòng nhập mã vận đơn hoặc tracking number'
+        this.$toast.open({ type: 'error', message: this.errText })
+        return
       }
       this.$emit('track', this.listCode)
       this.$emit('update:visible', false)
@@ -152,7 +152,7 @@ export default {
     visible: {
       handler: function() {
         this.code = ''
-        this.listCode = this.codes
+        this.listCode = this.codes.map((num) => num)
         if (this.visible) {
           this.$nextTick(() => document.getElementById('input').focus())
         }
