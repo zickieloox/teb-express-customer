@@ -22,7 +22,7 @@
             class="input"
             :placeholder="
               `Vui lòng nhập mã vận đơn hoặc tracking number
-Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
+Với nhiều mã, các mã được phân cách bằng dấu enter`
             "
             @input="onChange"
           ></textarea>
@@ -117,9 +117,9 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
               <thead>
                 <tr>
                   <th width="40"></th>
-                  <th width="100">MÃ VẬN ĐƠN</th>
-                  <th width="150">TRACKING</th>
-                  <th width="350">STATUS</th>
+                  <th width="80">MÃ VẬN ĐƠN</th>
+                  <th width="250">TRACKING</th>
+                  <th width="400">STATUS</th>
                   <th width="80">
                     <div class="d-flex btn-action-icon">
                       <copy :value="dataCopy">
@@ -299,7 +299,6 @@ export default {
       },
       newListPackages: [],
       deleting: false,
-      isFetching: false,
       countPackages: 0,
       openTextarea: false,
       visibleModal: false,
@@ -375,10 +374,7 @@ export default {
 
     async track(codes) {
       this.listCode = codes
-      this.isFetching = true
-      let payload = codes.filter((x) => x != '')
-      const result = await this[GET_LOGS](payload)
-      this.isFetching = false
+      const result = await this[GET_LOGS](this.listCode)
 
       if (result.error) {
         this.listCode = []
@@ -402,7 +398,7 @@ export default {
         return
       }
 
-      var regex = /^[A-Za-z0-9\n ]+$/
+      var regex = /^[A-Za-z0-9\n\t ]+$/
       var isValid = regex.test(this.code.trim())
       if (!isValid) {
         this.errText = 'Mã vận đơn/Tracking number không hợp lệ'
@@ -410,7 +406,10 @@ export default {
         return
       }
 
-      this.listCode = this.code.trim().split(/[\n ]/)
+      this.listCode = this.code
+        .trim()
+        .split(/[\n\t ]/)
+        .filter((x) => x != '')
       this.track(this.listCode)
     },
 
