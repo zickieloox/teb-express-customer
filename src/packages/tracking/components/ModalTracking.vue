@@ -101,12 +101,16 @@ export default {
           this.$toast.open({ type: 'error', message: this.errText })
           return
         }
-        this.listCode = this.listCode.concat(
-          this.code
-            .trim()
-            .split(/[\n\t ]/)
-            .filter((x) => x != '')
-        )
+        this.listCode = [
+          ...new Set(
+            this.listCode.concat(
+              this.code
+                .trim()
+                .split(/[\n\t ]/)
+                .filter((x) => x != '')
+            )
+          ),
+        ]
       }
       if (this.listCode.length < 1) {
         this.errText = 'Vui lòng nhập mã vận đơn hoặc tracking number'
@@ -140,12 +144,16 @@ export default {
         this.$toast.open({ type: 'error', message: this.errText })
         return
       }
-      this.listCode = this.listCode.concat(
-        this.code
-          .trim()
-          .split(/[\n\t ]/)
-          .filter((x) => x != '')
-      )
+      this.listCode = [
+        ...new Set(
+          this.listCode.concat(
+            this.code
+              .trim()
+              .split(/[\n\t ]/)
+              .filter((x) => x != '')
+          )
+        ),
+      ]
       this.code = ''
       var elem = document.getElementById('data')
       elem.scrollTop = elem.scrollHeight

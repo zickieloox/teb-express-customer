@@ -407,10 +407,14 @@ export default {
         return
       }
 
-      this.listCode = this.code
-        .trim()
-        .split(/[\n\t ]/)
-        .filter((x) => x != '')
+      this.listCode = [
+        ...new Set(
+          this.code
+            .trim()
+            .split(/[\n\t ]/)
+            .filter((x) => x != '')
+        ),
+      ]
       this.track(this.listCode)
     },
 
