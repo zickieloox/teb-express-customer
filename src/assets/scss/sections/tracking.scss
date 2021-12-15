@@ -167,14 +167,17 @@
             padding-top: 25px;
         }
         li {
-            margin-right: 25px;
             float: left;
+            padding-left: 0;
+            padding-right: 0;
+            margin-right: .5rem;
         }
         li a {
             display: block;
             color: $color-neutral-7;
             text-align: center;
             text-decoration: none;
+            padding: 0.5rem 10px;
             &.disabled {
                 color: $color-neutral-5;
             }
@@ -337,8 +340,13 @@
                     .item__right {
                         margin-bottom: 24px;
                     }
-                    .item__right__data .location {
-                        margin-left: 5px;
+                    .item__right__data {
+                        .location {
+                            margin-left: 5px;
+                        }
+                        .time {
+                            width: 80px;
+                        }
                     }
                 }
             }
