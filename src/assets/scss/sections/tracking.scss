@@ -1,6 +1,7 @@
 .tracking_page {
     background-color: #FFFFFF;
     min-height: 100vh;
+    margin-top: 40px;
 }
 
 .search__section {
@@ -152,6 +153,10 @@
 }
 
 .tracking__section {
+    .tracking__header {
+        height: 96px;
+        background-color: $color-neutral-1;
+    }
     .filter_tab {
         width: 1032px;
         margin-left: auto;
@@ -160,11 +165,11 @@
         position: relative;
         ul {
             list-style-type: none;
-            height: 80px;
+            height: 96px;
             margin: 0;
             padding: 0;
             overflow: hidden;
-            padding-top: 25px;
+            padding-top: 36px;
         }
         li {
             float: left;

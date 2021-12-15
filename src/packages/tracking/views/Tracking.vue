@@ -44,70 +44,71 @@ Với nhiều mã, các mã được phân cách bằng dấu enter`
     </div>
 
     <div class="tracking__section" v-else>
-      <div class="filter_tab">
-        <ul class="tablist">
-          <li class="nav-item">
-            <a
-              href="#"
-              class="nav-link"
-              @click="filterStatus('')"
-              :class="{ active: filter.status == '' }"
-            >
-              All ({{ count }})
-            </a>
-          </li>
-          <li class="nav-item">
-            <a
-              href="#"
-              class="nav-link"
-              @click="filterStatus(statusProcessing)"
-              :class="{
-                disabled: !CountStatusProcessing,
-                active: filter.status == statusProcessing,
-              }"
-              ><img src="~@/assets/img/clock2.svg" alt="" /> Processing ({{
-                CountStatusProcessing || 0
-              }})
-            </a>
-          </li>
-          <li class="nav-item">
-            <a
-              href="#"
-              class="nav-link"
-              @click="filterStatus(statusInTransit)"
-              :class="{
-                disabled: !CountStatusInTransit,
-                active: filter.status == statusInTransit,
-              }"
-              ><img src="~@/assets/img/airplane.png" alt="" /> Transit ({{
-                CountStatusInTransit || 0
-              }})
-            </a>
-          </li>
-          <li class="nav-item">
-            <a
-              href="#"
-              class="nav-link"
-              @click="filterStatus(statusDelivered)"
-              :class="{
-                disabled: !CountStatusDelivered,
-                active: filter.status == statusDelivered,
-              }"
-              ><img src="~@/assets/img/tick-circle.png" alt="" /> Delivered ({{
-                CountStatusDelivered || 0
-              }})
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link disabled"
-              ><img src="~@/assets/img/warning-2.png" alt="" /> Alert (0)
-            </a>
-          </li>
-        </ul>
-        <button class="btn btn-tracking" @click="openModalTracking">
-          <img src="~@/assets/img/box-search.png" alt="" /> Track Another
-          Package</button
-        >
+      <div class="tracking__header">
+        <div class="filter_tab">
+          <ul class="tablist">
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link"
+                @click="filterStatus('')"
+                :class="{ active: filter.status == '' }"
+              >
+                All ({{ count }})
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link"
+                @click="filterStatus(statusProcessing)"
+                :class="{
+                  disabled: !CountStatusProcessing,
+                  active: filter.status == statusProcessing,
+                }"
+                ><img src="~@/assets/img/clock2.svg" alt="" /> Processing ({{
+                  CountStatusProcessing || 0
+                }})
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link"
+                @click="filterStatus(statusInTransit)"
+                :class="{
+                  disabled: !CountStatusInTransit,
+                  active: filter.status == statusInTransit,
+                }"
+                ><img src="~@/assets/img/airplane.png" alt="" /> Transit ({{
+                  CountStatusInTransit || 0
+                }})
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link"
+                @click="filterStatus(statusDelivered)"
+                :class="{
+                  disabled: !CountStatusDelivered,
+                  active: filter.status == statusDelivered,
+                }"
+                ><img src="~@/assets/img/tick-circle.png" alt="" /> Delivered
+                ({{ CountStatusDelivered || 0 }})
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link disabled"
+                ><img src="~@/assets/img/warning-2.png" alt="" /> Alert (0)
+              </a>
+            </li>
+          </ul>
+          <button class="btn btn-tracking" @click="openModalTracking">
+            <img src="~@/assets/img/box-search.png" alt="" /> Track Another
+            Package</button
+          >
+        </div>
       </div>
 
       <div class="tracking">
@@ -327,6 +328,12 @@ export default {
               item = Object.assign({}, item, {
                 log: this.logs.filter((x) => x.package_id == item.id),
               })
+              if (
+                item.status_string != this.statusInTransit &&
+                item.status_string != this.statusDelivered
+              ) {
+                item.status_string = this.statusProcessing
+              }
               const times = item.log.map((item) =>
                 datetime(item.ship_time, 'dd-MM-yyyy')
               )
@@ -353,7 +360,10 @@ export default {
     },
     CountStatusProcessing() {
       return this.count_status
-        .filter((x) => x.status == this.statusProcessing)
+        .filter(
+          (x) =>
+            x.status != this.statusInTransit && x.status != this.statusDelivered
+        )
         .map((x) => x.count)[0]
     },
     CountStatusInTransit() {
@@ -386,6 +396,7 @@ export default {
       if (this.count / this.filter.limit == this.filter.page - 1) {
         this.filter.page--
       }
+      console.log(this.ListPackages)
       this.filterStatus('')
       this.opened = []
 
