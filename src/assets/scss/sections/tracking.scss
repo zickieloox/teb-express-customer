@@ -400,15 +400,18 @@
                 }
                 .txt {
                     border: none;
-                    padding: 6px 12px 0px 12px;
+                    padding: 6px 30px 0px 36px;
                     font-size: 14px;
                     line-height: 22px;
                     color: $color-neutral-9;
                     position: relative;
-                    height: 32px;
+                    // height: 32px;
+                    height: fit-content;
                     .number {
                         color: $color-neutral-5;
-                        margin-right: .5rem;
+                        // margin-right: .5rem;
+                        position: absolute;
+                        left: 12px;
                     }
                     &:focus {
                         outline: none;

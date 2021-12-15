@@ -13,7 +13,8 @@
                 size="sm"
                 v-if="code"
               >
-                <span class="number">{{ j + 1 }}.</span> {{ code }}
+                <span class="number">{{ j + 1 }}.</span>
+                <span>{{ code }}</span>
                 <i class="fa fa-times" @click="handleRemoveCode(code)"></i>
               </span>
             </template>
