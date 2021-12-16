@@ -17,8 +17,12 @@ firebase.initializeApp({
 const isSupported = firebase.messaging.isSupported()
 if (isSupported) {
   const messaging = firebase.messaging()
+  messaging.onMessage((payload) => {
+    console.log('Message received. ', payload)
+  })
+
   messaging.onBackgroundMessage((payload) => {
-    console.log(payload)
+    console.log('Message received. ', payload)
     // const {
     //   notification: { title, body, image },
     // } = payload
