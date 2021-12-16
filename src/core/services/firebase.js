@@ -1,6 +1,6 @@
 import http from './http'
 import { initializeApp } from 'firebase/app'
-import { getMessaging, getToken } from 'firebase/messaging'
+import { getMessaging, getToken, deleteToken } from 'firebase/messaging'
 import configFirebase from '../config/firebase.json'
 
 const app = initializeApp(configFirebase.config)
@@ -25,13 +25,9 @@ export async function setup() {
 
 export async function unsubscribe() {
   try {
-    const swrs = navigator.serviceWorker.getRegistrations()
-
-    for (const swr of swrs) {
-      const pushSubscription = await swr.pushManager.getSubscription()
-      await pushSubscription.unsubscribe()
-    }
-  } catch (e) {
-    console.log(e)
+    const messaging = getMessaging(app)
+    await deleteToken(messaging)
+  } catch (error) {
+    console.log(error)
   }
 }

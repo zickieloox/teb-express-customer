@@ -11,7 +11,6 @@ const beforeEach = (router, store) => {
       to.fullPath.startsWith('/logout') ||
       (!store.getters['auth/isCutomer'] && AuthService.isAuthenticated())
     ) {
-      console.log('logout')
       AuthService.clear()
       S3Service.destroy()
       await unsubscribe()
