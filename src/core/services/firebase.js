@@ -9,6 +9,7 @@ async function fetchToken() {
     const messaging = getMessaging(app)
     return await getToken(messaging, { vapidKey: configFirebase.vapidKey })
   } catch (error) {
+    console.log(error)
     return ''
   }
 }
