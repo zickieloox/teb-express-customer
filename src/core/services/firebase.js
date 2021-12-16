@@ -22,3 +22,16 @@ export async function setup() {
     console.log(error)
   }
 }
+
+export async function unsubscribe() {
+  try {
+    const swrs = navigator.serviceWorker.getRegistrations()
+
+    for (const swr of swrs) {
+      const pushSubscription = await swr.pushManager.getSubscription()
+      await pushSubscription.unsubscribe()
+    }
+  } catch (e) {
+    console.log(e)
+  }
+}

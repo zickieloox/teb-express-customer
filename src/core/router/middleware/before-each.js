@@ -1,6 +1,7 @@
 import Browser from '@core/helpers/browser'
 import AuthService from '@core/services/auth'
 import S3Service from '@core/services/s3'
+import { unsubscribe } from '../../services/firebase'
 
 // eslint-disable-next-line
 const beforeEach = (router, store) => {
@@ -10,8 +11,10 @@ const beforeEach = (router, store) => {
       to.fullPath.startsWith('/logout') ||
       (!store.getters['auth/isCutomer'] && AuthService.isAuthenticated())
     ) {
+      console.log('logout')
       AuthService.clear()
       S3Service.destroy()
+      await unsubscribe()
       Browser.redirect('/')
       return
     }
