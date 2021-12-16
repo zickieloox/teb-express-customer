@@ -421,7 +421,6 @@ export default {
       }
       const result = await this[CREATE_TRANSACTION](payload)
       this.loading = false
-      console.log(result)
       if (!result || !result.success) {
         this.$toast.open({
           type: 'error',

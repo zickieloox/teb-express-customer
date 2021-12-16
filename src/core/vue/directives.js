@@ -103,6 +103,7 @@ const getFormatStatus = (status) => {
       break
     case 'Đã hủy':
     case 'Thất bại':
+    case 'Từ chối':
       statusClass = 'danger'
       break
 
