@@ -117,10 +117,10 @@ Với nhiều mã, các mã được phân cách bằng dấu enter`
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th width="40"></th>
-                  <th width="80">MÃ VẬN ĐƠN</th>
+                  <th width="60"></th>
+                  <th width="100">MÃ VẬN ĐƠN</th>
                   <th width="250">TRACKING</th>
-                  <th width="400">STATUS</th>
+                  <th width="350">STATUS</th>
                   <th width="80">
                     <div class="d-flex btn-action-icon">
                       <copy :value="dataCopy">
@@ -364,7 +364,9 @@ export default {
           (x) =>
             x.status != this.statusInTransit && x.status != this.statusDelivered
         )
-        .map((x) => x.count)[0]
+        .reduce(function(prev, cur) {
+          return prev + cur.count
+        }, 0)
     },
     CountStatusInTransit() {
       return this.count_status
@@ -396,7 +398,6 @@ export default {
       if (this.count / this.filter.limit == this.filter.page - 1) {
         this.filter.page--
       }
-      console.log(this.ListPackages)
       this.filterStatus('')
       this.opened = []
 
@@ -450,9 +451,20 @@ export default {
 
         return
       }
-      this.countPackages = this.count_status
-        .filter((x) => x.status == status)
-        .map((x) => x.count)[0]
+      switch (status) {
+        case this.statusProcessing:
+          this.countPackages = this.CountStatusProcessing
+          break
+        case this.statusInTransit:
+          this.countPackages = this.CountStatusInTransit
+          break
+        case this.statusDelivered:
+          this.countPackages = this.CountStatusDelivered
+          break
+      }
+      // this.countPackages = this.count_status
+      //   .filter((x) => x.status == status)
+      //   .map((x) => x.count)[0]
       this.newListPackages = this.ListPackages.filter(
         (x) => x.status_string == status
       )

@@ -3,30 +3,32 @@
     <template>
       <div class="search">
         <div class="search-input">
-          <div class="input" id="data">
-            <template v-for="(code, j) in listCode">
-              <span
-                :key="j"
+          <div class="wrapper">
+            <div class="input" id="data">
+              <template v-for="(code, j) in listCode">
+                <span
+                  :key="j"
+                  class="txt"
+                  type="default"
+                  name="plus"
+                  size="sm"
+                  v-if="code"
+                >
+                  <span class="number">{{ j + 1 }}.</span>
+                  <span>{{ code }}</span>
+                  <i class="fa fa-times" @click="handleRemoveCode(code)"></i>
+                </span>
+              </template>
+              <input
+                id="input"
+                ref="input"
                 class="txt"
-                type="default"
-                name="plus"
-                size="sm"
-                v-if="code"
-              >
-                <span class="number">{{ j + 1 }}.</span>
-                <span>{{ code }}</span>
-                <i class="fa fa-times" @click="handleRemoveCode(code)"></i>
-              </span>
-            </template>
-            <input
-              id="input"
-              ref="input"
-              class="txt"
-              type="text"
-              v-model="code"
-              :placeholder="`Vui lòng nhập mã vận đơn hoặc tracking number`"
-              @keyup.enter="addCode()"
-            />
+                type="text"
+                v-model="code"
+                :placeholder="`Vui lòng nhập mã vận đơn hoặc tracking number`"
+                @keyup.enter="addCode()"
+              />
+            </div>
             <div class="showNum" id="num">{{ listCode.length }}/50</div>
           </div>
         </div>
