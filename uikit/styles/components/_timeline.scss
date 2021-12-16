@@ -180,7 +180,9 @@
     display: flex;
     color: #626363;
     margin: 6px 0 6px 30px;
-    .time {}
+    .time {
+        width: 80px;
+    }
     .des {
         color: #313232;
         margin-left: 24px;

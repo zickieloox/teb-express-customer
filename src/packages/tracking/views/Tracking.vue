@@ -22,7 +22,7 @@
             class="input"
             :placeholder="
               `Vui lòng nhập mã vận đơn hoặc tracking number
-Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
+Với nhiều mã, các mã được phân cách bằng dấu enter`
             "
             @input="onChange"
           ></textarea>
@@ -44,70 +44,71 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
     </div>
 
     <div class="tracking__section" v-else>
-      <div class="filter_tab">
-        <ul class="tablist">
-          <li class="nav-item">
-            <a
-              href="#"
-              class="nav-link"
-              @click="filterStatus('')"
-              :class="{ active: filter.status == '' }"
-            >
-              All ({{ count }})
-            </a>
-          </li>
-          <li class="nav-item">
-            <a
-              href="#"
-              class="nav-link"
-              @click="filterStatus(statusProcessing)"
-              :class="{
-                disabled: !CountStatusProcessing,
-                active: filter.status == statusProcessing,
-              }"
-              ><img src="~@/assets/img/clock2.svg" alt="" /> Processing ({{
-                CountStatusProcessing || 0
-              }})
-            </a>
-          </li>
-          <li class="nav-item">
-            <a
-              href="#"
-              class="nav-link"
-              @click="filterStatus(statusInTransit)"
-              :class="{
-                disabled: !CountStatusInTransit,
-                active: filter.status == statusInTransit,
-              }"
-              ><img src="~@/assets/img/airplane.png" alt="" /> Transit ({{
-                CountStatusInTransit || 0
-              }})
-            </a>
-          </li>
-          <li class="nav-item">
-            <a
-              href="#"
-              class="nav-link"
-              @click="filterStatus(statusDelivered)"
-              :class="{
-                disabled: !CountStatusDelivered,
-                active: filter.status == statusDelivered,
-              }"
-              ><img src="~@/assets/img/tick-circle.png" alt="" /> Delivered ({{
-                CountStatusDelivered || 0
-              }})
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link disabled"
-              ><img src="~@/assets/img/warning-2.png" alt="" /> Alert (0)
-            </a>
-          </li>
-        </ul>
-        <button class="btn btn-tracking" @click="openModalTracking">
-          <img src="~@/assets/img/box-search.png" alt="" /> Track Another
-          Package</button
-        >
+      <div class="tracking__header">
+        <div class="filter_tab">
+          <ul class="tablist">
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link"
+                @click="filterStatus('')"
+                :class="{ active: filter.status == '' }"
+              >
+                All ({{ count }})
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link"
+                @click="filterStatus(statusProcessing)"
+                :class="{
+                  disabled: !CountStatusProcessing,
+                  active: filter.status == statusProcessing,
+                }"
+                ><img src="~@/assets/img/clock2.svg" alt="" /> Processing ({{
+                  CountStatusProcessing || 0
+                }})
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link"
+                @click="filterStatus(statusInTransit)"
+                :class="{
+                  disabled: !CountStatusInTransit,
+                  active: filter.status == statusInTransit,
+                }"
+                ><img src="~@/assets/img/airplane.png" alt="" /> Transit ({{
+                  CountStatusInTransit || 0
+                }})
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link"
+                @click="filterStatus(statusDelivered)"
+                :class="{
+                  disabled: !CountStatusDelivered,
+                  active: filter.status == statusDelivered,
+                }"
+                ><img src="~@/assets/img/tick-circle.png" alt="" /> Delivered
+                ({{ CountStatusDelivered || 0 }})
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link disabled"
+                ><img src="~@/assets/img/warning-2.png" alt="" /> Alert (0)
+              </a>
+            </li>
+          </ul>
+          <button class="btn btn-tracking" @click="openModalTracking">
+            <img src="~@/assets/img/box-search.png" alt="" /> Track Another
+            Package</button
+          >
+        </div>
       </div>
 
       <div class="tracking">
@@ -116,9 +117,9 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th width="40"></th>
-                  <th width="100">TRACKING NUMBER</th>
-                  <th width="150">EXPECTED DELIVERY</th>
+                  <th width="60"></th>
+                  <th width="100">MÃ VẬN ĐƠN</th>
+                  <th width="250">TRACKING</th>
                   <th width="350">STATUS</th>
                   <th width="80">
                     <div class="d-flex btn-action-icon">
@@ -144,90 +145,94 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
                   </th>
                 </tr>
               </thead>
-              <tbody>
-                <template v-for="(item, i) in newListPackages">
-                  <tr
-                    class="clickable-row"
-                    :key="i"
-                    @click="toggle(item.id)"
-                    :class="{ opened: opened.includes(item.id) && !deleting }"
-                  >
-                    <td>
-                      <img
-                        v-if="item.status_string == statusDelivered"
-                        src="~@/assets/img/iconDelivered.png"
-                      />
-                      <img
-                        v-if="item.status_string == statusProcessing"
-                        src="~@/assets/img/iconProcessing.png"
-                      />
-                      <img
-                        v-if="item.status_string == statusInTransit"
-                        src="~@/assets/img/iconInTransit.png"
-                      />
-                    </td>
-                    <td
-                      >{{ item.tracking ? item.tracking.tracking_number : '' }}
-                      <br />
-                      <span v-status:status="item.status_string"></span>
-                    </td>
-                    <td>N/A</td>
-                    <td v-if="item.log">
-                      {{ item.log[0].description }}
-                      <br />
-                      <span class="location">{{ item.log[0].location }}</span>
-                    </td>
-                    <td class="icon"
-                      ><div @click="deletePackage(item)"
-                        ><i class="fa fa-times"></i></div
-                    ></td>
-                  </tr>
-                  <transition :key="'A' + i" name="fade" mode="out-in">
-                    <tr
-                      class="tracking-detail"
-                      v-show="opened.includes(item.id) && !deleting"
-                    >
-                      <td colspan="5">
-                        <div class="status">{{ item.status_string }}</div>
+              <tbody
+                v-for="(item, i) in newListPackages"
+                :key="i"
+                :class="{ 'tbody-opened': opened.includes(item.id) }"
+              >
+                <tr class="sperate"> </tr>
 
-                        <div class="timeline-new">
+                <tr
+                  class="clickable-row"
+                  @click="toggle(item.id)"
+                  :class="{ opened: opened.includes(item.id) && !deleting }"
+                >
+                  <td>
+                    <img
+                      v-if="item.status_string == statusDelivered"
+                      src="~@/assets/img/iconDelivered.png"
+                    />
+                    <img
+                      v-if="item.status_string == statusProcessing"
+                      src="~@/assets/img/iconProcessing.png"
+                    />
+                    <img
+                      v-if="item.status_string == statusInTransit"
+                      src="~@/assets/img/iconInTransit.png"
+                    />
+                  </td>
+                  <td
+                    >{{ item.package_code.code }}
+                    <br />
+                    <span v-status:status="item.status_string"></span>
+                  </td>
+                  <td
+                    >{{ item.tracking ? item.tracking.tracking_number : '' }}
+                    <br /><span>&nbsp;</span></td
+                  >
+                  <td v-if="item.log">
+                    {{ item.log[0].description }}
+                    <br />
+                    <span class="location">{{ item.log[0].location }}</span>
+                  </td>
+                  <td class="icon"
+                    ><div @click="deletePackage(item)"
+                      ><i class="fa fa-times"></i></div
+                  ></td>
+                </tr>
+                <transition :key="'A' + i" name="fade" mode="out-in">
+                  <tr
+                    class="tracking-detail"
+                    v-show="opened.includes(item.id) && !deleting"
+                  >
+                    <td colspan="5">
+                      <div class="status">{{ item.status_string }}</div>
+
+                      <div class="timeline-new">
+                        <div
+                          v-for="(item, i) in item.data"
+                          :key="i"
+                          :class="{
+                            'first-item': i === 0,
+                          }"
+                          class="timeline-item-new"
+                        >
+                          <div class="item__right">
+                            <div class="title">{{ item.name }}</div>
+                          </div>
                           <div
-                            v-for="(item, i) in item.data"
-                            :key="i"
+                            v-for="(it, j) in item.data"
+                            :key="j"
+                            class="item__right__data"
                             :class="{
-                              'first-item': i === 0,
+                              'first-data': j === 0,
                             }"
-                            class="timeline-item-new"
                           >
-                            <div class="item__right">
-                              <div class="title">{{ item.name }}</div>
-                            </div>
-                            <div
-                              v-for="(it, j) in item.data"
-                              :key="j"
-                              class="item__right__data"
-                              :class="{
-                                'first-data': j === 0,
-                              }"
+                            <div class="time">
+                              {{ it.ship_time | datetime('HH:mm:ss') }}</div
                             >
-                              <div class="time">
-                                {{ it.ship_time | datetime('HH:mm:ss') }}</div
-                              >
-                              <div class="des">
-                                {{ convertDes(it) }}
-                                <span class="location" v-if="it.location">
-                                  ___{{ it.location }}</span
-                                ></div
-                              >
-                            </div>
+                            <div class="des">
+                              {{ convertDes(it) }}
+                              <span class="location" v-if="it.location">
+                                ___{{ it.location }}</span
+                              ></div
+                            >
                           </div>
                         </div>
-                      </td>
-                    </tr>
-                  </transition>
-
-                  <tr :key="'B' + i" v-if="open" class="sperate"> </tr>
-                </template>
+                      </div>
+                    </td>
+                  </tr>
+                </transition>
               </tbody>
             </table>
 
@@ -296,7 +301,6 @@ export default {
       },
       newListPackages: [],
       deleting: false,
-      isFetching: false,
       countPackages: 0,
       openTextarea: false,
       visibleModal: false,
@@ -324,6 +328,12 @@ export default {
               item = Object.assign({}, item, {
                 log: this.logs.filter((x) => x.package_id == item.id),
               })
+              if (
+                item.status_string != this.statusInTransit &&
+                item.status_string != this.statusDelivered
+              ) {
+                item.status_string = this.statusProcessing
+              }
               const times = item.log.map((item) =>
                 datetime(item.ship_time, 'dd-MM-yyyy')
               )
@@ -350,8 +360,13 @@ export default {
     },
     CountStatusProcessing() {
       return this.count_status
-        .filter((x) => x.status == this.statusProcessing)
-        .map((x) => x.count)[0]
+        .filter(
+          (x) =>
+            x.status != this.statusInTransit && x.status != this.statusDelivered
+        )
+        .reduce(function(prev, cur) {
+          return prev + cur.count
+        }, 0)
     },
     CountStatusInTransit() {
       return this.count_status
@@ -372,10 +387,7 @@ export default {
 
     async track(codes) {
       this.listCode = codes
-      this.isFetching = true
-      let payload = codes.filter((x) => x != '')
-      const result = await this[GET_LOGS](payload)
-      this.isFetching = false
+      const result = await this[GET_LOGS](this.listCode)
 
       if (result.error) {
         this.listCode = []
@@ -399,7 +411,7 @@ export default {
         return
       }
 
-      var regex = /^[A-Za-z0-9\n ]+$/
+      var regex = /^[A-Za-z0-9\n\t ]+$/
       var isValid = regex.test(this.code.trim())
       if (!isValid) {
         this.errText = 'Mã vận đơn/Tracking number không hợp lệ'
@@ -407,7 +419,14 @@ export default {
         return
       }
 
-      this.listCode = this.code.trim().split(/[\n ]/)
+      this.listCode = [
+        ...new Set(
+          this.code
+            .trim()
+            .split(/[\n\t ]/)
+            .filter((x) => x != '')
+        ),
+      ]
       this.track(this.listCode)
     },
 
@@ -432,9 +451,20 @@ export default {
 
         return
       }
-      this.countPackages = this.count_status
-        .filter((x) => x.status == status)
-        .map((x) => x.count)[0]
+      switch (status) {
+        case this.statusProcessing:
+          this.countPackages = this.CountStatusProcessing
+          break
+        case this.statusInTransit:
+          this.countPackages = this.CountStatusInTransit
+          break
+        case this.statusDelivered:
+          this.countPackages = this.CountStatusDelivered
+          break
+      }
+      // this.countPackages = this.count_status
+      //   .filter((x) => x.status == status)
+      //   .map((x) => x.count)[0]
       this.newListPackages = this.ListPackages.filter(
         (x) => x.status_string == status
       )

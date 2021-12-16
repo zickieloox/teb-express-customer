@@ -1,6 +1,6 @@
 import http from './http'
 import { initializeApp } from 'firebase/app'
-import { getMessaging, getToken } from 'firebase/messaging'
+import { getMessaging, getToken, deleteToken } from 'firebase/messaging'
 import configFirebase from '../config/firebase.json'
 
 const app = initializeApp(configFirebase.config)
@@ -9,6 +9,7 @@ async function fetchToken() {
     const messaging = getMessaging(app)
     return await getToken(messaging, { vapidKey: configFirebase.vapidKey })
   } catch (error) {
+    console.log(error)
     return ''
   }
 }
@@ -18,6 +19,15 @@ export async function setup() {
 
   try {
     http.post('/users/firebase', { token })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function unsubscribe() {
+  try {
+    const messaging = getMessaging(app)
+    await deleteToken(messaging)
   } catch (error) {
     console.log(error)
   }

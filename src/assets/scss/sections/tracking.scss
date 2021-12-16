@@ -1,6 +1,7 @@
 .tracking_page {
     background-color: #FFFFFF;
     min-height: 100vh;
+    margin-top: 40px;
 }
 
 .search__section {
@@ -152,6 +153,10 @@
 }
 
 .tracking__section {
+    .tracking__header {
+        height: 96px;
+        background-color: $color-neutral-1;
+    }
     .filter_tab {
         width: 1032px;
         margin-left: auto;
@@ -160,21 +165,24 @@
         position: relative;
         ul {
             list-style-type: none;
-            height: 80px;
+            height: 96px;
             margin: 0;
             padding: 0;
             overflow: hidden;
-            padding-top: 25px;
+            padding-top: 36px;
         }
         li {
-            margin-right: 25px;
             float: left;
+            padding-left: 0;
+            padding-right: 0;
+            margin-right: .5rem;
         }
         li a {
             display: block;
             color: $color-neutral-7;
             text-align: center;
             text-decoration: none;
+            padding: 0.5rem 10px;
             &.disabled {
                 color: $color-neutral-5;
             }
@@ -209,6 +217,13 @@
             font-size: 16px;
             line-height: 24px;
             color: $color-neutral-9;
+            .tbody-opened {
+                +.tbody-opened {
+                    .sperate {
+                        display: table-cell;
+                    }
+                }
+            }
             th {
                 font-weight: bold;
                 font-size: 12px;
@@ -245,6 +260,7 @@
             }
             .sperate {
                 height: 10px;
+                display: none;
             }
             .icon {
                 text-align: right;
@@ -329,8 +345,13 @@
                     .item__right {
                         margin-bottom: 24px;
                     }
-                    .item__right__data .location {
-                        margin-left: 5px;
+                    .item__right__data {
+                        .location {
+                            margin-left: 5px;
+                        }
+                        .time {
+                            width: 80px;
+                        }
                     }
                 }
             }
@@ -360,78 +381,88 @@
         .search-input {
             outline: none;
             position: relative;
-            .input {
+            .wrapper {
                 width: 75%;
                 height: 300px;
-                padding-top: 12px;
-                padding-bottom: 30px;
-                font-size: 14px;
-                line-height: 22px;
-                color: $color-neutral-9;
                 border: 1px solid #141F65;
                 box-sizing: border-box;
                 border-radius: 8px;
-                flex-direction: column;
-                display: flex;
-                background-color: #ffffff;
-                overflow-y: auto;
-                resize: none;
-                outline: none;
-                &::placeholder {
-                    font-size: 14px;
-                    line-height: 22px;
-                    color: $color-neutral-5;
-                }
-                .txt {
-                    border: none;
-                    padding: 6px 12px 0px 12px;
-                    font-size: 14px;
-                    line-height: 22px;
-                    color: $color-neutral-9;
-                    position: relative;
-                    height: 32px;
-                    .number {
-                        color: $color-neutral-5;
-                        margin-right: .5rem;
-                    }
-                    &:focus {
-                        outline: none;
-                    }
-                    .fa-times {
-                        position: absolute;
-                        right: 15px;
-                        top: 50%;
-                        transform: translateY(-50%);
-                        cursor: pointer
-                    }
-                    &:nth-child(odd) {
-                        background-color: $color-neutral-1;
-                        .fa-times {
-                            -webkit-text-stroke: 2px $color-neutral-1;
-                        }
-                    }
-                    &:nth-child(even) {
-                        background-color: #ffffff;
-                        .fa-times {
-                            -webkit-text-stroke: 2px white;
-                        }
-                    }
-                    &:not(:first-child) {
-                        &::placeholder {
-                            color: transparent;
-                        }
-                    }
-                }
-                input {
-                    background-color: transparent!important;
-                }
+                overflow: hidden;
                 .showNum {
                     position: absolute;
                     bottom: 5px;
-                    left: 65%;
                     color: $color-neutral-5;
                     font-size: 14px;
                     line-height: 20px;
+                    width: 75%;
+                    float: right;
+                    text-align: right;
+                    padding-right: 20px;
+                }
+                .input {
+                    height: 275px;
+                    padding-top: 12px;
+                    padding-bottom: 30px;
+                    font-size: 14px;
+                    line-height: 22px;
+                    color: $color-neutral-9;
+                    flex-direction: column;
+                    display: flex;
+                    background-color: #ffffff;
+                    overflow-y: auto;
+                    resize: none;
+                    outline: none;
+                    &::placeholder {
+                        font-size: 14px;
+                        line-height: 22px;
+                        color: $color-neutral-5;
+                    }
+                    .txt {
+                        border: none;
+                        padding: 6px 30px 0px 36px;
+                        font-size: 14px;
+                        line-height: 22px;
+                        color: $color-neutral-9;
+                        position: relative;
+                        // height: 32px;
+                        height: fit-content;
+                        .number {
+                            color: $color-neutral-5;
+                            // margin-right: .5rem;
+                            position: absolute;
+                            left: 12px;
+                        }
+                        &:focus {
+                            outline: none;
+                        }
+                        .fa-times {
+                            position: absolute;
+                            right: 15px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            cursor: pointer
+                        }
+                        &:nth-child(odd) {
+                            background-color: $color-neutral-1;
+                            .fa-times {
+                                -webkit-text-stroke: 2px $color-neutral-1;
+                            }
+                        }
+                        &:nth-child(even) {
+                            background-color: #ffffff;
+                            .fa-times {
+                                -webkit-text-stroke: 2px white;
+                            }
+                        }
+                        &:not(:first-child) {
+                            &::placeholder {
+                                color: transparent;
+                            }
+                        }
+                    }
+                    input {
+                        background-color: transparent!important;
+                    }
                 }
             }
         }

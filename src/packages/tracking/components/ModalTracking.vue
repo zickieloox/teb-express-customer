@@ -3,29 +3,32 @@
     <template>
       <div class="search">
         <div class="search-input">
-          <div class="input" id="data">
-            <template v-for="(code, j) in listCode">
-              <span
-                :key="j"
+          <div class="wrapper">
+            <div class="input" id="data">
+              <template v-for="(code, j) in listCode">
+                <span
+                  :key="j"
+                  class="txt"
+                  type="default"
+                  name="plus"
+                  size="sm"
+                  v-if="code"
+                >
+                  <span class="number">{{ j + 1 }}.</span>
+                  <span>{{ code }}</span>
+                  <i class="fa fa-times" @click="handleRemoveCode(code)"></i>
+                </span>
+              </template>
+              <input
+                id="input"
+                ref="input"
                 class="txt"
-                type="default"
-                name="plus"
-                size="sm"
-                v-if="code"
-              >
-                <span class="number">{{ j + 1 }}.</span> {{ code }}
-                <i class="fa fa-times" @click="handleRemoveCode(code)"></i>
-              </span>
-            </template>
-            <input
-              id="input"
-              ref="input"
-              class="txt"
-              type="text"
-              v-model="code"
-              :placeholder="`Vui lòng nhập mã vận đơn hoặc tracking number`"
-              @keyup.enter="addCode()"
-            />
+                type="text"
+                v-model="code"
+                :placeholder="`Vui lòng nhập mã vận đơn hoặc tracking number`"
+                @keyup.enter="addCode()"
+              />
+            </div>
             <div class="showNum" id="num">{{ listCode.length }}/50</div>
           </div>
         </div>
@@ -74,7 +77,7 @@ export default {
     },
   },
   mounted() {
-    this.listCode = this.codes
+    this.listCode = this.codes.map((num) => num)
   },
   methods: {
     handleClose() {
@@ -82,11 +85,6 @@ export default {
       this.$emit('close')
     },
     verifyCode() {
-      if (this.listCode.length < 1) {
-        this.errText = 'Vui lòng nhập mã vận đơn hoặc tracking number'
-        this.$toast.open({ type: 'error', message: this.errText })
-        return
-      }
       if (this.code != '') {
         const i = this.listCode.some((element) => this.code === element)
         if (i) {
@@ -94,7 +92,7 @@ export default {
           this.$toast.open({ type: 'error', message: this.errText })
           return
         }
-        var regex = /^[A-Za-z0-9\n ]+$/
+        var regex = /^[A-Za-z0-9\n\t ]+$/
         var isValid = regex.test(this.code.trim())
         if (!isValid) {
           this.errText = 'Mã vận đơn/Tracking number không hợp lệ'
@@ -106,7 +104,21 @@ export default {
           this.$toast.open({ type: 'error', message: this.errText })
           return
         }
-        this.listCode = this.listCode.concat(this.code.trim().split(/[\n ]/))
+        this.listCode = [
+          ...new Set(
+            this.listCode.concat(
+              this.code
+                .trim()
+                .split(/[\n\t ]/)
+                .filter((x) => x != '')
+            )
+          ),
+        ]
+      }
+      if (this.listCode.length < 1) {
+        this.errText = 'Vui lòng nhập mã vận đơn hoặc tracking number'
+        this.$toast.open({ type: 'error', message: this.errText })
+        return
       }
       this.$emit('track', this.listCode)
       this.$emit('update:visible', false)
@@ -135,7 +147,16 @@ export default {
         this.$toast.open({ type: 'error', message: this.errText })
         return
       }
-      this.listCode = this.listCode.concat(this.code.trim().split(/[\n ]/))
+      this.listCode = [
+        ...new Set(
+          this.listCode.concat(
+            this.code
+              .trim()
+              .split(/[\n\t ]/)
+              .filter((x) => x != '')
+          )
+        ),
+      ]
       this.code = ''
       var elem = document.getElementById('data')
       elem.scrollTop = elem.scrollHeight
@@ -152,7 +173,7 @@ export default {
     visible: {
       handler: function() {
         this.code = ''
-        this.listCode = this.codes
+        this.listCode = this.codes.map((num) => num)
         if (this.visible) {
           this.$nextTick(() => document.getElementById('input').focus())
         }
