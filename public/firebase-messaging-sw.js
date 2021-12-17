@@ -19,6 +19,14 @@ if (isSupported) {
   const messaging = firebase.messaging()
   messaging.onMessage((payload) => {
     console.log('Message received. ', payload)
+    const {
+      notification: { title, body, image },
+    } = payload
+
+    self.registration.showNotification(title, {
+      body,
+      icon: image || '/favicon.svg',
+    })
   })
 
   messaging.onBackgroundMessage((payload) => {
