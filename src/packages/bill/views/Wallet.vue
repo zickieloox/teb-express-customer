@@ -148,7 +148,9 @@
                           item.type === typePayoneer ||
                             item.type === typePingPong
                         "
-                      ></span>
+                      >
+                        + {{ Math.abs(item.amount) | formatPrice }}
+                      </span>
                       <span v-else
                         >{{ item.type == typePay ? '-' : '+' }}
                         {{ Math.abs(item.amount) | formatPrice }}</span
