@@ -18,6 +18,7 @@ export const PackageStatusInTransitText = 'in-transit'
 export const PackageStatusDeliveredText = 'delivered'
 export const PackageStatusReturnText = 'return'
 export const PackageStatusCancelledText = 'cancelled'
+export const PackageStatusAlertText = 'alert'
 
 export const MAP_NAME_STATUS_PACKAGE = {
   ['']: {

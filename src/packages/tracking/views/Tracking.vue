@@ -33,7 +33,7 @@ Với nhiều mã, các mã được phân cách bằng dấu enter`
             v-if="openTextarea"
             :disabled="!code"
             @click="clearListCode"
-            >Xóa tất cả</button
+            >Delete all</button
           >
           <button class="btn btn-tracking" @click.prevent="verifyCode">
             <img src="~@/assets/img/box-search.png" alt="" /> Track</button
@@ -60,53 +60,69 @@ Với nhiều mã, các mã được phân cách bằng dấu enter`
             <li class="nav-item">
               <a
                 href="#"
-                class="nav-link"
+                class="nav-link processing"
                 @click="filterStatus(statusProcessing)"
                 :class="{
                   disabled: !CountStatusProcessing,
                   active: filter.status == statusProcessing,
                 }"
-                ><img src="~@/assets/img/clock2.svg" alt="" /> Processing ({{
-                  CountStatusProcessing || 0
-                }})
+              >
+                <inline-svg
+                  :src="require('../../../assets/img/Setting.svg')"
+                ></inline-svg>
+                Processing ({{ CountStatusProcessing || 0 }})
               </a>
             </li>
             <li class="nav-item">
               <a
                 href="#"
-                class="nav-link"
+                class="nav-link in-transit"
                 @click="filterStatus(statusInTransit)"
                 :class="{
                   disabled: !CountStatusInTransit,
                   active: filter.status == statusInTransit,
                 }"
-                ><img src="~@/assets/img/airplane.png" alt="" /> Transit ({{
-                  CountStatusInTransit || 0
-                }})
+                ><inline-svg
+                  :src="require('../../../assets/img/transit.svg')"
+                ></inline-svg>
+                Transit ({{ CountStatusInTransit || 0 }})
               </a>
             </li>
             <li class="nav-item">
               <a
                 href="#"
-                class="nav-link"
+                class="nav-link delivered"
                 @click="filterStatus(statusDelivered)"
                 :class="{
                   disabled: !CountStatusDelivered,
                   active: filter.status == statusDelivered,
                 }"
-                ><img src="~@/assets/img/tick-circle.png" alt="" /> Delivered
-                ({{ CountStatusDelivered || 0 }})
+              >
+                <inline-svg
+                  :src="require('../../../assets/img/Tick-circle.svg')"
+                ></inline-svg>
+                Delivered ({{ CountStatusDelivered || 0 }})
               </a>
             </li>
             <li class="nav-item">
-              <a href="#" class="nav-link disabled"
-                ><img src="~@/assets/img/warning-2.png" alt="" /> Alert (0)
+              <a
+                href="#"
+                class="nav-link warning"
+                @click="filterStatus(statusAlert)"
+                :class="{
+                  disabled: !CountStatusAlert,
+                  active: filter.status == statusAlert,
+                }"
+                ><inline-svg
+                  :src="require('../../../assets/img/Warning-2.svg')"
+                ></inline-svg>
+                Alert ({{ CountStatusAlert || 0 }})
               </a>
             </li>
           </ul>
           <button class="btn btn-tracking" @click="openModalTracking">
-            <img src="~@/assets/img/box-search.png" alt="" /> Track Another
-            Package</button
+            <img src="~@/assets/img/box-search.png" alt="" /> Track Other
+            Packages</button
           >
         </div>
       </div>
@@ -120,7 +136,7 @@ Với nhiều mã, các mã được phân cách bằng dấu enter`
                   <th width="60"></th>
                   <th width="100">MÃ VẬN ĐƠN</th>
                   <th width="250">TRACKING</th>
-                  <th width="350">STATUS</th>
+                  <th width="400">STATUS</th>
                   <th width="80">
                     <div class="d-flex btn-action-icon">
                       <copy :value="dataCopy">
@@ -156,6 +172,7 @@ Với nhiều mã, các mã được phân cách bằng dấu enter`
                   class="clickable-row"
                   @click="toggle(item.id)"
                   :class="{ opened: opened.includes(item.id) && !deleting }"
+                  v-if="!item.notFound"
                 >
                   <td>
                     <img
@@ -163,13 +180,22 @@ Với nhiều mã, các mã được phân cách bằng dấu enter`
                       src="~@/assets/img/iconDelivered.png"
                     />
                     <img
-                      v-if="item.status_string == statusProcessing"
+                      v-else-if="item.status_string == statusProcessing"
                       src="~@/assets/img/iconProcessing.png"
                     />
                     <img
-                      v-if="item.status_string == statusInTransit"
+                      v-else-if="item.status_string == statusInTransit"
                       src="~@/assets/img/iconInTransit.png"
                     />
+                    <img
+                      v-else-if="item.status_string == statusCancel"
+                      src="~@/assets/img/iconCancel.png"
+                    />
+                    <img
+                      v-else-if="item.status_string == statusAlert"
+                      src="~@/assets/img/iconAlert.png"
+                    />
+                    <img v-else src="~@/assets/img/iconPreTransit.png" />
                   </td>
                   <td
                     >{{ item.package_code.code }}
@@ -190,10 +216,32 @@ Với nhiều mã, các mã được phân cách bằng dấu enter`
                       ><i class="fa fa-times"></i></div
                   ></td>
                 </tr>
+                <tr v-else class="not-found">
+                  <td>
+                    <img src="~@/assets/img/iconNotFound.png" />
+                  </td>
+                  <td
+                    >{{ item.package_code.code }}
+                    <br />
+                    <span>Not Found</span>
+                  </td>
+                  <td colspan="2"
+                    ><span class="error"
+                      >Không thể tìm thấy mã vận đơn này. Vui lòng kiểm tra lại
+                      sau.</span
+                    ></td
+                  >
+                  <td class="icon"
+                    ><div @click="deletePackage(item)"
+                      ><i class="fa fa-times"></i></div
+                  ></td>
+                </tr>
                 <transition :key="'A' + i" name="fade" mode="out-in">
                   <tr
                     class="tracking-detail"
-                    v-show="opened.includes(item.id) && !deleting"
+                    v-show="
+                      opened.includes(item.id) && !deleting && !item.notFound
+                    "
                   >
                     <td colspan="5">
                       <div class="status">{{ item.status_string }}</div>
@@ -273,6 +321,9 @@ import {
   PackageStatusDeliveredText,
   PackageStatusProcessingText,
   PackageStatusInTransitText,
+  PackageStatusAlertText,
+  PackageStatusPendingPickupText,
+  PackageStatusCancelledText,
 } from '../constant'
 import ModalTracking from '../components/ModalTracking.vue'
 import Copy from '../../bill/components/Copy.vue'
@@ -294,6 +345,9 @@ export default {
       statusProcessing: PackageStatusProcessingText,
       statusInTransit: PackageStatusInTransitText,
       statusDelivered: PackageStatusDeliveredText,
+      statusAlert: PackageStatusAlertText,
+      statusPendingPickup: PackageStatusPendingPickupText,
+      statusCancel: PackageStatusCancelledText,
       filter: {
         limit: 10,
         page: 1,
@@ -305,6 +359,7 @@ export default {
       openTextarea: false,
       visibleModal: false,
       dataCopy: '',
+      isLoading: false,
     }
   },
   beforeMount() {
@@ -317,42 +372,44 @@ export default {
     ...mapState('tracking', {
       packages: (state) => state.packages,
       logs: (state) => state.logs,
-      count: (state) => state.countPackages,
+      // count: (state) => state.countPackages,
       count_status: (state) => state.count_status,
     }),
     ListPackages: {
       get() {
         return this.packages == null
-          ? this.packages
-          : this.packages.map((item) => {
-              item = Object.assign({}, item, {
-                log: this.logs.filter((x) => x.package_id == item.id),
-              })
-              if (
-                item.status_string != this.statusInTransit &&
-                item.status_string != this.statusDelivered
-              ) {
-                item.status_string = this.statusProcessing
-              }
-              const times = item.log.map((item) =>
-                datetime(item.ship_time, 'dd-MM-yyyy')
-              )
-              let ConvertData = []
-              const uniqTimes = Uniq(times)
-              uniqTimes.forEach((element) =>
-                ConvertData.push({ name: element, data: [] })
-              )
-              ConvertData.forEach((x) =>
-                item.log.forEach(function(it) {
-                  if (datetime(it.ship_time, 'dd-MM-yyyy') == x.name) {
-                    x.data.push(it)
-                  }
+          ? this.notFoundCodes
+          : this.packages
+              .map((item) => {
+                item = Object.assign({}, item, {
+                  log: this.logs.filter((x) => x.package_id == item.id),
+                  notFound: false,
                 })
-              )
-              return Object.assign({}, item, {
-                data: ConvertData,
+                item.status_string =
+                  item.status_string == this.statusPendingPickup
+                    ? 'Pre-Transit'
+                    : item.status_string
+
+                const times = item.log.map((item) =>
+                  datetime(item.ship_time, 'dd-MM-yyyy')
+                )
+                let ConvertData = []
+                const uniqTimes = Uniq(times)
+                uniqTimes.forEach((element) =>
+                  ConvertData.push({ name: element, data: [] })
+                )
+                ConvertData.forEach((x) =>
+                  item.log.forEach(function(it) {
+                    if (datetime(it.ship_time, 'dd-MM-yyyy') == x.name) {
+                      x.data.push(it)
+                    }
+                  })
+                )
+                return Object.assign({}, item, {
+                  data: ConvertData,
+                })
               })
-            })
+              .concat(this.notFoundCodes)
       },
       set(packages) {
         return packages
@@ -360,13 +417,8 @@ export default {
     },
     CountStatusProcessing() {
       return this.count_status
-        .filter(
-          (x) =>
-            x.status != this.statusInTransit && x.status != this.statusDelivered
-        )
-        .reduce(function(prev, cur) {
-          return prev + cur.count
-        }, 0)
+        .filter((x) => x.status == this.statusProcessing)
+        .map((x) => x.count)[0]
     },
     CountStatusInTransit() {
       return this.count_status
@@ -378,18 +430,52 @@ export default {
         .filter((x) => x.status == this.statusDelivered)
         .map((x) => x.count)[0]
     },
+    CountStatusAlert() {
+      return this.count_status
+        .filter((x) => x.status == this.statusAlert)
+        .map((x) => x.count)[0]
+    },
+    count() {
+      return this.listCode.length
+    },
     mapStatus() {
       return MAP_NAME_STATUS_PACKAGE
+    },
+    notFoundCodes() {
+      let notFoundArr = []
+      if (this.packages == null) {
+        return this.listCode.map((x) => {
+          return {
+            package_code: { code: x },
+            status_string: 'Not found',
+            notFound: true,
+            log: [],
+          }
+        })
+      }
+      for (const item of this.listCode) {
+        if (!this.packages.map((x) => x.package_code.code).includes(item)) {
+          notFoundArr.push({
+            package_code: { code: item },
+            status_string: 'Not found',
+            notFound: true,
+            log: [],
+          })
+        }
+      }
+
+      return notFoundArr
     },
   },
   methods: {
     ...mapActions('tracking', [GET_LOGS]),
 
     async track(codes) {
+      this.isLoading = true
       this.listCode = codes
       const result = await this[GET_LOGS](this.listCode)
 
-      if (result.error) {
+      if (result.error && result.message != 'Không tìm thấy') {
         this.listCode = []
         this.$toast.open({ type: 'error', message: result.message })
         return
@@ -402,6 +488,7 @@ export default {
       this.opened = []
 
       this.deleting = false
+      this.isLoading = false
     },
 
     verifyCode() {
@@ -448,23 +535,12 @@ export default {
           this.filter.limit,
           this.filter.page
         )
-
+        console.log(this.newListPackages)
         return
       }
-      switch (status) {
-        case this.statusProcessing:
-          this.countPackages = this.CountStatusProcessing
-          break
-        case this.statusInTransit:
-          this.countPackages = this.CountStatusInTransit
-          break
-        case this.statusDelivered:
-          this.countPackages = this.CountStatusDelivered
-          break
-      }
-      // this.countPackages = this.count_status
-      //   .filter((x) => x.status == status)
-      //   .map((x) => x.count)[0]
+      this.countPackages = this.count_status
+        .filter((x) => x.status == status)
+        .map((x) => x.count)[0]
       this.newListPackages = this.ListPackages.filter(
         (x) => x.status_string == status
       )
@@ -481,6 +557,7 @@ export default {
 
     deletePackage(item) {
       this.deleting = true
+
       this.listCode = this.ListPackages.filter((x) => x != item).map(
         (x) => x.package_code.code
       )
@@ -491,6 +568,7 @@ export default {
       this.newListPackages = []
       this.code = ''
     },
+
     paginate(array, page_size, page_number) {
       return array.slice((page_number - 1) * page_size, page_number * page_size)
     },

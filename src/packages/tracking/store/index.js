@@ -34,18 +34,19 @@ export const mutations = {
 
 export const actions = {
   async getLogs({ commit }, payload) {
+    let result = { error: false }
     let [list, count] = await Promise.all([
       api.getLogs(payload),
       api.countLogs(payload),
     ])
     if (!list.logs || !list.packages || !count) {
-      return { error: true, message: list.errorMessage || '' }
+      result = { error: true, message: list.errorMessage || '' }
     }
     commit(SET_LOG, list.logs)
     commit(SET_PACKAGE, list.packages)
     commit(COUNT_LOG, count)
 
-    return { error: false }
+    return result
   },
 }
 
