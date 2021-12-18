@@ -37,7 +37,7 @@
             class="btn btn-clear"
             :disabled="listCode.length < 1"
             @click="clearListCode"
-            >Xóa tất cả</button
+            >Delete all</button
           >
           <button class="btn btn-tracking" @click.prevent="verifyCode">
             <img src="~@/assets/img/box-search.png" alt="" /> Track</button

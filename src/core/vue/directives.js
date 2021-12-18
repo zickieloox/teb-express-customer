@@ -82,6 +82,7 @@ const getFormatStatus = (status) => {
   let statusClass = ''
   switch (status) {
     case 'Tạo mới':
+    case 'in-transit':
       statusClass = 'default'
       break
     case 'Chờ lấy':
@@ -104,12 +105,13 @@ const getFormatStatus = (status) => {
     case 'Đã hủy':
     case 'Thất bại':
     case 'Từ chối':
+    case 'cancelled':
       statusClass = 'danger'
       break
 
     case 'Đang xử lý':
     case 'Chờ xác nhận':
-    case 'in-transit':
+    case 'Pre-Transit':
       statusClass = 'pending'
       break
     case 'Đã xử lý':
@@ -118,6 +120,9 @@ const getFormatStatus = (status) => {
       break
     case 'Chưa thanh toán':
       statusClass = 'unpaid'
+      break
+    case 'alert':
+      statusClass = 'alert'
       break
   }
 

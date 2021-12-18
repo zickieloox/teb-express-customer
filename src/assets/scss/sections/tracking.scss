@@ -175,14 +175,16 @@
             float: left;
             padding-left: 0;
             padding-right: 0;
-            margin-right: .5rem;
+            margin-right: 16px;
         }
         li a {
             display: block;
             color: $color-neutral-7;
             text-align: center;
             text-decoration: none;
-            padding: 0.5rem 10px;
+            padding: 0 4px;
+            line-height: 20px;
+            font-weight: 500;
             &.disabled {
                 color: $color-neutral-5;
             }
@@ -194,6 +196,23 @@
             &:after {
                 border: none!important;
             }
+            svg {
+                path {
+                    fill: #FFFFFF;
+                }
+            }
+            &.processing {
+                background-color: #00ABFB;
+            }
+            &.in-transit {
+                background-color: #13C2C2;
+            }
+            &.delivered {
+                background-color: #48BE78;
+            }
+            &.warning {
+                background-color: #FA8C16;
+            }
         }
         .btn-tracking {
             position: absolute;
@@ -203,7 +222,7 @@
             color: #ffffff;
             background-color: #141F65;
             &:hover {
-                background-color: $color-turquoise-6;
+                background-color: #00978C;
             }
         }
     }
@@ -363,6 +382,15 @@
             .fade-leave-active {
                 opacity: 0;
             }
+            .not-found {
+                span {
+                    font-size: 14px;
+                    color: $color-neutral-7
+                }
+                .error {
+                    color: #F5222D;
+                }
+            }
         }
     }
 }
@@ -483,7 +511,7 @@
                     color: #ffffff;
                     background-color: #141F65;
                     &:hover {
-                        background-color: $color-turquoise-6;
+                        background-color: #00978C;
                     }
                 }
                 &-clear {
