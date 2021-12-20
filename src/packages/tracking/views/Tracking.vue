@@ -68,7 +68,7 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
                 }"
               >
                 <inline-svg
-                  :src="require('../../../assets/img/Setting.svg')"
+                  :src="require('../../../assets/img/clock2.svg')"
                 ></inline-svg>
                 Processing ({{ CountStatusProcessing || 0 }})
               </a>
@@ -136,11 +136,11 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th width="60"></th>
-                  <th width="100">LIONBAY TRACKING</th>
-                  <th width="250">LAST MILE TRACKING NO.</th>
+                  <!-- <th width="60"></th> -->
+                  <th width="250">LIONBAY TRACKING</th>
+                  <th width="300">LAST MILE TRACKING NO.</th>
                   <th width="400">STATUS</th>
-                  <th width="80">
+                  <th width="82">
                     <div class="d-flex btn-action-icon">
                       <copy :value="dataCopy">
                         <img src="~@/assets/img/copy_tracking.png" />
@@ -177,7 +177,7 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
                   :class="{ opened: opened.includes(item.id) && !deleting }"
                   v-if="!item.notFound"
                 >
-                  <td>
+                  <!-- <td>
                     <img
                       v-if="item.status_string == statusDelivered"
                       src="~@/assets/img/iconDelivered.png"
@@ -203,7 +203,7 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
                       src="~@/assets/img/iconExpried.png"
                     />
                     <img v-else src="~@/assets/img/iconPreTransit.png" />
-                  </td>
+                  </td> -->
                   <td
                     >{{ item.package_code.code }}
                     <br />
@@ -224,9 +224,9 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
                   ></td>
                 </tr>
                 <tr v-else class="not-found">
-                  <td>
+                  <!-- <td>
                     <img src="~@/assets/img/iconNotFound.png" />
-                  </td>
+                  </td> -->
                   <td
                     >{{ item.package_code.code }}
                     <br />
@@ -250,7 +250,7 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
                       opened.includes(item.id) && !deleting && !item.notFound
                     "
                   >
-                    <td colspan="5">
+                    <td colspan="4">
                       <div class="status">{{ item.status_string }}</div>
 
                       <div class="timeline-new">
