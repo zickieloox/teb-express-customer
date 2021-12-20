@@ -12,7 +12,7 @@
             class="input-1"
             @click="openInput()"
             v-model="code"
-            placeholder="Vui lòng nhập mã vận đơn hoặc tracking number"
+            placeholder="Vui lòng nhập mã vận đơn"
             :class="{ hidden: openTextarea }"
           />
           <textarea
@@ -21,8 +21,8 @@
             v-model="code"
             class="input"
             :placeholder="
-              `Vui lòng nhập mã vận đơn hoặc tracking number
-Với nhiều mã, các mã được phân cách bằng dấu enter`
+              `Vui lòng nhập mã vận đơn
+Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
             "
             @input="onChange"
           ></textarea>
@@ -120,7 +120,10 @@ Với nhiều mã, các mã được phân cách bằng dấu enter`
               </a>
             </li>
           </ul>
-          <button class="btn btn-tracking" @click="openModalTracking">
+          <button
+            class="btn btn-tracking btn-tracking-large"
+            @click="openModalTracking"
+          >
             <img src="~@/assets/img/box-search.png" alt="" /> Track Other
             Packages</button
           >
@@ -516,7 +519,7 @@ export default {
       var regex = /^[A-Za-z0-9\n\t ]+$/
       var isValid = regex.test(this.code.trim())
       if (!isValid) {
-        this.errText = 'Mã vận đơn/Tracking number không hợp lệ'
+        this.errText = 'Mã vận đơn không hợp lệ'
         this.$toast.open({ type: 'error', message: this.errText })
         return
       }

@@ -25,7 +25,7 @@
                 class="txt"
                 type="text"
                 v-model="code"
-                :placeholder="`Vui lòng nhập mã vận đơn hoặc tracking number`"
+                :placeholder="`Vui lòng nhập mã vận đơn`"
                 @keyup.enter="addCode()"
               />
             </div>
@@ -88,19 +88,19 @@ export default {
       if (this.code != '') {
         const i = this.listCode.some((element) => this.code === element)
         if (i) {
-          this.errText = 'Mã vận đơn/Tracking number đã tồn tại!'
+          this.errText = 'Mã vận đơn đã tồn tại!'
           this.$toast.open({ type: 'error', message: this.errText })
           return
         }
         var regex = /^[A-Za-z0-9\n\t ]+$/
         var isValid = regex.test(this.code.trim())
         if (!isValid) {
-          this.errText = 'Mã vận đơn/Tracking number không hợp lệ'
+          this.errText = 'Mã vận đơn không hợp lệ'
           this.$toast.open({ type: 'error', message: this.errText })
           return
         }
         if (this.listCode.length == this.limit) {
-          this.errText = 'Vượt quá số lượng mã vận đơn/tracking number cho phép'
+          this.errText = 'Vượt quá số lượng mã vận đơn cho phép'
           this.$toast.open({ type: 'error', message: this.errText })
           return
         }
@@ -116,7 +116,7 @@ export default {
         ]
       }
       if (this.listCode.length < 1) {
-        this.errText = 'Vui lòng nhập mã vận đơn hoặc tracking number'
+        this.errText = 'Vui lòng nhập mã vận đơn'
         this.$toast.open({ type: 'error', message: this.errText })
         return
       }
@@ -131,19 +131,19 @@ export default {
     addCode() {
       const i = this.listCode.some((element) => this.code === element)
       if (i) {
-        this.errText = 'Mã vận đơn/Tracking number đã tồn tại!'
+        this.errText = 'Mã vận đơn đã tồn tại!'
         this.$toast.open({ type: 'error', message: this.errText })
         return
       }
       var regex = /^[A-Za-z0-9\n ]+$/
       var isValid = regex.test(this.code.trim())
       if (!isValid) {
-        this.errText = 'Mã vận đơn/Tracking number không hợp lệ'
+        this.errText = 'Mã vận đơn không hợp lệ'
         this.$toast.open({ type: 'error', message: this.errText })
         return
       }
       if (this.listCode.length == this.limit) {
-        this.errText = 'Vượt quá số lượng mã vận đơn/tracking number cho phép'
+        this.errText = 'Vượt quá số lượng mã vận đơn cho phép'
         this.$toast.open({ type: 'error', message: this.errText })
         return
       }
