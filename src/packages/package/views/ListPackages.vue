@@ -232,7 +232,7 @@
                         </span>
 
                         <span class="link">
-                          <span class="svg">
+                          <span class="svg" v-if="item.package_code">
                             <p-tooltip
                               class="item_name"
                               :label="` Copy `"
@@ -306,7 +306,7 @@
                             </p-tooltip>
                           </span>
 
-                          <span class="svg">
+                          <span class="svg" v-if="item.package_code">
                             <p-tooltip
                               class="item_name"
                               :label="` Track `"
