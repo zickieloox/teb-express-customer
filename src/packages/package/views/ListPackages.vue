@@ -173,6 +173,27 @@
                         >
                           {{ `LO${item.id}` }}
                         </router-link>
+                        <span
+                          v-if="!item.validate_address"
+                          @click="handleValidateAddress(item)"
+                          class="
+                            list-warning
+                            badge badge-round badge-warning-order
+                          "
+                        >
+                          <p-tooltip
+                            class="item_name"
+                            :label="
+                              `Địa chỉ không hợp lệ \n Kích vào đây để xác nhận rằng địa chỉ hiện tại chắc chắn hợp lệ`
+                            "
+                            position="top"
+                            type="dark"
+                          >
+                            <inline-svg
+                              :src="require('../../../assets/img/warning.svg')"
+                            ></inline-svg>
+                          </p-tooltip>
+                        </span>
                       </td>
                       <td class="action">
                         <span class="code">
@@ -206,29 +227,6 @@
                             </router-link>
                           </p-tooltip>
                           <span v-else class="no-pkg-code"></span>
-                          <span
-                            v-if="!item.validate_address"
-                            @click="handleValidateAddress(item)"
-                            class="
-                            list-warning
-                            badge badge-round badge-warning-order
-                          "
-                          >
-                            <p-tooltip
-                              class="item_name"
-                              :label="
-                                `Địa chỉ không hợp lệ \n Kích vào đây để xác nhận rằng địa chỉ hiện tại chắc chắn hợp lệ`
-                              "
-                              position="top"
-                              type="dark"
-                            >
-                              <inline-svg
-                                :src="
-                                  require('../../../assets/img/warning.svg')
-                                "
-                              ></inline-svg>
-                            </p-tooltip>
-                          </span>
                         </span>
 
                         <span class="link">
