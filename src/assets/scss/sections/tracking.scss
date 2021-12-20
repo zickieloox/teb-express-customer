@@ -178,15 +178,19 @@
             margin-right: 16px;
         }
         li a {
-            display: block;
             color: $color-neutral-7;
             text-align: center;
             text-decoration: none;
             padding: 0 4px;
             line-height: 20px;
             font-weight: 500;
+            display: flex;
+            align-items: center;
             &.disabled {
                 color: $color-neutral-5;
+            }
+            svg {
+                margin-right: .5rem;
             }
         }
         li a.active {
