@@ -464,7 +464,12 @@ export default {
         })
       }
       for (const item of this.listCode) {
-        if (!this.packages.map((x) => x.package_code.code).includes(item)) {
+        if (
+          !this.packages.map((x) => x.package_code.code).includes(item) &&
+          !this.packages
+            .map((x) => (x.tracking ? x.tracking.tracking_number : []))
+            .includes(item)
+        ) {
           notFoundArr.push({
             package_code: { code: item },
             status_string: 'Not found',
@@ -545,7 +550,6 @@ export default {
           this.filter.limit,
           this.filter.page
         )
-        console.log(this.newListPackages)
         return
       }
       this.countPackages = this.count_status
