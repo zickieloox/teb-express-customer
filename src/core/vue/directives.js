@@ -82,7 +82,7 @@ const getFormatStatus = (status) => {
   let statusClass = ''
   switch (status) {
     case 'Tạo mới':
-    case 'in-transit':
+    case 'in-Transit':
       statusClass = 'default'
       break
     case 'Chờ lấy':
@@ -105,7 +105,7 @@ const getFormatStatus = (status) => {
     case 'Đã hủy':
     case 'Thất bại':
     case 'Từ chối':
-    case 'cancelled':
+    case 'canceled':
       statusClass = 'danger'
       break
 
@@ -123,6 +123,9 @@ const getFormatStatus = (status) => {
       break
     case 'alert':
       statusClass = 'alert'
+      break
+    case 'expired':
+      statusClass = 'expired'
       break
   }
 
