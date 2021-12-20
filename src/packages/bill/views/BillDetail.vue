@@ -38,10 +38,10 @@
                     </span>
                   </div>
 
-                  <button class="btn-primary btn">
+                  <!-- <button class="btn-primary btn">
                     <img src="~@/assets/img/arrow-down.svg" />
                     <span>Xuất hóa đơn </span>
-                  </button>
+                  </button> -->
                 </div>
                 <div class="card-block  ">
                   <div class="card-content">
