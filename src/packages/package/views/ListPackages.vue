@@ -131,6 +131,7 @@
                         ></p-checkbox>
                       </th>
                       <template>
+                        <th>Mã đơn</th>
                         <th>Mã vận đơn</th>
                         <th>Mã đơn hàng</th>
                         <th>Tracking</th>
@@ -159,6 +160,9 @@
                           :native-value="item"
                           @input="handleValue($event)"
                         ></p-checkbox>
+                      </td>
+                      <td>
+                        {{ `LO ${item.id}` }}
                       </td>
                       <td class="action">
                         <span class="code">
@@ -191,7 +195,7 @@
                               }}
                             </router-link>
                           </p-tooltip>
-
+                          <span v-else class="no-pkg-code"></span>
                           <span
                             v-if="!item.validate_address"
                             @click="handleValidateAddress(item)"
@@ -1073,5 +1077,9 @@ export default {
   a {
     color: #cfd0d0 !important;
   }
+}
+.no-pkg-code {
+  display: inline-block;
+  min-width: 165px;
 }
 </style>
