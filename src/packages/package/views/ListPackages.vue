@@ -171,7 +171,7 @@
                             },
                           }"
                         >
-                          {{ `LO ${item.id}` }}
+                          {{ `LO${item.id}` }}
                         </router-link>
                       </td>
                       <td class="action">
