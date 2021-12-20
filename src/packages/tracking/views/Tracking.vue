@@ -85,7 +85,7 @@ Với nhiều mã, các mã được phân cách bằng dấu enter`
                 ><inline-svg
                   :src="require('../../../assets/img/transit.svg')"
                 ></inline-svg>
-                Transit ({{ CountStatusInTransit || 0 }})
+                In-Transit ({{ CountStatusInTransit || 0 }})
               </a>
             </li>
             <li class="nav-item">
@@ -134,8 +134,8 @@ Với nhiều mã, các mã được phân cách bằng dấu enter`
               <thead>
                 <tr>
                   <th width="60"></th>
-                  <th width="100">MÃ VẬN ĐƠN</th>
-                  <th width="250">TRACKING</th>
+                  <th width="100">LIONBAY TRACKING</th>
+                  <th width="250">LAST MILE TRACKING NO.</th>
                   <th width="400">STATUS</th>
                   <th width="80">
                     <div class="d-flex btn-action-icon">
@@ -194,6 +194,10 @@ Với nhiều mã, các mã được phân cách bằng dấu enter`
                     <img
                       v-else-if="item.status_string == statusAlert"
                       src="~@/assets/img/iconAlert.png"
+                    />
+                    <img
+                      v-else-if="item.status_string == PackageStatusExpried"
+                      src="~@/assets/img/iconExpried.png"
                     />
                     <img v-else src="~@/assets/img/iconPreTransit.png" />
                   </td>
@@ -324,10 +328,11 @@ import {
   PackageStatusAlertText,
   PackageStatusPendingPickupText,
   PackageStatusCancelledText,
+  PackageStatusExpried,
 } from '../constant'
 import ModalTracking from '../components/ModalTracking.vue'
 import Copy from '../../bill/components/Copy.vue'
-
+import { PackageStatusDeactive } from '../../package/constants'
 export default {
   name: 'Tracking',
   components: {
@@ -360,6 +365,8 @@ export default {
       visibleModal: false,
       dataCopy: '',
       isLoading: false,
+      PackageStatusDeactive: PackageStatusDeactive,
+      PackageStatusExpried: PackageStatusExpried,
     }
   },
   beforeMount() {
@@ -389,6 +396,9 @@ export default {
                   item.status_string == this.statusPendingPickup
                     ? 'Pre-Transit'
                     : item.status_string
+                if (item.package_code.status == this.PackageStatusDeactive) {
+                  item.status_string = this.PackageStatusExpried
+                }
 
                 const times = item.log.map((item) =>
                   datetime(item.ship_time, 'dd-MM-yyyy')
