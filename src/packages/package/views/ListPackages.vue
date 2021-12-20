@@ -162,7 +162,17 @@
                         ></p-checkbox>
                       </td>
                       <td>
-                        {{ `LO ${item.id}` }}
+                        <router-link
+                          class="text-no-underline"
+                          :to="{
+                            name: 'package-detail',
+                            params: {
+                              id: item.id,
+                            },
+                          }"
+                        >
+                          {{ `LO ${item.id}` }}
+                        </router-link>
                       </td>
                       <td class="action">
                         <span class="code">
