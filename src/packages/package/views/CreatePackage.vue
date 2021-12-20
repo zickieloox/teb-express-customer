@@ -507,7 +507,7 @@ export default {
       }
       this.$toast.open({
         type: 'success',
-        message: `Tạo đơn ${result.package.package_code.code} thành công`,
+        message: `Tạo đơn LO${result.package.id} thành công`,
         duration: 3000,
       })
       this.isCreate = false
