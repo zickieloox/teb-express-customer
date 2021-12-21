@@ -350,6 +350,13 @@
                         border-top-right-radius: 8px;
                     }
                 }
+                .icon {
+                    svg {
+                        path {
+                            stroke: #ffffff;
+                        }
+                    }
+                }
             }
             .tracking-detail {
                 td {
