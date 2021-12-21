@@ -138,27 +138,35 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
                 <tr>
                   <!-- <th width="60"></th> -->
                   <th width="250">LIONBAY TRACKING</th>
-                  <th width="300">LAST MILE TRACKING NO.</th>
-                  <th width="400">STATUS</th>
+                  <th width="250">LAST MILE TRACKING NO.</th>
+                  <th width="450">STATUS</th>
                   <th width="82">
                     <div class="d-flex btn-action-icon">
                       <copy :value="dataCopy">
-                        <img src="~@/assets/img/copy_tracking.png" />
+                        <inline-svg
+                          :src="
+                            require('../../../assets/img/copy_tracking.svg')
+                          "
+                        ></inline-svg>
                       </copy>
                       <a
                         data-text-hover="Mở rộng hoặc thu gọn"
                         class="lb-tooltip"
                       >
-                        <img
+                        <inline-svg
                           v-if="!open"
                           @click="openTrackingDetail"
-                          src="~@/assets/img/expand_tracking.png"
-                        />
-                        <img
+                          :src="
+                            require('../../../assets/img/expand_tracking.svg')
+                          "
+                        ></inline-svg>
+                        <inline-svg
                           v-else
                           @click="closeTrackingDetail"
-                          src="~@/assets/img/close_tracking.png"
-                        />
+                          :src="
+                            require('../../../assets/img/close_tracking.svg')
+                          "
+                        ></inline-svg>
                       </a>
                     </div>
                   </th>
@@ -219,8 +227,10 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
                     <span class="location">{{ item.log[0].location }}</span>
                   </td>
                   <td class="icon"
-                    ><div @click="deletePackage(item)"
-                      ><i class="fa fa-times"></i></div
+                    ><div @click="deletePackage(item)">
+                      <inline-svg
+                        :src="require('../../../assets/img/x.svg')"
+                      ></inline-svg> </div
                   ></td>
                 </tr>
                 <tr v-else class="not-found">
@@ -239,8 +249,10 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
                     ></td
                   >
                   <td class="icon"
-                    ><div @click="deletePackage(item)"
-                      ><i class="fa fa-times"></i></div
+                    ><div @click="deletePackage(item)">
+                      <inline-svg
+                        :src="require('../../../assets/img/x.svg')"
+                      ></inline-svg> </div
                   ></td>
                 </tr>
                 <transition :key="'A' + i" name="fade" mode="out-in">
