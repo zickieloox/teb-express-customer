@@ -461,7 +461,7 @@ export default {
         .map((x) => x.count)[0]
     },
     count() {
-      return this.listCode.length
+      return this.ListPackages.length
     },
     mapStatus() {
       return MAP_NAME_STATUS_PACKAGE
