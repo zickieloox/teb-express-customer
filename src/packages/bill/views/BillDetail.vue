@@ -524,4 +524,9 @@ export default {
   background-color: #f6f7f7;
   pointer-events: none;
 }
+.p-tooltip:after {
+  height: auto;
+  word-break: break-word;
+  width: 250%;
+}
 </style>
