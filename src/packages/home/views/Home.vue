@@ -44,7 +44,7 @@
                 <div class="col-4">
                   <div class="box box-info">
                     <a
-                      @click="goListpackage('in-transit')"
+                      @click="goListpackage('in-Transit')"
                       href="javascript:void(0)"
                     >
                       <div class="w-icon">
