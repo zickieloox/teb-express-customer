@@ -115,9 +115,14 @@ export default {
           ),
         ]
       }
-      if (this.listCode.length < 1) {
-        this.errText = 'Vui lòng nhập mã vận đơn'
+      if (this.listCode.length < 1 || this.listCode.length > this.limit) {
+        this.errText =
+          this.listCode.length < 1
+            ? 'Vui lòng nhập mã vận đơn'
+            : 'Vượt quá số lượng mã vận đơn cho phép'
         this.$toast.open({ type: 'error', message: this.errText })
+        this.code = ''
+
         return
       }
       this.$emit('track', this.listCode)

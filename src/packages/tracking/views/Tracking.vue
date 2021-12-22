@@ -68,7 +68,7 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
                 }"
               >
                 <inline-svg
-                  :src="require('../../../assets/img/Setting.svg')"
+                  :src="require('../../../assets/img/clock2.svg')"
                 ></inline-svg>
                 Processing ({{ CountStatusProcessing || 0 }})
               </a>
@@ -136,29 +136,37 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <th width="60"></th>
-                  <th width="100">LIONBAY TRACKING</th>
+                  <!-- <th width="60"></th> -->
+                  <th width="250">LIONBAY TRACKING</th>
                   <th width="250">LAST MILE TRACKING NO.</th>
-                  <th width="400">STATUS</th>
-                  <th width="80">
+                  <th width="450">STATUS</th>
+                  <th width="82">
                     <div class="d-flex btn-action-icon">
                       <copy :value="dataCopy">
-                        <img src="~@/assets/img/copy_tracking.png" />
+                        <inline-svg
+                          :src="
+                            require('../../../assets/img/copy_tracking.svg')
+                          "
+                        ></inline-svg>
                       </copy>
                       <a
                         data-text-hover="Mở rộng hoặc thu gọn"
                         class="lb-tooltip"
                       >
-                        <img
+                        <inline-svg
                           v-if="!open"
                           @click="openTrackingDetail"
-                          src="~@/assets/img/expand_tracking.png"
-                        />
-                        <img
+                          :src="
+                            require('../../../assets/img/expand_tracking.svg')
+                          "
+                        ></inline-svg>
+                        <inline-svg
                           v-else
                           @click="closeTrackingDetail"
-                          src="~@/assets/img/close_tracking.png"
-                        />
+                          :src="
+                            require('../../../assets/img/close_tracking.svg')
+                          "
+                        ></inline-svg>
                       </a>
                     </div>
                   </th>
@@ -177,7 +185,7 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
                   :class="{ opened: opened.includes(item.id) && !deleting }"
                   v-if="!item.notFound"
                 >
-                  <td>
+                  <!-- <td>
                     <img
                       v-if="item.status_string == statusDelivered"
                       src="~@/assets/img/iconDelivered.png"
@@ -203,7 +211,7 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
                       src="~@/assets/img/iconExpried.png"
                     />
                     <img v-else src="~@/assets/img/iconPreTransit.png" />
-                  </td>
+                  </td> -->
                   <td
                     >{{ item.package_code.code }}
                     <br />
@@ -219,14 +227,16 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
                     <span class="location">{{ item.log[0].location }}</span>
                   </td>
                   <td class="icon"
-                    ><div @click="deletePackage(item)"
-                      ><i class="fa fa-times"></i></div
+                    ><div @click="deletePackage(item)">
+                      <inline-svg
+                        :src="require('../../../assets/img/x.svg')"
+                      ></inline-svg> </div
                   ></td>
                 </tr>
                 <tr v-else class="not-found">
-                  <td>
+                  <!-- <td>
                     <img src="~@/assets/img/iconNotFound.png" />
-                  </td>
+                  </td> -->
                   <td
                     >{{ item.package_code.code }}
                     <br />
@@ -239,8 +249,10 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
                     ></td
                   >
                   <td class="icon"
-                    ><div @click="deletePackage(item)"
-                      ><i class="fa fa-times"></i></div
+                    ><div @click="deletePackage(item)">
+                      <inline-svg
+                        :src="require('../../../assets/img/x.svg')"
+                      ></inline-svg> </div
                   ></td>
                 </tr>
                 <transition :key="'A' + i" name="fade" mode="out-in">
@@ -250,7 +262,7 @@ Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
                       opened.includes(item.id) && !deleting && !item.notFound
                     "
                   >
-                    <td colspan="5">
+                    <td colspan="4">
                       <div class="status">{{ item.status_string }}</div>
 
                       <div class="timeline-new">
@@ -449,7 +461,7 @@ export default {
         .map((x) => x.count)[0]
     },
     count() {
-      return this.listCode.length
+      return this.ListPackages.length
     },
     mapStatus() {
       return MAP_NAME_STATUS_PACKAGE
