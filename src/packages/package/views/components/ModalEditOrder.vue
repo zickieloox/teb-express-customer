@@ -13,29 +13,6 @@
         <div class="modal__edit-order-content">
           <div class="row sm-gutters  flex-nowrap">
             <div class="col-lg-6 col-xl-6 item-gutters ">
-              <!--              <div class="card__w">-->
-              <!--                <div class="card__w-header">-->
-              <!--                  Người gửi-->
-              <!--                </div>-->
-              <!--                <div class="card__w-content">-->
-              <!--                  <div class="card__w-item">-->
-              <!--                    <label class="card__w-label">-->
-              <!--                      Họ và tên: <span>*</span>-->
-              <!--                    </label>-->
-              <!--                    <div class="card__w-input">-->
-              <!--                      <multiselect-->
-              <!--                        class="multiselect-custom dropdown-reason"-->
-              <!--                        v-model="sender"-->
-              <!--                        :options="senders"-->
-              <!--                        placeholder="Chọn một "-->
-              <!--                        @select="handleSelect"-->
-              <!--                        :custom-label="customLabel"-->
-              <!--                      ></multiselect>-->
-              <!--                    </div>-->
-              <!--                  </div>-->
-              <!--                </div>-->
-              <!--              </div>-->
-
               <div class="card__w">
                 <div class="card__w-header">
                   Người nhận
@@ -260,6 +237,29 @@
                   </div>
                   <div class="card__w-item">
                     <label class="card__w-label">
+                      Mã đơn hàng : <span>*</span>
+                    </label>
+                    <div class="card__w-input">
+                      <input
+                        placeholder="Nhập mã đơn hàng"
+                        type="text"
+                        v-model="order_number"
+                        :input="order_number"
+                        class="form-control"
+                        v-validate="'required'"
+                        name="order_number"
+                        data-vv-as="Mã đơn hàng"
+                        :class="{ 'error-color': errors.has('order_number') }"
+                      />
+                      <span
+                        class="err-span"
+                        v-if="errors.has('order_number')"
+                        >{{ errors.first('order_number') }}</span
+                      >
+                    </div>
+                  </div>
+                  <div class="card__w-item">
+                    <label class="card__w-label">
                       Trọng lượng: <span>*</span>
                     </label>
                     <div class="card__w-input">
@@ -451,6 +451,7 @@ export default {
       width: '',
       height: '',
       countrycode: '',
+      order_number: '',
       detail: '',
       address: '',
       isDisable: false,
@@ -488,6 +489,7 @@ export default {
       }
       this.address = this.package_detail.package.address_1
       this.address2 = this.package_detail.package.address_2
+      this.order_number = this.package_detail.package.order_number
       this.detail = this.package_detail.package.detail
     },
     handleClose() {
@@ -554,6 +556,7 @@ export default {
         zipcode: this.postcode,
         country_code: this.countrycode,
         detail: this.detail,
+        sku: this.order_number,
         weight: +this.weight,
         width: +this.width,
         length: +this.length,
@@ -562,6 +565,7 @@ export default {
         note: this.note,
         address_2: this.address2,
       }
+
       let result = await this[UPDATE_PACKAGE](params)
       if (result.error) {
         this.isUpdate = false

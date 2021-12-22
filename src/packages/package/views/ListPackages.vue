@@ -169,7 +169,17 @@
                           type="dark"
                           :active="item.order_number.length > 20"
                         >
-                          {{ truncate(item.order_number, 20) }}
+                          <router-link
+                            class="text-no-underline"
+                            :to="{
+                              name: 'package-detail',
+                              params: {
+                                id: item.id,
+                              },
+                            }"
+                          >
+                            {{ truncate(item.order_number, 20) }}
+                          </router-link>
                         </p-tooltip>
                         <span
                           v-if="!item.validate_address"
