@@ -821,9 +821,7 @@ export default {
         (ele) => ele.status_string !== PackageStatusCreatedText
       )
       if (selectedInvalid.length > 0) {
-        let codeSelectedInvalid = selectedInvalid.map(
-          (ele) => ele.package_code.code
-        )
+        let codeSelectedInvalid = selectedInvalid.map((ele) => ele.order_number)
         if (codeSelectedInvalid.length > 3) {
           codeSelectedInvalid = [...codeSelectedInvalid.slice(0, 3), '...']
         }
@@ -908,9 +906,7 @@ export default {
         (ele) => ele.status_string !== PackageStatusCreatedText
       )
       if (selectedInvalid.length > 0) {
-        let codeSelectedInvalid = selectedInvalid.map(
-          (ele) => ele.package_code.code
-        )
+        let codeSelectedInvalid = selectedInvalid.map((ele) => ele.order_number)
         if (codeSelectedInvalid.length > 3) {
           codeSelectedInvalid = [...codeSelectedInvalid.slice(0, 3), '...']
         }
