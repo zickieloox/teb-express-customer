@@ -74,7 +74,8 @@
                           <tr class="table-header">
                             <th width="270">MÃ VẬN ĐƠN </th>
                             <th width="270">THỜI GIAN </th>
-                            <th width="">PHÍ VẬN ĐƠN </th>
+                            <th>TRACKING NUMBER</th>
+                            <th style="text-align: right">PHÍ VẬN ĐƠN </th>
                           </tr>
                         </thead>
 
@@ -101,7 +102,12 @@
                             <td>{{
                               item.created_at | datetime('dd/MM/yyyy HH:mm:ss')
                             }}</td>
-                            <td>+ {{ item.shipping_fee | formatPrice }}</td>
+                            <td>{{
+                              item.tracking ? item.tracking.tracking_number : ''
+                            }}</td>
+                            <td style="text-align: right"
+                              >+ {{ item.shipping_fee | formatPrice }}</td
+                            >
                           </tr>
                         </tbody>
                       </table>

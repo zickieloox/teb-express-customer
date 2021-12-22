@@ -131,13 +131,13 @@
                         ></p-checkbox>
                       </th>
                       <template>
-                        <th>Mã đơn hàng</th>
-                        <th>Mã vận đơn</th>
-                        <th>Tracking</th>
-                        <th>Dịch vụ</th>
-                        <th>Ngày tạo </th>
-                        <th>Trạng thái</th>
-                        <th style="text-align: right">Tổng cước</th>
+                        <th>Lionbay tracking</th>
+                        <th>order no.</th>
+                        <th>last mile tracking</th>
+                        <th>service</th>
+                        <th>created date </th>
+                        <th>status</th>
+                        <th style="text-align: right">Total fee</th>
                       </template>
                     </tr>
                   </thead>
