@@ -216,6 +216,29 @@
                     </div>
                     <div class="card__w-item">
                       <label class="card__w-label">
+                        Mã đơn hàng: <span>*</span>
+                      </label>
+                      <div class="card__w-input">
+                        <input
+                          placeholder="Nhập mã đơn hàng"
+                          type="text"
+                          v-model="order_number"
+                          :input="order_number"
+                          class="form-control"
+                          v-validate="'required'"
+                          name="order_number"
+                          data-vv-as="Mã đơn hàng"
+                          :class="{ 'error-color': errors.has('order_number') }"
+                        />
+                        <span
+                          class="err-span"
+                          v-if="errors.has('order_number')"
+                          >{{ errors.first('order_number') }}</span
+                        >
+                      </div>
+                    </div>
+                    <div class="card__w-item">
+                      <label class="card__w-label">
                         Chi tiết hàng hóa: <span>*</span>
                       </label>
                       <div class="card__w-input">
@@ -408,6 +431,7 @@ export default {
       length: '',
       width: '',
       height: '',
+      order_number: '',
       service: {
         id: 0,
         name: 'Chọn một dịch vụ',
@@ -487,6 +511,7 @@ export default {
         state_code: this.state.trim(),
         zipcode: this.postcode.trim(),
         country_code: this.countrycode.trim(),
+        sku: this.order_number.trim(),
         detail: this.detail.trim(),
         weight: +this.weight.trim(),
         width: +this.width.trim(),
