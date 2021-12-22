@@ -42,7 +42,7 @@ export const LIST_DEFAULT_FIELD = [
   {
     key: 8,
     name: 'Mã đơn hàng',
-    require: false,
+    require: true,
   },
   {
     key: 9,
