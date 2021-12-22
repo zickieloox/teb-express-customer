@@ -216,27 +216,6 @@
                   </div>
                   <div class="card__w-item">
                     <label class="card__w-label">
-                      Chi tiết hàng hóa : <span>*</span>
-                    </label>
-                    <div class="card__w-input">
-                      <input
-                        placeholder="Nhập chi tiết hàng hóa"
-                        type="text"
-                        v-model="detail"
-                        :input="detail"
-                        class="form-control"
-                        v-validate="'required'"
-                        name="detail"
-                        data-vv-as="Chi tiết hàng hóa"
-                        :class="{ 'error-color': errors.has('detail') }"
-                      />
-                      <span class="err-span" v-if="errors.has('detail')">{{
-                        errors.first('detail')
-                      }}</span>
-                    </div>
-                  </div>
-                  <div class="card__w-item">
-                    <label class="card__w-label">
                       Mã đơn hàng : <span>*</span>
                     </label>
                     <div class="card__w-input">
@@ -256,6 +235,27 @@
                         v-if="errors.has('order_number')"
                         >{{ errors.first('order_number') }}</span
                       >
+                    </div>
+                  </div>
+                  <div class="card__w-item">
+                    <label class="card__w-label">
+                      Chi tiết hàng hóa : <span>*</span>
+                    </label>
+                    <div class="card__w-input">
+                      <input
+                        placeholder="Nhập chi tiết hàng hóa"
+                        type="text"
+                        v-model="detail"
+                        :input="detail"
+                        class="form-control"
+                        v-validate="'required'"
+                        name="detail"
+                        data-vv-as="Chi tiết hàng hóa"
+                        :class="{ 'error-color': errors.has('detail') }"
+                      />
+                      <span class="err-span" v-if="errors.has('detail')">{{
+                        errors.first('detail')
+                      }}</span>
                     </div>
                   </div>
                   <div class="card__w-item">
