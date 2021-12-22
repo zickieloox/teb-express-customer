@@ -25,7 +25,7 @@ export const PackageStatusExpiredText = 'expired'
 export const PACKAGE_STATUS_TAB = [
   {
     value: '',
-    text: 'Tất cả',
+    text: 'All',
   },
   {
     value: PackageStatusCreatedText,
