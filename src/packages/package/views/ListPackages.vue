@@ -169,7 +169,17 @@
                           type="dark"
                           :active="item.order_number.length > 20"
                         >
-                          {{ truncate(item.order_number, 20) }}
+                          <router-link
+                            class="text-no-underline"
+                            :to="{
+                              name: 'package-detail',
+                              params: {
+                                id: item.id,
+                              },
+                            }"
+                          >
+                            {{ truncate(item.order_number, 20) }}
+                          </router-link>
                         </p-tooltip>
                         <span
                           v-if="!item.validate_address"
@@ -811,9 +821,7 @@ export default {
         (ele) => ele.status_string !== PackageStatusCreatedText
       )
       if (selectedInvalid.length > 0) {
-        let codeSelectedInvalid = selectedInvalid.map(
-          (ele) => ele.package_code.code
-        )
+        let codeSelectedInvalid = selectedInvalid.map((ele) => ele.order_number)
         if (codeSelectedInvalid.length > 3) {
           codeSelectedInvalid = [...codeSelectedInvalid.slice(0, 3), '...']
         }
@@ -898,9 +906,7 @@ export default {
         (ele) => ele.status_string !== PackageStatusCreatedText
       )
       if (selectedInvalid.length > 0) {
-        let codeSelectedInvalid = selectedInvalid.map(
-          (ele) => ele.package_code.code
-        )
+        let codeSelectedInvalid = selectedInvalid.map((ele) => ele.order_number)
         if (codeSelectedInvalid.length > 3) {
           codeSelectedInvalid = [...codeSelectedInvalid.slice(0, 3), '...']
         }
@@ -1006,11 +1012,14 @@ export default {
       var selected = this.selected.map((x) => {
         return {
           order_number: x.order_number,
-          code: x.package_code.code,
+          code: x.package_code ? x.package_code.code : '',
           url: x.label,
         }
       })
       for (const item of selected) {
+        if (item.url === '') {
+          continue
+        }
         const res = await api.fetchBarcodeFile({
           url: item.url,
           type: 'labels',
