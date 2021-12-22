@@ -23,7 +23,7 @@ export const PackageStatusCancelledText = 'canceled'
 export const PACKAGE_STATUS_TAB = [
   {
     value: '',
-    text: 'Tất cả',
+    text: 'All',
   },
   {
     value: PackageStatusCreatedText,

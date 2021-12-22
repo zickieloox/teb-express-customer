@@ -131,8 +131,8 @@
                         ></p-checkbox>
                       </th>
                       <template>
-                        <th>Lionbay tracking</th>
                         <th>order no.</th>
+                        <th>Lionbay tracking</th>
                         <th>last mile tracking</th>
                         <th>service</th>
                         <th>created date </th>
