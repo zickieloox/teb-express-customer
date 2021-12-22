@@ -1016,11 +1016,14 @@ export default {
       var selected = this.selected.map((x) => {
         return {
           order_number: x.order_number,
-          code: x.package_code.code,
+          code: x.package_code ? x.package_code.code : '',
           url: x.label,
         }
       })
       for (const item of selected) {
+        if (item.url === '') {
+          continue
+        }
         const res = await api.fetchBarcodeFile({
           url: item.url,
           type: 'labels',
