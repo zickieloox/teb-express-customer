@@ -27,31 +27,31 @@ export const PACKAGE_STATUS_TAB = [
   },
   {
     value: PackageStatusCreatedText,
-    text: 'Tạo mới',
+    text: 'Pending',
   },
   {
     value: PackageStatusPendingPickupText,
-    text: 'Chờ lấy',
+    text: 'Pre-Transit',
   },
   {
     value: PackageStatusProcessingText,
-    text: 'Đang xử lý',
+    text: 'Processing',
   },
   {
     value: PackageStatusInTransitText,
-    text: 'Đang giao',
+    text: 'In-Transit',
   },
   {
     value: PackageStatusDeliveredText,
-    text: 'Giao thành công',
+    text: 'Delivered',
   },
   {
     value: PackageStatusReturnText,
-    text: 'Trả hàng',
+    text: 'Returned',
   },
   {
     value: PackageStatusCancelledText,
-    text: 'Đã huỷ',
+    text: 'Canceled',
   },
 ]
 
@@ -61,31 +61,31 @@ export const MAP_NAME_STATUS_PACKAGE = {
     class: '',
   },
   [PackageStatusCreatedText]: {
-    value: 'Tạo mới',
+    value: 'pending',
     class: 'badge-default',
   },
   [PackageStatusPendingPickupText]: {
-    value: 'Chờ lấy',
+    value: 'Pre-Transit',
     class: 'badge-await',
   },
   [PackageStatusProcessingText]: {
-    value: 'Đang xử lý',
+    value: 'processing',
     class: 'badge-pending',
   },
   [PackageStatusInTransitText]: {
-    value: 'Đang giao',
+    value: 'in-Transit',
     class: 'badge-primary',
   },
   [PackageStatusDeliveredText]: {
-    value: 'Giao thành công',
+    value: 'delivered',
     class: 'badge-success',
   },
   [PackageStatusReturnText]: {
-    value: 'Trả hàng',
+    value: 'returned',
     class: 'badge-returned',
   },
   [PackageStatusCancelledText]: {
-    value: 'Đã hủy',
+    value: 'canceled',
     class: 'badge-cancel',
   },
 }
