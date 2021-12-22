@@ -11,6 +11,7 @@ export const PackageStatusInTransit = 30
 export const PackageStatusDelivered = 60
 export const PackageStatusReturned = 40
 export const PackageStatusCancelled = 50
+export const PackageStatusExpired = 70
 
 export const PackageStatusCreatedText = 'created'
 export const PackageStatusPendingPickupText = 'pending-pickup'
@@ -19,6 +20,7 @@ export const PackageStatusInTransitText = 'in-Transit'
 export const PackageStatusDeliveredText = 'delivered'
 export const PackageStatusReturnText = 'return'
 export const PackageStatusCancelledText = 'canceled'
+export const PackageStatusExpiredText = 'expired'
 
 export const PACKAGE_STATUS_TAB = [
   {
@@ -53,6 +55,10 @@ export const PACKAGE_STATUS_TAB = [
     value: PackageStatusCancelledText,
     text: 'Canceled',
   },
+  {
+    value: PackageStatusExpiredText,
+    text: 'Expired',
+  },
 ]
 
 export const MAP_NAME_STATUS_PACKAGE = {
@@ -86,6 +92,10 @@ export const MAP_NAME_STATUS_PACKAGE = {
   },
   [PackageStatusCancelledText]: {
     value: 'canceled',
+    class: 'badge-cancel',
+  },
+  [PackageStatusExpiredText]: {
+    value: 'expired',
     class: 'badge-cancel',
   },
 }
