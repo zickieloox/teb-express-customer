@@ -17,9 +17,8 @@ export const PackageStatusPendingPickupText = 'pending-pickup'
 export const PackageStatusProcessingText = 'processing'
 export const PackageStatusInTransitText = 'in-Transit'
 export const PackageStatusDeliveredText = 'delivered'
-export const PackageStatusReturnText = 'return'
+export const PackageStatusReturnText = 'alert'
 export const PackageStatusCancelledText = 'canceled'
-export const PackageStatusAlertText = 'alert'
 
 export const PackageStatusExpiredText = 'expired'
 

@@ -340,7 +340,7 @@ import {
   PackageStatusDeliveredText,
   PackageStatusProcessingText,
   PackageStatusInTransitText,
-  PackageStatusAlertText,
+  PackageStatusReturnText,
   PackageStatusPendingPickupText,
   PackageStatusCancelledText,
   PackageStatusExpiredText,
@@ -364,7 +364,7 @@ export default {
       statusProcessing: PackageStatusProcessingText,
       statusInTransit: PackageStatusInTransitText,
       statusDelivered: PackageStatusDeliveredText,
-      statusAlert: PackageStatusAlertText,
+      statusAlert: PackageStatusReturnText,
       statusPendingPickup: PackageStatusPendingPickupText,
       statusCancel: PackageStatusCancelledText,
       filter: {
