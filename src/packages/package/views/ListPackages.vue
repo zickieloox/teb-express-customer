@@ -131,9 +131,8 @@
                         ></p-checkbox>
                       </th>
                       <template>
-                        <th>Mã đơn</th>
-                        <th>Mã vận đơn</th>
                         <th>Mã đơn hàng</th>
+                        <th>Mã vận đơn</th>
                         <th>Tracking</th>
                         <th>Dịch vụ</th>
                         <th>Ngày tạo </th>
@@ -162,17 +161,16 @@
                         ></p-checkbox>
                       </td>
                       <td>
-                        <router-link
-                          class="text-no-underline"
-                          :to="{
-                            name: 'package-detail',
-                            params: {
-                              id: item.id,
-                            },
-                          }"
+                        <p-tooltip
+                          :label="item.order_number"
+                          v-if="item.order_number"
+                          size="large"
+                          position="top"
+                          type="dark"
+                          :active="item.order_number.length > 20"
                         >
-                          {{ `LO${item.id}` }}
-                        </router-link>
+                          {{ truncate(item.order_number, 20) }}
+                        </p-tooltip>
                         <span
                           v-if="!item.validate_address"
                           @click="handleValidateAddress(item)"
@@ -352,18 +350,6 @@
                             </p-tooltip>
                           </span>
                         </span>
-                      </td>
-                      <td>
-                        <p-tooltip
-                          :label="item.order_number"
-                          v-if="item.order_number"
-                          size="large"
-                          position="top"
-                          type="dark"
-                          :active="item.order_number.length > 20"
-                        >
-                          {{ truncate(item.order_number, 20) }}
-                        </p-tooltip>
                       </td>
                       <td>
                         <a
