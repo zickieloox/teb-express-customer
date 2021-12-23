@@ -13,7 +13,7 @@ export const PackageStatusReturned = 40
 export const PackageStatusCancelled = 50
 export const PackageStatusExpired = 70
 
-export const PackageStatusCreatedText = 'created'
+export const PackageStatusCreatedText = 'pending'
 export const PackageStatusPendingPickupText = 'pending-pickup'
 export const PackageStatusProcessingText = 'processing'
 export const PackageStatusInTransitText = 'in-Transit'
