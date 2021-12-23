@@ -11,19 +11,21 @@ export const PackageStatusInTransit = 30
 export const PackageStatusDelivered = 60
 export const PackageStatusReturned = 40
 export const PackageStatusCancelled = 50
+export const PackageStatusExpired = 70
 
-export const PackageStatusCreatedText = 'created'
-export const PackageStatusPendingPickupText = 'pending-pickup'
+export const PackageStatusCreatedText = 'pending'
+export const PackageStatusPendingPickupText = 'pre-transit'
 export const PackageStatusProcessingText = 'processing'
 export const PackageStatusInTransitText = 'in-Transit'
 export const PackageStatusDeliveredText = 'delivered'
-export const PackageStatusReturnText = 'return'
+export const PackageStatusReturnText = 'alert'
 export const PackageStatusCancelledText = 'canceled'
+export const PackageStatusExpiredText = 'expired'
 
 export const PACKAGE_STATUS_TAB = [
   {
     value: '',
-    text: 'Tất cả',
+    text: 'All',
   },
   {
     value: PackageStatusCreatedText,
@@ -47,11 +49,15 @@ export const PACKAGE_STATUS_TAB = [
   },
   {
     value: PackageStatusReturnText,
-    text: 'Returned',
+    text: 'Alert',
   },
   {
     value: PackageStatusCancelledText,
     text: 'Canceled',
+  },
+  {
+    value: PackageStatusExpiredText,
+    text: 'Expired',
   },
 ]
 
@@ -81,11 +87,15 @@ export const MAP_NAME_STATUS_PACKAGE = {
     class: 'badge-success',
   },
   [PackageStatusReturnText]: {
-    value: 'returned',
+    value: 'alert',
     class: 'badge-returned',
   },
   [PackageStatusCancelledText]: {
     value: 'canceled',
+    class: 'badge-cancel',
+  },
+  [PackageStatusExpiredText]: {
+    value: 'expired',
     class: 'badge-cancel',
   },
 }

@@ -340,14 +340,13 @@ import {
   PackageStatusDeliveredText,
   PackageStatusProcessingText,
   PackageStatusInTransitText,
-  PackageStatusAlertText,
+  PackageStatusReturnText,
   PackageStatusPendingPickupText,
   PackageStatusCancelledText,
-  PackageStatusExpried,
+  PackageStatusExpiredText,
 } from '../constant'
 import ModalTracking from '../components/ModalTracking.vue'
 import Copy from '../../bill/components/Copy.vue'
-import { PackageStatusDeactive } from '../../package/constants'
 export default {
   name: 'Tracking',
   components: {
@@ -365,7 +364,7 @@ export default {
       statusProcessing: PackageStatusProcessingText,
       statusInTransit: PackageStatusInTransitText,
       statusDelivered: PackageStatusDeliveredText,
-      statusAlert: PackageStatusAlertText,
+      statusAlert: PackageStatusReturnText,
       statusPendingPickup: PackageStatusPendingPickupText,
       statusCancel: PackageStatusCancelledText,
       filter: {
@@ -380,8 +379,7 @@ export default {
       visibleModal: false,
       dataCopy: '',
       isLoading: false,
-      PackageStatusDeactive: PackageStatusDeactive,
-      PackageStatusExpried: PackageStatusExpried,
+      PackageStatusExpried: PackageStatusExpiredText,
     }
   },
   beforeMount() {
@@ -411,9 +409,6 @@ export default {
                   item.status_string == this.statusPendingPickup
                     ? 'Pre-Transit'
                     : item.status_string
-                if (item.package_code.status == this.PackageStatusDeactive) {
-                  item.status_string = this.PackageStatusExpried
-                }
 
                 const times = item.log.map((item) =>
                   datetime(item.ship_time, 'dd-MM-yyyy')

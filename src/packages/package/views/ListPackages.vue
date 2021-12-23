@@ -131,8 +131,8 @@
                         ></p-checkbox>
                       </th>
                       <template>
-                        <th>Lionbay tracking</th>
                         <th>order no.</th>
+                        <th>Lionbay tracking</th>
                         <th>last mile tracking</th>
                         <th>service</th>
                         <th>created date </th>
@@ -148,8 +148,10 @@
                       :class="{
                         hover: isChecked(item),
                         deactive:
-                          item.package_code &&
-                          item.package_code.status == PackageStatusDeactive,
+                          (item.package_code &&
+                            item.package_code.status ==
+                              PackageStatusDeactive) ||
+                          item.status_string == PackageStatusExpiredText,
                         'sm-view': isSmScreen,
                       }"
                     >
@@ -526,6 +528,7 @@ import {
   PackageStatusReturnText,
   MAP_NAME_STATUS_PACKAGE,
   PackageStatusDeactive,
+  PackageStatusExpiredText,
 } from '../constants'
 import {
   FETCH_LIST_PACKAGES,
@@ -623,6 +626,7 @@ export default {
       selected: [],
       idSelected: 0,
       PackageStatusDeactive: PackageStatusDeactive,
+      PackageStatusExpiredText: PackageStatusExpiredText,
       windowWidth: 0,
       isSmScreen: false,
       confirmAddress: '',
