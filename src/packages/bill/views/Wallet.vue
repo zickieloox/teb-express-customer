@@ -127,11 +127,11 @@
                             :to="{
                               name: 'bill-detail',
                               query: {
-                                search: item.bill_id,
+                                search: item.bill.code,
                               },
                             }"
                           >
-                            {{ item.bill_id }}
+                            {{ item.bill.code }}
                           </router-link>
                         </span>
                         <span
