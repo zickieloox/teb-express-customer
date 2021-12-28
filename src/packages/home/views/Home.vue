@@ -19,7 +19,7 @@
           <div class="w-search">
             <input
               type="text"
-              placeholder="Tìm kiếm theo mã vận đơn hoặc tracking number"
+              placeholder="Tìm kiếm theo mã tracking hoặc tracking number"
               @keydown.enter.prevent="searchHandle"
             />
             <div class="icon icon-search"></div>

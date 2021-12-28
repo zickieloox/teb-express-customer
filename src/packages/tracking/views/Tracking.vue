@@ -12,7 +12,7 @@
             class="input-1"
             @click="openInput()"
             v-model="code"
-            placeholder="Vui lòng nhập mã vận đơn"
+            placeholder="Vui lòng nhập mã tracking"
             :class="{ hidden: openTextarea }"
           />
           <textarea
@@ -21,8 +21,8 @@
             v-model="code"
             class="input"
             :placeholder="
-              `Vui lòng nhập mã vận đơn
-Với nhiều mã vận đơn, các mã được phân cách bằng dấu enter`
+              `Vui lòng nhập mã tracking được cung cấp bởi LionBay
+Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
             "
             @input="onChange"
           ></textarea>

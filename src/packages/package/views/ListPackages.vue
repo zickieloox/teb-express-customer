@@ -14,7 +14,7 @@
             class="bulk-actions__selection-status"
             @click="handleWayBill"
             type="primary"
-            >Vận đơn</p-button
+            >Tạo tracking</p-button
           >
           <p-button
             v-if="isReturnTab()"
@@ -53,7 +53,7 @@
       <div v-else class="action-header">
         <div class="d-flex page-header__input">
           <p-input
-            placeholder="Tìm theo mã vận đơn hoặc mã đơn hàng, tracking number..."
+            placeholder="Tìm theo mã tracking hoặc mã đơn hàng"
             prefixIcon="search"
             type="search"
             v-model="searchCode"
