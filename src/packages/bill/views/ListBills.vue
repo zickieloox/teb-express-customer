@@ -66,12 +66,12 @@
                           :to="{
                             name: 'bill-detail',
                             query: {
-                              search: item.id,
+                              search: item.code,
                               date_search: '',
                             },
                           }"
                         >
-                          {{ item.id }}
+                          {{ item.code }}
                         </router-link>
                       </td>
                       <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>
