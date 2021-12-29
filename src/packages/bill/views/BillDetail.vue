@@ -400,8 +400,8 @@ export default {
       this.total_fee = result.total
       this.isFetching = false
       if (result.bill) {
-        this.filterExtra.id = this.bill.id
-        this.filterRefund.id = this.bill.id
+        this.filterExtra.code = this.bill.code
+        this.filterRefund.code = this.bill.code
         await this[FETCH_BILL_EXTRA](this.filterExtra)
         await this[FETCH_BILL_REFUND](this.filterRefund)
         return
