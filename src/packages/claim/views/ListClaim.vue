@@ -12,7 +12,7 @@
         <div class="card-body">
           <div class="d-flex list__claim-search">
             <p-input
-              placeholder="Tìm kiếm theo LionBay tracking hoặc last mile tracking   "
+              placeholder="Tìm kiếm theo mã tracking"
               prefixIcon="search"
               class="mb-2"
               type="search"
