@@ -87,7 +87,7 @@
                   PackageStatusCreatedText
               "
             >
-              <span>Vận đơn</span>
+              <span>Tạo tracking</span>
             </p-button>
             <a
               @click="handlerReturnPackage"
@@ -590,8 +590,8 @@ export default {
       actions: {
         wayBill: {
           type: 'primary',
-          title: 'Xác nhận vận đơn',
-          button: 'Vận đơn',
+          title: 'Xác nhận',
+          button: 'Tạo tracking',
           Description: '',
           disabled: false,
           loading: false,
@@ -786,7 +786,7 @@ export default {
     },
 
     handleWayBill() {
-      this.actions.wayBill.Description = `Bạn có chắc chắn muốn vận đơn?`
+      this.actions.wayBill.Description = `Bạn có chắc chắn muốn tạo tracking?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
@@ -812,7 +812,7 @@ export default {
       this.init()
       this.$toast.open({
         type: 'success',
-        message: 'Vận đơn thành công',
+        message: 'Tạo tracking thành công',
         duration: 3000,
       })
     },

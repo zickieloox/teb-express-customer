@@ -595,8 +595,8 @@ export default {
       actions: {
         wayBill: {
           type: 'primary',
-          title: 'Xác nhận vận đơn',
-          button: 'Vận đơn',
+          title: 'Xác nhận',
+          button: 'Tạo tracking',
           Description: '',
           disabled: false,
           loading: false,
@@ -919,7 +919,7 @@ export default {
           type: 'error',
           message: `Đơn hàng ${codeSelectedInvalid.join(
             ', '
-          )} không thể vận đơn.`,
+          )} không thể tạo tracking.`,
           duration: 5000,
         })
       }
@@ -927,7 +927,7 @@ export default {
         this.selected.length
       } </b>. Tổng tiền là <b> ${formatPrice(
         this.selectionCountTotal
-      )} </b> bạn có chắc chắn muốn vận đơn?`
+      )} </b> bạn có chắc chắn muốn tạo tracking?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
@@ -954,7 +954,7 @@ export default {
       this.init()
       this.$toast.open({
         type: 'success',
-        message: 'Vận đơn thành công',
+        message: 'Tạo tracking thành công',
         duration: 3000,
       })
     },
