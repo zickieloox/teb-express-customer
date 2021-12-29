@@ -72,9 +72,9 @@
                       <table class="table table-hover">
                         <thead>
                           <tr class="table-header">
-                            <th width="270">MÃ VẬN ĐƠN </th>
+                            <th width="270">LIONBAY TRACKING</th>
                             <th width="270">THỜI GIAN </th>
-                            <th>TRACKING NUMBER</th>
+                            <th>LAST MILE TRACKING</th>
                             <th style="text-align: right">PHÍ VẬN ĐƠN </th>
                           </tr>
                         </thead>

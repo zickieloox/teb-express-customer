@@ -28,7 +28,7 @@
         </div>
         <div class="note-content">
           <span v-if="claim.package">
-            Mã đơn:
+            LionBay tracking:
             <router-link
               class="text-no-underline"
               :to="{
