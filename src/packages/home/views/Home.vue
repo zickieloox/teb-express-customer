@@ -19,7 +19,7 @@
           <div class="w-search">
             <input
               type="text"
-              placeholder="Tìm kiếm theo mã tracking hoặc tracking number"
+              placeholder="Tìm kiếm theo LionBay tracking hoặc last mile tracking"
               @keydown.enter.prevent="searchHandle"
             />
             <div class="icon icon-search"></div>
