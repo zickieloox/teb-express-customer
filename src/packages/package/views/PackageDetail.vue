@@ -4,9 +4,9 @@
       <div class="page-header">
         <div class="page-header__subtitle">
           <div class="page-header__info">
-            <div class="info-package">Mã tracking</div>
+            <div class="info-package">LionBay tracking</div>
             <div class="info-package">Dịch vụ </div>
-            <div class="info-package">Tracking </div>
+            <div class="info-package">Last mile tracking </div>
             <div class="info-package">Ngày tạo </div>
             <div class="info-package">Trạng thái</div>
             <div class="package-code "
@@ -185,7 +185,7 @@
                   </div>
                   <div class="card-content">
                     <div class="row">
-                      <div class="col-4 mb-8">Mã tracking:</div>
+                      <div class="col-4 mb-8">LionBay tracking:</div>
                       <div class="col-8"
                         ><div>{{
                           $evaluate('package_detail.package.package_code?.code')
