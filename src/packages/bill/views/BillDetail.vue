@@ -145,7 +145,7 @@
                       <table class="table table-hover">
                         <thead>
                           <tr class="table-header">
-                            <th width="270">MÃ VẬN ĐƠN </th>
+                            <th width="270">LIONBAY TRACKING </th>
                             <th width="270">THỜI GIAN </th>
                             <th>LOẠI PHÍ</th>
                             <th>NỘI DUNG</th>
@@ -235,7 +235,7 @@
                       <table class="table table-hover">
                         <thead>
                           <tr class="table-header">
-                            <th width="270">MÃ VẬN ĐƠN </th>
+                            <th width="270">LIONBAY TRACKING </th>
                             <th width="270">THỜI GIAN </th>
                             <th>NỘI DUNG</th>
                             <th style="text-align: right">PHÍ HOÀN TIỀN </th>
