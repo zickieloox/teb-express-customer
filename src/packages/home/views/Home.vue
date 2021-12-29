@@ -19,7 +19,7 @@
           <div class="w-search">
             <input
               type="text"
-              placeholder="Tìm kiếm theo LionBay tracking hoặc last mile tracking"
+              placeholder="Tìm kiếm theo mã tracking"
               @keydown.enter.prevent="searchHandle"
             />
             <div class="icon icon-search"></div>
@@ -36,7 +36,7 @@
                       <div class="w-icon">
                         <i class="icon icon-clock"></i>
                       </div>
-                      <p class="title">Đang xử lý</p>
+                      <p class="title">processing</p>
                       <p class="value">{{ numbers.processing }}</p>
                     </a>
                   </div>
@@ -50,7 +50,7 @@
                       <div class="w-icon">
                         <i class="icon icon-plane"></i>
                       </div>
-                      <p class="title">Đang giao</p>
+                      <p class="title">In-transit</p>
                       <p class="value">{{ numbers.intransit }}</p>
                     </a>
                   </div>
@@ -64,7 +64,7 @@
                       <div class="w-icon">
                         <i class="icon icon-box-tick"></i>
                       </div>
-                      <p class="title">Giao thành công</p>
+                      <p class="title">Delivered</p>
                       <p class="value">{{ numbers.delivered }}</p>
                     </a>
                   </div>
