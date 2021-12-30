@@ -25,7 +25,7 @@ import '@assets/fonts/web-icons/web-icons.min.css'
 import PHeader from './Header'
 import PSidebar from './Sidebar'
 import { GET_USER } from '../../../packages/shared/store'
-import firebase from '../../../core/services/firebase'
+// import firebase from '../../../core/services/firebase'
 
 export default {
   name: 'Version2',
@@ -49,7 +49,7 @@ export default {
     this.init()
   },
   created() {
-    firebase.setup()
+    // firebase.setup()
   },
   methods: {
     ...mapActions('shared', [GET_USER]),
