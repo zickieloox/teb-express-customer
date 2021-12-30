@@ -215,7 +215,9 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                   <td
                     >{{ item.package_code.code }}
                     <br />
-                    <span v-status:status="item.status_string"></span>
+                    <span
+                      v-status:status="mapStatus[item.status_string].value"
+                    ></span>
                   </td>
                   <td
                     >{{ item.tracking ? item.tracking.tracking_number : '' }}
@@ -334,9 +336,11 @@ import { mapState, mapActions } from 'vuex'
 import { GET_LOGS } from '../store'
 import Uniq from 'lodash/uniq'
 import { datetime } from '../../../core/utils/datetime'
-import { DELIVER_LOG_PACKAGE } from '../../package/constants'
 import {
+  DELIVER_LOG_PACKAGE,
   MAP_NAME_STATUS_PACKAGE,
+} from '../../package/constants'
+import {
   PackageStatusDeliveredText,
   PackageStatusProcessingText,
   PackageStatusInTransitText,
