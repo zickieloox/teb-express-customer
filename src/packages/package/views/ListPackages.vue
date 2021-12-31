@@ -26,6 +26,7 @@
           <p-button
             class="bulk-actions__selection-status"
             @click="handlerDownloadLables"
+            :disabled="downloadLabel(filter.status)"
             type="lb-secondary"
             >Tải label</p-button
           >
@@ -530,6 +531,11 @@ import {
   MAP_NAME_STATUS_PACKAGE,
   PackageStatusDeactive,
   PackageStatusExpiredText,
+  PackageStatusPendingPickupText,
+  PackageStatusProcessingText,
+  PackageStatusInTransitText,
+  PackageStatusDeliveredText,
+  PackageStatusCancelledText,
 } from '../constants'
 import {
   FETCH_LIST_PACKAGES,
@@ -627,7 +633,13 @@ export default {
       selected: [],
       idSelected: 0,
       PackageStatusDeactive: PackageStatusDeactive,
+      PackageStatusProcessingText: PackageStatusProcessingText,
+      PackageStatusCreatedText: PackageStatusCreatedText,
+      PackageStatusPendingPickupText: PackageStatusPendingPickupText,
+      PackageStatusDeliveredText: PackageStatusDeliveredText,
       PackageStatusExpiredText: PackageStatusExpiredText,
+      PackageStatusReturnText: PackageStatusReturnText,
+      PackageStatusCancelledText: PackageStatusCancelledText,
       windowWidth: 0,
       isSmScreen: false,
       confirmAddress: '',
@@ -779,19 +791,21 @@ export default {
     },
     createOrder(value) {
       switch (value) {
-        case 'created':
+        case PackageStatusCreatedText:
           return false
-        case 'pending-pickup':
+        case PackageStatusPendingPickupText:
           return true
-        case 'processing':
+        case PackageStatusProcessingText:
           return true
-        case 'in-transit':
+        case PackageStatusInTransitText:
           return true
-        case 'delivered':
+        case PackageStatusDeliveredText:
           return true
-        case 'return':
+        case PackageStatusReturnText:
           return true
-        case 'cancelled':
+        case PackageStatusCancelledText:
+          return true
+        case PackageStatusExpiredText:
           return true
         default:
           return false
@@ -800,19 +814,21 @@ export default {
 
     cancelOrder(status) {
       switch (status) {
-        case 'created':
+        case PackageStatusCreatedText:
           return false
-        case 'pending-pickup':
+        case PackageStatusPendingPickupText:
           return true
-        case 'processing':
+        case PackageStatusProcessingText:
           return true
-        case 'in-transit':
+        case PackageStatusInTransitText:
           return true
-        case 'delivered':
+        case PackageStatusDeliveredText:
           return true
-        case 'return':
+        case PackageStatusReturnText:
           return true
-        case 'cancelled':
+        case PackageStatusCancelledText:
+          return true
+        case PackageStatusExpiredText:
           return true
         default:
           return false
@@ -1012,7 +1028,7 @@ export default {
     },
 
     async handlerDownloadLables() {
-      this[SET_LOADING](true)
+      // this[SET_LOADING](true)
       var files = []
       var selected = this.selected.map((x) => {
         return {
@@ -1021,6 +1037,20 @@ export default {
           url: x.label,
         }
       })
+
+      if (this.filter.status == '') {
+        var countEmpty = this.selected.filter((element) => element.label === '')
+          .length
+        if (countEmpty == selected.length) {
+          this.$toast.open({
+            type: 'error',
+            message: 'Đơn được chọn không có label ! ',
+            duration: 3000,
+          })
+          return
+        }
+      }
+
       for (const item of selected) {
         if (item.url === '') {
           continue
@@ -1055,6 +1085,28 @@ export default {
     handleDeleteCode() {
       this.searchCode = ''
       this.filter.code = ''
+    },
+    downloadLabel() {
+      switch (this.filter.status) {
+        case PackageStatusCreatedText:
+          return true
+        case PackageStatusPendingPickupText:
+          return false
+        case PackageStatusProcessingText:
+          return false
+        case PackageStatusInTransitText:
+          return false
+        case PackageStatusDeliveredText:
+          return false
+        case PackageStatusReturnText:
+          return false
+        case PackageStatusCancelledText:
+          return true
+        case PackageStatusExpiredText:
+          return true
+        default:
+          return false
+      }
     },
   },
   watch: {
