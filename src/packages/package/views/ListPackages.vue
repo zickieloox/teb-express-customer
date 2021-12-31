@@ -1039,9 +1039,8 @@ export default {
       })
 
       if (this.filter.status == '') {
-        var countEmpty = this.selected.filter((element) => element.label === '')
-          .length
-        if (countEmpty == selected.length) {
+        var countEmpty = selected.filter((element) => element.url === '').length
+        if (countEmpty == this.selected.length) {
           this.$toast.open({
             type: 'error',
             message: 'Đơn được chọn không có label ! ',
