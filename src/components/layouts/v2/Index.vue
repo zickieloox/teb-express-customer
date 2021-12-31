@@ -25,6 +25,7 @@ import '@assets/fonts/web-icons/web-icons.min.css'
 import PHeader from './Header'
 import PSidebar from './Sidebar'
 import { GET_USER } from '../../../packages/shared/store'
+// import firebase from '../../../core/services/firebase'
 
 export default {
   name: 'Version2',
@@ -47,7 +48,9 @@ export default {
   mounted() {
     this.init()
   },
-  created() {},
+  created() {
+    // firebase.setup()
+  },
   methods: {
     ...mapActions('shared', [GET_USER]),
     async init() {
@@ -61,7 +64,11 @@ export default {
       var now = new Date()
       var dt = new Date(this.user.user_info.debt_time)
       dt.setDate(dt.getDate() + this.user.user_info.debt_max_day)
-      if (this.user.balance < 0 && dt.getTime() < now.getTime()) {
+      if (
+        this.user.user_info.debt_time !== null &&
+        this.user.balance < 0 &&
+        dt.getTime() < now.getTime()
+      ) {
         this.warning = true
         this.$store.commit('shared/checkDebt', true)
         return

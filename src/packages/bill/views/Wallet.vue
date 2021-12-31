@@ -127,11 +127,11 @@
                             :to="{
                               name: 'bill-detail',
                               query: {
-                                search: item.bill_id,
+                                search: item.bill.code,
                               },
                             }"
                           >
-                            {{ item.bill_id }}
+                            {{ item.bill.code }}
                           </router-link>
                         </span>
                         <span
@@ -148,7 +148,9 @@
                           item.type === typePayoneer ||
                             item.type === typePingPong
                         "
-                      ></span>
+                      >
+                        + {{ Math.abs(item.amount) | formatPrice }}
+                      </span>
                       <span v-else
                         >{{ item.type == typePay ? '-' : '+' }}
                         {{ Math.abs(item.amount) | formatPrice }}</span

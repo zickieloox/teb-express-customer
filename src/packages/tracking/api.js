@@ -9,4 +9,9 @@ export default {
       codes: payload,
     })
   },
+  countLogs(payload) {
+    return http.post(`/packages/logs/count`, {
+      codes: payload,
+    })
+  },
 }

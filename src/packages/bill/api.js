@@ -34,7 +34,7 @@ export default {
    * @return {*}
    */
   fetchExtraFee(payload) {
-    return http.get(`/bills/fee/${payload.id}?${buildQueryString(payload)}`)
+    return http.get(`/bills/fee/${payload.code}?${buildQueryString(payload)}`)
   },
   fetchTransactions(payload) {
     return http.get(`/transactions?${buildQueryString(payload)}`)

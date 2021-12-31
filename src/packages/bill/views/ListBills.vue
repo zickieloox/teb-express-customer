@@ -18,7 +18,7 @@
           <div class="page-header_action d-flex ">
             <div class="page-header_input ">
               <p-input
-                placeholder="Tìm theo mã vận đơn hoặc mã hóa đơn"
+                placeholder="Tìm theo mã tracking hoặc mã hóa đơn"
                 prefixIcon="search"
                 class="mb-2"
                 type="search"
@@ -66,12 +66,12 @@
                           :to="{
                             name: 'bill-detail',
                             query: {
-                              search: item.id,
+                              search: item.code,
                               date_search: '',
                             },
                           }"
                         >
-                          {{ item.id }}
+                          {{ item.code }}
                         </router-link>
                       </td>
                       <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>

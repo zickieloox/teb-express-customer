@@ -5,16 +5,16 @@
         <div class="row mb-20">
           <div class="col-6">
             <label class="modal__add-claim-label"
-              >Mã vận đơn: <span>*</span></label
+              >LionBay tracking: <span>*</span></label
             >
             <input
               type="text"
               class="form-control"
-              placeholder="Nhập mã vận đơn"
+              placeholder="Nhập LionBay tracking"
               v-validate="'required'"
               name="code"
               v-model="code"
-              data-vv-as="Mã vận đơn"
+              data-vv-as="LionBay tracking"
               :class="{ 'error-color': errors.has('code') }"
             />
             <span class="err-span" v-if="errors.has('code')">{{

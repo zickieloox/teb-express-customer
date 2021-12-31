@@ -4,9 +4,9 @@
       <div class="page-header">
         <div class="page-header__subtitle">
           <div class="page-header__info">
-            <div class="info-package">Mã vận đơn</div>
+            <div class="info-package">LionBay tracking</div>
             <div class="info-package">Dịch vụ </div>
-            <div class="info-package">Tracking </div>
+            <div class="info-package">Last mile tracking </div>
             <div class="info-package">Ngày tạo </div>
             <div class="info-package">Trạng thái</div>
             <div class="package-code "
@@ -87,7 +87,7 @@
                   PackageStatusCreatedText
               "
             >
-              <span>Vận đơn</span>
+              <span>Tạo tracking</span>
             </p-button>
             <a
               @click="handlerReturnPackage"
@@ -185,14 +185,6 @@
                   </div>
                   <div class="card-content">
                     <div class="row">
-                      <div class="col-4 mb-8">Mã vận đơn:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.package_code?.code')
-                        }}</div></div
-                      >
-                    </div>
-                    <div class="row">
                       <div class="col-4 mb-8">Chi tiết hàng hóa:</div>
                       <div class="col-8"
                         ><div>{{
@@ -215,9 +207,7 @@
                           >{{ $evaluate('package_detail.package.weight')
                           }}<span v-if="isOverThanOld('weight')">
                             ({{
-                              $evaluate(
-                                'package_detail.package.tracking.weight'
-                              )
+                              $evaluate('package_detail.package.actual_weight')
                             }})
                           </span></div
                         >
@@ -230,9 +220,7 @@
                           >{{ $evaluate('package_detail.package.length')
                           }}<span v-if="isOverThanOld()">
                             ({{
-                              $evaluate(
-                                'package_detail.package.tracking.length'
-                              )
+                              $evaluate('package_detail.package.actual_length')
                             }})
                           </span></div
                         ></div
@@ -245,9 +233,7 @@
                           >{{ $evaluate('package_detail.package.width')
                           }}<span v-if="isOverThanOld()">
                             ({{
-                              $evaluate(
-                                'package_detail.package.tracking.width'
-                              )
+                              $evaluate('package_detail.package.actual_width')
                             }})
                           </span></div
                         ></div
@@ -260,9 +246,7 @@
                           >{{ $evaluate('package_detail.package.height')
                           }}<span v-if="isOverThanOld()">
                             ({{
-                              $evaluate(
-                                'package_detail.package.tracking.height'
-                              )
+                              $evaluate('package_detail.package.actual_height')
                             }})
                           </span></div
                         ></div
@@ -598,8 +582,8 @@ export default {
       actions: {
         wayBill: {
           type: 'primary',
-          title: 'Xác nhận vận đơn',
-          button: 'Vận đơn',
+          title: 'Xác nhận',
+          button: 'Tạo tracking',
           Description: '',
           disabled: false,
           loading: false,
@@ -778,14 +762,15 @@ export default {
 
       if (prop == 'weight') {
         return (
-          this.package_detail.package.tracking[prop] >
+          this.package_detail.package.actual_weight >
           this.package_detail.package[prop]
         )
       }
+
       return (
-        this.package_detail.package.tracking.height *
-          this.package_detail.package.tracking.width *
-          this.package_detail.package.tracking.length >
+        this.package_detail.package.actual_height *
+          this.package_detail.package.actual_width *
+          this.package_detail.package.actual_length >
         this.package_detail.package.height *
           this.package_detail.package.width *
           this.package_detail.package.length
@@ -793,7 +778,7 @@ export default {
     },
 
     handleWayBill() {
-      this.actions.wayBill.Description = `Bạn có chắc chắn muốn vận đơn?`
+      this.actions.wayBill.Description = `Bạn có chắc chắn muốn tạo tracking?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
@@ -819,7 +804,7 @@ export default {
       this.init()
       this.$toast.open({
         type: 'success',
-        message: 'Vận đơn thành công',
+        message: 'Tạo tracking thành công',
         duration: 3000,
       })
     },

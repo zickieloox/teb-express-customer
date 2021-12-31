@@ -15,7 +15,7 @@
                     <div class="info-bill">Mã hóa đơn : </div>
                     <div class="info-bill">Ngày tạo: </div>
                     <div class="info-bill">Tồng hóa đơn : </div>
-                    <span class="info-number">{{ bill.id }}</span>
+                    <span class="info-number">{{ bill.code }}</span>
                     <span class="info-number">{{
                       bill.created_at | datetime('dd/MM/yyyy HH:mm:ss ')
                     }}</span>
@@ -43,7 +43,7 @@
                     <span>Xuất hóa đơn </span>
                   </button> -->
                 </div>
-                <div class="card-block  ">
+                <div class="card-block  " v-if="feeCreate.length">
                   <div class="card-content">
                     <div class="card-title">
                       <div class="title-text"> Phí vận đơn </div>
@@ -72,9 +72,10 @@
                       <table class="table table-hover">
                         <thead>
                           <tr class="table-header">
-                            <th width="270">MÃ VẬN ĐƠN </th>
+                            <th width="270">LIONBAY TRACKING</th>
                             <th width="270">THỜI GIAN </th>
-                            <th width="">PHÍ VẬN ĐƠN </th>
+                            <th>LAST MILE TRACKING</th>
+                            <th style="text-align: right">PHÍ VẬN ĐƠN </th>
                           </tr>
                         </thead>
 
@@ -101,7 +102,12 @@
                             <td>{{
                               item.created_at | datetime('dd/MM/yyyy HH:mm:ss')
                             }}</td>
-                            <td>+ {{ item.shipping_fee | formatPrice }}</td>
+                            <td>{{
+                              item.tracking ? item.tracking.tracking_number : ''
+                            }}</td>
+                            <td style="text-align: right"
+                              >+ {{ item.shipping_fee | formatPrice }}</td
+                            >
                           </tr>
                         </tbody>
                       </table>
@@ -109,7 +115,7 @@
                   </div>
                 </div>
 
-                <div class="card-block  ">
+                <div class="card-block  " v-if="feeExtra.length">
                   <div class="card-content">
                     <div class="card-title">
                       <div class="title-text"> Phí phát sinh </div>
@@ -139,7 +145,7 @@
                       <table class="table table-hover">
                         <thead>
                           <tr class="table-header">
-                            <th width="270">MÃ VẬN ĐƠN </th>
+                            <th width="270">LIONBAY TRACKING </th>
                             <th width="270">THỜI GIAN </th>
                             <th>LOẠI PHÍ</th>
                             <th>NỘI DUNG</th>
@@ -200,7 +206,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="card-block  ">
+                <div class="card-block  " v-if="feeRefund.length">
                   <div class="card-content">
                     <div class="card-title">
                       <div class="title-text"> Hoàn tiền </div>
@@ -229,7 +235,7 @@
                       <table class="table table-hover">
                         <thead>
                           <tr class="table-header">
-                            <th width="270">MÃ VẬN ĐƠN </th>
+                            <th width="270">LIONBAY TRACKING </th>
                             <th width="270">THỜI GIAN </th>
                             <th>NỘI DUNG</th>
                             <th style="text-align: right">PHÍ HOÀN TIỀN </th>
@@ -394,8 +400,8 @@ export default {
       this.total_fee = result.total
       this.isFetching = false
       if (result.bill) {
-        this.filterExtra.id = this.bill.id
-        this.filterRefund.id = this.bill.id
+        this.filterExtra.code = this.bill.code
+        this.filterRefund.code = this.bill.code
         await this[FETCH_BILL_EXTRA](this.filterExtra)
         await this[FETCH_BILL_REFUND](this.filterRefund)
         return
@@ -523,5 +529,10 @@ export default {
 .disable-next-page {
   background-color: #f6f7f7;
   pointer-events: none;
+}
+.p-tooltip:after {
+  height: auto;
+  word-break: break-word;
+  width: 250%;
 }
 </style>

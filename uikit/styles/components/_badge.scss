@@ -1,80 +1,92 @@
 .badge-round {
-  flex-direction: column;
-  align-items: flex-start;
-  border-radius: 24px;
-  padding: 0 8px;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 22px;
-  text-align: center;
-  letter-spacing: 0.2px;
+    flex-direction: column;
+    align-items: flex-start;
+    border-radius: 24px;
+    padding: 0 8px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+    text-align: center;
+    letter-spacing: 0.2px;
 }
 
 .badge-success {
-  background: #F0FFF3;
-  color: #48BE78;
+    background: #F0FFF3;
+    color: #48BE78;
+}
 
-}
 .badge-default {
-  background: #E6FFFB;
-  color: #13C2C2;
+    background: #E6FFFB;
+    color: #13C2C2;
 }
+
 .badge-await {
-  background:#F9F0FF;
-  color: #722ED1;
+    background: #F9F0FF;
+    color: #722ED1;
 }
+
 // .badge-primary {
 //   color: #3F51B5;
 //   background: #E6EBF5;
 //   border: 1px solid #8A99CF;
 // }
-
-
 .badge-resolved {
-  background: #11c26d;
-  color: #fff;
+    background: #11c26d;
+    color: #fff;
 }
+
 .badge-info {
-  background: #F2EBE4;
-  color: #7F5345;
+    background: #F2EBE4;
+    color: #7F5345;
 }
+
 .badge-danger {
-  background: #FFF1F0;
-  color: #F5222D;
+    background: #FFF1F0;
+    color: #F5222D;
 }
+
 .badge-warning {
-  background: #FFF3E0;
-  color: #FFB74D;
+    background: #FFF3E0;
+    color: #FFB74D;
 }
+
 .badge-unpaid {
-  background: #E6FFFB;
-  color: #13C2C2;
-  font-size: 12px;
+    background: #E6FFFB;
+    color: #13C2C2;
+    font-size: 12px;
 }
 
-.badge-cancel{
-  background: #FFF1F0;
-  color: #F5222D;
+.badge-cancel {
+    background: #FFF1F0;
+    color: #F5222D;
 }
-.badge-done{
-  background: #F0FFF3;
-  color: #48BE78;
 
+.badge-done {
+    background: #F0FFF3;
+    color: #48BE78;
 }
 
 .badge-pending {
-  background: #E6EBF5;
-  color: #3F51B5;
+    background: #E6EBF5;
+    color: #3F51B5;
 }
 
-.badge-primary{
-  background: #E6FBFF;
-  color: #00ABFB;
+.badge-primary {
+    background: #E6FBFF;
+    color: #00ABFB;
 }
 
-.badge-returned{
-  background: #F2EBE4;
-  color: #7F5345;
+.badge-returned {
+    background: #F2EBE4;
+    color: #7F5345;
 }
 
+.badge-alert {
+    color: #FA8C16;
+}
 
+.badge-expired {
+    color: #820014;
+    background: #FFF1F0;
+
+}

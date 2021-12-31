@@ -19,13 +19,13 @@
           <div class="w-search">
             <input
               type="text"
-              placeholder="Tìm kiếm theo mã vận đơn hoặc tracking number"
+              placeholder="Tìm kiếm theo mã tracking"
               @keydown.enter.prevent="searchHandle"
             />
             <div class="icon icon-search"></div>
           </div>
           <div class="row mt-24">
-            <div class="col-9">
+            <div class="col-12">
               <div class="row">
                 <div class="col-4">
                   <div class="box box-warning">
@@ -36,7 +36,7 @@
                       <div class="w-icon">
                         <i class="icon icon-clock"></i>
                       </div>
-                      <p class="title">Đang xử lý</p>
+                      <p class="title">processing</p>
                       <p class="value">{{ numbers.processing }}</p>
                     </a>
                   </div>
@@ -50,7 +50,7 @@
                       <div class="w-icon">
                         <i class="icon icon-plane"></i>
                       </div>
-                      <p class="title">Đang giao</p>
+                      <p class="title">In-transit</p>
                       <p class="value">{{ numbers.intransit }}</p>
                     </a>
                   </div>
@@ -64,7 +64,7 @@
                       <div class="w-icon">
                         <i class="icon icon-box-tick"></i>
                       </div>
-                      <p class="title">Giao thành công</p>
+                      <p class="title">Delivered</p>
                       <p class="value">{{ numbers.delivered }}</p>
                     </a>
                   </div>
@@ -82,26 +82,26 @@
                 </div>
               </div>
             </div>
-            <div class="col-3 list-actions">
-              <div class="card bg-gray">
-                <h3 class="card-title">Hoạt động</h3>
-                <div class="card-body">
-                  <ul class="messages pb-4">
-                    <li v-for="item in messages" :key="item.id">
-                      <router-link
-                        :to="{
-                          name: 'package-detail',
-                          params: { id: item.package_id },
-                        }"
-                      >
-                        <i class="icon icon-export"></i>
-                        <p v-html="item.message"></p>
-                      </router-link>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            <!--            <div class="col-3 list-actions">-->
+            <!--              <div class="card bg-gray">-->
+            <!--                <h3 class="card-title">Hoạt động</h3>-->
+            <!--                <div class="card-body">-->
+            <!--                  <ul class="messages pb-4">-->
+            <!--                    <li v-for="item in messages" :key="item.id">-->
+            <!--                      <router-link-->
+            <!--                        :to="{-->
+            <!--                          name: 'package-detail',-->
+            <!--                          params: { id: item.package_id },-->
+            <!--                        }"-->
+            <!--                      >-->
+            <!--                        <i class="icon icon-export"></i>-->
+            <!--                        <p v-html="item.message"></p>-->
+            <!--                      </router-link>-->
+            <!--                    </li>-->
+            <!--                  </ul>-->
+            <!--                </div>-->
+            <!--              </div>-->
+            <!--            </div>-->
           </div>
         </div>
       </div>

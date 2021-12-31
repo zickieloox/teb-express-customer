@@ -47,8 +47,7 @@
     }
 }
 
-.table-hover tbody tr:hover,
-{
+.table-hover tbody tr:hover {
     cursor: pointer;
     background: #F9FDFE;
     border-bottom: 1px solid white !important;
@@ -56,7 +55,8 @@
         border: 2px solid #626363;
     }
 }
-.table-hover tbody tr.hover{
+
+.table-hover tbody tr.hover {
     cursor: pointer;
     background: #E1F7FC;
     border-bottom: 1px solid white !important;

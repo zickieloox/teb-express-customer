@@ -14,7 +14,7 @@
             class="bulk-actions__selection-status"
             @click="handleWayBill"
             type="primary"
-            >Vận đơn</p-button
+            >Tạo tracking</p-button
           >
           <p-button
             v-if="isReturnTab()"
@@ -26,6 +26,7 @@
           <p-button
             class="bulk-actions__selection-status"
             @click="handlerDownloadLables"
+            :disabled="downloadLabel(filter.status)"
             type="lb-secondary"
             >Tải label</p-button
           >
@@ -53,7 +54,7 @@
       <div v-else class="action-header">
         <div class="d-flex page-header__input">
           <p-input
-            placeholder="Tìm theo mã vận đơn hoặc mã đơn hàng, tracking number..."
+            placeholder="Tìm theo mã tracking hoặc mã đơn hàng"
             prefixIcon="search"
             type="search"
             v-model="searchCode"
@@ -131,14 +132,13 @@
                         ></p-checkbox>
                       </th>
                       <template>
-                        <th>Mã vận đơn</th>
-                        <th>Mã đơn hàng</th>
-                        <th>Tracking</th>
-                        <th>Người nhận</th>
-                        <th>Dịch vụ</th>
-                        <th>Ngày tạo </th>
-                        <th>Trạng thái</th>
-                        <th style="text-align: right">Tổng cước</th>
+                        <th>order no.</th>
+                        <th>Lionbay tracking</th>
+                        <th>last mile tracking</th>
+                        <th>service</th>
+                        <th>created date </th>
+                        <th>status</th>
+                        <th style="text-align: right">Total fee</th>
                       </template>
                     </tr>
                   </thead>
@@ -149,8 +149,10 @@
                       :class="{
                         hover: isChecked(item),
                         deactive:
-                          item.package_code &&
-                          item.package_code.status == PackageStatusDeactive,
+                          (item.package_code &&
+                            item.package_code.status ==
+                              PackageStatusDeactive) ||
+                          item.status_string == PackageStatusExpiredText,
                         'sm-view': isSmScreen,
                       }"
                     >
@@ -160,6 +162,50 @@
                           :native-value="item"
                           @input="handleValue($event)"
                         ></p-checkbox>
+                      </td>
+                      <td>
+                        <p-tooltip
+                          :label="item.order_number"
+                          v-if="item.order_number"
+                          size="large"
+                          position="top"
+                          type="dark"
+                          :active="item.order_number.length > 20"
+                        >
+                          <router-link
+                            class="text-no-underline"
+                            :to="{
+                              name: 'package-detail',
+                              params: {
+                                id: item.id,
+                              },
+                            }"
+                          >
+                            {{ truncate(item.order_number, 20) }}
+                          </router-link>
+                        </p-tooltip>
+                        <span
+                          v-if="!item.validate_address"
+                          @click="handleValidateAddress(item)"
+                          class="
+                            pull-right
+                            list-warning
+                            badge badge-round badge-warning-order
+                          "
+                        >
+                          <p-tooltip
+                            class="item_name"
+                            :label="
+                              `Địa chỉ không hợp lệ \n Kích vào đây để xác nhận rằng địa chỉ hiện tại chắc chắn hợp lệ`
+                            "
+                            position="top"
+                            type="dark"
+                          >
+                            <inline-svg
+                              :src="require('../../../assets/img/warning.svg')"
+                            ></inline-svg>
+                          </p-tooltip>
+                        </span>
                       </td>
                       <td class="action">
                         <span class="code">
@@ -192,34 +238,11 @@
                               }}
                             </router-link>
                           </p-tooltip>
-
-                          <span
-                            v-if="!item.validate_address"
-                            @click="handleValidateAddress(item)"
-                            class="
-                            list-warning
-                            badge badge-round badge-warning-order
-                          "
-                          >
-                            <p-tooltip
-                              class="item_name"
-                              :label="
-                                `Địa chỉ không hợp lệ \n Kích vào đây để xác nhận rằng địa chỉ hiện tại chắc chắn hợp lệ`
-                              "
-                              position="top"
-                              type="dark"
-                            >
-                              <inline-svg
-                                :src="
-                                  require('../../../assets/img/warning.svg')
-                                "
-                              ></inline-svg>
-                            </p-tooltip>
-                          </span>
+                          <span v-else class="no-pkg-code"></span>
                         </span>
 
                         <span class="link">
-                          <span class="svg">
+                          <span class="svg" v-if="item.package_code">
                             <p-tooltip
                               class="item_name"
                               :label="` Copy `"
@@ -293,7 +316,7 @@
                             </p-tooltip>
                           </span>
 
-                          <span class="svg">
+                          <span class="svg" v-if="item.package_code">
                             <p-tooltip
                               class="item_name"
                               :label="` Track `"
@@ -343,18 +366,6 @@
                         </span>
                       </td>
                       <td>
-                        <p-tooltip
-                          :label="item.order_number"
-                          v-if="item.order_number"
-                          size="large"
-                          position="top"
-                          type="dark"
-                          :active="item.order_number.length > 20"
-                        >
-                          {{ truncate(item.order_number, 20) }}
-                        </p-tooltip>
-                      </td>
-                      <td>
                         <a
                           target="_blank"
                           class="tracking"
@@ -371,16 +382,21 @@
                             size="large"
                             position="top"
                             type="dark"
-                            :active="item.tracking.tracking_number.length > 10"
+                            :active="item.tracking.tracking_number.length > 25"
                           >
                             {{
                               truncate(
                                 item.tracking
                                   ? item.tracking.tracking_number
                                   : '',
-                                10
+                                25
                               )
                             }}
+                            <inline-svg
+                              :src="
+                                require('../../../assets/img/arrow-up-right.svg')
+                              "
+                            ></inline-svg>
                           </p-tooltip>
                         </a>
                         <a
@@ -398,9 +414,6 @@
                             "
                           ></inline-svg>
                         </a>
-                      </td>
-                      <td>
-                        {{ item.recipient }}
                       </td>
                       <td v-if="item.service">
                         {{ item.service.name }}
@@ -517,6 +530,12 @@ import {
   PackageStatusReturnText,
   MAP_NAME_STATUS_PACKAGE,
   PackageStatusDeactive,
+  PackageStatusExpiredText,
+  PackageStatusPendingPickupText,
+  PackageStatusProcessingText,
+  PackageStatusInTransitText,
+  PackageStatusDeliveredText,
+  PackageStatusCancelledText,
 } from '../constants'
 import {
   FETCH_LIST_PACKAGES,
@@ -582,8 +601,8 @@ export default {
       actions: {
         wayBill: {
           type: 'primary',
-          title: 'Xác nhận vận đơn',
-          button: 'Vận đơn',
+          title: 'Xác nhận',
+          button: 'Tạo tracking',
           Description: '',
           disabled: false,
           loading: false,
@@ -614,6 +633,13 @@ export default {
       selected: [],
       idSelected: 0,
       PackageStatusDeactive: PackageStatusDeactive,
+      PackageStatusProcessingText: PackageStatusProcessingText,
+      PackageStatusCreatedText: PackageStatusCreatedText,
+      PackageStatusPendingPickupText: PackageStatusPendingPickupText,
+      PackageStatusDeliveredText: PackageStatusDeliveredText,
+      PackageStatusExpiredText: PackageStatusExpiredText,
+      PackageStatusReturnText: PackageStatusReturnText,
+      PackageStatusCancelledText: PackageStatusCancelledText,
       windowWidth: 0,
       isSmScreen: false,
       confirmAddress: '',
@@ -765,19 +791,21 @@ export default {
     },
     createOrder(value) {
       switch (value) {
-        case 'created':
+        case PackageStatusCreatedText:
           return false
-        case 'pending-pickup':
+        case PackageStatusPendingPickupText:
           return true
-        case 'processing':
+        case PackageStatusProcessingText:
           return true
-        case 'in-transit':
+        case PackageStatusInTransitText:
           return true
-        case 'delivered':
+        case PackageStatusDeliveredText:
           return true
-        case 'return':
+        case PackageStatusReturnText:
           return true
-        case 'cancelled':
+        case PackageStatusCancelledText:
+          return true
+        case PackageStatusExpiredText:
           return true
         default:
           return false
@@ -786,19 +814,21 @@ export default {
 
     cancelOrder(status) {
       switch (status) {
-        case 'created':
+        case PackageStatusCreatedText:
           return false
-        case 'pending-pickup':
+        case PackageStatusPendingPickupText:
           return true
-        case 'processing':
+        case PackageStatusProcessingText:
           return true
-        case 'in-transit':
+        case PackageStatusInTransitText:
           return true
-        case 'delivered':
+        case PackageStatusDeliveredText:
           return true
-        case 'return':
+        case PackageStatusReturnText:
           return true
-        case 'cancelled':
+        case PackageStatusCancelledText:
+          return true
+        case PackageStatusExpiredText:
           return true
         default:
           return false
@@ -812,9 +842,7 @@ export default {
         (ele) => ele.status_string !== PackageStatusCreatedText
       )
       if (selectedInvalid.length > 0) {
-        let codeSelectedInvalid = selectedInvalid.map(
-          (ele) => ele.package_code.code
-        )
+        let codeSelectedInvalid = selectedInvalid.map((ele) => ele.order_number)
         if (codeSelectedInvalid.length > 3) {
           codeSelectedInvalid = [...codeSelectedInvalid.slice(0, 3), '...']
         }
@@ -899,9 +927,7 @@ export default {
         (ele) => ele.status_string !== PackageStatusCreatedText
       )
       if (selectedInvalid.length > 0) {
-        let codeSelectedInvalid = selectedInvalid.map(
-          (ele) => ele.package_code.code
-        )
+        let codeSelectedInvalid = selectedInvalid.map((ele) => ele.order_number)
         if (codeSelectedInvalid.length > 3) {
           codeSelectedInvalid = [...codeSelectedInvalid.slice(0, 3), '...']
         }
@@ -909,7 +935,7 @@ export default {
           type: 'error',
           message: `Đơn hàng ${codeSelectedInvalid.join(
             ', '
-          )} không thể vận đơn.`,
+          )} không thể tạo tracking.`,
           duration: 5000,
         })
       }
@@ -917,7 +943,7 @@ export default {
         this.selected.length
       } </b>. Tổng tiền là <b> ${formatPrice(
         this.selectionCountTotal
-      )} </b> bạn có chắc chắn muốn vận đơn?`
+      )} </b> bạn có chắc chắn muốn tạo tracking?`
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
@@ -944,7 +970,7 @@ export default {
       this.init()
       this.$toast.open({
         type: 'success',
-        message: 'Vận đơn thành công',
+        message: 'Tạo tracking thành công',
         duration: 3000,
       })
     },
@@ -1002,16 +1028,32 @@ export default {
     },
 
     async handlerDownloadLables() {
-      this[SET_LOADING](true)
+      // this[SET_LOADING](true)
       var files = []
       var selected = this.selected.map((x) => {
         return {
           order_number: x.order_number,
-          code: x.package_code.code,
+          code: x.package_code ? x.package_code.code : '',
           url: x.label,
         }
       })
+
+      if (this.filter.status == '') {
+        var countEmpty = selected.filter((element) => element.url === '').length
+        if (countEmpty == this.selected.length) {
+          this.$toast.open({
+            type: 'error',
+            message: 'Đơn được chọn không có label ! ',
+            duration: 3000,
+          })
+          return
+        }
+      }
+
       for (const item of selected) {
+        if (item.url === '') {
+          continue
+        }
         const res = await api.fetchBarcodeFile({
           url: item.url,
           type: 'labels',
@@ -1043,6 +1085,28 @@ export default {
       this.searchCode = ''
       this.filter.code = ''
     },
+    downloadLabel() {
+      switch (this.filter.status) {
+        case PackageStatusCreatedText:
+          return true
+        case PackageStatusPendingPickupText:
+          return false
+        case PackageStatusProcessingText:
+          return false
+        case PackageStatusInTransitText:
+          return false
+        case PackageStatusDeliveredText:
+          return false
+        case PackageStatusReturnText:
+          return false
+        case PackageStatusCancelledText:
+          return true
+        case PackageStatusExpiredText:
+          return true
+        default:
+          return false
+      }
+    },
   },
   watch: {
     filter: {
@@ -1072,5 +1136,9 @@ export default {
   a {
     color: #cfd0d0 !important;
   }
+}
+.no-pkg-code {
+  display: inline-block;
+  min-width: 165px;
 }
 </style>
