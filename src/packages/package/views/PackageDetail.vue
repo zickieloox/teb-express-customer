@@ -753,10 +753,7 @@ export default {
     },
 
     isOverThanOld(prop) {
-      if (
-        !this.package_detail.package ||
-        !this.package_detail.package.tracking
-      ) {
+      if (!this.package_detail.package) {
         return false
       }
 
