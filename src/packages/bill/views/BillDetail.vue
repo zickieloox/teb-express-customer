@@ -43,7 +43,7 @@
                     <span>Xuất hóa đơn </span>
                   </button> -->
                 </div>
-                <div class="card-block  ">
+                <div class="card-block  " v-if="feeCreate.length">
                   <div class="card-content">
                     <div class="card-title">
                       <div class="title-text"> Phí vận đơn </div>
@@ -115,7 +115,7 @@
                   </div>
                 </div>
 
-                <div class="card-block  ">
+                <div class="card-block  " v-if="feeExtra.length">
                   <div class="card-content">
                     <div class="card-title">
                       <div class="title-text"> Phí phát sinh </div>
@@ -206,7 +206,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="card-block  ">
+                <div class="card-block  " v-if="feeRefund.length">
                   <div class="card-content">
                     <div class="card-title">
                       <div class="title-text"> Hoàn tiền </div>

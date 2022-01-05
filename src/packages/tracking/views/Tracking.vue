@@ -409,10 +409,6 @@ export default {
                   log: this.logs.filter((x) => x.package_id == item.id),
                   notFound: false,
                 })
-                item.status_string =
-                  item.status_string == this.statusPendingPickup
-                    ? 'Pre-Transit'
-                    : item.status_string
 
                 const times = item.log.map((item) =>
                   datetime(item.ship_time, 'dd-MM-yyyy')
