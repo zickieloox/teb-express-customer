@@ -246,7 +246,7 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                   </td>
                   <td colspan="2"
                     ><span class="error"
-                      >Không thể tìm thấy mã vận đơn này. Vui lòng kiểm tra lại
+                      >Không thể tìm thấy mã tracking này. Vui lòng kiểm tra lại
                       sau.</span
                     ></td
                   >
@@ -530,7 +530,7 @@ export default {
       var regex = /^[A-Za-z0-9\n\t ]+$/
       var isValid = regex.test(this.code.trim())
       if (!isValid) {
-        this.errText = 'Mã vận đơn không hợp lệ'
+        this.errText = 'Mã tracking không hợp lệ'
         this.$toast.open({ type: 'error', message: this.errText })
         return
       }
@@ -661,7 +661,7 @@ export default {
       handler: function() {
         this.dataCopy = ''
         for (const item of this.newListPackages) {
-          this.dataCopy += `Mã vận đơn: ${item.package_code.code}
+          this.dataCopy += `Mã tracking: ${item.package_code.code}
 Tracking: ${item.tracking ? item.tracking.tracking_number : ''}
 Trạng thái: ${item.status_string.charAt(0).toUpperCase() +
             item.status_string.slice(1)}
