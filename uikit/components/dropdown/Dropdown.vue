@@ -158,6 +158,7 @@ export default {
       }
 
       this.$emit('input', this.selected)
+
       if (!this.multiple) {
         this.isActive = !this.closeOnClick
       }

@@ -1,172 +1,123 @@
-<!--<template>-->
-<!--  <div class="notification_page pages">-->
-<!--    <div class="page-header">-->
-<!--      <div class="container-fluid">-->
-<!--        <div class="row">-->
-<!--          <div class="col-12 page-header-title">-->
-<!--            <img-->
-<!--              src="@/assets/img/chevron-left.svg"-->
-<!--              alt=""-->
-<!--              class="page-header_back_icon"-->
-<!--            />-->
-<!--            <span @click="$router.go(-2)" class="text">Back</span>-->
-<!--            <div class="page-title">-->
-<!--              Notification-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div class="page-content">-->
-<!--      <div class="card noti_list">-->
-<!--        <div class="card_body">-->
-<!--          <div data-role="container">-->
-<!--            <div data-role="content" class="content">-->
-<!--              <a-->
-<!--                v-for="(item, index) in notifications"-->
-<!--                :key="index"-->
-<!--                class="list-group-item"-->
-<!--              >-->
-<!--                <div class="media" @click="handelReadNoti(item)">-->
-<!--                  <div class="pr-10 ">-->
-<!--                    <img-->
-<!--                      :class="{ unread: item.status == 'readed' }"-->
-<!--                      src="~@/assets/img/dot.svg"-->
-<!--                      alt="dot"-->
-<!--                      class="icon"-->
-<!--                    />-->
-<!--                  </div>-->
-<!--                  <div class="media-body">-->
-<!--                    <div-->
-<!--                      class="media-heading d-flex justify-content-between align-items-center"-->
-<!--                    >-->
-<!--                      <h6-->
-<!--                        class="media-title"-->
-<!--                        :class="{ unread: item.status == 'readed' }"-->
-<!--                        >{{ item.title || 'Notification' }}</h6-->
-<!--                      >-->
-<!--                      <time class="media-meta">{{-->
-<!--                        item.created_at | datetime-->
-<!--                      }}</time>-->
-<!--                    </div>-->
-<!--                    <p v-html="item.message"></p>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </a>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="pagination-footer">-->
-<!--          <p-pagination-->
-<!--            :total="count"-->
-<!--            :perPage="filter.limit"-->
-<!--            :current.sync="filter.page"-->
-<!--            size="sm"-->
-<!--          >-->
-<!--          </p-pagination>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--    <div class="page-footer"></div>-->
-<!--  </div>-->
-<!--</template>-->
-<!--<script>-->
-<!--import { mapState, mapActions } from 'vuex'-->
-<!--import mixinRoute from '@core/mixins/route'-->
-<!--import mixinTable from '@core/mixins/table'-->
-<!--import mixinDownload from '@/packages/shared/mixins/download'-->
+<template>
+  <div class="notification__page pages">
+    <div class="container">
+      <div class="page-header"> </div>
+      <div class="page-content">
+        <div
+          v-for="(item, i) in notifications"
+          :key="i"
+          :class="{ unread: item.readed == NotificationUnread }"
+          @click="handelReadNoti(item)"
+          class="noti__dropdown-item"
+        >
+          <div class="item-content">
+            <!--                      <div class="item-icon ">-->
+            <!--                        <inline-svg-->
+            <!--                          :src="require('../../../../src/assets/img/icon-noti.svg')"-->
+            <!--                          class=""-->
+            <!--                        ></inline-svg>-->
+            <!--                      </div>-->
+            <div class="item-text ml-7"
+              >{{ item.title }}
+              <div class="item-date mt-2">{{
+                item.created_at | datetime('dd/MM/yyyy - HH:ss')
+              }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page-footer" v-if="count > 0">
+        <p-pagination
+          :total="count"
+          :perPage.sync="filter.limit"
+          :current.sync="filter.page"
+          size="sm"
+        ></p-pagination>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import { mapState, mapActions } from 'vuex'
+import mixinRoute from '@core/mixins/route'
+import mixinTable from '@core/mixins/table'
+import {
+  FETCH_NOTIFICATIONS,
+  FETCH_NOTIFICATIONS_ALL,
+  READ_NOTIFICATION,
+} from '../../shared/store'
+import {
+  NotificationRead,
+  NotificationUnread,
+} from '../../../packages/shared/constants'
 
-<!--export default {-->
-<!--  name: 'Notification',-->
-<!--  mixins: [mixinRoute, mixinTable, mixinDownload],-->
-<!--  computed: {-->
-<!--    ...mapState('shared', {-->
-<!--      notifications: (state) => state.notificationsAll,-->
-<!--      count: (state) => state.countNoti,-->
-<!--    }),-->
-<!--  },-->
-<!--  data() {-->
-<!--    return {-->
-<!--      filter: {-->
-<!--        limit: 10,-->
-<!--        page: 1,-->
-<!--      },-->
-<!--    }-->
-<!--  },-->
-<!--  methods: {-->
-<!--    handelReadNoti(item) {-->
-<!--      switch (item.type) {-->
-<!--        case 'container':-->
-<!--          this.callRead(item)-->
-<!--          this.$router-->
-<!--            .push({-->
-<!--              name: 'list-order-items',-->
-<!--              params: {-->
-<!--                id: item.object_id,-->
-<!--              },-->
-<!--            })-->
-<!--            .catch(() => {})-->
-<!--          break-->
-<!--        case 'billing':-->
-<!--          this.callRead(item)-->
-<!--          this.$router-->
-<!--            .push({-->
-<!--              name: 'billing-detail',-->
-<!--              params: {-->
-<!--                id: item.object_id,-->
-<!--              },-->
-<!--            })-->
-<!--            .catch(() => {})-->
-<!--          break-->
-<!--        case 'order':-->
-<!--          this.callRead(item)-->
-<!--          this.$router-->
-<!--            .push({-->
-<!--              name: 'list-order-items',-->
-<!--              params: {-->
-<!--                id: item.object_id,-->
-<!--              },-->
-<!--            })-->
-<!--            .catch(() => {})-->
-<!--          break-->
-<!--        case 'export_fulfill':-->
-<!--          this.callRead(item)-->
-<!--          this.downloadFile(-->
-<!--            item.message,-->
-<!--            'export_fulfill',-->
-<!--            item.message.split('/'),-->
-<!--            'Tracking-'-->
-<!--          )-->
-<!--          break-->
-<!--        default:-->
-<!--          this.callRead(item)-->
-<!--      }-->
-<!--    },-->
-<!--    async callRead(item) {-->
-<!--      if (item.status == 'readed') return-->
-<!--      const arr = []-->
-<!--      arr.push(item.id)-->
-<!--      const result = await this[READ_ONE_NOTIFICATIONS](arr)-->
-<!--      if (!result.success) {-->
-<!--        this.$toast.open({ type: 'error', message: result.message })-->
-<!--      }-->
-<!--    },-->
-<!--    async init() {-->
-<!--      this.handleUpdateRouteQuery()-->
-<!--      let limit = this.filter-->
-<!--      await this[FETCH_All_NOTIFICATIONS](limit)-->
-<!--    },-->
-<!--  },-->
-<!--  created() {-->
-<!--    this.init()-->
-<!--  },-->
-<!--  watch: {-->
-<!--    filter: {-->
-<!--      handler: function() {-->
-<!--        this.init()-->
-<!--      },-->
-<!--      deep: true,-->
-<!--    },-->
-<!--  },-->
-<!--}-->
-<!--</script>-->
+export default {
+  name: 'Notification',
+  mixins: [mixinRoute, mixinTable],
+  computed: {
+    ...mapState('shared', {
+      notifications: (state) => state.notificationAll,
+      count: (state) => state.countNotiAll,
+    }),
+  },
+  data() {
+    return {
+      filter: {
+        limit: 10,
+        page: 1,
+      },
+      NotificationUnread: NotificationUnread,
+      NotificationRead: NotificationRead,
+      filterUnread: {
+        limit: 7,
+        page: 1,
+        count: {
+          unread: 1,
+        },
+      },
+    }
+  },
+  methods: {
+    ...mapActions('shared', [
+      FETCH_NOTIFICATIONS_ALL,
+      FETCH_NOTIFICATIONS,
+      READ_NOTIFICATION,
+    ]),
+    handelReadNoti(item) {
+      if (item.link) {
+        // eslint-disable-next-line no-useless-escape
+        var url = item.link.replace(/(http[s]?:\/\/)?([^\/\s]+\/)/, '')
+        this.$router.push({ path: `/${url}` })
+      }
+      this.callRead(item)
+    },
+    async callRead(item) {
+      if (item.readed == NotificationRead) return
+
+      let [read, fetch] = await Promise.all([
+        this[READ_NOTIFICATION](item.id),
+        this[FETCH_NOTIFICATIONS](this.filterUnread),
+      ])
+      if (!read.success || !fetch.success) {
+        this.$toast.open({ type: 'error', message: 'Có lỗi xảy ra' })
+      }
+    },
+    async init() {
+      this.handleUpdateRouteQuery()
+      let limit = this.filter
+      await this[FETCH_NOTIFICATIONS_ALL](limit)
+    },
+  },
+  created() {
+    this.init()
+  },
+  watch: {
+    filter: {
+      handler: function() {
+        this.init()
+      },
+      deep: true,
+    },
+  },
+}
+</script>
