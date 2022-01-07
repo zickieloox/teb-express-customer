@@ -10,7 +10,10 @@ export const COUNT_NOTIFICATIONS_ALL = 'countNotificationsAll'
 export const READ_NOTIFICATIONS = 'readNotifications'
 export const READ_NOTIFICATION = 'readNotification'
 export const GET_COUNT = 'getCount'
+export const GET_NOTIFICATION = 'getNotification'
 import addresses from '../../../assets/json/address.json'
+import union from 'lodash/union'
+import { NotificationRead } from '../constants'
 export const state = {
   user: {},
   addresses: [],
@@ -24,6 +27,17 @@ export const state = {
 export const getters = {
   [GET_COUNT](state) {
     return state.countNoti
+  },
+  [GET_NOTIFICATION](state) {
+    return state.notifications
+  },
+  getListIDNotificationUnread: (state) => {
+    return state.notifications.reduce((ids, item) => {
+      if (item.readed === 0) {
+        ids.push(item.id)
+      }
+      return ids
+    }, [])
   },
 }
 
@@ -49,12 +63,27 @@ export const mutations = {
   [COUNT_NOTIFICATIONS_ALL]: (state, payload) => {
     state.countNotiAll = payload
   },
-  [READ_NOTIFICATION]: (state) => {
+  [READ_NOTIFICATION]: (state, ids) => {
     if (state.countNoti > 0) {
-      state.countNoti = state.countNoti - 1
-      return
+      state.countNoti = state.countNoti - parseInt(ids.length)
+    } else {
+      state.countNoti = 0
     }
-    state.countNoti = 0
+
+    state.notifications = state.notifications.map((item) => {
+      if (ids.indexOf(item.id) !== -1) {
+        item.readed = NotificationRead
+      }
+
+      return item
+    })
+    state.notificationAll = state.notificationAll.map((item) => {
+      if (ids.indexOf(item.id) !== -1) {
+        item.readed = NotificationRead
+      }
+
+      return item
+    })
   },
 }
 
@@ -102,15 +131,18 @@ export const actions = {
   // eslint-disable-next-line no-unused-vars
   async readNotification({ commit }, payload) {
     let result = { success: true }
+    let notiIds = union(getters.getListIDNotificationUnread, payload)
+    if (notiIds.length === 0) {
+      return result
+    }
     let read = await api.readNotification(payload)
-
     if (!read.success) {
       result = {
         success: false,
         message: read.errorMessage || '',
       }
     }
-    commit(READ_NOTIFICATION)
+    commit(READ_NOTIFICATION, notiIds)
     return result
   },
   async fetchNotifications({ commit }, payload) {
@@ -119,7 +151,7 @@ export const actions = {
       api.fetchNotifications(payload),
       api.countNotifications(payload.count),
     ])
-    if (!list.notifications || !count) {
+    if (!list.notifications || !count.count) {
       count = { count: 0 }
       result = {
         success: false,

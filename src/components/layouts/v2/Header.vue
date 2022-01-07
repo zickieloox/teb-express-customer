@@ -141,6 +141,7 @@ import {
   READ_NOTIFICATIONS,
   READ_NOTIFICATION,
   GET_COUNT,
+  GET_NOTIFICATION,
 } from '../../../packages/shared/store'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
@@ -165,10 +166,10 @@ export default {
   computed: {
     ...mapState('shared', {
       isDebt: (state) => state.isDebt,
-      notifications: (state) => state.notifications,
     }),
     ...mapGetters('shared', {
       count: GET_COUNT,
+      notifications: GET_NOTIFICATION,
     }),
     types() {
       return MAP_USER_CLASS_TEXT
@@ -223,12 +224,10 @@ export default {
         this.$router.replace({ path: `/${url}` })
       }
       if (item.readed == NotificationRead) return
-
-      let [read, fetch] = await Promise.all([
-        this[READ_NOTIFICATION](item.id),
-        this[FETCH_NOTIFICATIONS](this.filter),
-      ])
-      if (!read.success || !fetch.success) {
+      const arr = []
+      arr.push(item.id)
+      let [read] = await Promise.all([this[READ_NOTIFICATION](arr)])
+      if (!read.success) {
         this.$toast.open({ type: 'error', message: 'Có lỗi xảy ra' })
       }
     },

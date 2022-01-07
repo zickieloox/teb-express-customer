@@ -18,7 +18,7 @@
             <!--                        ></inline-svg>-->
             <!--                      </div>-->
             <div class="item-text ml-7"
-              >{{ item.title }}
+              >{{ item.body }}
               <div class="item-date mt-2">{{
                 item.created_at | datetime('dd/MM/yyyy - HH:mm')
               }}</div>
@@ -94,11 +94,10 @@ export default {
     async callRead(item) {
       if (item.readed == NotificationRead) return
 
-      let [read, fetch] = await Promise.all([
-        this[READ_NOTIFICATION](item.id),
-        this[FETCH_NOTIFICATIONS](this.filterUnread),
-      ])
-      if (!read.success || !fetch.success) {
+      const arr = []
+      arr.push(item.id)
+      let [read] = await Promise.all([this[READ_NOTIFICATION](arr)])
+      if (!read.success) {
         this.$toast.open({ type: 'error', message: 'Có lỗi xảy ra' })
       }
     },
