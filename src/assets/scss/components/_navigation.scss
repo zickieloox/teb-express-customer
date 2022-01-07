@@ -200,12 +200,15 @@ $sidebar-width:120px;
         width: 100%;
         .view-all{
             padding: 14px 0;
-
+            width: 100%;
+            text-align: center;
             a{
                 color:#17191D;
                 font-size: 14px;
                 cursor: pointer;
                 font-weight: 600;
+                width: 100%;
+                display: block;
             }
         }
     }
