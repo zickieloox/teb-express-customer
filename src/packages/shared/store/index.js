@@ -151,7 +151,7 @@ export const actions = {
       api.fetchNotifications(payload),
       api.countNotifications(payload.count),
     ])
-    if (!list.notifications || !count.count) {
+    if (!list.notifications || !count) {
       count = { count: 0 }
       result = {
         success: false,
