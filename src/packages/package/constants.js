@@ -129,7 +129,7 @@ export const CHANGE_PACKAGE_TYPE = [
 ]
 
 export const DELIVER_LOG_PACKAGE = {
-  [PackageStatusInTransit]: 'In transit',
+  [PackageStatusInTransit]: 'Arriving at international airport to go abroad',
   [PackageStatusPendingPickup]: 'Shipping label created, LionBay awaiting item',
   [PackageStatusRePendingPickup]:
     'Shipping label created, LionBay awaiting item',
