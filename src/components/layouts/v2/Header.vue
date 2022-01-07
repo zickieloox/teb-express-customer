@@ -207,7 +207,6 @@ export default {
       this.handleUpdateRouteQuery()
       const result = await this[FETCH_NOTIFICATIONS](this.filter)
       if (!result.success) {
-        console.log(123)
         this.$toast.open({ message: result.message, type: 'error' })
       }
     },
