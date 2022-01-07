@@ -40,7 +40,7 @@
               </div>
 
               <div class="noti__dropdown-list">
-                <div class="" v-if="count > 0">
+                <div class="" v-if="notifications.length > 0">
                   <p-dropdown-item
                     v-for="(item, i) in notifications"
                     :key="i"
@@ -68,7 +68,7 @@
               </div>
               <p-dropdown-item class="all">
                 <div class="noti__dropdown-footer d-flex">
-                  <div v-if="count > 0" class="view-all">
+                  <div v-if="notifications.length > 0" class="view-all">
                     <router-link to="/notification">
                       Xem tất cả
                     </router-link>
