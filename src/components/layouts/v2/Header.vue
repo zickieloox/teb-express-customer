@@ -162,7 +162,9 @@ export default {
       default: () => {},
     },
   },
-  mounted() {},
+  mounted() {
+    this.init()
+  },
   computed: {
     ...mapState('shared', {
       isDebt: (state) => state.isDebt,
@@ -181,9 +183,7 @@ export default {
       return numFormatter(this.count)
     },
   },
-  created() {
-    this.init()
-  },
+  created() {},
   data() {
     return {
       visibleModal: false,
@@ -204,7 +204,6 @@ export default {
       READ_NOTIFICATION,
     ]),
     async init() {
-      this.handleUpdateRouteQuery()
       const result = await this[FETCH_NOTIFICATIONS](this.filter)
       if (!result.success) {
         this.$toast.open({ message: result.message, type: 'error' })
