@@ -213,7 +213,7 @@ export default {
     handelReadNoti(item) {
       if (item.link) {
         // eslint-disable-next-line no-useless-escape
-        var url = item.link.replace(/(http[s]?:\/\/)?([^\/\s]+\/)/, '')
+        var url = item.link.replace(/(http[s]?:\/\/)?([^\/\s]+(\/)|^[\/])/, '')
         this.$router.push({ path: `/${url}` })
       }
       this.callRead(item)
