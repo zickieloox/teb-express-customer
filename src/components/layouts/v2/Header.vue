@@ -40,7 +40,10 @@
               </div>
 
               <div class="noti__dropdown-list">
-                <div class="" v-if="notifications.length > 0">
+                <div
+                  class="noti__dropdown-content"
+                  v-if="notifications.length > 0"
+                >
                   <p-dropdown-item
                     v-for="(item, i) in notifications"
                     :key="i"
@@ -56,9 +59,9 @@
                       <!--                        ></inline-svg>-->
                       <!--                      </div>-->
                       <div class="item-text ml-7"
-                        >{{ item.title }}
+                        >{{ item.body }}
                         <div class="item-date">{{
-                          item.created_at | datetime('dd/MM/yyyy - HH:ss')
+                          item.created_at | datetime('dd/MM/yyyy - HH:mm')
                         }}</div>
                       </div>
                     </div>
@@ -131,12 +134,13 @@
 </template>
 <script>
 import { MAP_USER_CLASS_TEXT } from '@core/constants'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import PDropdown from '../../../../uikit/components/dropdown/Dropdown'
 import {
   FETCH_NOTIFICATIONS,
   READ_NOTIFICATIONS,
   READ_NOTIFICATION,
+  GET_COUNT,
 } from '../../../packages/shared/store'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
@@ -162,7 +166,9 @@ export default {
     ...mapState('shared', {
       isDebt: (state) => state.isDebt,
       notifications: (state) => state.notifications,
-      count: (state) => state.countNoti,
+    }),
+    ...mapGetters('shared', {
+      count: GET_COUNT,
     }),
     types() {
       return MAP_USER_CLASS_TEXT
@@ -210,15 +216,12 @@ export default {
       }
       this.init()
     },
-    handelReadNoti(item) {
+    async handelReadNoti(item) {
       if (item.link) {
         // eslint-disable-next-line no-useless-escape
         var url = item.link.replace(/(http[s]?:\/\/)?([^\/\s]+(\/)|^[\/])/, '')
-        this.$router.push({ path: `/${url}` })
+        this.$router.replace({ path: `/${url}` })
       }
-      this.callRead(item)
-    },
-    async callRead(item) {
       if (item.readed == NotificationRead) return
 
       let [read, fetch] = await Promise.all([

@@ -9,6 +9,7 @@ export const COUNT_NOTIFICATIONS = 'countNotifications'
 export const COUNT_NOTIFICATIONS_ALL = 'countNotificationsAll'
 export const READ_NOTIFICATIONS = 'readNotifications'
 export const READ_NOTIFICATION = 'readNotification'
+export const GET_COUNT = 'getCount'
 import addresses from '../../../assets/json/address.json'
 export const state = {
   user: {},
@@ -20,7 +21,11 @@ export const state = {
   countNotiAll: 0,
 }
 
-export const getters = {}
+export const getters = {
+  [GET_COUNT](state) {
+    return state.countNoti
+  },
+}
 
 export const mutations = {
   [GET_USER]: (state, payload) => {
@@ -43,6 +48,13 @@ export const mutations = {
   },
   [COUNT_NOTIFICATIONS_ALL]: (state, payload) => {
     state.countNotiAll = payload
+  },
+  [READ_NOTIFICATION]: (state) => {
+    if (state.countNoti > 0) {
+      state.countNoti = state.countNoti - 1
+      return
+    }
+    state.countNoti = 0
   },
 }
 
@@ -98,6 +110,7 @@ export const actions = {
         message: read.errorMessage || '',
       }
     }
+    commit(READ_NOTIFICATION)
     return result
   },
   async fetchNotifications({ commit }, payload) {

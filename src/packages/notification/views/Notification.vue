@@ -20,7 +20,7 @@
             <div class="item-text ml-7"
               >{{ item.title }}
               <div class="item-date mt-2">{{
-                item.created_at | datetime('dd/MM/yyyy - HH:ss')
+                item.created_at | datetime('dd/MM/yyyy - HH:mm')
               }}</div>
             </div>
           </div>
@@ -63,7 +63,7 @@ export default {
   data() {
     return {
       filter: {
-        limit: 10,
+        limit: 25,
         page: 1,
       },
       NotificationUnread: NotificationUnread,
