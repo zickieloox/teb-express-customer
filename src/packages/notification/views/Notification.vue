@@ -96,7 +96,7 @@ export default {
 
       const arr = []
       arr.push(item.id)
-      let [read] = await Promise.all([this[READ_NOTIFICATION](arr)])
+      let read = await [this[READ_NOTIFICATION](arr)]
       if (!read.success) {
         this.$toast.open({ type: 'error', message: 'Có lỗi xảy ra' })
       }
