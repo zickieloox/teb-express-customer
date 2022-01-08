@@ -148,7 +148,7 @@ export const actions = {
   async fetchNotifications({ commit }, payload) {
     let result = { success: true }
     let [list, count] = await Promise.all([
-      api.fetchNotifications(payload),
+      api.fetchNotifications({ page: payload.page, limit: payload.limit }),
       api.countNotifications(payload.count),
     ])
     if (!list.notifications || !count) {
