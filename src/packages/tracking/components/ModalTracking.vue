@@ -4,7 +4,7 @@
     <div class="search">
       <div class="search-input">
         <div class="wrapper">
-          <div class="input" id="data">
+          <div class="input" id="data" @click="focusTextarea()">
             <template v-for="(code, j) in listCode">
               <span
                 :key="j"
@@ -137,6 +137,7 @@ export default {
     clearListCode() {
       this.listCode = []
       this.code = ''
+      document.getElementById('input').focus()
     },
 
     addCode() {
@@ -178,8 +179,14 @@ export default {
       let index = this.listCode.indexOf(code)
       if (index > -1) {
         this.listCode.splice(index, 1)
+        this.focus1()
       }
       this.errText = ''
+      this.focus1()
+    },
+
+    focusTextarea() {
+      document.getElementById('input').focus()
     },
   },
   watch: {
