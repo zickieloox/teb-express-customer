@@ -78,6 +78,11 @@ export default {
   },
   mounted() {
     this.listCode = this.codes.map((num) => num)
+    var elem = document.getElementById('data')
+    this.$nextTick(() => {
+      elem.scrollTop = elem.scrollHeight
+      document.getElementById('input').focus()
+    })
   },
   methods: {
     handleClose() {
@@ -165,7 +170,9 @@ export default {
       ]
       this.code = ''
       var elem = document.getElementById('data')
-      elem.scrollTop = elem.scrollHeight
+      this.$nextTick(() => {
+        elem.scrollTop = elem.scrollHeight
+      })
     },
     handleRemoveCode(code) {
       let index = this.listCode.indexOf(code)
@@ -190,6 +197,10 @@ export default {
     codes: {
       handler: function() {
         this.listCode = this.codes.map((num) => num)
+        var elem = document.getElementById('data')
+        this.$nextTick(() => {
+          elem.scrollTop = elem.scrollHeight
+        })
       },
       deep: true,
     },
