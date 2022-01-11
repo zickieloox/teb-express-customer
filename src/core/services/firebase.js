@@ -31,8 +31,12 @@ const firebase = {
       if (!res || res.error) return
 
       onMessage(firebase.messaging, (payload) => {
-        console.log(payload)
-        store.commit('shared/pushNotification', payload.notification)
+        try {
+          const noti = JSON.parse(payload.data.noti)
+          store.commit('shared/pushNotification', noti)
+        } catch (err) {
+          console.log(err)
+        }
         firebase.display(payload)
       })
     } catch (error) {
