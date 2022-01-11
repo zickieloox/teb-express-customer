@@ -16,15 +16,15 @@
           </div>
         </div>
         <div class="page-content">
-          <modal-tracking @track="track"> </modal-tracking>
-          <!-- <div class="w-search">
+          <!-- <modal-tracking @track="track"> </modal-tracking> -->
+          <div class="w-search">
             <input
               type="text"
               placeholder="Tìm kiếm theo mã tracking"
               @keydown.enter.prevent="searchHandle"
             />
             <div class="icon icon-search"></div>
-          </div> -->
+          </div>
           <div class="row mt-24">
             <div class="col-12">
               <div class="row">
@@ -126,13 +126,13 @@ import {
   PACKAGE_STATUS_RETURNED,
   PACKAGE_STATUS_CANCELLED,
 } from '../constant'
-import ModalTracking from '../../tracking/components/ModalTracking.vue'
+// import ModalTracking from '../../tracking/components/ModalTracking.vue'
 
 export default {
   name: 'Home',
   components: {
     LineChart,
-    ModalTracking,
+    // ModalTracking,
   },
   data() {
     return {
