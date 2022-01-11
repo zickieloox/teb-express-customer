@@ -5,6 +5,7 @@ export const CHECKDEBT = 'checkDebt'
 export const FETCH_ADDRESSES = 'fetchAddresses'
 export const FETCH_NOTIFICATIONS = 'fetchNotifications'
 export const FETCH_NOTIFICATIONS_ALL = 'fetchNotificationsAll'
+export const PUSH_NOTIFICATION = 'pushNotification'
 export const COUNT_NOTIFICATIONS = 'countNotifications'
 export const COUNT_NOTIFICATIONS_ALL = 'countNotificationsAll'
 export const READ_NOTIFICATIONS = 'readNotifications'
@@ -62,6 +63,11 @@ export const mutations = {
   },
   [COUNT_NOTIFICATIONS_ALL]: (state, payload) => {
     state.countNotiAll = payload
+  },
+  [PUSH_NOTIFICATION]: (state, payload) => {
+    state.countNoti++
+    state.notifications.unshift(payload)
+    state.notificationAll.unshift(payload)
   },
   [READ_NOTIFICATION]: (state, ids) => {
     if (state.countNoti > 0) {
