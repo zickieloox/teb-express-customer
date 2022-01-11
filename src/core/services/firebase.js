@@ -7,7 +7,7 @@ import {
   onMessage,
 } from 'firebase/messaging'
 import configFirebase from '../config/firebase.json'
-
+import store from '../store/index'
 const firebase = {
   app: null,
   messaging: null,
@@ -31,6 +31,7 @@ const firebase = {
       if (!res || res.error) return
 
       onMessage(firebase.messaging, (payload) => {
+        store.commit('shared/pushNotification', payload.notification)
         firebase.display(payload)
       })
     } catch (error) {
