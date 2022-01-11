@@ -81,7 +81,7 @@ export default {
     var elem = document.getElementById('data')
     this.$nextTick(() => {
       elem.scrollTop = elem.scrollHeight
-      document.getElementById('input').focus()
+      this.focusTextarea()
     })
   },
   methods: {
@@ -137,7 +137,7 @@ export default {
     clearListCode() {
       this.listCode = []
       this.code = ''
-      document.getElementById('input').focus()
+      this.focusTextarea()
     },
 
     addCode() {
@@ -179,10 +179,8 @@ export default {
       let index = this.listCode.indexOf(code)
       if (index > -1) {
         this.listCode.splice(index, 1)
-        this.focus1()
       }
       this.errText = ''
-      this.focus1()
     },
 
     focusTextarea() {
@@ -195,7 +193,7 @@ export default {
         this.code = ''
         this.listCode = this.codes.map((num) => num)
         if (this.visible) {
-          this.$nextTick(() => document.getElementById('input').focus())
+          this.$nextTick(() => this.focusTextarea())
         }
       },
       deep: true,
