@@ -5,6 +5,7 @@ export const SET_PACKAGE = 'setPackage'
 export const SET_CODE = 'setCode'
 export const GET_LOGS = 'getLogs'
 export const COUNT_LOG = 'countLogs'
+export const SET_CODES = 'setCodes'
 
 export const state = {
   services: [],
@@ -14,6 +15,7 @@ export const state = {
   code: '',
   countPackages: 0,
   count_status: [],
+  codes: [],
 }
 
 export const mutations = {
@@ -29,6 +31,9 @@ export const mutations = {
   [COUNT_LOG]: (state, payload) => {
     state.countPackages = payload.count
     state.count_status = payload.status_count
+  },
+  [SET_CODES]: (state, payload) => {
+    state.codes = payload
   },
 }
 

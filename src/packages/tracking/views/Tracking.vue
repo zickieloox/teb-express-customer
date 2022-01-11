@@ -1,6 +1,9 @@
 <template>
   <div class="tracking_page pages">
-    <div class="search__section" v-if="newListPackages.length == 0">
+    <div
+      class="search__section"
+      v-if="newListPackages.length == 0 && this.codes.length == 0"
+    >
       <div class="title">
         <h2>Tra cứu hành trình đơn hàng</h2>
         <span>Theo dõi lên đến 50 Tracking cùng một lúc.</span>
@@ -45,6 +48,10 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
 
     <div class="tracking__section" v-else>
       <div class="tracking__header">
+        <modal-tracking :codes="listCode" @track="track"> </modal-tracking>
+      </div>
+
+      <div class="tracking">
         <div class="filter_tab">
           <ul class="tablist">
             <li class="nav-item">
@@ -120,17 +127,14 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
               </a>
             </li>
           </ul>
-          <button
+          <!-- <button
             class="btn btn-tracking btn-tracking-large"
             @click="openModalTracking"
           >
             <img src="~@/assets/img/box-search.png" alt="" /> Track Other
             Packages</button
-          >
+          > -->
         </div>
-      </div>
-
-      <div class="tracking">
         <template>
           <div class="table">
             <table class="table table-hover">
@@ -321,12 +325,6 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
         </template>
       </div>
     </div>
-    <modal-tracking
-      :visible.sync="visibleModal"
-      :codes="listCode"
-      @track="track"
-    >
-    </modal-tracking>
   </div>
 </template>
 
@@ -398,6 +396,7 @@ export default {
       logs: (state) => state.logs,
       // count: (state) => state.countPackages,
       count_status: (state) => state.count_status,
+      codes: (state) => state.codes,
     }),
     ListPackages: {
       get() {
@@ -492,12 +491,33 @@ export default {
       return notFoundArr
     },
   },
+  //   created() {
+  //   if (this.codes.length > 0) {
+  //     this.track(this.codes);
+  //   }
+
+  // },
+  mounted() {
+    this.$router.onReady(() => {
+      if (this.codes.length > 0) {
+        this.listCode = this.codes.slice()
+        this.track(this.codes)
+      }
+    })
+    //     this.$nextTick(() => {
+    //     if (this.codes.length > 0) {
+    //       this.listCode = this.codes.slice()
+    //        this.track(this.codes)
+    //     }
+    // })
+  },
   methods: {
     ...mapActions('tracking', [GET_LOGS]),
 
     async track(codes) {
       this.isLoading = true
-      this.listCode = codes
+      this.$nextTick(() => (this.listCode = codes))
+
       const result = await this[GET_LOGS](this.listCode)
 
       if (result.error && result.message != 'Không tìm thấy') {
@@ -591,6 +611,7 @@ export default {
       }
       this.newListPackages = []
       this.code = ''
+      this.$store.commit('tracking/setCodes', [])
     },
 
     paginate(array, page_size, page_number) {
