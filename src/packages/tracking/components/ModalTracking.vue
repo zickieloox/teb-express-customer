@@ -165,7 +165,9 @@ export default {
       ]
       this.code = ''
       var elem = document.getElementById('data')
-      elem.scrollTop = elem.scrollHeight
+      this.$nextTick(() => {
+        elem.scrollTop = elem.scrollHeight
+      })
     },
     handleRemoveCode(code) {
       let index = this.listCode.indexOf(code)

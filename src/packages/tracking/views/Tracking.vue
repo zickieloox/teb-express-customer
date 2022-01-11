@@ -491,12 +491,7 @@ export default {
       return notFoundArr
     },
   },
-  //   created() {
-  //   if (this.codes.length > 0) {
-  //     this.track(this.codes);
-  //   }
 
-  // },
   mounted() {
     this.$router.onReady(() => {
       if (this.codes.length > 0) {
@@ -504,19 +499,13 @@ export default {
         this.track(this.codes)
       }
     })
-    //     this.$nextTick(() => {
-    //     if (this.codes.length > 0) {
-    //       this.listCode = this.codes.slice()
-    //        this.track(this.codes)
-    //     }
-    // })
   },
   methods: {
     ...mapActions('tracking', [GET_LOGS]),
 
     async track(codes) {
       this.isLoading = true
-      this.$nextTick(() => (this.listCode = codes))
+      this.listCode = codes
 
       const result = await this[GET_LOGS](this.listCode)
 
