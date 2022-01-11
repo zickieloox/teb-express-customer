@@ -70,5 +70,16 @@ export default {
       this.$emit('unselected', true)
     },
   },
+  watch: {
+    type: {
+      handler: function(value) {
+        this.type = value
+        this.selected = this.type
+          ? this.optionSearch.find((item) => item.key == this.type)
+          : this.selected
+      },
+      deep: true,
+    },
+  },
 }
 </script>

@@ -14,12 +14,91 @@
           {{ handleTitle }}</div
         >
       </div>
-      <div class="navbar__header-right">
+
+      <!--      Start Notifications  -->
+
+      <div class="navbar__header-right d-flex align-items-center">
+        <div class="navbar__header-noti">
+          <p-dropdown :multiple="false" class="">
+            <div class="noti__dropdown-icon" slot="trigger">
+              <inline-svg
+                :src="require('../../../../src/assets/img/normal.svg')"
+                class=""
+              ></inline-svg>
+              <div v-if="convertNumber > 0" class="noti__dropdown-count">{{
+                convertNumber
+              }}</div>
+            </div>
+
+            <div class="noti__dropdown">
+              <div class="noti__dropdown-header d-flex">
+                <div class="noti__dropdown-label">Notifications</div>
+                <div
+                  v-if="count > 0"
+                  class="noti__dropdown-mark"
+                  @click="handleReadAll"
+                  >Đánh dấu là đã đọc</div
+                >
+              </div>
+
+              <div class="noti__dropdown-list">
+                <div
+                  class="noti__dropdown-content"
+                  v-if="notifications.length > 0"
+                >
+                  <p-dropdown-item
+                    v-for="(item, i) in notifications"
+                    :key="i"
+                    @click="handelReadNoti(item)"
+                    :class="{ unread: item.readed == NotificationUnread }"
+                    class="noti__dropdown-item"
+                  >
+                    <div class="item-content">
+                      <!--                      <div class="item-icon ">-->
+                      <!--                        <inline-svg-->
+                      <!--                          :src="require('../../../../src/assets/img/icon-noti.svg')"-->
+                      <!--                          class=""-->
+                      <!--                        ></inline-svg>-->
+                      <!--                      </div>-->
+                      <div class="item-text ml-7"
+                        >{{ item.body }}
+                        <div class="item-date">{{
+                          item.created_at | datetime('dd/MM/yyyy - HH:mm')
+                        }}</div>
+                      </div>
+                    </div>
+                  </p-dropdown-item>
+                </div>
+                <div class="no-noti" v-else>Không có thông báo nào.</div>
+              </div>
+              <p-dropdown-item class="all">
+                <div class="noti__dropdown-footer d-flex">
+                  <div v-if="notifications.length > 0" class="view-all">
+                    <router-link to="/notification">
+                      Xem tất cả
+                    </router-link>
+                  </div>
+                </div>
+              </p-dropdown-item>
+            </div>
+          </p-dropdown>
+        </div>
+
+        <!--    End    Notifications-->
         <p-dropdown>
           <div class="pointer" slot="trigger">
-            <div class="user_info">
-              <div
-                >Xin chào, <span class="username">{{ user.full_name }}</span>
+            <inline-svg
+              :src="require('../../../../src/assets/img/avatar-noti.svg')"
+            ></inline-svg>
+            <div class="user_info ml-7">
+              <div class=""
+                ><span class="username">{{ user.full_name }}</span>
+                <inline-svg
+                  :src="
+                    require('../../../../src/assets/img/Chevron Down 16px.svg')
+                  "
+                  class="icon-down"
+                ></inline-svg>
               </div>
 
               <div class="type" v-if="user">
@@ -36,7 +115,6 @@
                 <span v-else>Trả trước</span></div
               >
             </div>
-            <img src="@/assets/img/user.png" />
           </div>
           <p-dropdown-item>
             <img
@@ -58,10 +136,27 @@
 </template>
 <script>
 import { MAP_USER_CLASS_TEXT } from '@core/constants'
-import { mapState } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
+import PDropdown from '../../../../uikit/components/dropdown/Dropdown'
+import {
+  FETCH_NOTIFICATIONS,
+  READ_NOTIFICATIONS,
+  READ_NOTIFICATION,
+  GET_COUNT,
+  GET_NOTIFICATION,
+} from '../../../packages/shared/store'
+import mixinRoute from '@core/mixins/route'
+import mixinTable from '@core/mixins/table'
+import { numFormatter } from '@core/utils/formatter'
+import {
+  NotificationRead,
+  NotificationUnread,
+} from '../../../packages/shared/constants'
+import PDropdownItem from '../../../../uikit/components/dropdown/DropdownItem'
 
 export default {
-  components: {},
+  components: { PDropdownItem, PDropdown },
+  mixins: [mixinRoute, mixinTable],
   name: 'Header',
   props: {
     user: {
@@ -69,10 +164,16 @@ export default {
       default: () => {},
     },
   },
-  mounted() {},
+  mounted() {
+    this.init()
+  },
   computed: {
     ...mapState('shared', {
       isDebt: (state) => state.isDebt,
+    }),
+    ...mapGetters('shared', {
+      count: GET_COUNT,
+      notifications: GET_NOTIFICATION,
     }),
     types() {
       return MAP_USER_CLASS_TEXT
@@ -80,16 +181,56 @@ export default {
     handleTitle() {
       return this.$route.meta.title || ''
     },
+    convertNumber() {
+      return numFormatter(this.count)
+    },
   },
   created() {},
   data() {
     return {
       visibleModal: false,
+      filter: {
+        limit: 7,
+        page: 1,
+        count: {
+          unread: 1,
+        },
+      },
+      NotificationUnread: NotificationUnread,
     }
   },
   methods: {
-    init() {
-      location.reload()
+    ...mapActions('shared', [
+      FETCH_NOTIFICATIONS,
+      READ_NOTIFICATIONS,
+      READ_NOTIFICATION,
+    ]),
+    async init() {
+      const result = await this[FETCH_NOTIFICATIONS](this.filter)
+      if (!result.success) {
+        this.$toast.open({ message: result.message, type: 'error' })
+      }
+    },
+    async handleReadAll() {
+      const result = await this[READ_NOTIFICATIONS]()
+      if (!result.success) {
+        this.$toast.open({ message: result.message, type: 'error' })
+      }
+      this.init()
+    },
+    async handelReadNoti(item) {
+      if (item.link) {
+        // eslint-disable-next-line no-useless-escape
+        var url = item.link.replace(/(http[s]?:\/\/)?([^\/\s]+(\/)|^[\/])/, '')
+        this.$router.replace({ path: `/${url}` })
+      }
+      if (item.readed == NotificationRead) return
+      const arr = []
+      arr.push(item.id)
+      let read = await this[READ_NOTIFICATION](arr)
+      if (!read.success) {
+        this.$toast.open({ type: 'error', message: 'Có lỗi xảy ra' })
+      }
     },
   },
 }
@@ -100,7 +241,7 @@ export default {
   .type {
     align-items: center;
     display: flex;
-    float: right;
+    float: left;
     font-weight: 600;
     font-size: 10px;
     color: #626363;

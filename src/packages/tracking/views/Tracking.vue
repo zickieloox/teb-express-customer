@@ -1,6 +1,9 @@
 <template>
   <div class="tracking_page pages">
-    <div class="search__section" v-if="newListPackages.length == 0">
+    <div
+      class="search__section"
+      v-if="newListPackages.length == 0 && this.codes.length == 0"
+    >
       <div class="title">
         <h2>Tra cứu hành trình đơn hàng</h2>
         <span>Theo dõi lên đến 50 Tracking cùng một lúc.</span>
@@ -45,6 +48,10 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
 
     <div class="tracking__section" v-else>
       <div class="tracking__header">
+        <modal-tracking :codes="listCode" @track="track"> </modal-tracking>
+      </div>
+
+      <div class="tracking">
         <div class="filter_tab">
           <ul class="tablist">
             <li class="nav-item">
@@ -120,17 +127,14 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
               </a>
             </li>
           </ul>
-          <button
+          <!-- <button
             class="btn btn-tracking btn-tracking-large"
             @click="openModalTracking"
           >
             <img src="~@/assets/img/box-search.png" alt="" /> Track Other
             Packages</button
-          >
+          > -->
         </div>
-      </div>
-
-      <div class="tracking">
         <template>
           <div class="table">
             <table class="table table-hover">
@@ -246,7 +250,7 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                   </td>
                   <td colspan="2"
                     ><span class="error"
-                      >Không thể tìm thấy mã vận đơn này. Vui lòng kiểm tra lại
+                      >Không thể tìm thấy mã tracking này. Vui lòng kiểm tra lại
                       sau.</span
                     ></td
                   >
@@ -321,12 +325,6 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
         </template>
       </div>
     </div>
-    <modal-tracking
-      :visible.sync="visibleModal"
-      :codes="listCode"
-      @track="track"
-    >
-    </modal-tracking>
   </div>
 </template>
 
@@ -398,6 +396,7 @@ export default {
       logs: (state) => state.logs,
       // count: (state) => state.countPackages,
       count_status: (state) => state.count_status,
+      codes: (state) => state.codes,
     }),
     ListPackages: {
       get() {
@@ -492,12 +491,22 @@ export default {
       return notFoundArr
     },
   },
+
+  mounted() {
+    this.$router.onReady(() => {
+      if (this.codes.length > 0) {
+        this.listCode = this.codes.slice()
+        this.track(this.codes)
+      }
+    })
+  },
   methods: {
     ...mapActions('tracking', [GET_LOGS]),
 
     async track(codes) {
       this.isLoading = true
       this.listCode = codes
+
       const result = await this[GET_LOGS](this.listCode)
 
       if (result.error && result.message != 'Không tìm thấy') {
@@ -526,7 +535,7 @@ export default {
       var regex = /^[A-Za-z0-9\n\t ]+$/
       var isValid = regex.test(this.code.trim())
       if (!isValid) {
-        this.errText = 'Mã vận đơn không hợp lệ'
+        this.errText = 'Mã tracking không hợp lệ'
         this.$toast.open({ type: 'error', message: this.errText })
         return
       }
@@ -591,6 +600,7 @@ export default {
       }
       this.newListPackages = []
       this.code = ''
+      this.$store.commit('tracking/setCodes', [])
     },
 
     paginate(array, page_size, page_number) {
@@ -657,7 +667,7 @@ export default {
       handler: function() {
         this.dataCopy = ''
         for (const item of this.newListPackages) {
-          this.dataCopy += `Mã vận đơn: ${item.package_code.code}
+          this.dataCopy += `Mã tracking: ${item.package_code.code}
 Tracking: ${item.tracking ? item.tracking.tracking_number : ''}
 Trạng thái: ${item.status_string.charAt(0).toUpperCase() +
             item.status_string.slice(1)}

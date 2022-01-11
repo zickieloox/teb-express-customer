@@ -26,6 +26,7 @@
                 <a
                   href="#"
                   class="btn btn-default"
+                  style="height:40px"
                   @click.prevent="showUserToken"
                 >
                   <span>{{ isShowToken ? 'Hide' : 'Show' }} </span>

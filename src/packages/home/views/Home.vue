@@ -16,6 +16,7 @@
           </div>
         </div>
         <div class="page-content">
+          <!-- <modal-tracking @track="track"> </modal-tracking> -->
           <div class="w-search">
             <input
               type="text"
@@ -125,11 +126,13 @@ import {
   PACKAGE_STATUS_RETURNED,
   PACKAGE_STATUS_CANCELLED,
 } from '../constant'
+// import ModalTracking from '../../tracking/components/ModalTracking.vue'
 
 export default {
   name: 'Home',
   components: {
     LineChart,
+    // ModalTracking,
   },
   data() {
     return {
@@ -358,6 +361,12 @@ export default {
       const d = dt.getDate()
 
       return `${y}-${m > 9 ? m : '0' + m}-${d > 9 ? d : '0' + d}`
+    },
+
+    track(codes) {
+      this.$store.commit('tracking/setCodes', codes)
+
+      this.$router.push({ name: 'tracking' })
     },
   },
   watch: {
