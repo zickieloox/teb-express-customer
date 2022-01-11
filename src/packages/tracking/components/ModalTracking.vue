@@ -105,7 +105,7 @@ export default {
           return
         }
         if (this.listCode.length == this.limit) {
-          this.errText = 'Vượt quá số lượng mã tracking cho phép'
+          this.errText = 'Số lượng mã tracking không vượt quá 50'
           this.$toast.open({ type: 'error', message: this.errText })
           return
         }
@@ -124,7 +124,7 @@ export default {
         this.errText =
           this.listCode.length < 1
             ? 'Vui lòng nhập mã tracking'
-            : 'Vượt quá số lượng mã tracking cho phép'
+            : 'Số lượng mã tracking không vượt quá 50'
         this.$toast.open({ type: 'error', message: this.errText })
         this.code = ''
 
@@ -154,7 +154,7 @@ export default {
         return
       }
       if (this.listCode.length == this.limit) {
-        this.errText = 'Vượt quá số lượng mã tracking cho phép'
+        this.errText = 'Số lượng mã tracking không vượt quá 50'
         this.$toast.open({ type: 'error', message: this.errText })
         return
       }
