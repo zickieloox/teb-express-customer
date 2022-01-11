@@ -25,7 +25,9 @@
                 :src="require('../../../../src/assets/img/normal.svg')"
                 class=""
               ></inline-svg>
-              <div class="noti__dropdown-count">{{ convertNumber }}</div>
+              <div v-if="convertNumber > 0" class="noti__dropdown-count">{{
+                convertNumber
+              }}</div>
             </div>
 
             <div class="noti__dropdown">
