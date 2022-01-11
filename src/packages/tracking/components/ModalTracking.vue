@@ -186,6 +186,13 @@ export default {
       },
       deep: true,
     },
+
+    codes: {
+      handler: function() {
+        this.listCode = this.codes.map((num) => num)
+      },
+      deep: true,
+    },
   },
 }
 </script>
