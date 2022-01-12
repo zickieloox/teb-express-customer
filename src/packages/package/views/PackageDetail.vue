@@ -10,7 +10,7 @@
             <div class="info-package">Ngày tạo </div>
             <div class="info-package">Trạng thái</div>
             <div class="package-code "
-              >{{ $evaluate('package_detail.package.package_code?.code') }}
+              >{{ $evaluate('package_detail.package.code_package') }}
               <span
                 @click="showContent"
                 v-if="package_detail.package.label"
@@ -23,19 +23,17 @@
               </span>
             </div>
             <div class="content-title">{{
-              $evaluate('package_detail.package.service?.name')
+              $evaluate('package_detail.package.service_name')
             }}</div>
             <div class="content-title tracking" v-if="package_detail.package">
               <a
                 target="_blank"
-                v-if="package_detail.package.tracking"
+                v-if="package_detail.package.tracking_number"
                 :href="
-                  `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${package_detail.package.tracking.tracking_number}`
+                  `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${package_detail.package.tracking_number}`
                 "
               >
-                {{
-                  $evaluate('package_detail.package.tracking.tracking_number')
-                }}
+                {{ $evaluate('package_detail.package.tracking_number') }}
                 <inline-svg
                   :src="require('../../../assets/img/arrow-up-right.svg')"
                 ></inline-svg>

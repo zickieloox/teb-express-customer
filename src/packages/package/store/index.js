@@ -46,7 +46,7 @@ export const state = {
 export const getters = {
   [GET_SERVICE](state) {
     let sv = state.service.map((item) => {
-      return { id: item.id, name: item.name }
+      return { id: item.id, name: item.name, code: item.code }
     })
     return sv
   },
@@ -120,7 +120,6 @@ export const actions = {
   // eslint-disable-next-line no-unused-vars
   async fetchListService({ commit }, payload) {
     const res = await api.fetchListService()
-
     if (!res.services) {
       return { error: true, message: res.errorMessage || '' }
     }
@@ -130,7 +129,7 @@ export const actions = {
   // eslint-disable-next-line no-unused-vars
   async updatePackage({ commit }, payload) {
     const res = await api.updatePackage(payload)
-    if (!res || !res.package) {
+    if (!res || (!res.success && !res.package)) {
       return { error: true, message: res.errorMessage || '' }
     }
     return { error: false }
