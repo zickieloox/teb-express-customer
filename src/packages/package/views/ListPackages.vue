@@ -149,9 +149,6 @@
                       :class="{
                         hover: isChecked(item),
                         deactive:
-                          (item.package_code &&
-                            item.package_code.status ==
-                              PackageStatusDeactive) ||
                           item.status_string == PackageStatusExpiredText,
                         'sm-view': isSmScreen,
                       }"
@@ -210,14 +207,12 @@
                       <td class="action">
                         <span class="code">
                           <p-tooltip
-                            :label="
-                              item.package_code ? item.package_code.code : ''
-                            "
+                            :label="item.package_code"
                             v-if="item.package_code"
                             size="large"
                             position="top"
                             type="dark"
-                            :active="item.package_code.code.length > 18"
+                            :active="item.package_code.length > 18"
                           >
                             <router-link
                               class="text-no-underline"
@@ -228,14 +223,7 @@
                                 },
                               }"
                             >
-                              {{
-                                truncate(
-                                  item.package_code
-                                    ? item.package_code.code
-                                    : '',
-                                  18
-                                )
-                              }}
+                              {{ truncate(item.package_code, 18) }}
                             </router-link>
                           </p-tooltip>
                           <span v-else class="no-pkg-code"></span>
@@ -249,13 +237,7 @@
                               position="top"
                               type="dark"
                             >
-                              <copy
-                                :value="
-                                  item.package_code
-                                    ? item.package_code.code
-                                    : ''
-                                "
-                              >
+                              <copy :value="item.package_code">
                                 <svg
                                   width="32"
                                   height="32"
@@ -326,11 +308,7 @@
                               <a
                                 target="_blank"
                                 :href="
-                                  `https://t.17track.net/en#nums=${
-                                    item.package_code
-                                      ? item.package_code.code
-                                      : ''
-                                  }`
+                                  `https://t.17track.net/en#nums=${item.package_code}`
                                 "
                               >
                                 <svg
@@ -369,29 +347,20 @@
                         <a
                           target="_blank"
                           class="tracking"
-                          v-if="item.tracking && item && isSmScreen"
+                          v-if="item.tracking_number && item && isSmScreen"
                           :href="
-                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${item.tracking.tracking_number}`
+                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${item.tracking_number}`
                           "
                         >
                           <p-tooltip
-                            :label="
-                              item.tracking ? item.tracking.tracking_number : ''
-                            "
-                            v-if="item.tracking"
+                            :label="item.tracking_number"
+                            v-if="item.tracking_number"
                             size="large"
                             position="top"
                             type="dark"
-                            :active="item.tracking.tracking_number.length > 25"
+                            :active="item.tracking_number.length > 25"
                           >
-                            {{
-                              truncate(
-                                item.tracking
-                                  ? item.tracking.tracking_number
-                                  : '',
-                                25
-                              )
-                            }}
+                            {{ truncate(item.tracking_number, 25) }}
                             <inline-svg
                               :src="
                                 require('../../../assets/img/arrow-up-right.svg')
@@ -402,12 +371,12 @@
                         <a
                           target="_blank"
                           class="tracking"
-                          v-if="item.tracking && item && !isSmScreen"
+                          v-if="item.tracking_number && item && !isSmScreen"
                           :href="
-                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${item.tracking.tracking_number}`
+                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${item.tracking_number}`
                           "
                         >
-                          {{ item.tracking.tracking_number }}
+                          {{ item.tracking_number }}
                           <inline-svg
                             :src="
                               require('../../../assets/img/arrow-up-right.svg')
@@ -415,10 +384,9 @@
                           ></inline-svg>
                         </a>
                       </td>
-                      <td v-if="item.service">
-                        {{ item.service.name }}
+                      <td>
+                        {{ item.service_name || 'N/A' }}
                       </td>
-                      <td v-if="!item.service"> N/A </td>
                       <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
                       <td>
                         <span
@@ -1033,7 +1001,7 @@ export default {
       var selected = this.selected.map((x) => {
         return {
           order_number: x.order_number,
-          code: x.package_code ? x.package_code.code : '',
+          code: x.package_code,
           url: x.label,
         }
       })
