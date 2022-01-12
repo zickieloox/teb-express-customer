@@ -525,7 +525,7 @@ fieldset[disabled] .multiselect {
 }
 
 .multiselect--active {
-  z-index: 50;
+  z-index: 1;
 }
 
 .multiselect--active:not(.multiselect--above) .multiselect__current,
@@ -721,7 +721,7 @@ fieldset[disabled] .multiselect {
   border-top: none;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  z-index: 50;
+  z-index: 1;
   -webkit-overflow-scrolling: touch;
   box-shadow: 0px 0px 2px rgba(40, 41, 61, 0.04),
     0px 4px 8px rgba(96, 97, 112, 0.16);
