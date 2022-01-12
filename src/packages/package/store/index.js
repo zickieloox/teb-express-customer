@@ -214,7 +214,7 @@ export const actions = {
   // eslint-disable-next-line no-unused-vars
   async createPackage({ commit }, payload) {
     const res = await api.createPackage(payload)
-    if (res.error || res.message || !res.package) {
+    if (res.error || res.message || !res.id) {
       return {
         success: false,
         message: res.errorMessage || res.error || res.message || '',

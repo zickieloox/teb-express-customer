@@ -68,15 +68,11 @@
                           :to="{
                             name: 'package-detail',
                             params: {
-                              id: item.package.id,
+                              id: item.object_id,
                             },
                           }"
                         >
-                          {{
-                            item.package.package_code
-                              ? item.package.package_code.code
-                              : ''
-                          }}
+                          {{ item.package_code }}
                         </router-link>
                       </td>
                       <td width="500">
