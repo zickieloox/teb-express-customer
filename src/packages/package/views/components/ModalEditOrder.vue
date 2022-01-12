@@ -402,7 +402,7 @@
 </template>
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
-import { FETCH_LIST_PRODUCTS, GET_SERVICE, UPDATE_PACKAGE } from '../../store'
+import { GET_SERVICE, UPDATE_PACKAGE } from '../../store'
 import PButton from '../../../../../uikit/components/button/Button'
 // import {GET_SENDER, LIST_SENDER} from "../../../setting/store";
 
@@ -463,9 +463,8 @@ export default {
     this.init()
   },
   methods: {
-    ...mapActions('package', [FETCH_LIST_PRODUCTS, UPDATE_PACKAGE]),
+    ...mapActions('package', [UPDATE_PACKAGE]),
     async init() {
-      await this[FETCH_LIST_PRODUCTS]()
       this.fullname = this.package_detail.package.recipient
       this.phone = this.package_detail.package.phone_number
       this.city = this.package_detail.package.city
@@ -480,11 +479,11 @@ export default {
       this.height = this.package_detail.package.height
       this.countrycode = this.package_detail.package.country_code
       this.service = {
-        id: this.package_detail.package.service
-          ? this.package_detail.package.service.id
+        id: this.package_detail.package.service_id
+          ? this.package_detail.package.service_id
           : 0,
-        name: this.package_detail.package.service
-          ? this.package_detail.package.service.name
+        name: this.package_detail.package.service_name
+          ? this.package_detail.package.service_name
           : '',
       }
       this.address = this.package_detail.package.address_1
