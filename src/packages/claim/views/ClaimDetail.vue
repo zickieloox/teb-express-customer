@@ -27,22 +27,18 @@
           </div>
         </div>
         <div class="note-content">
-          <span v-if="claim.package">
+          <span>
             LionBay tracking:
             <router-link
               class="text-no-underline"
               :to="{
                 name: 'package-detail',
                 params: {
-                  id: claim.package.id,
+                  id: claim.object_id,
                 },
               }"
             >
-              {{
-                claim.package.package_code
-                  ? claim.package.package_code.code
-                  : ''
-              }}
+              {{ claim.package_code }}
             </router-link>
           </span>
           <span>
@@ -59,7 +55,6 @@
             <textarea
               class="form-control mb-16"
               v-model="message"
-              v-validate="'required'"
               data-vv-as="Nội dung"
               name="message"
               key="message"
@@ -537,7 +532,9 @@ export default {
         return
       }
 
-      location.reload()
+      // location.reload()
+      this.message = ''
+      this.init()
       this.$toast.open({ type: 'success', message: 'Trả lời thành công' })
     },
 
