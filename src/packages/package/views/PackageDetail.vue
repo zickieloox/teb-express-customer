@@ -23,7 +23,7 @@
               </span>
             </div>
             <div class="content-title">{{
-              $evaluate('package_detail.package.service?.name')
+              $evaluate('package_detail.package.service_name')
             }}</div>
             <div class="content-title tracking" v-if="package_detail.package">
               <a

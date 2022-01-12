@@ -534,6 +534,7 @@ export default {
 
       // location.reload()
       this.message = ''
+      this.files = []
       this.init()
       this.$toast.open({ type: 'success', message: 'Trả lời thành công' })
     },

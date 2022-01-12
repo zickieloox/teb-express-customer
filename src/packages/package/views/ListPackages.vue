@@ -207,12 +207,12 @@
                       <td class="action">
                         <span class="code">
                           <p-tooltip
-                            :label="item.package_code"
-                            v-if="item.package_code"
+                            :label="item.code"
+                            v-if="item.code"
                             size="large"
                             position="top"
                             type="dark"
-                            :active="item.package_code.length > 18"
+                            :active="item.code.length > 18"
                           >
                             <router-link
                               class="text-no-underline"
@@ -223,21 +223,21 @@
                                 },
                               }"
                             >
-                              {{ truncate(item.package_code, 18) }}
+                              {{ truncate(item.code, 18) }}
                             </router-link>
                           </p-tooltip>
                           <span v-else class="no-pkg-code"></span>
                         </span>
 
                         <span class="link">
-                          <span class="svg" v-if="item.package_code">
+                          <span class="svg" v-if="item.code">
                             <p-tooltip
                               class="item_name"
                               :label="` Copy `"
                               position="top"
                               type="dark"
                             >
-                              <copy :value="item.package_code">
+                              <copy :value="item.code">
                                 <svg
                                   width="32"
                                   height="32"
@@ -298,7 +298,7 @@
                             </p-tooltip>
                           </span>
 
-                          <span class="svg" v-if="item.package_code">
+                          <span class="svg" v-if="item.code">
                             <p-tooltip
                               class="item_name"
                               :label="` Track `"
@@ -308,7 +308,7 @@
                               <a
                                 target="_blank"
                                 :href="
-                                  `https://t.17track.net/en#nums=${item.package_code}`
+                                  `https://t.17track.net/en#nums=${item.code}`
                                 "
                               >
                                 <svg
@@ -1001,7 +1001,7 @@ export default {
       var selected = this.selected.map((x) => {
         return {
           order_number: x.order_number,
-          code: x.package_code,
+          code: x.code,
           url: x.label,
         }
       })
