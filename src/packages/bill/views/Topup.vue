@@ -33,9 +33,7 @@
                 <img src="@assets/img/walletLg.svg" alt="wallet" />
                 <div class="wallet ml-24">
                   <p class="title">Số dư trong ví</p>
-                  <p class="money">{{
-                    balance > 0 ? balance : 0 | formatPrice
-                  }}</p>
+                  <p class="money">{{ balance | formatPrice }}</p>
                 </div>
               </div>
             </div>
@@ -44,9 +42,7 @@
                 <img src="@assets/img/time.svg" alt="process-money" />
                 <div class="wallet ml-24">
                   <p class="title">Tiền chưa thanh toán</p>
-                  <p class="money">
-                    {{ balance > 0 ? 0 : Math.abs(balance) | formatPrice }}
-                  </p>
+                  <p class="money">{{ debit | formatPrice }}</p>
                 </div>
               </div>
             </div>
@@ -210,6 +206,7 @@ import {
   UPDATE_TOPUP,
   CREATE_TRANSACTION,
   FETCH_RATE_EXCHANGE,
+  FETCH_TRANSACTION,
 } from '../store/index'
 import {
   BANK,
@@ -221,6 +218,7 @@ import {
 } from '../constants'
 import { formatNumber } from '@core/utils/formatter'
 import Copy from '../components/Copy.vue'
+import { GET_USER } from '../../shared/store'
 
 export default {
   name: 'Wallet',
@@ -228,9 +226,10 @@ export default {
   computed: {
     ...mapState('bill', {
       topup: (state) => state.topup,
-      balance: (state) => state.balance,
     }),
-
+    ...mapState('shared', {
+      user: (state) => state.user,
+    }),
     amountVND() {
       if (!this.amount || this.error) return ''
       const amount = +this.amount.replaceAll(',', '')
@@ -259,6 +258,12 @@ export default {
     },
     pingPongType() {
       return TransactionLogTypePingPong
+    },
+    balance() {
+      return this.user.balance > 0 ? this.user.balance : 0
+    },
+    debit() {
+      return this.user.balance < 0 ? Math.abs(this.user.balance) : 0
     },
   },
   data() {
@@ -289,15 +294,18 @@ export default {
       UPDATE_TOPUP,
       CREATE_TRANSACTION,
       FETCH_RATE_EXCHANGE,
+      FETCH_TRANSACTION,
     ]),
+    ...mapActions('shared', [GET_USER]),
 
     async init() {
-      const [exchange] = await Promise.all([
+      const [exchange, user] = await Promise.all([
         this[FETCH_RATE_EXCHANGE](),
+        this[GET_USER](),
         this.createTopup(),
       ])
 
-      if (!exchange || !exchange.success) {
+      if (!exchange || !exchange.success || user.error) {
         this.$toast.error('Something went wrong', { duration: 4000 })
         return
       }
