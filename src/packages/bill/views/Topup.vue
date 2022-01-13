@@ -292,12 +292,12 @@ export default {
     ]),
 
     async init() {
-      const [transaction, exchange] = await Promise.all([
+      const [exchange] = await Promise.all([
         this[FETCH_RATE_EXCHANGE](),
         this.createTopup(),
       ])
 
-      if (!exchange || !exchange.success || !transaction) {
+      if (!exchange || !exchange.success) {
         this.$toast.error('Something went wrong', { duration: 4000 })
         return
       }

@@ -14,7 +14,7 @@
                   <div class="header_info-content">
                     <div class="info-bill">Mã hóa đơn : </div>
                     <div class="info-bill">Ngày tạo: </div>
-                    <div class="info-bill">Tồng hóa đơn : </div>
+                    <div class="info-bill">Tổng hóa đơn : </div>
                     <span class="info-number">{{ bill.code }}</span>
                     <span class="info-number">{{
                       bill.created_at | datetime('dd/MM/yyyy HH:mm:ss ')
