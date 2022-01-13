@@ -65,10 +65,7 @@
                           class="text-no-underline"
                           :to="{
                             name: 'bill-detail',
-                            query: {
-                              search: item.code,
-                              date_search: '',
-                            },
+                            params: { code: item.code },
                           }"
                         >
                           {{ item.code }}

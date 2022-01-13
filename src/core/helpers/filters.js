@@ -9,4 +9,5 @@ export {
   formatUnitString,
   formatTobe,
   numFormatter,
+  formatPrice2,
 } from '@core/utils/formatter'

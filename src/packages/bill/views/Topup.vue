@@ -206,14 +206,11 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import {
-  FETCH_TRANSACTION,
   CREATE_TOPUP,
   UPDATE_TOPUP,
   CREATE_TRANSACTION,
   FETCH_RATE_EXCHANGE,
 } from '../store/index'
-import mixinRoute from '@core/mixins/route'
-import mixinTable from '@core/mixins/table'
 import {
   BANK,
   NAME,
@@ -227,14 +224,11 @@ import Copy from '../components/Copy.vue'
 
 export default {
   name: 'Wallet',
-  mixins: [mixinRoute, mixinTable],
   components: { Copy },
   computed: {
     ...mapState('bill', {
       topup: (state) => state.topup,
       balance: (state) => state.balance,
-      // USDTOVND: (state) => state.rateExchange,
-      // updatedAt: (state) => state.updated_at,
     }),
 
     amountVND() {
@@ -291,7 +285,6 @@ export default {
   },
   methods: {
     ...mapActions('bill', [
-      FETCH_TRANSACTION,
       CREATE_TOPUP,
       UPDATE_TOPUP,
       CREATE_TRANSACTION,
@@ -299,20 +292,16 @@ export default {
     ]),
 
     async init() {
-      this.handleUpdateRouteQuery()
       const [transaction, exchange] = await Promise.all([
-        this[FETCH_TRANSACTION](this.filter),
         this[FETCH_RATE_EXCHANGE](),
         this.createTopup(),
       ])
+
       if (!exchange || !exchange.success || !transaction) {
-        this.$toast.open({
-          type: 'error',
-          message: 'Something went wrong',
-          duration: 4000,
-        })
+        this.$toast.error('Something went wrong', { duration: 4000 })
         return
       }
+
       this.USDTOVND = exchange.usdtovnd
       this.updatedAt = exchange.updated_at
     },
@@ -332,21 +321,20 @@ export default {
       if (this.toUSD) {
         const rate = await this[FETCH_RATE_EXCHANGE]()
         if (!rate || !rate.success) {
-          this.$toast.open({
-            type: 'error',
-            message: 'Something went wrong',
-            duration: 4000,
-          })
+          this.$toast.error('Something went wrong', { duration: 4000 })
           return
         }
+
         this.USDTOVND = rate.usdtovnd
         amount = amount / +this.USDTOVND
       }
+
       if (amount < 1) {
         this.errorText = 'Số tiền nhập tối thiểu 1$!'
         this.error = true
         return
       }
+
       let params = {
         id: this.topup.id,
         body: { amount },
@@ -354,20 +342,13 @@ export default {
       this.loading = true
       const result = await this.updateTopup(params)
       this.loading = false
+
       if (!result || !result.success) {
-        this.$toast.open({
-          type: 'error',
-          message: result.message,
-          duration: 4000,
-        })
+        this.$toast.error(result.message, { duration: 4000 })
         return
       }
 
-      this.$toast.open({
-        type: 'success',
-        message: 'Yêu cầu của bạn đang được xử lý',
-        duration: 3000,
-      })
+      this.$toast.success('Yêu cầu của bạn đang được xử lý', { duration: 3000 })
 
       this.init()
       this.error = false
@@ -384,6 +365,7 @@ export default {
         value = value.replace(/[.|,]/g, '').replace(/^0+/, '')
         value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
       }
+
       value = value.replace(/,/g, '').replace(/^0+/, '')
       value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
       this.amount = value
@@ -407,6 +389,7 @@ export default {
       this.error = false
       this.errorText = ''
     },
+
     setMethod(type) {
       this.method = type
     },
@@ -419,24 +402,16 @@ export default {
         type: this.method,
         transaction_id: this.transactionID,
       }
+
       const result = await this[CREATE_TRANSACTION](payload)
       this.loading = false
-      console.log(result)
+
       if (!result || !result.success) {
-        this.$toast.open({
-          type: 'error',
-          message: result.message,
-          duration: 4000,
-        })
+        this.$toast.error(result.message, { duration: 4000 })
         return
       }
 
-      this.$toast.open({
-        type: 'success',
-        message: 'Yêu cầu của bạn đang được xử lý',
-        duration: 3000,
-      })
-
+      this.$toast.success('Yêu cầu của bạn đang được xử lý', { duration: 3000 })
       this.$set(this, 'transactionID', '')
     },
   },

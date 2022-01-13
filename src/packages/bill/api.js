@@ -7,8 +7,8 @@ export default {
    * @param payload
    * @return {*}
    */
-  fetchBillDetail(payload) {
-    return http.get(`/bills?${buildQueryString(payload)}`)
+  fetchBillDetail({ code }) {
+    return http.get(`/bills/${code}`)
   },
 
   /**
@@ -34,7 +34,16 @@ export default {
    * @return {*}
    */
   fetchExtraFee(payload) {
-    return http.get(`/bills/fee/${payload.code}?${buildQueryString(payload)}`)
+    const code = payload.code
+    delete payload.code
+
+    return http.get(`/bills/${code}/fees?${buildQueryString(payload)}`)
+  },
+  fetchBillPackages(payload) {
+    const code = payload.code
+    delete payload.code
+
+    return http.get(`/bills/${code}/packages?${buildQueryString(payload)}`)
   },
   fetchTransactions(payload) {
     return http.get(`/transactions?${buildQueryString(payload)}`)

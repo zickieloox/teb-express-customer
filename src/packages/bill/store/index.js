@@ -17,6 +17,7 @@ export const FETCH_BILL_LIST = 'fetchBillList'
 export const CREATE_TRANSACTION = 'createTransaction'
 export const FETCH_RATE_EXCHANGE = 'fetchRateExchange'
 export const FETCH_RATE_EXCHANGE_UPDATE = 'fetchRateExchangeUpdate'
+export const FETCH_PACKAGES = 'fetchPackages'
 
 export const state = {
   bill: {},
@@ -106,21 +107,43 @@ export const actions = {
     return result
   },
 
-  async fetchBillDetail({ commit }, payload) {
+  /**
+   * Api get bill detail
+   * @param {*} payload
+   * @returns Promise
+   */
+  async [FETCH_BILL_DETAIL]({ commit }, payload) {
     const res = await api.fetchBillDetail(payload)
     if (!res || res.error) {
+      commit(FETCH_BILL_DETAIL, {})
       return { success: false, message: res.errorMessage || '' }
     }
-    commit(FETCH_FEE_CREATE, res.bill.package)
-    commit(COUNT_FEE_CREATE, res.count_package)
+
+    commit(FETCH_BILL_DETAIL, res.bill)
 
     return { success: true, bill: res.bill, total: res.total_fee }
   },
-  async fetchBillExtra({ commit }, payload) {
-    const res = await api.fetchExtraFee(payload)
+  async [FETCH_PACKAGES]({ commit }, payload) {
+    const res = await api.fetchBillPackages(payload)
     if (!res || res.error) {
+      commit(FETCH_FEE_CREATE, [])
+      commit(COUNT_FEE_CREATE, 0)
       return { success: false, message: res.errorMessage || '' }
     }
+
+    commit(FETCH_FEE_CREATE, res.packages)
+    commit(COUNT_FEE_CREATE, res.count)
+
+    return { success: true }
+  },
+  async [FETCH_BILL_EXTRA]({ commit }, payload) {
+    const res = await api.fetchExtraFee(payload)
+    if (!res || res.error) {
+      commit(FETCH_FEE_EXTRA, [])
+      commit(COUNT_FEE_EXTRA, 0)
+      return { success: false, message: res.errorMessage || '' }
+    }
+
     commit(FETCH_FEE_EXTRA, res.fees)
     commit(COUNT_FEE_EXTRA, res.count)
 

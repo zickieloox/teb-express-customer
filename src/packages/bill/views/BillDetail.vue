@@ -19,63 +19,37 @@
                     <span class="info-number">{{
                       bill.created_at | datetime('dd/MM/yyyy HH:mm:ss ')
                     }}</span>
-                    <span
-                      v-if="total_fee < 0"
-                      class="info-number total-price font-weight-600"
-                    >
-                      -{{
-                        Math.abs(total(bill.extra_fee, bill.shipping_fee))
-                          | formatPrice
-                      }}
-                    </span>
-                    <span
-                      v-else
-                      class="info-number total-price font-weight-600"
-                    >
-                      {{
-                        total(bill.extra_fee, bill.shipping_fee) | formatPrice
-                      }}
+                    <span class="info-number total-price font-weight-600">
+                      {{ billAmount | formatPrice }}
                     </span>
                   </div>
-
                   <!-- <button class="btn-primary btn">
                     <img src="~@/assets/img/arrow-down.svg" />
                     <span>Xuất hóa đơn </span>
                   </button> -->
                 </div>
-                <div class="card-block  " v-if="feeCreate.length">
+                <div class="card-block" v-if="feeCreate.length">
                   <div class="card-content">
                     <div class="card-title">
-                      <div class="title-text"> Phí vận đơn </div>
-                      <div class="title-pagi">
-                        <div
-                          class="btn-pagi mr-2"
-                          :class="{
-                            'disable-next-page': filter.page <= 1,
-                          }"
-                          @click="previousCreateFee"
-                        >
-                          <i class="fas fa-chevron-left"></i>
-                        </div>
-                        <div
-                          class="btn-pagi"
-                          :class="{
-                            'disable-next-page': filter.page >= totalPageCreate,
-                          }"
-                          @click="nextCreateFee"
-                        >
-                          <i class="fas fa-chevron-right"></i>
-                        </div>
-                      </div>
+                      <div class="title-text">Phí vận đơn</div>
+                      <PrevNext
+                        :current.sync="filter.page"
+                        :total="countCreate"
+                        :per-page="filter.limit"
+                      />
                     </div>
-                    <div class="table-responsive">
+                    <vcl-table
+                      class="md-20"
+                      v-if="isFetchingPackages"
+                    ></vcl-table>
+                    <div class="table-responsive" v-else>
                       <table class="table table-hover">
                         <thead>
                           <tr class="table-header">
                             <th width="270">LIONBAY TRACKING</th>
                             <th width="270">THỜI GIAN </th>
                             <th>LAST MILE TRACKING</th>
-                            <th style="text-align: right">PHÍ VẬN ĐƠN </th>
+                            <th class="text-right">PHÍ VẬN ĐƠN </th>
                           </tr>
                         </thead>
 
@@ -91,23 +65,17 @@
                                   },
                                 }"
                               >
-                                {{
-                                  item.package_code
-                                    ? item.package_code.code
-                                    : ''
-                                }}
+                                {{ item.code }}
                                 <img src="@/assets/img/external.svg" />
                               </router-link>
                             </td>
                             <td>{{
                               item.created_at | datetime('dd/MM/yyyy HH:mm:ss')
                             }}</td>
-                            <td>{{
-                              item.tracking ? item.tracking.tracking_number : ''
+                            <td>{{ item.tracking_number }}</td>
+                            <td class="text-right">{{
+                              item.shipping_fee | formatPrice2
                             }}</td>
-                            <td style="text-align: right"
-                              >+ {{ item.shipping_fee | formatPrice }}</td
-                            >
                           </tr>
                         </tbody>
                       </table>
@@ -119,29 +87,14 @@
                   <div class="card-content">
                     <div class="card-title">
                       <div class="title-text"> Phí phát sinh </div>
-                      <div class="title-pagi">
-                        <div
-                          class="btn-pagi  mr-2"
-                          :class="{
-                            'disable-next-page': filterExtra.page <= 1,
-                          }"
-                          @click="previousExtraFee"
-                        >
-                          <i class="fas fa-chevron-left"></i>
-                        </div>
-                        <div
-                          class="btn-pagi"
-                          @click="nextExtraFee"
-                          :class="{
-                            'disable-next-page':
-                              filterExtra.page >= totalPageExtra,
-                          }"
-                        >
-                          <i class="fas fa-chevron-right"></i>
-                        </div>
-                      </div>
+                      <PrevNext
+                        :current.sync="filterExtra.page"
+                        :total="countExtra"
+                        :per-page="filterExtra.limit"
+                      />
                     </div>
-                    <div class="table-responsive">
+                    <vcl-table class="md-20" v-if="isFetchingFees"></vcl-table>
+                    <div class="table-responsive" v-else>
                       <table class="table table-hover">
                         <thead>
                           <tr class="table-header">
@@ -149,7 +102,7 @@
                             <th width="270">THỜI GIAN </th>
                             <th>LOẠI PHÍ</th>
                             <th>NỘI DUNG</th>
-                            <th style="text-align: right">PHÍ PHÁT SINH </th>
+                            <th class="text-right">PHÍ PHÁT SINH </th>
                           </tr>
                         </thead>
 
@@ -161,22 +114,18 @@
                                 :to="{
                                   name: 'package-detail',
                                   params: {
-                                    id: item.package.id,
+                                    id: item.package_id,
                                   },
                                 }"
                               >
-                                {{
-                                  item.package && item.package.package_code
-                                    ? item.package.package_code.code
-                                    : ''
-                                }}
+                                {{ item.package_code }}
                                 <img src="@/assets/img/external.svg" />
                               </router-link>
                             </td>
                             <td>{{
                               item.created_at | datetime('dd/MM/yyyy HH:mm:ss')
                             }}</td>
-                            <td>{{ item.extra_fee_types.name }}</td>
+                            <td>{{ item.type_name }}</td>
                             <td>
                               <p-tooltip
                                 :label="item.description"
@@ -188,16 +137,10 @@
                                 {{ truncate(item.description, 15) }}
                               </p-tooltip>
                             </td>
-                            <td style="text-align: right" v-if="item.amount < 0"
-                              >-{{ Math.abs(item.amount) | formatPrice }}</td
-                            >
-                            <td style="text-align: right" v-else>{{
+                            <td class="text-right">{{
                               item.amount | formatPrice
                             }}</td>
-                            <td
-                              style="text-align: right"
-                              v-if="item.status == 10"
-                            >
+                            <td class="text-right" v-if="item.status == 10">
                               <span v-status:status="`Chưa thanh toán`"></span>
                             </td>
                           </tr>
@@ -206,39 +149,28 @@
                     </div>
                   </div>
                 </div>
-                <div class="card-block  " v-if="feeRefund.length">
+                <div class="card-block" v-if="feeRefund.length">
                   <div class="card-content">
                     <div class="card-title">
                       <div class="title-text"> Hoàn tiền </div>
-                      <div class="title-pagi">
-                        <div
-                          class="btn-pagi  mr-2"
-                          :class="{
-                            'disable-next-page': filterRefund.page <= 1,
-                          }"
-                          @click="previousRefundPage"
-                        >
-                          <i class="fas fa-chevron-left"></i>
-                        </div>
-                        <div
-                          class="btn-pagi"
-                          @click="nextRefundPage"
-                          :class="{
-                            'disable-next-page': filterRefund.page >= totalPage,
-                          }"
-                        >
-                          <i class="fas fa-chevron-right"></i>
-                        </div>
-                      </div>
+                      <PrevNext
+                        :current.sync="filterRefund.page"
+                        :total="countRefund"
+                        :per-page="filterRefund.limit"
+                      />
                     </div>
-                    <div class="table-responsive">
+                    <vcl-table
+                      class="md-20"
+                      v-if="isFetchingRefund"
+                    ></vcl-table>
+                    <div class="table-responsive" v-else>
                       <table class="table table-hover">
                         <thead>
                           <tr class="table-header">
                             <th width="270">LIONBAY TRACKING </th>
                             <th width="270">THỜI GIAN </th>
                             <th>NỘI DUNG</th>
-                            <th style="text-align: right">PHÍ HOÀN TIỀN </th>
+                            <th class="text-right">PHÍ HOÀN TIỀN </th>
                           </tr>
                         </thead>
 
@@ -250,15 +182,11 @@
                                 :to="{
                                   name: 'package-detail',
                                   params: {
-                                    id: item.package.id,
+                                    id: item.package_id,
                                   },
                                 }"
                               >
-                                {{
-                                  item.package && item.package.package_code
-                                    ? item.package.package_code.code
-                                    : ''
-                                }}
+                                {{ item.package_code }}
                                 <img src="@/assets/img/external.svg" />
                               </router-link>
                             </td>
@@ -279,10 +207,7 @@
                                 {{ truncate(item.description, 15) }}
                               </p-tooltip>
                             </td>
-                            <td style="text-align: right" v-if="item.amount < 0"
-                              >-{{ Math.abs(item.amount) | formatPrice }}</td
-                            >
-                            <td style="text-align: right" v-else>{{
+                            <td class="text-right">{{
                               item.amount | formatPrice
                             }}</td>
                           </tr>
@@ -306,55 +231,47 @@ import {
   FETCH_BILL_DETAIL,
   FETCH_BILL_EXTRA,
   FETCH_BILL_REFUND,
+  FETCH_PACKAGES,
 } from '../store'
-import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
-import { date } from '@core/utils/datetime'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import { truncate } from '@core/utils/string'
+import PrevNext from '../components/PrevNext'
+import { debounce } from '@core/utils'
 
 export default {
   name: 'BillDetail',
-  mixins: [mixinRoute, mixinTable],
-  components: { EmptySearchResult },
+  mixins: [mixinTable],
+  components: { EmptySearchResult, PrevNext },
   data() {
     return {
       filter: {
         limit: 5,
         page: 1,
-        search: '',
       },
-      dateInit: new Date(),
-      labelDate: `Tìm theo ngày`,
       orderPagination: {
         numberPage: 0,
         itemsPerPage: 10,
         currentPage: 1,
       },
-      order: [],
-      bill: {
-        id: '',
-        code: '',
-        created_at: '',
-      },
-      search: '',
       filterExtra: {
         limit: 5,
         page: 1,
-        id: '',
       },
       filterRefund: {
         limit: 5,
         page: 1,
         type: 9,
-        id: '',
       },
-      total_fee: 0,
       isFetching: false,
+      isFetchingPackages: false,
+      isFetchingFees: false,
+      isFetchingRefund: false,
     }
   },
   computed: {
     ...mapState('bill', {
+      bill: (state) => state.bill,
       feeCreate: (state) => state.feeCreate,
       countCreate: (state) => state.countCreate,
       feeExtra: (state) => state.feeExtra,
@@ -362,167 +279,84 @@ export default {
       feeRefund: (state) => state.feeRefund,
       countRefund: (state) => state.countRefund,
     }),
-    totalPageCreate() {
-      const totalPages = Math.ceil(this.countCreate / this.filter.limit)
-      return totalPages
-    },
-    totalPageExtra() {
-      const totalPages = Math.ceil(this.countExtra / this.filterExtra.limit)
-      return totalPages
-    },
-    totalPage() {
-      const total = Math.ceil(this.countRefund / this.filterRefund.limit)
-      return total
-    },
     extraFee() {
       const extra = this.feeExtra.filter((item) => item.extra_fee_type_id != 9)
       return extra
     },
-  },
-  created() {
-    this.filter = this.getRouteQuery()
+    billAmount() {
+      return this.bill.extra_fee + this.bill.shipping_fee
+    },
+    billCode() {
+      const { code } = this.$route.params
+      return code
+    },
   },
   mounted() {
     this.init()
   },
   methods: {
+    truncate,
     ...mapActions('bill', [
       FETCH_BILL_DETAIL,
       FETCH_BILL_EXTRA,
       FETCH_BILL_REFUND,
+      FETCH_PACKAGES,
     ]),
-    truncate,
+
     async init() {
       this.isFetching = true
-      this.handleUpdateRouteQuery()
-      let result = await this[FETCH_BILL_DETAIL](this.filter)
-      this.bill = result.bill
-      this.total_fee = result.total
+      const { code } = this.$route.params
+      let res = await this[FETCH_BILL_DETAIL]({ code })
       this.isFetching = false
-      if (result.bill) {
-        this.filterExtra.code = this.bill.code
-        this.filterRefund.code = this.bill.code
-        await this[FETCH_BILL_EXTRA](this.filterExtra)
-        await this[FETCH_BILL_REFUND](this.filterRefund)
+
+      if (res.error) {
+        this.$toast.error(res.message, { duration: 4000 })
         return
       }
-      this.$toast.open({
-        type: 'error',
-        message: result.message,
-        duration: 4000,
-      })
-    },
-    clearSearchDate() {
-      this.filter.date_search = ''
-      this.filter.page = 1
-      this.bill = {}
-    },
-    handleSearch(e) {
-      this.filter.page = 1
-      this.$set(this.filter, 'search', e.target.value.trim())
-    },
-    async previousCreateFee() {
-      let page =
-        this.filter.page <= 1 ? (this.filter.page = 1) : (this.filter.page -= 1)
-      this.$set(this.filter, 'page', page)
-      let result = await this[FETCH_BILL_DETAIL](this.filter)
-      if (!result.success) {
-        this.$toast.open({
-          type: 'error',
-          message: result.message,
-          duration: 4000,
-        })
-      }
-    },
-    async nextCreateFee() {
-      let page =
-        this.filter.page >= this.totalPageCreate
-          ? this.filter.page
-          : this.filter.page + 1
-      this.$set(this.filter, 'page', page)
-      let result = await this[FETCH_BILL_DETAIL](this.filter)
-      if (!result.success) {
-        this.$toast.open({
-          type: 'error',
-          message: result.message,
-          duration: 4000,
-        })
-      }
-    },
-    async previousExtraFee() {
-      let page =
-        this.filterExtra.page <= 1
-          ? (this.filterExtra.page = 1)
-          : (this.filterExtra.page -= 1)
-      this.$set(this.filterExtra, 'page', page)
-      let result = await this[FETCH_BILL_EXTRA](this.filterExtra)
-      if (!result.success) {
-        this.$toast.open({
-          type: 'error',
-          message: result.message,
-          duration: 4000,
-        })
-      }
-    },
-    async nextExtraFee() {
-      let page =
-        this.filterExtra.page >= this.totalPageExtra
-          ? this.filterExtra.page
-          : this.filterExtra.page + 1
-      this.$set(this.filterExtra, 'page', page)
-      let result = await this[FETCH_BILL_EXTRA](this.filterExtra)
-      if (!result.success) {
-        this.$toast.open({
-          type: 'error',
-          message: result.message,
-          duration: 4000,
-        })
-      }
-    },
-    selectDate(v) {
-      this.filter.page = 1
-      if (this.search) {
-        this.$set(this.filter, 'search', this.search)
-      }
-      this.$set(this.filter, 'date_search', date(v.startDate, 'yyyy-MM-dd'))
+
+      const filter = Object.assign({ code }, this.filter)
+      const filterExtra = Object.assign({ code }, this.filterExtra)
+      const filterRefund = Object.assign({ code }, this.filterRefund)
+
+      await Promise.all([
+        this[FETCH_PACKAGES](filter),
+        this[FETCH_BILL_EXTRA](filterExtra),
+        this[FETCH_BILL_REFUND](filterRefund),
+      ])
     },
 
-    async previousRefundPage() {
-      let page =
-        this.filterRefund.page <= 1
-          ? (this.filterRefund.page = 1)
-          : (this.filterRefund.page -= 1)
-      this.$set(this.filterRefund, 'page', page)
-      let result = await this[FETCH_BILL_REFUND](this.filterRefund)
-      if (!result.success) {
-        this.$toast.open({
-          type: 'error',
-          message: result.message,
-          duration: 4000,
-        })
-      }
+    fetchPackagesHandle: debounce(async function() {
+      this.isFetchingPackages = true
+      const filter = Object.assign({ code: this.billCode }, this.filter)
+      await this[FETCH_PACKAGES](filter)
+      this.isFetchingPackages = false
+    }, 200),
+
+    fetchFeesHandle: debounce(async function() {
+      this.isFetchingFees = true
+      const filter = Object.assign({ code: this.billCode }, this.filterExtra)
+      await this[FETCH_BILL_EXTRA](filter)
+      this.isFetchingFees = false
+    }, 200),
+
+    fetchRefundHandle: debounce(async function() {
+      this.isFetchingRefund = true
+      const filter = Object.assign({ code: this.billCode }, this.filterRefund)
+      await this[FETCH_BILL_REFUND](filter)
+      this.isFetchingRefund = false
+    }, 200),
+  },
+  watch: {
+    'filter.page': function() {
+      this.fetchPackagesHandle()
     },
-    async nextRefundPage() {
-      let page =
-        this.filterRefund.currentPage >= this.totalPage
-          ? this.filterRefund.page
-          : this.filterRefund.page + 1
-      this.$set(this.filterRefund, 'page', page)
-      let result = await this[FETCH_BILL_REFUND](this.filterRefund)
-      if (!result.success) {
-        this.$toast.open({
-          type: 'error',
-          message: result.message,
-          duration: 4000,
-        })
-      }
+    'filterExtra.page': function() {
+      this.fetchFeesHandle()
     },
-    total(ship, extra) {
-      let total = ship + extra
-      return total
+    'filterRefund.page': function() {
+      this.fetchRefundHandle()
     },
   },
-  watch: {},
 }
 </script>
 <style lang="scss" scoped>
