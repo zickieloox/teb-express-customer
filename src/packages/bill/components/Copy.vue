@@ -34,10 +34,6 @@ export default {
       type: String,
       default: 'Đã sao chép!',
     },
-    delay: {
-      type: Boolean,
-      default: false,
-    },
   },
   data() {
     return {
@@ -52,7 +48,6 @@ export default {
       this.classList = ['hover']
     },
     oncopy() {
-      // setTimeout(function () {
       if (!this.value) return
 
       try {
@@ -65,27 +60,6 @@ export default {
         this.classList.push('copied')
       } catch (error) {
         console.log(error)
-      }
-      // }, 1000)
-      // if (!this.value) return
-
-      // try {
-      //   const textArea = document.createElement('textarea')
-      //   textArea.value = this.value
-      //   document.body.appendChild(textArea)
-      //   textArea.select()
-      //   document.execCommand('Copy')
-      //   textArea.remove()
-      //   this.classList.push('copied')
-      // } catch (error) {
-      //   console.log(error)
-      // }
-    },
-  },
-  watch: {
-    value: function() {
-      if (this.delay) {
-        this.oncopy()
       }
     },
   },

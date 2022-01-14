@@ -472,7 +472,14 @@
                         .lb-tooltip {
                             &:after,
                             &:before {
-                                // display: none;
+                                opacity: 0;
+                                transition: .3s;
+                            }
+                            &.copied {
+                                &:after,
+                                &:before {
+                                    opacity: 1;
+                                }
                             }
                         }
                     }
