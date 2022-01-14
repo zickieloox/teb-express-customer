@@ -126,8 +126,8 @@
                             class="text-no-underline"
                             :to="{
                               name: 'bill-detail',
-                              query: {
-                                search: item.bill.code,
+                              params: {
+                                code: item.bill.code,
                               },
                             }"
                           >
