@@ -9,7 +9,7 @@
         <span>Theo dõi lên đến 50 Tracking cùng một lúc.</span>
       </div>
 
-      <div class="search">
+      <div class="search-form">
         <div class="search-input">
           <input
             class="input-1"
@@ -18,7 +18,7 @@
             placeholder="Vui lòng nhập mã tracking"
             :class="{ hidden: openTextarea }"
           />
-          <textarea
+          <!-- <textarea
             id="textarea"
             :class="{ 'input-open': openTextarea }"
             v-model="code"
@@ -28,17 +28,25 @@
 Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
             "
             @input="onChange"
-          ></textarea>
+          ></textarea> -->
+          <modal-tracking
+            class="input-multi"
+            :class="{ 'input-multi-open': openTextarea }"
+            id="textarea"
+            :text.sync="code"
+            @track="track"
+          >
+          </modal-tracking>
         </div>
         <div class="button-group">
-          <button
+          <!-- <button
             class="btn btn-clear"
             v-if="openTextarea"
             :disabled="!code"
             @click="clearListCode"
             >Delete all</button
-          >
-          <button class="btn btn-tracking" @click.prevent="verifyCode">
+          > -->
+          <button class="btn btn-tracking">
             <img src="~@/assets/img/box-search.png" alt="" /> Track</button
           >
         </div>
@@ -719,7 +727,7 @@ Origin:\n`,
       this.openTextarea = true
 
       setTimeout(() => {
-        document.getElementById('textarea').focus()
+        document.getElementById('input').focus()
       }, 300)
     },
 

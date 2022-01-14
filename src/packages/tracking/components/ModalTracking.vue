@@ -19,7 +19,7 @@
                 <i class="fa fa-times" @click="handleRemoveCode(code)"></i>
               </span>
             </template>
-            <div style="position:relative;">
+            <div style="position: relative">
               <span class="number">{{ listCode.length + 1 }}.</span>
               <input
                 id="input"
@@ -87,6 +87,10 @@ export default {
     codes: {
       type: Array,
       default: () => [],
+    },
+    text: {
+      type: String,
+      default: '',
     },
   },
   computed: {
@@ -157,6 +161,7 @@ export default {
       this.listCode = []
       this.code = ''
       this.focusTextarea()
+      this.update('')
     },
 
     addCode() {
@@ -194,6 +199,7 @@ export default {
           )
         ),
       ]
+      this.update(this.listCode.toString())
       this.code = ''
       var elem = document.getElementById('data')
       this.$nextTick(() => {
@@ -206,17 +212,20 @@ export default {
         this.listCode.splice(index, 1)
       }
       this.errText = ''
+      this.update(this.listCode.toString())
     },
 
     focusTextarea() {
       document.getElementById('input').focus()
     },
+
+    update(code) {
+      this.$emit('update:text', code)
+    },
   },
   watch: {
     visible: {
       handler: function() {
-        this.code = ''
-        this.listCode = this.codes.map((num) => num)
         if (this.visible) {
           this.$nextTick(() => this.focusTextarea())
         }
@@ -231,6 +240,15 @@ export default {
         this.$nextTick(() => {
           elem.scrollTop = elem.scrollHeight
         })
+      },
+      deep: true,
+    },
+
+    code: {
+      handler: function() {
+        if (this.listCode.length > 0) {
+          this.update(this.listCode.toString())
+        } else this.update(this.code)
       },
       deep: true,
     },
