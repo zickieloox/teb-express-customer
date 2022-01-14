@@ -4,7 +4,7 @@
       <div class="content_404">
         <div class="content_404-img">
           <img src="~@/assets/img/noresult.svg" alt="" />
-          <p>Không có bản ghi nào !</p>
+          <p>Không tìm thấy kết quả nào !</p>
         </div>
       </div>
     </div>
