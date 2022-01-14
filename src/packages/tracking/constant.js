@@ -21,6 +21,7 @@ export const PackageStatusReturnText = 'alert'
 export const PackageStatusCancelledText = 'canceled'
 
 export const PackageStatusExpiredText = 'expired'
+export const PackageStatusUndelivered = 'undelivered'
 
 export const MAP_NAME_STATUS_PACKAGE = {
   ['']: {

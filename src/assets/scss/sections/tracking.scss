@@ -1,5 +1,15 @@
+:root {
+    --search-width: 440px;
+}
+
+@media all and (max-width: 1366px) {
+     :root {
+        --search-width: 324px;
+    }
+}
+
 .tracking_page {
-    background-color: #FFFFFF;
+    background-color: $color-neutral-1;
     min-height: 100vh;
     margin-top: 40px;
 }
@@ -44,7 +54,7 @@
                 height: 56px;
                 padding-left: 16px;
                 // padding-top: 16px;
-                font-size: 16px;
+                font-size: 14px;
                 line-height: 24px;
                 color: $color-neutral-9;
                 &::placeholder {
@@ -79,7 +89,7 @@
                     height: 300px;
                 }
                 &::placeholder {
-                    font-size: 16px;
+                    font-size: 14px;
                     line-height: 24px;
                     color: $color-neutral-5;
                 }
@@ -96,7 +106,7 @@
                 width: 127px;
                 height: 56px;
                 font-weight: 500;
-                font-size: 16px;
+                font-size: 14px;
                 line-height: 24px;
                 &-tracking {
                     color: #ffffff;
@@ -155,23 +165,20 @@
 .tracking__section {
     .tracking__header {
         // height: 96px;
-        height: 250px;
-        background-color: $color-neutral-1;
-        padding: 16px 0px;
+        background-color: #ffffff;
+        height: 68px;
+        padding: 0px 24px;
     }
     .filter_tab {
-        width: 1032px;
-        margin-left: auto;
-        margin-right: auto;
         display: flex;
         position: relative;
         ul {
             list-style-type: none;
-            height: 96px;
+            height: 68px;
             margin: 0;
             padding: 0;
             overflow: hidden;
-            padding-top: 38px;
+            padding-top: 24px;
         }
         li {
             float: left;
@@ -180,7 +187,8 @@
             margin-right: 20px;
         }
         li a {
-            color: $color-neutral-7;
+            position: relative;
+            color: $color-neutral-10;
             text-align: center;
             text-decoration: none;
             padding: 0 4px;
@@ -188,37 +196,95 @@
             font-weight: 500;
             display: flex;
             align-items: center;
-            &.disabled {
-                color: $color-neutral-5;
+            &.processing {
+                color: #00ABFB;
+                &.active {
+                    &:after {
+                        border-bottom: 1px solid #00ABFB !important;
+                    }
+                }
+            }
+            &.in-transit {
+                color: #13C2C2;
+                &.active {
+                    &:after {
+                        border-bottom: 1px solid #13C2C2 !important;
+                    }
+                }
+            }
+            &.delivered {
+                color: #48BE78;
+                &.active {
+                    &:after {
+                        border-bottom: 1px solid #48BE78 !important;
+                    }
+                }
+            }
+            &.undelivered {
+                color: #F5222D;
+                &.active {
+                    &:after {
+                        border-bottom: 1px solid #F5222D !important;
+                    }
+                }
+            }
+            &.warning {
+                color: #FA8C16;
+                &.active {
+                    &:after {
+                        border-bottom: 1px solid #FA8C16 !important;
+                    }
+                }
+            }
+            &.expried {
+                color: #820014;
+                &.active {
+                    &:after {
+                        border-bottom: 1px solid #820014 !important;
+                    }
+                }
+            }
+            // &.disabled {
+            //     color: $color-neutral-6;
+            // }
+            &.notfound {
+                color: $color-neutral-6;
+                &.active {
+                    &:after {
+                        border-bottom: 1px solid $color-neutral-6 !important;
+                    }
+                }
             }
             svg {
                 margin-right: .5rem;
             }
         }
         li a.active {
-            color: #FFFFFF;
-            background-color: #141F65;
-            border-radius: 4px;
+            // color: $color-neutral-10;
+            // // background-color: #141F65;
+            // // border-radius: 4px;
             &:after {
-                border: none!important;
+                border-bottom: 1px solid $color-neutral-10 !important;
+                width: auto;
+                margin-top: 62px;
             }
-            svg {
-                path {
-                    fill: #FFFFFF;
-                }
-            }
-            &.processing {
-                background-color: #00ABFB;
-            }
-            &.in-transit {
-                background-color: #13C2C2;
-            }
-            &.delivered {
-                background-color: #48BE78;
-            }
-            &.warning {
-                background-color: #FA8C16;
-            }
+            // svg {
+            //     path {
+            //         fill: #FFFFFF;
+            //     }
+            // }
+            // &.processing {
+            //     background-color: #00ABFB;
+            // }
+            // &.in-transit {
+            //     background-color: #13C2C2;
+            // }
+            // &.delivered {
+            //     background-color: #48BE78;
+            // }
+            // &.warning {
+            //     background-color: #FA8C16;
+            // }
         }
         .btn-tracking {
             position: absolute;
@@ -236,42 +302,54 @@
         }
     }
     .tracking {
-        background-color: #FFFFFF;
-        .table {
+        padding: 0 24px;
+        display: flex;
+        .table-tracking {
             margin-top: 0;
-            width: 1032px;
-            margin-left: auto;
-            margin-right: auto;
+            width: calc(100% - var(--search-width));
             position: relative;
-            font-size: 16px;
+            font-size: 14px;
             line-height: 24px;
             color: $color-neutral-9;
             thead {
+                th,
                 tr {
-                    height: 52px;
+                    height: 46px;
+                    border-bottom: 1px solid $color-neutral-4;
                 }
             }
-            .tbody-opened {
-                +.tbody-opened {
-                    .sperate {
-                        display: table-cell;
-                    }
-                }
+            tbody {
+                background-color: white;
             }
+            // .tbody-opened {
+            //     +.tbody-opened {
+            //         .sperate {
+            //             display: table-cell;
+            //         }
+            //     }
+            // }
             th {
                 font-weight: bold;
-                font-size: 12px;
+                font-size: 10px;
                 line-height: 14px;
-                color: $color-neutral-5;
+                color: $color-neutral-10;
                 .btn-action-icon {
                     float: right;
                     svg {
+                        width: 32px;
+                        height: 32px;
                         margin-left: 4px;
                         cursor: pointer;
-                        &:hover {
-                            path {
-                                stroke: #313232
-                            }
+                        path {
+                            stroke: $color-neutral-9;
+                        }
+                        // &:hover {
+                        //     path {
+                        //         stroke: #313232
+                        //     }
+                        // }
+                        rect {
+                            fill: white
                         }
                     }
                 }
@@ -292,14 +370,14 @@
             tr {
                 height: 84px;
                 td {
+                    border: none;
                     &:first-child {
                         padding-left: 12px
                     }
                 }
             }
             .sperate {
-                height: 10px;
-                display: none;
+                height: 4px;
             }
             .icon {
                 text-align: right;
@@ -309,8 +387,11 @@
                     width: 20px;
                     float: right;
                     svg {
-                        width: 16px;
-                        height: 16px;
+                        width: 24px;
+                        height: 24px;
+                        rect {
+                            fill: none;
+                        }
                         path {
                             stroke: $color-neutral-5;
                         }
@@ -345,17 +426,11 @@
                 td {
                     border: none;
                     color: #FFFFFF;
-                    &:first-child {
-                        border-top-left-radius: 8px;
-                    }
-                    &:last-child {
-                        border-top-right-radius: 8px;
-                    }
                 }
                 .icon {
                     svg {
                         path {
-                            stroke: #ffffff;
+                            stroke: $color-neutral-5;
                         }
                     }
                 }
@@ -365,11 +440,11 @@
                     border-bottom: 1px solid #141F65;
                     &:first-child {
                         border-left: 1px solid #141F65;
-                        border-bottom-left-radius: 8px;
+                        // border-bottom-left-radius: 8px;
                     }
                     &:last-child {
                         border-right: 1px solid #141F65;
-                        border-bottom-right-radius: 8px;
+                        // border-bottom-right-radius: 8px;
                     }
                 }
                 .status {
@@ -384,6 +459,24 @@
                         display: block;
                         border-bottom: 1px solid $color-neutral-3;
                         margin-top: 16px;
+                    }
+                    .copy {
+                        float: right;
+                        a {
+                            font-weight: normal;
+                            font-size: 14px;
+                            line-height: 20px;
+                            color: $color-neutral-10;
+                        }
+                        svg {
+                            margin-right: 4px;
+                        }
+                        .lb-tooltip {
+                            &:after,
+                            &:before {
+                                display: none;
+                            }
+                        }
                     }
                 }
                 .timeline-new {
@@ -420,11 +513,17 @@
                 }
             }
         }
+        .pagination-box {
+            margin-top: 24px;
+        }
     }
 }
 
 //tracking-modal
 .modal-tracking {
+    padding-top: 24px;
+    padding-left: 24px;
+    width: var(--search-width);
     .modal-header,
     .modal-footer {
         display: none;
@@ -434,35 +533,43 @@
     }
     .search {
         position: relative;
-        width: 1032px;
         margin-left: auto;
         margin-right: auto;
+        border-radius: 8px;
         .search-input {
             outline: none;
             position: relative;
             background: white;
+            border-radius: 8px;
             .wrapper {
-                height: 162px;
-                border: 1px solid #141F65;
+                height: 315px;
+                border: 1px solid #6CCCC8;
                 box-sizing: border-box;
                 border-radius: 8px;
                 overflow: hidden;
                 margin-bottom: 8px;
                 .showNum {
                     position: absolute;
-                    bottom: 5px;
-                    color: #AAABAB;
+                    bottom: 1px;
+                    border-radius: 8px;
+                    color: $color-neutral-5;
                     font-size: 14px;
                     line-height: 20px;
                     /* right: 25px; */
-                    width: 98%;
-                    text-align: right;
-                    padding-right: 5px;
+                    width: calc(100% - 17px);
+                    height: 48px;
+                    padding-right: 16px;
+                    padding-left: 8px;
+                    background: white;
+                    align-items: center;
+                    svg {
+                        cursor: pointer;
+                    }
                 }
                 .input {
-                    height: 135px;
+                    height: 315px;
                     // padding-top: 12px;
-                    // padding-bottom: 30px;
+                    padding-bottom: 48px;
                     font-size: 14px;
                     line-height: 22px;
                     color: $color-neutral-9;
@@ -516,12 +623,20 @@
                         }
                         &:not(:first-child) {
                             &::placeholder {
-                                color: transparent;
+                                // color: transparent;
                             }
                         }
                     }
                     input {
                         background-color: transparent!important;
+                        // padding-left: 12px !important;
+                    }
+                    .number {
+                        color: $color-neutral-5;
+                        // margin-right: .5rem;
+                        position: absolute;
+                        left: 12px;
+                        top: 6px;
                     }
                 }
             }
@@ -534,14 +649,16 @@
             // right: 0;
             // bottom: 0;
             float: right;
+            width: 100%;
             .btn {
                 height: 48px;
                 font-weight: 500;
-                font-size: 16px;
+                font-size: 14px;
                 line-height: 24px;
                 &-tracking {
                     color: #ffffff;
                     background-color: #141F65;
+                    width: 100%;
                     &:hover {
                         background-color: #00978C;
                     }
