@@ -33,7 +33,7 @@
             color: $color-neutral-9;
         }
     }
-    .search {
+    .search-form {
         z-index: 3;
         width: 680px;
         margin-right: auto;
@@ -59,7 +59,7 @@
                     color: $color-neutral-5;
                 }
             }
-            .input {
+            .input-multi {
                 visibility: hidden;
                 transition: .3s, height .3s ease-in;
                 opacity: 0;
@@ -69,7 +69,7 @@
                 font-size: 14px;
                 line-height: 22px;
                 color: $color-neutral-9;
-                border: 1px solid #141F65;
+                // border: 1px solid #141F65;
                 box-sizing: border-box;
                 border-radius: 8px;
                 flex-direction: column;
@@ -85,11 +85,48 @@
                     opacity: 1;
                     transition: .3s, height .3s ease-in;
                     height: 300px;
+                    padding: 0;
                 }
                 &::placeholder {
                     font-size: 14px;
                     line-height: 24px;
                     color: $color-neutral-5;
+                }
+            }
+            .modal-tracking {
+                width: 680px;
+                padding: 0;
+                overflow: hidden;
+                background-color: $color-neutral-1;
+                .search {
+                    height: 300px;
+                }
+                .wrapper {
+                    height: 300px;
+                    width: 545px;
+                    border: 1px solid #141F65;
+                    border-radius: 8px;
+                    .input {
+                        height: 100%;
+                        border-radius: 8px;
+                    }
+                    .showNum {
+                        bottom: 0
+                    }
+                }
+                .button-group {
+                    position: absolute;
+                    right: 0;
+                    bottom: 0;
+                    z-index: 2;
+                    width: 127px;
+                    .btn {
+                        width: 127px;
+                        height: 56px;
+                        font-weight: 500;
+                        font-size: 14px;
+                        line-height: 24px;
+                    }
                 }
             }
         }
@@ -99,7 +136,7 @@
             flex-direction: column;
             position: absolute;
             right: 0;
-            bottom: 6px;
+            bottom: 0;
             .btn {
                 width: 127px;
                 height: 56px;
