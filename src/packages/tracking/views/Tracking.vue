@@ -303,7 +303,6 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                               :text="'Copy Detail'"
                               :texthover="'Copy detail'"
                               :textcopied="'Copy completed'"
-                              :delay="true"
                             >
                               <inline-svg
                                 :src="
@@ -318,7 +317,6 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                               :text="'Copy Link'"
                               :texthover="'Copy link'"
                               :textcopied="'Copy completed'"
-                              :delay="true"
                             >
                               <inline-svg
                                 :src="
