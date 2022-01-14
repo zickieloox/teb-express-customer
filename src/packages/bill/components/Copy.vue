@@ -13,6 +13,7 @@
       <slot>
         <img src="@assets/img/copy.svg" />
       </slot>
+      <slot name="text">{{ text }}</slot>
     </span>
   </a>
 </template>
@@ -21,6 +22,10 @@ export default {
   name: 'Copy',
   props: {
     value: [String, Number],
+    text: {
+      type: String,
+      default: '',
+    },
     texthover: {
       type: String,
       default: 'Sao chép nội dung',
@@ -28,6 +33,10 @@ export default {
     textcopied: {
       type: String,
       default: 'Đã sao chép!',
+    },
+    delay: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -55,6 +64,13 @@ export default {
         this.classList.push('copied')
       } catch (error) {
         console.log(error)
+      }
+    },
+  },
+  watch: {
+    value: function() {
+      if (this.delay) {
+        this.oncopy()
       }
     },
   },

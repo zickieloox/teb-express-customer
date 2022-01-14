@@ -19,26 +19,44 @@
                 <i class="fa fa-times" @click="handleRemoveCode(code)"></i>
               </span>
             </template>
-            <input
-              id="input"
-              ref="input"
-              class="txt"
-              type="text"
-              v-model="code"
-              :placeholder="`Vui lòng nhập mã tracking`"
-              @keyup.enter="addCode()"
-            />
+            <div style="position:relative;">
+              <span class="number">{{ listCode.length + 1 }}.</span>
+              <input
+                id="input"
+                ref="input"
+                class="txt"
+                type="text"
+                v-model="code"
+                :placeholder="
+                  listCode.length > 0 ? '' : `Vui lòng nhập mã tracking`
+                "
+                @keyup.enter="addCode()"
+              />
+            </div>
           </div>
-          <div class="showNum" id="num">{{ listCode.length }}/50</div>
+          <div class="showNum d-flex jc-sb" id="num">
+            <div class="icon">
+              <inline-svg
+                style="margin-right: 8px"
+                @click="clearListCode"
+                :src="require('../../../../src/assets/img/delete_tracking.svg')"
+              ></inline-svg>
+              <inline-svg
+                @click="addCode"
+                :src="require('../../../../src/assets/img/format_tracking.svg')"
+              ></inline-svg>
+            </div>
+            <div>{{ listCode.length }}/50</div>
+          </div>
         </div>
       </div>
       <div class="button-group">
-        <button
+        <!-- <button
           class="btn btn-clear"
           :disabled="listCode.length < 1"
           @click="clearListCode"
           >Delete all</button
-        >
+        > -->
         <button class="btn btn-tracking" @click.prevent="verifyCode">
           <img src="~@/assets/img/box-search.png" alt="" /> Track</button
         >
@@ -141,6 +159,11 @@ export default {
     },
 
     addCode() {
+      if (this.code == '') {
+        this.focusTextarea()
+        return
+      }
+
       const i = this.listCode.some((element) => this.code === element)
       if (i) {
         this.errText = 'Mã tracking đã tồn tại!'
