@@ -188,7 +188,11 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                   <th width="450">STATUS</th>
                   <th width="60">
                     <div class="d-flex btn-action-icon">
-                      <copy :value="dataCopy">
+                      <copy
+                        :value="dataCopy"
+                        :texthover="'Copy all tracking'"
+                        :textcopied="'Copy completed'"
+                      >
                         <inline-svg
                           :src="
                             require('../../../assets/img/copy_tracking.svg')
@@ -196,7 +200,7 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                         ></inline-svg>
                       </copy>
                       <a
-                        data-text-hover="Mở rộng hoặc thu gọn"
+                        data-text-hover="Expand or collapse full details"
                         class="lb-tooltip"
                       >
                         <inline-svg
@@ -293,10 +297,12 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                       <div class="status">
                         <span>{{ item.status_string }} </span>
                         <div class="copy">
-                          <span @click="copyDetail(item)">
+                          <span>
                             <copy
-                              :value="packageCopy"
+                              :value="item.detail"
                               :text="'Copy Detail'"
+                              :texthover="'Copy detail'"
+                              :textcopied="'Copy completed'"
                               :delay="true"
                             >
                               <inline-svg
@@ -306,10 +312,12 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                               ></inline-svg>
                             </copy>
                           </span>
-                          <span class="ml-24" @click="copyLink(item)">
+                          <span class="ml-24">
                             <copy
-                              :value="linkCopy"
+                              :value="item.link"
                               :text="'Copy Link'"
+                              :texthover="'Copy link'"
+                              :textcopied="'Copy completed'"
                               :delay="true"
                             >
                               <inline-svg
@@ -446,8 +454,6 @@ export default {
       openTextarea: false,
       visibleModal: false,
       dataCopy: '',
-      linkCopy: '',
-      packageCopy: '',
       isLoading: false,
     }
   },
@@ -480,7 +486,22 @@ export default {
                 item = Object.assign({}, item, {
                   log: this.logs.filter((x) => x.package_id == item.id),
                   notFound: false,
+                  link: `${process.env.VUE_APP_DOMAIN}/tracking?nums=${item.package_code.code}`,
+                  detail: `Lionbay tracking: ${item.package_code.code}
+Last mile tracking no.: ${item.tracking ? item.tracking.tracking_number : ''}
+Status: ${item.status_string.charAt(0).toUpperCase() +
+                    item.status_string.slice(1)} ${this.dayDelivered(item)}
+Country: VN -> ${item.country_code}
+Origin:\n`,
                 })
+
+                for (const log of item.log) {
+                  item.detail += log.location
+                    ? `${datetime(log.ship_time)} ${log.description}, ${
+                        log.location
+                      } \n`
+                    : `${datetime(log.ship_time)} ${log.description} \n`
+                }
 
                 const times = item.log.map((item) =>
                   datetime(item.ship_time, 'dd-MM-yyyy')
@@ -628,6 +649,7 @@ export default {
       this.listCode = [
         ...new Set(
           this.code
+            .toUpperCase()
             .trim()
             .split(/[\n\t ]/)
             .filter((x) => x != '')
@@ -673,21 +695,6 @@ export default {
       }
     },
 
-    // deletePackage(item) {
-    //   this.deleting = true
-
-    //   this.listCode = this.ListPackages.filter((x) => x != item).map(
-    //     (x) => x.package_code.code
-    //   )
-    //   if (this.listCode.length > 0) {
-    //     this.track(this.listCode)
-    //     return
-    //   }
-    //   this.newListPackages = []
-    //   this.code = ''
-    //   this.$store.commit('tracking/setCodes', [])
-    // },
-
     paginate(array, page_size, page_number) {
       return array.slice((page_number - 1) * page_size, page_number * page_size)
     },
@@ -724,26 +731,6 @@ export default {
 
     onChange() {
       this.code = this.code.replace(/ /g, '\n')
-    },
-
-    copyLink(item) {
-      this.linkCopy = ''
-      this.linkCopy = `${process.env.VUE_APP_DOMAIN}/tracking?nums=${item.package_code.code}`
-    },
-
-    copyDetail(item) {
-      this.packageCopy = ''
-      this.packageCopy += `Lionbay tracking: ${item.package_code.code}
-Last mile tracking no.: ${item.tracking ? item.tracking.tracking_number : ''}
-Status: ${item.status_string.charAt(0).toUpperCase() +
-        item.status_string.slice(1)} ${this.dayDelivered(item)}
-Country: VN -> ${item.country_code}
-Origin:\n`
-      for (const log of item.log) {
-        this.packageCopy += log.location
-          ? `${datetime(log.ship_time)} ${log.description}, ${log.location} \n`
-          : `${datetime(log.ship_time)} ${log.description} \n`
-      }
     },
 
     dayDelivered(item) {
