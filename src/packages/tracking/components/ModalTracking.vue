@@ -131,6 +131,7 @@ export default {
           ...new Set(
             this.listCode.concat(
               this.code
+                .toUpperCase()
                 .trim()
                 .split(/[\n\t ]/)
                 .filter((x) => x != '')
@@ -186,6 +187,7 @@ export default {
         ...new Set(
           this.listCode.concat(
             this.code
+              .toUpperCase()
               .trim()
               .split(/[\n\t ]/)
               .filter((x) => x != '')
