@@ -2,7 +2,7 @@
   <div class="tracking_page pages">
     <div
       class="search__section"
-      v-if="newListPackages.length == 0 && this.codes.length == 0"
+      v-if="ListPackages.length == 0 && this.codes.length == 0"
     >
       <div class="title">
         <h2>Tra cứu hành trình đơn hàng</h2>
@@ -66,7 +66,6 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                 class="nav-link processing"
                 @click="filterStatus(statusProcessing)"
                 :class="{
-                  disabled: !CountStatusProcessing,
                   active: filter.status == statusProcessing,
                 }"
               >
@@ -82,7 +81,6 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                 class="nav-link in-transit"
                 @click="filterStatus(statusInTransit)"
                 :class="{
-                  disabled: !CountStatusInTransit,
                   active: filter.status == statusInTransit,
                 }"
                 ><inline-svg
@@ -97,7 +95,6 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                 class="nav-link delivered"
                 @click="filterStatus(statusDelivered)"
                 :class="{
-                  disabled: !CountStatusDelivered,
                   active: filter.status == statusDelivered,
                 }"
               >
@@ -107,7 +104,7 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                 Delivered ({{ CountStatusDelivered || 0 }})
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a
                 href="#"
                 class="nav-link undelivered"
@@ -122,14 +119,13 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                 ></inline-svg>
                 UnDelivered ({{ CountStatusUnDelivered || 0 }})
               </a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a
                 href="#"
                 class="nav-link warning"
                 @click="filterStatus(statusAlert)"
                 :class="{
-                  disabled: !CountStatusAlert,
                   active: filter.status == statusAlert,
                 }"
                 ><inline-svg
@@ -144,7 +140,6 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                 class="nav-link expried"
                 @click="filterStatus(statusExpried)"
                 :class="{
-                  disabled: !CountStatusExpried,
                   active: filter.status == statusExpried,
                 }"
                 ><inline-svg
@@ -159,7 +154,6 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                 class="nav-link notfound"
                 @click="filterStatus(statusNotFound)"
                 :class="{
-                  disabled: !CountStatusNotFound,
                   active: filter.status == statusNotFound,
                 }"
                 ><inline-svg
@@ -180,8 +174,10 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
       </div>
 
       <div class="tracking">
-        <template>
-          <div class="table-tracking">
+        <VclTable class="mt-20" v-if="isLoading"></VclTable>
+
+        <template v-else-if="newListPackages.length">
+          <div class="table-tracking col-9">
             <table class="table table-hover">
               <thead>
                 <tr>
@@ -380,8 +376,10 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
             </div>
           </div>
         </template>
+        <empty-search-result v-else></empty-search-result>
 
-        <modal-tracking :codes="listCode" @track="track"> </modal-tracking>
+        <modal-tracking class="col-3" :codes="listCode" @track="track">
+        </modal-tracking>
       </div>
     </div>
   </div>
@@ -409,11 +407,17 @@ import {
 } from '../constant'
 import ModalTracking from '../components/ModalTracking.vue'
 import Copy from '../../bill/components/Copy.vue'
+import mixinTable from '@core/mixins/table'
+import EmptySearchResult from '@components/shared/EmptySearchResult'
+
 export default {
   name: 'Tracking',
+  mixins: [mixinTable],
+
   components: {
     ModalTracking,
     Copy,
+    EmptySearchResult,
   },
   data() {
     return {
@@ -791,6 +795,7 @@ Origin:\n`
                 } \n`
               : `${datetime(log.ship_time)} ${log.description} \n`
           }
+          this.dataCopy += '\n==============================================\n'
           this.dataCopy += `\n`
         }
       },
