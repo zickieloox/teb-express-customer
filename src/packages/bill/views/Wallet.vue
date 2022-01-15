@@ -124,6 +124,7 @@
                           }}
                           <router-link
                             class="text-no-underline"
+                            v-if="item.bill"
                             :to="{
                               name: 'bill-detail',
                               params: { code: item.bill.code },
