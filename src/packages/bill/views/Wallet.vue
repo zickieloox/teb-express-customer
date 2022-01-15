@@ -239,11 +239,10 @@ export default {
       transactionStatus: TRANSACTION_STATUS,
     }
   },
-
   created() {
     this.filter = this.getRouteQuery()
+    this.init()
   },
-
   methods: {
     ...mapActions('bill', [FETCH_TRANSACTION]),
 
