@@ -28,11 +28,17 @@
                 type="text"
                 v-model="code"
                 :placeholder="
-                  listCode.length > 0 ? '' : `Vui lòng nhập mã tracking`
+                  listCode.length > 0 ? '' : `Vui lòng nhập mã tracking,`
                 "
                 @keyup.enter="addCode()"
               />
             </div>
+            <div
+              class="placeholder"
+              :class="{ hidden: isHidden }"
+              v-if="listCode.length == 0"
+              >Các mã được phân tách nhau bởi dấu enter</div
+            >
           </div>
           <div class="showNum d-flex jc-sb" id="num">
             <div class="icon">
@@ -73,6 +79,7 @@ export default {
       listCode: [],
       code: '',
       limit: 50,
+      isHidden: false,
     }
   },
   props: {
@@ -246,6 +253,8 @@ export default {
 
     code: {
       handler: function() {
+        this.isHidden = this.code == '' ? false : true
+
         if (this.listCode.length > 0) {
           this.update(this.listCode.toString())
         } else this.update(this.code)

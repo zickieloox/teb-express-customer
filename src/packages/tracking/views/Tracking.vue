@@ -15,7 +15,7 @@
             class="input-1"
             @click="openInput()"
             v-model="code"
-            placeholder="Vui lòng nhập mã tracking"
+            placeholder="Vui lòng nhập mã tracking, các mã được phân tách nhau bởi dấu enter"
             :class="{ hidden: openTextarea }"
           />
           <!-- <textarea
