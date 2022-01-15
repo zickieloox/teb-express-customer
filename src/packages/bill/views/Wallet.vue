@@ -126,9 +126,7 @@
                             class="text-no-underline"
                             :to="{
                               name: 'bill-detail',
-                              params: {
-                                code: item.bill.code,
-                              },
+                              params: { code: item.bill.code },
                             }"
                           >
                             {{ item.bill.code }}
@@ -290,11 +288,24 @@ export default {
   },
 
   watch: {
-    filter: {
-      handler: function() {
-        this.init()
-      },
-      deep: true,
+    'filter.page': function() {
+      this.init()
+    },
+    'filter.limit': function() {
+      this.filter.page = 1
+      this.init()
+    },
+    'filter.start_date': function() {
+      this.filter.page = 1
+      this.init()
+    },
+    'filter.end_date': function() {
+      this.filter.page = 1
+      this.init()
+    },
+    'filter.type': function() {
+      this.filter.page = 1
+      this.init()
     },
   },
 }
