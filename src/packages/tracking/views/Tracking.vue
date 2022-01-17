@@ -112,22 +112,21 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                 Delivered ({{ CountStatusDelivered || 0 }})
               </a>
             </li>
-            <!-- <li class="nav-item">
+            <li class="nav-item">
               <a
                 href="#"
                 class="nav-link undelivered"
-                @click="filterStatus(statusUnDelivered)"
+                @click="filterStatus(statusReturned)"
                 :class="{
-                  disabled: !CountStatusUnDelivered,
-                  active: filter.status == statusUnDelivered,
+                  active: filter.status == statusReturned,
                 }"
               >
                 <inline-svg
                   :src="require('../../../assets/img/un-delivered.svg')"
                 ></inline-svg>
-                UnDelivered ({{ CountStatusUnDelivered || 0 }})
+                Returned ({{ CountStatusReturned || 0 }})
               </a>
-            </li> -->
+            </li>
             <li class="nav-item">
               <a
                 href="#"
@@ -415,7 +414,7 @@ import {
   PackageStatusPendingPickupText,
   PackageStatusCancelledText,
   PackageStatusExpiredText,
-  PackageStatusUndelivered,
+  PackageStatusReturnText,
 } from '../../package/constants'
 import ModalTracking from '../components/ModalTracking.vue'
 import Copy from '../../bill/components/Copy.vue'
@@ -443,10 +442,10 @@ export default {
       statusInTransit: PackageStatusInTransitText,
       statusDelivered: PackageStatusDeliveredText,
       statusAlert: PackageStatusAlertText,
+      statusReturned: PackageStatusReturnText,
       statusPendingPickup: PackageStatusPendingPickupText,
       statusCancel: PackageStatusCancelledText,
       statusExpried: PackageStatusExpiredText,
-      statusUnDelivered: PackageStatusUndelivered,
       statusNotFound: 'Not Found',
       filter: {
         limit: 10,
@@ -548,9 +547,9 @@ Origin:\n`,
         .filter((x) => x.status == this.statusDelivered)
         .map((x) => x.count)[0]
     },
-    CountStatusUnDelivered() {
+    CountStatusReturned() {
       return this.count_status
-        .filter((x) => x.status == this.statusUnDelivered)
+        .filter((x) => x.status == this.statusReturned)
         .map((x) => x.count)[0]
     },
     CountStatusAlert() {

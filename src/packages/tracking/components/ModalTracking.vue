@@ -169,8 +169,9 @@ export default {
       }
       this.$emit('track', this.listCode)
       this.code = ''
+      var elemData = document.getElementById('data')
       this.$nextTick(() => {
-        elem.scrollTop = elem.scrollHeight
+        elemData.scrollTop = elemData.scrollHeight
       })
       this.focusTextarea()
       this.$emit('update:visible', false)
