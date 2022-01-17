@@ -692,8 +692,13 @@ export default {
     ...mapActions('setting', [LIST_SENDER]),
     async init() {
       this.isFetching = true
-      await this.fetchPackage(this.packageID)
-      await this[FETCH_LIST_SERVICE]()
+      let [detail, service] = await Promise.all([
+        this.fetchPackage(this.packageID),
+        this[FETCH_LIST_SERVICE](),
+      ])
+      if (!detail.success || service.error) {
+        return
+      }
 
       let recipientBlockHeight = document.getElementById('recipient-block')
         .offsetHeight
