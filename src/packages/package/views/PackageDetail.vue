@@ -1,6 +1,6 @@
 <template>
   <div class="package-detail pages">
-    <div class="page-content">
+    <div v-if="!isEmpty" class="page-content">
       <div class="page-header">
         <div class="page-header__subtitle">
           <div class="page-header__info">
@@ -455,6 +455,8 @@
         </div>
       </div>
     </div>
+    <NotFound v-else></NotFound>
+
     <modal-edit-order
       :visible.sync="isVisibleModal"
       :info_user="package_detail"
@@ -537,6 +539,7 @@ import {
 import mixinChaining from '@/packages/shared/mixins/chaining'
 import ModalEditOrder from './components/ModalEditOrder'
 import { LIST_SENDER } from '../../setting/store'
+import NotFound from '../../../components/shared/NotFound'
 import {
   PACKAGE_STATUS_TAB,
   MAP_NAME_STATUS_PACKAGE,
@@ -554,10 +557,11 @@ import { cloneDeep } from '@core/utils'
 import api from '../api'
 import { datetime } from '../../../core/utils/datetime'
 import PButton from '../../../../uikit/components/button/Button'
+import _ from 'lodash'
 export default {
   name: 'PackageDetail',
   mixins: [mixinChaining],
-  components: { PButton, ModalEditOrder, ModalConfirm },
+  components: { PButton, ModalEditOrder, ModalConfirm, NotFound },
   data() {
     return {
       isFetching: true,
@@ -660,6 +664,10 @@ export default {
     changePackageType() {
       return CHANGE_PACKAGE_TYPE
     },
+    isEmpty() {
+      const temp = _.isEmpty(this.package_detail.package)
+      return temp
+    },
     mapExtraFee() {
       let arr = cloneDeep(this.extraFee),
         result = []
@@ -692,8 +700,13 @@ export default {
     ...mapActions('setting', [LIST_SENDER]),
     async init() {
       this.isFetching = true
-      await this.fetchPackage(this.packageID)
-      await this[FETCH_LIST_SERVICE]()
+      let [detail, service] = await Promise.all([
+        this.fetchPackage(this.packageID),
+        this[FETCH_LIST_SERVICE](),
+      ])
+      if (!detail.success || service.error) {
+        return
+      }
 
       let recipientBlockHeight = document.getElementById('recipient-block')
         .offsetHeight

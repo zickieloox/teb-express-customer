@@ -1,6 +1,6 @@
 <template>
   <div class="wallet pages">
-    <div class="page-content">
+    <div v-if="!isEmpty" class="page-content">
       <div class="page-header">
         <div class="page-header__title ">Chi tiết hóa đơn</div>
       </div>
@@ -223,6 +223,7 @@
         </div>
       </div>
     </div>
+    <NotFound v-else></NotFound>
   </div>
 </template>
 <script>
@@ -238,11 +239,13 @@ import EmptySearchResult from '@components/shared/EmptySearchResult'
 import { truncate } from '@core/utils/string'
 import PrevNext from '../components/PrevNext'
 import { debounce } from '@core/utils'
+import NotFound from '../../../components/shared/NotFound'
+import _ from 'lodash'
 
 export default {
   name: 'BillDetail',
   mixins: [mixinTable],
-  components: { EmptySearchResult, PrevNext },
+  components: { EmptySearchResult, PrevNext, NotFound },
   data() {
     return {
       filter: {
@@ -290,6 +293,10 @@ export default {
       const { code } = this.$route.params
       return code
     },
+    isEmpty() {
+      const temp = _.isEmpty(this.bill)
+      return temp
+    },
   },
   mounted() {
     this.init()
@@ -313,7 +320,6 @@ export default {
         this.$toast.error(res.message, { duration: 4000 })
         return
       }
-
       const filter = Object.assign({ code }, this.filter)
       const filterExtra = Object.assign({ code }, this.filterExtra)
       const filterRefund = Object.assign({ code }, this.filterRefund)

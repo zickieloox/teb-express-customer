@@ -1,5 +1,9 @@
 //wallet
 .wallet {
+    height: 100%;
+    .page__empty{
+        margin-top: -56px;
+    }
     .page-header {
         width: 1080px;
         margin: 0 auto;

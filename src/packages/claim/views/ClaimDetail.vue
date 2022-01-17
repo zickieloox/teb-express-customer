@@ -1,6 +1,6 @@
 <template>
   <div class="claim-detail-page pages">
-    <div class="claim-content-page">
+    <div v-if="!isEmpty" class="claim-content-page">
       <div class="page-header">
         <div class="page-header_back">
           <router-link :to="{ name: 'claims' }" class="text">
@@ -233,6 +233,7 @@
         </div>
       </div>
     </div>
+    <NotFound v-else></NotFound>
     <modal-confirm
       :visible.sync="isVisibleConfirmDelete"
       v-if="isVisibleConfirmDelete"
@@ -252,6 +253,7 @@ import mixinRoute from '@core/mixins/route'
 import File from '../components/File'
 import { mapActions, mapState, mapMutations } from 'vuex'
 import Message from '../components/Message'
+import NotFound from '../../../components/shared/NotFound'
 import {
   UPDATE_TICKET,
   UPDATE_FILE_TICKET,
@@ -271,6 +273,7 @@ import { Upload } from '@kit'
 import { MAXIMUM_SIZE } from '../constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import evenBus from '../../../core/utils/evenBus'
+import _ from 'lodash'
 
 export default {
   name: 'ClaimDetail',
@@ -280,6 +283,7 @@ export default {
     Message,
     Upload,
     ModalConfirm,
+    NotFound,
   },
   props: {
     visible: {
@@ -337,7 +341,12 @@ export default {
       claim: (state) => state.ticket,
       count: (state) => state.countMess,
     }),
+    isEmpty() {
+      const temp = _.isEmpty(this.claim)
+      return temp
+    },
   },
+  /* Sự kiện evenBus.$on('my',method) dùng để kiểm tra xem file đã upload đủ hay chưa*/
   destroyed() {
     evenBus.$on('my', this.handleF)
   },
@@ -365,6 +374,7 @@ export default {
       window.scrollTo(0, 0)
       const { id } = this.$route.params
       await this[FETCH_TICKET](id)
+      if (this.isEmpty) return
       await this.handlerFetchTicketMessages(id)
       if (this.claim.attach_files != null) {
         this.claim.attach_files.forEach((x) =>
