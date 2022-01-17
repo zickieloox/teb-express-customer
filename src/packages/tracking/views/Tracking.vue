@@ -139,7 +139,7 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                 ><inline-svg
                   :src="require('../../../assets/img/Warning-2.svg')"
                 ></inline-svg>
-                Returned ({{ CountstatusReturned || 0 }})
+                Returned ({{ CountStatusReturned || 0 }})
               </a>
             </li>
             <li class="nav-item">
