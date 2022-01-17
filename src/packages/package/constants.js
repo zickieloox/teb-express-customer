@@ -22,7 +22,7 @@ export const PackageStatusAlertText = 'alert'
 export const PackageStatusCancelledText = 'canceled'
 export const PackageStatusExpiredText = 'expired'
 export const PackageStatusUndelivered = 'undelivered'
-export const PackageStatusReturnText = 'returned'
+export const PackageStatusReturnText = 'return'
 
 export const PACKAGE_STATUS_TAB = [
   {
@@ -51,7 +51,7 @@ export const PACKAGE_STATUS_TAB = [
   },
   {
     value: PackageStatusReturnText,
-    text: 'Returned',
+    text: 'Return',
   },
   {
     value: PackageStatusCancelledText,
@@ -89,7 +89,7 @@ export const MAP_NAME_STATUS_PACKAGE = {
     class: 'badge-success',
   },
   [PackageStatusReturnText]: {
-    value: 'returned',
+    value: 'return',
     class: 'badge-returned',
   },
   [PackageStatusAlertText]: {
