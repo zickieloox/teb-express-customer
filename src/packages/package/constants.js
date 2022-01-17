@@ -50,10 +50,6 @@ export const PACKAGE_STATUS_TAB = [
     text: 'Delivered',
   },
   {
-    value: PackageStatusReturnText,
-    text: 'Return',
-  },
-  {
     value: PackageStatusCancelledText,
     text: 'Canceled',
   },
@@ -87,10 +83,6 @@ export const MAP_NAME_STATUS_PACKAGE = {
   [PackageStatusDeliveredText]: {
     value: 'delivered',
     class: 'badge-success',
-  },
-  [PackageStatusReturnText]: {
-    value: 'return',
-    class: 'badge-returned',
   },
   [PackageStatusAlertText]: {
     value: 'alert',
@@ -141,7 +133,6 @@ export const DELIVER_LOG_PACKAGE = {
     'Shipping label created, LionBay awaiting item',
   [PackageStatusPicked]: 'Accepted at LionBay Processing	Center',
   [PackageStatusCancelled]: 'Label canceled',
-  [PackageStatusReturned]: ' Package returned',
   [PackageStatusDelivered]: 'Delivered',
   [PackageStatusWareHouseExport]: 'Departed from LionBay Processing Center',
 }

@@ -112,7 +112,7 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                 Delivered ({{ CountStatusDelivered || 0 }})
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a
                 href="#"
                 class="nav-link undelivered"
@@ -126,7 +126,7 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                 ></inline-svg>
                 Return ({{ CountStatusReturned || 0 }})
               </a>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a
                 href="#"
@@ -414,7 +414,6 @@ import {
   PackageStatusPendingPickupText,
   PackageStatusCancelledText,
   PackageStatusExpiredText,
-  PackageStatusReturnText,
 } from '../../package/constants'
 import ModalTracking from '../components/ModalTracking.vue'
 import Copy from '../../bill/components/Copy.vue'
@@ -442,7 +441,7 @@ export default {
       statusInTransit: PackageStatusInTransitText,
       statusDelivered: PackageStatusDeliveredText,
       statusAlert: PackageStatusAlertText,
-      statusReturned: PackageStatusReturnText,
+      // statusReturned: PackageStatusReturnText,
       statusPendingPickup: PackageStatusPendingPickupText,
       statusCancel: PackageStatusCancelledText,
       statusExpried: PackageStatusExpiredText,
@@ -547,11 +546,11 @@ Origin:\n`,
         .filter((x) => x.status == this.statusDelivered)
         .map((x) => x.count)[0]
     },
-    CountStatusReturned() {
-      return this.count_status
-        .filter((x) => x.status == this.statusReturned)
-        .map((x) => x.count)[0]
-    },
+    // CountStatusReturned() {
+    //   return this.count_status
+    //     .filter((x) => x.status == this.statusReturned)
+    //     .map((x) => x.count)[0]
+    // },
     CountStatusAlert() {
       return this.ListPackages.filter((x) => x.alert == 1).length
     },
