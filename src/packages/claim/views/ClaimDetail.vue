@@ -333,6 +333,7 @@ export default {
         },
       },
       number: 0,
+      ticketID: 0,
       styleObject: {},
     }
   },
@@ -351,6 +352,7 @@ export default {
     evenBus.$on('my', this.handleF)
   },
   created() {
+    this.ticketID = parseInt(this.$route.params.id)
     this.filter = this.getRouteQuery()
     evenBus.$on('my', this.handleF)
   },
@@ -372,10 +374,9 @@ export default {
     async init() {
       this.handleUpdateRouteQuery()
       window.scrollTo(0, 0)
-      const { id } = this.$route.params
-      await this[FETCH_TICKET](id)
+      await this[FETCH_TICKET](this.ticketID)
       if (this.isEmpty) return
-      await this.handlerFetchTicketMessages(id)
+      await this.handlerFetchTicketMessages(this.ticketID)
       if (this.claim.attach_files != null) {
         this.claim.attach_files.forEach((x) =>
           this.files.push({ name: x, url: x })
