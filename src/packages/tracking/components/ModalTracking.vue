@@ -158,6 +158,13 @@ export default {
         this.$toast.open({ type: 'error', message: this.errText })
         this.code = ''
 
+        //scroll and focus input
+        var elem = document.getElementById('data')
+        this.$nextTick(() => {
+          elem.scrollTop = elem.scrollHeight
+        })
+        this.focusTextarea()
+
         return
       }
       this.$emit('track', this.listCode)
@@ -212,6 +219,7 @@ export default {
       this.$nextTick(() => {
         elem.scrollTop = elem.scrollHeight
       })
+      this.focusTextarea()
     },
     handleRemoveCode(code) {
       let index = this.listCode.indexOf(code)
