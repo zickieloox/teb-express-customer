@@ -82,13 +82,18 @@ export const mutations = {
 
 export const actions = {
   async fetchPackage({ commit }, payload) {
+    let result = { success: true }
     const res = await api.fetchPackage(payload)
 
     if (!res || res.error) {
-      return { error: true, message: res.errorMessage || '' }
+      result = {
+        success: false,
+        message: res.errorMessage || '',
+      }
     }
 
     commit(FETCH_PACKAGE_DETAIL, res)
+    return result
   },
   // eslint-disable-next-line no-unused-vars
   async fetchListPackages({ commit }, payload) {

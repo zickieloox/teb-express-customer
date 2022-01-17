@@ -552,7 +552,7 @@ Origin:\n`,
     //     .map((x) => x.count)[0]
     // },
     CountStatusAlert() {
-      return this.ListPackages.filter((x) => x.alert == 1).length
+      return this.ListPackages.filter((x) => x.alert > 0).length
     },
     CountStatusExpried() {
       return this.count_status
@@ -772,7 +772,7 @@ Origin:\n`,
             return
           }
           this.newListPackages = this.ListPackages.filter(
-            (x) => x.alert == 1
+            (x) => x.alert > 0
           ).slice(
             (this.filter.page - 1) * this.filter.limit,
             this.filter.page * this.filter.limit
