@@ -116,30 +116,30 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
               <a
                 href="#"
                 class="nav-link undelivered"
-                @click="filterStatus(statusUnDelivered)"
+                @click="filterStatus(statusReturned)"
                 :class="{
-                  disabled: !CountStatusUnDelivered,
-                  active: filter.status == statusUnDelivered,
+                  disabled: !CountStatusReturned,
+                  active: filter.status == statusReturned,
                 }"
               >
                 <inline-svg
                   :src="require('../../../assets/img/un-delivered.svg')"
                 ></inline-svg>
-                UnDelivered ({{ CountStatusUnDelivered || 0 }})
+                Returned ({{ CountStatusReturned || 0 }})
               </a>
             </li> -->
             <li class="nav-item">
               <a
                 href="#"
                 class="nav-link warning"
-                @click="filterStatus(statusAlert)"
+                @click="filterStatus(statusReturned)"
                 :class="{
-                  active: filter.status == statusAlert,
+                  active: filter.status == statusReturned,
                 }"
                 ><inline-svg
                   :src="require('../../../assets/img/Warning-2.svg')"
                 ></inline-svg>
-                Alert ({{ CountStatusAlert || 0 }})
+                Returned ({{ CountstatusReturned || 0 }})
               </a>
             </li>
             <li class="nav-item">
@@ -417,7 +417,6 @@ import {
   PackageStatusPendingPickupText,
   PackageStatusCancelledText,
   PackageStatusExpiredText,
-  PackageStatusUndelivered,
 } from '../constant'
 import ModalTracking from '../components/ModalTracking.vue'
 import Copy from '../../bill/components/Copy.vue'
@@ -444,11 +443,10 @@ export default {
       statusProcessing: PackageStatusProcessingText,
       statusInTransit: PackageStatusInTransitText,
       statusDelivered: PackageStatusDeliveredText,
-      statusAlert: PackageStatusReturnText,
+      statusReturned: PackageStatusReturnText,
       statusPendingPickup: PackageStatusPendingPickupText,
       statusCancel: PackageStatusCancelledText,
       statusExpried: PackageStatusExpiredText,
-      statusUnDelivered: PackageStatusUndelivered,
       statusNotFound: 'Not Found',
       filter: {
         limit: 10,
@@ -549,16 +547,16 @@ Origin:\n`,
         .filter((x) => x.status == this.statusDelivered)
         .map((x) => x.count)[0]
     },
-    CountStatusUnDelivered() {
+    CountStatusReturned() {
       return this.count_status
-        .filter((x) => x.status == this.statusUnDelivered)
+        .filter((x) => x.status == this.statusReturned)
         .map((x) => x.count)[0]
     },
-    CountStatusAlert() {
-      return this.count_status
-        .filter((x) => x.status == this.statusAlert)
-        .map((x) => x.count)[0]
-    },
+    // CountstatusReturned() {
+    //   return this.count_status
+    //     .filter((x) => x.status == this.statusReturned)
+    //     .map((x) => x.count)[0]
+    // },
     CountStatusExpried() {
       return this.count_status
         .filter((x) => x.status == this.statusExpried)

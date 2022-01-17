@@ -17,11 +17,11 @@ export const PackageStatusPendingPickupText = 'pre-transit'
 export const PackageStatusProcessingText = 'processing'
 export const PackageStatusInTransitText = 'in-transit'
 export const PackageStatusDeliveredText = 'delivered'
-export const PackageStatusReturnText = 'alert'
+export const PackageStatusReturnText = 'returned'
 export const PackageStatusCancelledText = 'canceled'
 
 export const PackageStatusExpiredText = 'expired'
-export const PackageStatusUndelivered = 'undelivered'
+// export const PackageStatusUndelivered = 'undelivered'
 
 export const MAP_NAME_STATUS_PACKAGE = {
   ['']: {
