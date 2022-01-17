@@ -152,6 +152,9 @@ export const actions = {
   async fetchBillRefund({ commit }, payload) {
     const res = await api.fetchExtraFee(payload)
     if (!res || res.error) {
+      commit(FETCH_FEE_REFUND, [])
+      commit(COUNT_FEE_REFUND, 0)
+
       return { success: false, message: res.errorMessage || '' }
     }
     commit(FETCH_FEE_REFUND, res.fees)
@@ -164,8 +167,10 @@ export const actions = {
     if (!res || res.error) {
       return { success: false, message: res.errorMessage || '' }
     }
+
     commit(FETCH_RATE_EXCHANGE, res.usd_to_vnd)
     commit(FETCH_RATE_EXCHANGE_UPDATE, res.updated_at)
+
     return {
       success: true,
       usdtovnd: res.usd_to_vnd,

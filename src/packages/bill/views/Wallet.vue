@@ -124,11 +124,10 @@
                           }}
                           <router-link
                             class="text-no-underline"
+                            v-if="item.bill"
                             :to="{
                               name: 'bill-detail',
-                              query: {
-                                search: item.bill.code,
-                              },
+                              params: { code: item.bill.code },
                             }"
                           >
                             {{ item.bill.code }}
@@ -241,11 +240,10 @@ export default {
       transactionStatus: TRANSACTION_STATUS,
     }
   },
-
   created() {
     this.filter = this.getRouteQuery()
+    this.init()
   },
-
   methods: {
     ...mapActions('bill', [FETCH_TRANSACTION]),
 
@@ -290,11 +288,24 @@ export default {
   },
 
   watch: {
-    filter: {
-      handler: function() {
-        this.init()
-      },
-      deep: true,
+    'filter.page': function() {
+      this.init()
+    },
+    'filter.limit': function() {
+      this.filter.page = 1
+      this.init()
+    },
+    'filter.start_date': function() {
+      this.filter.page = 1
+      this.init()
+    },
+    'filter.end_date': function() {
+      this.filter.page = 1
+      this.init()
+    },
+    'filter.type': function() {
+      this.filter.page = 1
+      this.init()
     },
   },
 }

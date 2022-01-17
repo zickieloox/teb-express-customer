@@ -1,6 +1,7 @@
 import { hasOwn } from '@core/utils/object'
 import { isObject } from '@core/utils/type'
 import _debounce from 'lodash/debounce'
+import _isEqual from 'lodash/isEqual'
 
 /**
  * Is def
@@ -123,4 +124,8 @@ export const asyncFilter = async (arr, predicate) => {
 
 export const debounce = (fn, wait) => {
   return _debounce(fn, wait)
+}
+
+export const isEqual = (v1, v2) => {
+  return _isEqual(v1, v2)
 }
