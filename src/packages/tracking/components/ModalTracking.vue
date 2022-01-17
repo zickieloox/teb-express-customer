@@ -169,6 +169,10 @@ export default {
       }
       this.$emit('track', this.listCode)
       this.code = ''
+      this.$nextTick(() => {
+        elem.scrollTop = elem.scrollHeight
+      })
+      this.focusTextarea()
       this.$emit('update:visible', false)
     },
     clearListCode() {

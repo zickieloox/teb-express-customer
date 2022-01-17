@@ -18,9 +18,11 @@ export const PackageStatusPendingPickupText = 'pre-transit'
 export const PackageStatusProcessingText = 'processing'
 export const PackageStatusInTransitText = 'in-transit'
 export const PackageStatusDeliveredText = 'delivered'
-export const PackageStatusReturnText = 'alert'
+export const PackageStatusAlertText = 'alert'
 export const PackageStatusCancelledText = 'canceled'
 export const PackageStatusExpiredText = 'expired'
+export const PackageStatusUndelivered = 'undelivered'
+export const PackageStatusReturnText = 'returned'
 
 export const PACKAGE_STATUS_TAB = [
   {
@@ -49,7 +51,7 @@ export const PACKAGE_STATUS_TAB = [
   },
   {
     value: PackageStatusReturnText,
-    text: 'Alert',
+    text: 'Returned',
   },
   {
     value: PackageStatusCancelledText,
@@ -87,8 +89,12 @@ export const MAP_NAME_STATUS_PACKAGE = {
     class: 'badge-success',
   },
   [PackageStatusReturnText]: {
-    value: 'alert',
+    value: 'returned',
     class: 'badge-returned',
+  },
+  [PackageStatusAlertText]: {
+    value: 'alert',
+    class: 'badge-alert',
   },
   [PackageStatusCancelledText]: {
     value: 'canceled',
