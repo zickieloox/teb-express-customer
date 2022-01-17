@@ -22,7 +22,7 @@ export const PackageStatusAlertText = 'alert'
 export const PackageStatusCancelledText = 'canceled'
 export const PackageStatusExpiredText = 'expired'
 export const PackageStatusUndelivered = 'undelivered'
-export const PackageStatusReturnText = 'returned'
+export const PackageStatusReturnText = 'return'
 
 export const PACKAGE_STATUS_TAB = [
   {
