@@ -112,13 +112,12 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                 Delivered ({{ CountStatusDelivered || 0 }})
               </a>
             </li>
-            <!-- <li class="nav-item">
+            <li class="nav-item">
               <a
                 href="#"
                 class="nav-link undelivered"
                 @click="filterStatus(statusReturned)"
                 :class="{
-                  disabled: !CountStatusReturned,
                   active: filter.status == statusReturned,
                 }"
               >
@@ -127,19 +126,19 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                 ></inline-svg>
                 Returned ({{ CountStatusReturned || 0 }})
               </a>
-            </li> -->
+            </li>
             <li class="nav-item">
               <a
                 href="#"
                 class="nav-link warning"
-                @click="filterStatus(statusReturned)"
+                @click="filterStatus(statusAlert)"
                 :class="{
-                  active: filter.status == statusReturned,
+                  active: filter.status == statusAlert,
                 }"
                 ><inline-svg
                   :src="require('../../../assets/img/Warning-2.svg')"
                 ></inline-svg>
-                Returned ({{ CountStatusReturned || 0 }})
+                Alert ({{ CountStatusAlert || 0 }})
               </a>
             </li>
             <li class="nav-item">
@@ -408,16 +407,15 @@ import { datetime } from '../../../core/utils/datetime'
 import {
   DELIVER_LOG_PACKAGE,
   MAP_NAME_STATUS_PACKAGE,
-} from '../../package/constants'
-import {
   PackageStatusDeliveredText,
   PackageStatusProcessingText,
   PackageStatusInTransitText,
-  PackageStatusReturnText,
+  PackageStatusAlertText,
   PackageStatusPendingPickupText,
   PackageStatusCancelledText,
   PackageStatusExpiredText,
-} from '../constant'
+  PackageStatusReturnText,
+} from '../../package/constants'
 import ModalTracking from '../components/ModalTracking.vue'
 import Copy from '../../bill/components/Copy.vue'
 import mixinTable from '@core/mixins/table'
@@ -443,6 +441,7 @@ export default {
       statusProcessing: PackageStatusProcessingText,
       statusInTransit: PackageStatusInTransitText,
       statusDelivered: PackageStatusDeliveredText,
+      statusAlert: PackageStatusAlertText,
       statusReturned: PackageStatusReturnText,
       statusPendingPickup: PackageStatusPendingPickupText,
       statusCancel: PackageStatusCancelledText,
@@ -452,6 +451,7 @@ export default {
         limit: 10,
         page: 1,
         status: '',
+        alert: false,
       },
       newListPackages: [],
       countPackages: 0,
@@ -552,11 +552,9 @@ Origin:\n`,
         .filter((x) => x.status == this.statusReturned)
         .map((x) => x.count)[0]
     },
-    // CountstatusReturned() {
-    //   return this.count_status
-    //     .filter((x) => x.status == this.statusReturned)
-    //     .map((x) => x.count)[0]
-    // },
+    CountStatusAlert() {
+      return this.ListPackages.filter((x) => x.alert == 1).length
+    },
     CountStatusExpried() {
       return this.count_status
         .filter((x) => x.status == this.statusExpried)
@@ -672,6 +670,7 @@ Origin:\n`,
     filterStatus(status) {
       this.filter.status = status
       this.filter.page = 1
+      this.filter.alert = false
 
       if (status == '') {
         this.countPackages = this.count
@@ -682,6 +681,13 @@ Origin:\n`,
         )
         return
       }
+
+      if (status == 'alert') {
+        this.filter.alert = true
+        this.countPackages = this.CountStatusAlert
+        return
+      }
+
       this.countPackages = this.count_status
         .filter((x) => x.status == status)
         .map((x) => x.count)[0]
@@ -751,18 +757,27 @@ Origin:\n`,
     filter: {
       handler: function() {
         if (this.ListPackages) {
-          this.newListPackages =
-            this.filter.status != ''
-              ? this.ListPackages.filter(
-                  (x) => x.status_string == this.filter.status
-                ).slice(
-                  (this.filter.page - 1) * this.filter.limit,
-                  this.filter.page * this.filter.limit
-                )
-              : this.ListPackages.slice(
-                  (this.filter.page - 1) * this.filter.limit,
-                  this.filter.page * this.filter.limit
-                )
+          if (!this.filter.alert) {
+            this.newListPackages =
+              this.filter.status != ''
+                ? this.ListPackages.filter(
+                    (x) => x.status_string == this.filter.status
+                  ).slice(
+                    (this.filter.page - 1) * this.filter.limit,
+                    this.filter.page * this.filter.limit
+                  )
+                : this.ListPackages.slice(
+                    (this.filter.page - 1) * this.filter.limit,
+                    this.filter.page * this.filter.limit
+                  )
+            return
+          }
+          this.newListPackages = this.ListPackages.filter(
+            (x) => x.alert == 1
+          ).slice(
+            (this.filter.page - 1) * this.filter.limit,
+            this.filter.page * this.filter.limit
+          )
           return
         }
         this.newListPackages = []
