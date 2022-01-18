@@ -80,17 +80,14 @@
           </div>
         </div>
         <div class="page-header__title">
-          <button
-            class="pull-right btn-primary btn ml-2 "
-            @click="handleImport"
-          >
+          <button class="pull-right btn-primary btn ml-2" @click="handleImport">
             <inline-svg :src="require('../../../assets/img/uploadex.svg')">
             </inline-svg>
             <span>Nhập Excel</span>
           </button>
           <router-link
             :to="{ name: 'package-create' }"
-            class="pull-right btn-lb-secondary btn "
+            class="pull-right btn-lb-secondary btn"
             @click="handleImport"
           >
             <inline-svg

@@ -50,6 +50,10 @@ export const PACKAGE_STATUS_TAB = [
     text: 'Delivered',
   },
   {
+    value: PackageStatusAlertText,
+    text: 'Alert',
+  },
+  {
     value: PackageStatusCancelledText,
     text: 'Canceled',
   },

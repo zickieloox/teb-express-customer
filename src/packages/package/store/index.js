@@ -109,6 +109,7 @@ export const actions = {
         message: list.errorMessage || '',
       }
     }
+
     commit(FETCH_LIST_PACKAGES, list.packages)
     commit(COUNT_LIST_PACKAGES, count)
     return result
