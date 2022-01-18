@@ -393,7 +393,6 @@
                         ></span>
                         <span
                           v-if="item.alert > 0"
-                          @click="handleValidateAddress(item)"
                           class="
                             pull-right
                             list-warning
