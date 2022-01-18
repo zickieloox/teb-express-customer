@@ -24,6 +24,8 @@ export const PackageStatusExpiredText = 'expired'
 export const PackageStatusUndelivered = 'undelivered'
 export const PackageStatusReturnText = 'return'
 
+export const PackageAlertTypeWarehoseReturn = 2
+
 export const PACKAGE_STATUS_TAB = [
   {
     value: '',

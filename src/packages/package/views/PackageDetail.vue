@@ -91,7 +91,9 @@
               @click="handlerReturnPackage"
               class="btn btn-primary ml-7"
               v-if="
-                package_detail.package.status_string === PackageStatusReturnText
+                package_detail.package.status_string ===
+                  PackageStatusPendingPickupText &&
+                  package_detail.package.alert == PackageAlertTypeWarehoseReturn
               "
             >
               Chuyển lại hàng
@@ -549,7 +551,9 @@ import {
   ROLE_SUPPORT,
   ROLE_ACCOUNTANT,
   PackageStatusCreatedText,
+  PackageStatusPendingPickupText,
   PackageStatusReturnText,
+  PackageAlertTypeWarehoseReturn,
 } from '../constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import { extension } from '@core/utils/url'
@@ -614,7 +618,9 @@ export default {
       visibleConfirmReturn: false,
       blob: null,
       PackageStatusCreatedText: PackageStatusCreatedText,
+      PackageStatusPendingPickupText: PackageStatusPendingPickupText,
       PackageStatusReturnText: PackageStatusReturnText,
+      PackageAlertTypeWarehoseReturn: PackageAlertTypeWarehoseReturn,
     }
   },
   computed: {
