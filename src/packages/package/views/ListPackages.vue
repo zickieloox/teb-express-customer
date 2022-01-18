@@ -134,7 +134,7 @@
                         <th>last mile tracking</th>
                         <th>service</th>
                         <th>created date </th>
-                        <th>status</th>
+                        <th width="150">status</th>
                         <th style="text-align: right">Total fee</th>
                       </template>
                     </tr>
@@ -196,7 +196,9 @@
                             type="dark"
                           >
                             <inline-svg
-                              :src="require('../../../assets/img/warning.svg')"
+                              :src="
+                                require('../../../assets/img/location-warning.svg')
+                              "
                             ></inline-svg>
                           </p-tooltip>
                         </span>
@@ -389,6 +391,26 @@
                         <span
                           v-status:status="mapStatus[item.status_string].value"
                         ></span>
+                        <span
+                          v-if="item.alert > 0"
+                          @click="handleValidateAddress(item)"
+                          class="
+                            pull-right
+                            list-warning
+                            badge badge-round badge-warning-order
+                          "
+                        >
+                          <p-tooltip
+                            class="item_name"
+                            :label="description(item.alert)"
+                            position="top"
+                            type="dark"
+                          >
+                            <inline-svg
+                              :src="require('../../../assets/img/warning.svg')"
+                            ></inline-svg>
+                          </p-tooltip>
+                        </span>
                       </td>
                       <td style="text-align: right">{{
                         item.shipping_fee | formatPrice
@@ -501,6 +523,9 @@ import {
   PackageStatusInTransitText,
   PackageStatusDeliveredText,
   PackageStatusCancelledText,
+  PackageAlertTypeOverPretransit,
+  PackageAlertTypeWarehoseReturn,
+  PackageAlertTypeHubReturn,
 } from '../constants'
 import {
   FETCH_LIST_PACKAGES,
@@ -610,6 +635,9 @@ export default {
       confirmAddress: '',
       loadingValidate: false,
       scrollPosition: null,
+      PackageAlertTypeOverPretransit,
+      PackageAlertTypeWarehoseReturn,
+      PackageAlertTypeHubReturn,
     }
   },
   created() {
@@ -1073,6 +1101,16 @@ export default {
           return true
         default:
           return false
+      }
+    },
+    description(alert) {
+      switch (alert) {
+        case PackageAlertTypeOverPretransit:
+          return 'Quá 7 ngày chờ lấy'
+        case PackageAlertTypeWarehoseReturn:
+          return 'Bị kho trả lại'
+        case PackageAlertTypeHubReturn:
+          return 'Hàng bị trả lại'
       }
     },
   },
