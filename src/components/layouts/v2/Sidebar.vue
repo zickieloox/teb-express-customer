@@ -2,7 +2,7 @@
   <div class="site-menubar">
     <div class="site-menubar-logo">
       <router-link to="/"
-        ><img src="@assets/img/logo_lionbay_white.svg" alt="lionbay"
+        ><img src="@assets/img/logo.png" alt="lionbay"
       /></router-link>
     </div>
     <div class="site-menubar-body">
