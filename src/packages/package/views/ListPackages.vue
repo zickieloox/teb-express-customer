@@ -782,7 +782,7 @@ export default {
         case PackageStatusCreatedText:
           return false
         case PackageStatusPendingPickupText:
-          return true
+          return false
         case PackageStatusProcessingText:
           return true
         case PackageStatusInTransitText:
@@ -804,13 +804,16 @@ export default {
     },
     handlerCancelPackages() {
       const selectedInvalid = this.selected.filter(
-        (ele) => ele.status_string !== PackageStatusCreatedText
+        (ele) =>
+          ele.status_string !== PackageStatusCreatedText &&
+          ele.status_string !== PackageStatusPendingPickupText
       )
       if (selectedInvalid.length > 0) {
         let codeSelectedInvalid = selectedInvalid.map((ele) => ele.order_number)
         if (codeSelectedInvalid.length > 3) {
           codeSelectedInvalid = [...codeSelectedInvalid.slice(0, 3), '...']
         }
+
         return this.$toast.open({
           type: 'error',
           message: `Đơn hàng ${codeSelectedInvalid.join(

@@ -60,7 +60,9 @@
               @click="handleCancelPackage"
               v-if="
                 package_detail.package.status_string ===
-                  PackageStatusCreatedText
+                  PackageStatusCreatedText ||
+                  package_detail.package.status_string ===
+                    PackageStatusPendingPickupText
               "
             >
               <span>Hủy đơn</span>
