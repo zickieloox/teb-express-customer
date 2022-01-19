@@ -55,6 +55,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    total: {
+      type: Number,
+      default: 0,
+    },
   },
   data() {
     return {
@@ -68,9 +72,7 @@ export default {
       this.status.forEach((item) => {
         if (typeof item === 'object') {
           let count
-          let total = 0
           this.countStatus.forEach((obj) => {
-            total += parseInt(obj.count)
             if (obj.status === item.value) {
               count = obj.count
             }
@@ -78,7 +80,7 @@ export default {
 
           let countText = count ? ' (' + numFormatter(count) + ')' : ' (0)'
           if (item.value === '') {
-            countText = ' (' + numFormatter(total) + ')'
+            countText = ' (' + numFormatter(this.total) + ')'
           }
 
           status.push({

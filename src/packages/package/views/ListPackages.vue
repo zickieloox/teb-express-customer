@@ -108,6 +108,7 @@
           <div class="card-body">
             <package-status-tab
               :has-all="false"
+              :total="count"
               :status="statusTab"
               v-model="filter.status"
               :count-status="count_status"
