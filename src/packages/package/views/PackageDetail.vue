@@ -649,9 +649,11 @@ export default {
       ) {
         return 0
       }
-      return this.package_detail.extra_fee.reduce((accu, curr) => ({
-        amount: accu.amount + curr.amount,
-      })).amount
+
+      return this.package_detail.extra_fee.reduce(
+        (total, { amount }) => total + amount,
+        0
+      )
     },
     sumFee() {
       return this.package_detail.package.shipping_fee + this.sumExtraFee
