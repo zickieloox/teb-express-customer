@@ -35,6 +35,7 @@
 <script>
 import { capitalize } from '@core/utils/string'
 import { numFormatter } from '@core/utils/formatter'
+import { PackageStatusAlertText } from '../../constants'
 
 export default {
   name: 'PackageStatusTab',
@@ -55,10 +56,6 @@ export default {
       type: Boolean,
       default: true,
     },
-    total: {
-      type: Number,
-      default: 0,
-    },
   },
   data() {
     return {
@@ -72,7 +69,11 @@ export default {
       this.status.forEach((item) => {
         if (typeof item === 'object') {
           let count
+          let total = 0
           this.countStatus.forEach((obj) => {
+            if (obj.status !== PackageStatusAlertText) {
+              total += parseInt(obj.count)
+            }
             if (obj.status === item.value) {
               count = obj.count
             }
@@ -80,7 +81,7 @@ export default {
 
           let countText = count ? ' (' + numFormatter(count) + ')' : ' (0)'
           if (item.value === '') {
-            countText = ' (' + numFormatter(this.total) + ')'
+            countText = ' (' + numFormatter(total) + ')'
           }
 
           status.push({
