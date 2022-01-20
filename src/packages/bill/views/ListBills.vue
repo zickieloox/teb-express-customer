@@ -70,7 +70,15 @@
                         >
                           {{ item.code }}
                         </router-link>
+                        <span class="download-bill">
+                          <span @click="handleExport(item.code)">
+                            <inline-svg
+                              :src="require('../../../assets/img/getbill.svg')"
+                            ></inline-svg>
+                          </span>
+                        </span>
                       </td>
+
                       <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>
                       <td>
                         <span v-status:status="handleStatus(item)"></span>
@@ -119,11 +127,12 @@ import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import { date, dateFormat } from '@core/utils/datetime'
-import { FETCH_BILL_LIST } from '../store'
-
+import { EXPORT_BILL, FETCH_BILL_LIST } from '../store'
+import { SET_LOADING } from '../../package/store'
+import mixinDownload from '@/packages/shared/mixins/download'
 export default {
   name: 'ListBills',
-  mixins: [mixinRoute, mixinTable],
+  mixins: [mixinRoute, mixinTable, mixinDownload],
   components: {
     EmptySearchResult,
   },
@@ -151,7 +160,8 @@ export default {
     this.filter = this.getRouteQuery()
   },
   methods: {
-    ...mapActions('bill', [FETCH_BILL_LIST]),
+    ...mapActions('bill', [FETCH_BILL_LIST, EXPORT_BILL]),
+    ...mapActions('package', [SET_LOADING]),
 
     async init() {
       this.isFetching = true
@@ -199,6 +209,23 @@ export default {
         }
       }
     },
+    async handleExport(code) {
+      this[SET_LOADING](true)
+      const result = await this[EXPORT_BILL]({
+        code: code,
+      })
+      if (!result.success) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 3000,
+        })
+        this[SET_LOADING](false)
+        return
+      }
+      this[SET_LOADING](false)
+      this.downloadBill(result.url, 'bills', result.url.split('/')[1])
+    },
   },
 
   watch: {
@@ -211,11 +238,30 @@ export default {
   },
 }
 </script>
-<style scoped>
-.close {
-  width: 50px;
-  height: 40px;
-  border: 1px solid #ccc !important;
-  border-radius: 8px;
+<style lang="scss" scoped>
+.download-bill {
+  margin-left: 20px;
+  opacity: 0;
+  transition: all 0.1s ease;
+
+  &:hover {
+    span {
+      background: #ddf2f2;
+    }
+  }
+  span {
+    padding: 8px;
+    border-radius: 50%;
+  }
+}
+
+.list__bills {
+  tr {
+    &:hover {
+      .download-bill {
+        opacity: 1;
+      }
+    }
+  }
 }
 </style>
