@@ -27,6 +27,7 @@
                     @click="handleExport"
                     :disabled="isVisibleExport"
                     class="btn-primary btn"
+                    v-if="handleStatus(bill) != 'Tạo mới'"
                   >
                     <img src="~@/assets/img/arrow-down.svg" />
                     <span>Xuất hóa đơn </span>
@@ -247,7 +248,7 @@ import { debounce } from '@core/utils'
 import NotFound from '../../../components/shared/NotFound'
 import mixinDownload from '@/packages/shared/mixins/download'
 import _ from 'lodash'
-
+import { dateFormat } from '@core/utils/datetime'
 export default {
   name: 'BillDetail',
   mixins: [mixinTable, mixinDownload],
@@ -376,6 +377,19 @@ export default {
       await this[FETCH_BILL_REFUND](filter)
       this.isFetchingRefund = false
     }, 200),
+    handleStatus(item) {
+      let today = dateFormat(new Date())
+      let itemDay = dateFormat(item.created_at)
+      if (today == itemDay) {
+        return 'Tạo mới'
+      } else {
+        if (this.billAmount > 0) {
+          return 'Thanh toán'
+        } else {
+          return 'Hoàn trả'
+        }
+      }
+    },
   },
   watch: {
     'filter.page': function() {

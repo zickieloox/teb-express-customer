@@ -70,13 +70,23 @@
                         >
                           {{ item.code }}
                         </router-link>
-                        <span class="download-bill">
-                          <span @click="handleExport(item.code)">
-                            <inline-svg
-                              :src="require('../../../assets/img/getbill.svg')"
-                            ></inline-svg>
+                        <p-tooltip
+                          class="item_name"
+                          :label="`Xuất hóa đơn`"
+                          position="top"
+                          type="dark"
+                          v-if="handleStatus(item) != 'Tạo mới'"
+                        >
+                          <span class="download-bill">
+                            <span @click="handleExport(item.code)">
+                              <inline-svg
+                                :src="
+                                  require('../../../assets/img/getbill.svg')
+                                "
+                              ></inline-svg>
+                            </span>
                           </span>
-                        </span>
+                        </p-tooltip>
                       </td>
 
                       <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>
@@ -130,10 +140,12 @@ import { date, dateFormat } from '@core/utils/datetime'
 import { EXPORT_BILL, FETCH_BILL_LIST } from '../store'
 import { SET_LOADING } from '../../package/store'
 import mixinDownload from '@/packages/shared/mixins/download'
+import PTooltip from '../../../../uikit/components/tooltip/Tooltip'
 export default {
   name: 'ListBills',
   mixins: [mixinRoute, mixinTable, mixinDownload],
   components: {
+    PTooltip,
     EmptySearchResult,
   },
   computed: {
@@ -240,7 +252,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .download-bill {
-  margin-left: 20px;
   opacity: 0;
   transition: all 0.1s ease;
 
@@ -262,6 +273,9 @@ export default {
         opacity: 1;
       }
     }
+  }
+  .p-tooltip::after {
+    width: 100px;
   }
 }
 </style>
