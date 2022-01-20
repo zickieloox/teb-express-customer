@@ -771,7 +771,7 @@ export default {
       this.isVisibleExport = false
     },
     isReturnTab() {
-      return this.filter.status === PackageStatusReturnText
+      return this.filter.status === PackageStatusPendingPickupText
     },
     checkScreen() {
       this.windowWidth = window.innerWidth
@@ -854,7 +854,9 @@ export default {
     },
     handlerReturnPackages() {
       const selectedInvalid = this.selected.filter(
-        (ele) => ele.status_string !== PackageStatusReturnText
+        (ele) =>
+          ele.status_string !== PackageStatusPendingPickupText ||
+          ele.alert != PackageAlertTypeWarehoseReturn
       )
 
       if (selectedInvalid.length > 0) {
