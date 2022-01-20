@@ -23,10 +23,14 @@
                       {{ billAmount | formatPrice }}
                     </span>
                   </div>
-                  <!-- <button class="btn-primary btn">
+                  <button
+                    @click="handleExport"
+                    :disabled="isVisibleExport"
+                    class="btn-primary btn"
+                  >
                     <img src="~@/assets/img/arrow-down.svg" />
                     <span>Xuất hóa đơn </span>
-                  </button> -->
+                  </button>
                 </div>
                 <div class="card-block" v-if="feeCreate.length">
                   <div class="card-content">
@@ -233,6 +237,7 @@ import {
   FETCH_BILL_EXTRA,
   FETCH_BILL_REFUND,
   FETCH_PACKAGES,
+  EXPORT_BILL,
 } from '../store'
 import mixinTable from '@core/mixins/table'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
@@ -240,11 +245,12 @@ import { truncate } from '@core/utils/string'
 import PrevNext from '../components/PrevNext'
 import { debounce } from '@core/utils'
 import NotFound from '../../../components/shared/NotFound'
+import mixinDownload from '@/packages/shared/mixins/download'
 import _ from 'lodash'
 
 export default {
   name: 'BillDetail',
-  mixins: [mixinTable],
+  mixins: [mixinTable, mixinDownload],
   components: { EmptySearchResult, PrevNext, NotFound },
   data() {
     return {
@@ -270,6 +276,7 @@ export default {
       isFetchingPackages: false,
       isFetchingFees: false,
       isFetchingRefund: false,
+      isVisibleExport: false,
     }
   },
   computed: {
@@ -308,6 +315,7 @@ export default {
       FETCH_BILL_EXTRA,
       FETCH_BILL_REFUND,
       FETCH_PACKAGES,
+      EXPORT_BILL,
     ]),
 
     async init() {
@@ -330,7 +338,24 @@ export default {
         this[FETCH_BILL_REFUND](filterRefund),
       ])
     },
-
+    async handleExport() {
+      const { code } = this.$route.params
+      this.isVisibleExport = true
+      const result = await this[EXPORT_BILL]({
+        code: code,
+      })
+      if (!result.success) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 3000,
+        })
+        this.isVisibleExport = false
+        return
+      }
+      this.downloadFile(result.url, 'bills', result.url.split('/'), 'hoa_don_')
+      this.isVisibleExport = false
+    },
     fetchPackagesHandle: debounce(async function() {
       this.isFetchingPackages = true
       const filter = Object.assign({ code: this.billCode }, this.filter)

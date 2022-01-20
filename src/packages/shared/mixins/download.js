@@ -12,6 +12,7 @@ export default {
 
       const buckets = {
         packages: 'export_packages',
+        bills: 'export_billing',
       }
 
       const bucket = buckets[type]

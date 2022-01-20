@@ -67,4 +67,7 @@ export default {
   fetchRateExchange() {
     return http.get(`/transactions/rate-exchange`)
   },
+  exportBill(payload) {
+    return http.get(`/bills/invoice/${payload.code}`)
+  },
 }
