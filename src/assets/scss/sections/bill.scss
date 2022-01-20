@@ -117,6 +117,7 @@
                 flex-wrap: nowrap;
             }
         }
+
     }
     .table-header {
         th {
@@ -159,6 +160,16 @@
         }
         .opensleft {
             right: 0px;
+        }
+    }
+    .download-bill{
+        &:hover{
+            svg{
+                path{
+                    fill: rgba(0, 151, 140, 1);
+                }
+            }
+
         }
     }
 }
