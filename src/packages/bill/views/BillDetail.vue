@@ -374,5 +374,6 @@ export default {
   height: auto;
   word-break: break-word;
   width: 250%;
+  text-align: center;
 }
 </style>
