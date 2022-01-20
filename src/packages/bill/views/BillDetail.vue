@@ -142,7 +142,7 @@
                               </p-tooltip>
                             </td>
                             <td class="text-right">{{
-                              item.amount | formatPrice
+                              item.amount | formatPrice2
                             }}</td>
                             <td class="text-right" v-if="item.status == 10">
                               <span v-status:status="`Chưa thanh toán`"></span>
@@ -212,7 +212,7 @@
                               </p-tooltip>
                             </td>
                             <td class="text-right">{{
-                              item.amount | formatPrice
+                              item.amount | formatPrice2
                             }}</td>
                           </tr>
                         </tbody>
