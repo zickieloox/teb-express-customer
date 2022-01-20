@@ -353,7 +353,7 @@ export default {
         this.isVisibleExport = false
         return
       }
-      this.downloadFile(result.url, 'bills', result.url.split('/'), 'hoa_don_')
+      this.downloadBill(result.url, 'bills', result.url.split('/')[1])
       this.isVisibleExport = false
     },
     fetchPackagesHandle: debounce(async function() {
