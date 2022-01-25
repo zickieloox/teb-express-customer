@@ -1,6 +1,6 @@
 <template>
   <div class="package-detail pages">
-    <div class="page-content">
+    <div v-if="!isEmpty" class="page-content">
       <div class="page-header">
         <div class="page-header__subtitle">
           <div class="page-header__info">
@@ -10,7 +10,7 @@
             <div class="info-package">Ngày tạo </div>
             <div class="info-package">Trạng thái</div>
             <div class="package-code "
-              >{{ $evaluate('package_detail.package.package_code?.code') }}
+              >{{ $evaluate('package_detail.package.code_package') }}
               <span
                 @click="showContent"
                 v-if="package_detail.package.label"
@@ -23,19 +23,17 @@
               </span>
             </div>
             <div class="content-title">{{
-              $evaluate('package_detail.package.service?.name')
+              $evaluate('package_detail.package.service_name')
             }}</div>
             <div class="content-title tracking" v-if="package_detail.package">
               <a
                 target="_blank"
-                v-if="package_detail.package.tracking"
+                v-if="package_detail.package.tracking_number"
                 :href="
-                  `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${package_detail.package.tracking.tracking_number}`
+                  `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${package_detail.package.tracking_number}`
                 "
               >
-                {{
-                  $evaluate('package_detail.package.tracking.tracking_number')
-                }}
+                {{ $evaluate('package_detail.package.tracking_number') }}
                 <inline-svg
                   :src="require('../../../assets/img/arrow-up-right.svg')"
                 ></inline-svg>
@@ -62,7 +60,9 @@
               @click="handleCancelPackage"
               v-if="
                 package_detail.package.status_string ===
-                  PackageStatusCreatedText
+                  PackageStatusCreatedText ||
+                  package_detail.package.status_string ===
+                    PackageStatusPendingPickupText
               "
             >
               <span>Hủy đơn</span>
@@ -93,7 +93,9 @@
               @click="handlerReturnPackage"
               class="btn btn-primary ml-7"
               v-if="
-                package_detail.package.status_string === PackageStatusReturnText
+                package_detail.package.status_string ===
+                  PackageStatusPendingPickupText &&
+                  package_detail.package.alert == PackageAlertTypeWarehoseReturn
               "
             >
               Chuyển lại hàng
@@ -457,6 +459,8 @@
         </div>
       </div>
     </div>
+    <NotFound v-else></NotFound>
+
     <modal-edit-order
       :visible.sync="isVisibleModal"
       :info_user="package_detail"
@@ -539,6 +543,7 @@ import {
 import mixinChaining from '@/packages/shared/mixins/chaining'
 import ModalEditOrder from './components/ModalEditOrder'
 import { LIST_SENDER } from '../../setting/store'
+import NotFound from '../../../components/shared/NotFound'
 import {
   PACKAGE_STATUS_TAB,
   MAP_NAME_STATUS_PACKAGE,
@@ -548,7 +553,9 @@ import {
   ROLE_SUPPORT,
   ROLE_ACCOUNTANT,
   PackageStatusCreatedText,
+  PackageStatusPendingPickupText,
   PackageStatusReturnText,
+  PackageAlertTypeWarehoseReturn,
 } from '../constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import { extension } from '@core/utils/url'
@@ -556,10 +563,11 @@ import { cloneDeep } from '@core/utils'
 import api from '../api'
 import { datetime } from '../../../core/utils/datetime'
 import PButton from '../../../../uikit/components/button/Button'
+import _ from 'lodash'
 export default {
   name: 'PackageDetail',
   mixins: [mixinChaining],
-  components: { PButton, ModalEditOrder, ModalConfirm },
+  components: { PButton, ModalEditOrder, ModalConfirm, NotFound },
   data() {
     return {
       isFetching: true,
@@ -612,7 +620,9 @@ export default {
       visibleConfirmReturn: false,
       blob: null,
       PackageStatusCreatedText: PackageStatusCreatedText,
+      PackageStatusPendingPickupText: PackageStatusPendingPickupText,
       PackageStatusReturnText: PackageStatusReturnText,
+      PackageAlertTypeWarehoseReturn: PackageAlertTypeWarehoseReturn,
     }
   },
   computed: {
@@ -639,9 +649,11 @@ export default {
       ) {
         return 0
       }
-      return this.package_detail.extra_fee.reduce((accu, curr) => ({
-        amount: accu.amount + curr.amount,
-      })).amount
+
+      return this.package_detail.extra_fee.reduce(
+        (total, { amount }) => total + amount,
+        0
+      )
     },
     sumFee() {
       return this.package_detail.package.shipping_fee + this.sumExtraFee
@@ -661,6 +673,10 @@ export default {
     },
     changePackageType() {
       return CHANGE_PACKAGE_TYPE
+    },
+    isEmpty() {
+      const temp = _.isEmpty(this.package_detail.package)
+      return temp
     },
     mapExtraFee() {
       let arr = cloneDeep(this.extraFee),
@@ -694,8 +710,13 @@ export default {
     ...mapActions('setting', [LIST_SENDER]),
     async init() {
       this.isFetching = true
-      await this.fetchPackage(this.packageID)
-      await this[FETCH_LIST_SERVICE]()
+      let [detail, service] = await Promise.all([
+        this.fetchPackage(this.packageID),
+        this[FETCH_LIST_SERVICE](),
+      ])
+      if (!detail.success || service.error) {
+        return
+      }
 
       let recipientBlockHeight = document.getElementById('recipient-block')
         .offsetHeight

@@ -41,9 +41,15 @@ export const formatTobe = (tobe, quantity, result = 'are') => {
  */
 export const formatPrice = (value) => {
   let val = (Math.abs(value) / 1).toFixed(2)
-  if (value < 0) {
-    return `-$${val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+
+  if (val == 0) {
+    return '$0.00'
   }
+
+  if (value < 0) {
+    return `- $${val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+  }
+
   return `$${val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
 }
 
@@ -81,4 +87,18 @@ export const numFormatter = (num) => {
   } else if (num >= 1000000000) {
     return (num / 1000000000).toFixed(2) + 'B'
   }
+}
+
+export const formatPrice2 = (value) => {
+  let val = (Math.abs(value) / 1).toFixed(2)
+
+  if (val == 0) {
+    return '$0.00'
+  }
+
+  if (value < 0) {
+    return `- $${val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
+  }
+
+  return `+ $${val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`
 }

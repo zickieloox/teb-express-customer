@@ -1,16 +1,5 @@
 export const routes = [
   {
-    path: '/bill',
-    name: 'bill-detail',
-    meta: {
-      title: 'Quản lý hóa đơn',
-      detail: true,
-      routeParent: { name: 'bill' },
-    },
-    component: () =>
-      import(/* webpackChunkName: "settings" */ './views/BillDetail'),
-  },
-  {
     path: '/bill/wallet',
     name: 'wallet',
     meta: {
@@ -36,5 +25,16 @@ export const routes = [
     },
     component: () =>
       import(/* webpackChunkName: "wallets" */ './views/ListBills.vue'),
+  },
+  {
+    path: '/bill/:code',
+    name: 'bill-detail',
+    meta: {
+      title: 'Quản lý hóa đơn',
+      detail: true,
+      routeParent: { name: 'bill' },
+    },
+    component: () =>
+      import(/* webpackChunkName: "settings" */ './views/BillDetail'),
   },
 ]

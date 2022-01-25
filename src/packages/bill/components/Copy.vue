@@ -13,6 +13,7 @@
       <slot>
         <img src="@assets/img/copy.svg" />
       </slot>
+      <slot name="text">{{ text }}</slot>
     </span>
   </a>
 </template>
@@ -21,6 +22,10 @@ export default {
   name: 'Copy',
   props: {
     value: [String, Number],
+    text: {
+      type: String,
+      default: '',
+    },
     texthover: {
       type: String,
       default: 'Sao chép nội dung',

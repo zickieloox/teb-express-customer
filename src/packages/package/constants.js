@@ -18,9 +18,15 @@ export const PackageStatusPendingPickupText = 'pre-transit'
 export const PackageStatusProcessingText = 'processing'
 export const PackageStatusInTransitText = 'in-transit'
 export const PackageStatusDeliveredText = 'delivered'
-export const PackageStatusReturnText = 'alert'
+export const PackageStatusAlertText = 'alert'
 export const PackageStatusCancelledText = 'canceled'
 export const PackageStatusExpiredText = 'expired'
+export const PackageStatusUndelivered = 'undelivered'
+export const PackageStatusReturnText = 'return'
+
+export const PackageAlertTypeOverPretransit = 1
+export const PackageAlertTypeWarehoseReturn = 2
+export const PackageAlertTypeHubReturn = 3
 
 export const PACKAGE_STATUS_TAB = [
   {
@@ -48,7 +54,7 @@ export const PACKAGE_STATUS_TAB = [
     text: 'Delivered',
   },
   {
-    value: PackageStatusReturnText,
+    value: PackageStatusAlertText,
     text: 'Alert',
   },
   {
@@ -86,9 +92,9 @@ export const MAP_NAME_STATUS_PACKAGE = {
     value: 'delivered',
     class: 'badge-success',
   },
-  [PackageStatusReturnText]: {
+  [PackageStatusAlertText]: {
     value: 'alert',
-    class: 'badge-returned',
+    class: 'badge-alert',
   },
   [PackageStatusCancelledText]: {
     value: 'canceled',
@@ -135,7 +141,6 @@ export const DELIVER_LOG_PACKAGE = {
     'Shipping label created, LionBay awaiting item',
   [PackageStatusPicked]: 'Accepted at LionBay Processing	Center',
   [PackageStatusCancelled]: 'Label canceled',
-  [PackageStatusReturned]: ' Package returned',
   [PackageStatusDelivered]: 'Delivered',
   [PackageStatusWareHouseExport]: 'Departed from LionBay Processing Center',
 }

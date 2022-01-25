@@ -65,15 +65,30 @@
                           class="text-no-underline"
                           :to="{
                             name: 'bill-detail',
-                            query: {
-                              search: item.code,
-                              date_search: '',
-                            },
+                            params: { code: item.code },
                           }"
                         >
                           {{ item.code }}
                         </router-link>
+                        <p-tooltip
+                          class="item_name"
+                          :label="`Xuất hóa đơn`"
+                          position="top"
+                          type="dark"
+                          v-if="handleStatus(item) != BillCreate"
+                        >
+                          <span class="download-bill">
+                            <span @click="handleExport(item.code)">
+                              <inline-svg
+                                :src="
+                                  require('../../../assets/img/getbill.svg')
+                                "
+                              ></inline-svg>
+                            </span>
+                          </span>
+                        </p-tooltip>
                       </td>
+
                       <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>
                       <td>
                         <span v-status:status="handleStatus(item)"></span>
@@ -122,12 +137,16 @@ import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import { date, dateFormat } from '@core/utils/datetime'
-import { FETCH_BILL_LIST } from '../store'
-
+import { EXPORT_BILL, FETCH_BILL_LIST } from '../store'
+import { SET_LOADING } from '../../package/store'
+import mixinDownload from '@/packages/shared/mixins/download'
+import PTooltip from '../../../../uikit/components/tooltip/Tooltip'
+import { BillCreate, BillPay, BillRefund } from '../constants'
 export default {
   name: 'ListBills',
-  mixins: [mixinRoute, mixinTable],
+  mixins: [mixinRoute, mixinTable, mixinDownload],
   components: {
+    PTooltip,
     EmptySearchResult,
   },
   computed: {
@@ -147,6 +166,9 @@ export default {
       },
       labelDate: `Tìm theo ngày`,
       isFetching: true,
+      BillCreate: BillCreate,
+      BillPay: BillPay,
+      BillRefund: BillRefund,
     }
   },
 
@@ -154,7 +176,8 @@ export default {
     this.filter = this.getRouteQuery()
   },
   methods: {
-    ...mapActions('bill', [FETCH_BILL_LIST]),
+    ...mapActions('bill', [FETCH_BILL_LIST, EXPORT_BILL]),
+    ...mapActions('package', [SET_LOADING]),
 
     async init() {
       this.isFetching = true
@@ -193,14 +216,31 @@ export default {
       let today = dateFormat(new Date())
       let itemDay = dateFormat(item.created_at)
       if (today == itemDay) {
-        return 'Tạo mới'
+        return BillCreate
       } else {
         if (this.total(item.shipping_fee, item.extra_fee) > 0) {
-          return 'Thanh toán'
+          return BillPay
         } else {
-          return 'Hoàn trả'
+          return BillRefund
         }
       }
+    },
+    async handleExport(code) {
+      this[SET_LOADING](true)
+      const result = await this[EXPORT_BILL]({
+        code: code,
+      })
+      if (!result.success) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 3000,
+        })
+        this[SET_LOADING](false)
+        return
+      }
+      this[SET_LOADING](false)
+      this.downloadBill(result.url, 'bills', result.url.split('/')[1])
     },
   },
 
@@ -214,11 +254,32 @@ export default {
   },
 }
 </script>
-<style scoped>
-.close {
-  width: 50px;
-  height: 40px;
-  border: 1px solid #ccc !important;
-  border-radius: 8px;
+<style lang="scss" scoped>
+.download-bill {
+  opacity: 0;
+  transition: all 0.1s ease;
+
+  &:hover {
+    span {
+      background: #ddf2f2;
+    }
+  }
+  span {
+    padding: 8px;
+    border-radius: 50%;
+  }
+}
+
+.list__bills {
+  tr {
+    &:hover {
+      .download-bill {
+        opacity: 1;
+      }
+    }
+  }
+  .p-tooltip::after {
+    width: 100px;
+  }
 }
 </style>

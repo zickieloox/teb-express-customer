@@ -46,7 +46,7 @@ export const state = {
 export const getters = {
   [GET_SERVICE](state) {
     let sv = state.service.map((item) => {
-      return { id: item.id, name: item.name }
+      return { id: item.id, name: item.name, code: item.code }
     })
     return sv
   },
@@ -82,13 +82,18 @@ export const mutations = {
 
 export const actions = {
   async fetchPackage({ commit }, payload) {
+    let result = { success: true }
     const res = await api.fetchPackage(payload)
 
     if (!res || res.error) {
-      return { error: true, message: res.errorMessage || '' }
+      result = {
+        success: false,
+        message: res.errorMessage || '',
+      }
     }
 
     commit(FETCH_PACKAGE_DETAIL, res)
+    return result
   },
   // eslint-disable-next-line no-unused-vars
   async fetchListPackages({ commit }, payload) {
@@ -104,6 +109,7 @@ export const actions = {
         message: list.errorMessage || '',
       }
     }
+
     commit(FETCH_LIST_PACKAGES, list.packages)
     commit(COUNT_LIST_PACKAGES, count)
     return result
@@ -120,7 +126,6 @@ export const actions = {
   // eslint-disable-next-line no-unused-vars
   async fetchListService({ commit }, payload) {
     const res = await api.fetchListService()
-
     if (!res.services) {
       return { error: true, message: res.errorMessage || '' }
     }
@@ -130,7 +135,7 @@ export const actions = {
   // eslint-disable-next-line no-unused-vars
   async updatePackage({ commit }, payload) {
     const res = await api.updatePackage(payload)
-    if (!res || !res.package) {
+    if (!res || (!res.success && !res.package)) {
       return { error: true, message: res.errorMessage || '' }
     }
     return { error: false }
@@ -214,7 +219,7 @@ export const actions = {
   // eslint-disable-next-line no-unused-vars
   async createPackage({ commit }, payload) {
     const res = await api.createPackage(payload)
-    if (res.error || res.message || !res.package) {
+    if (res.error || res.message || !res.id) {
       return {
         success: false,
         message: res.errorMessage || res.error || res.message || '',

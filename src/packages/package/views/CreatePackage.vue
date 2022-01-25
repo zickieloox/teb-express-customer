@@ -521,7 +521,7 @@ export default {
         address_2: this.address2.trim(),
       }
       let result = await this[CREATE_PACKAGE](params)
-      if (!result.package || result.error) {
+      if (!result.id || result.error) {
         this.isCreate = false
         this.$toast.open({
           type: 'error',
@@ -538,7 +538,7 @@ export default {
       this.isCreate = false
       this.$router.push({
         name: 'package-detail',
-        params: { id: result.package.id },
+        params: { id: result.id },
       })
     },
   },

@@ -1,6 +1,6 @@
 <template>
   <div class="claim-detail-page pages">
-    <div class="claim-content-page">
+    <div v-if="!isEmpty" class="claim-content-page">
       <div class="page-header">
         <div class="page-header_back">
           <router-link :to="{ name: 'claims' }" class="text">
@@ -27,22 +27,18 @@
           </div>
         </div>
         <div class="note-content">
-          <span v-if="claim.package">
+          <span>
             LionBay tracking:
             <router-link
               class="text-no-underline"
               :to="{
                 name: 'package-detail',
                 params: {
-                  id: claim.package.id,
+                  id: claim.object_id,
                 },
               }"
             >
-              {{
-                claim.package.package_code
-                  ? claim.package.package_code.code
-                  : ''
-              }}
+              {{ claim.package_code }}
             </router-link>
           </span>
           <span>
@@ -59,7 +55,6 @@
             <textarea
               class="form-control mb-16"
               v-model="message"
-              v-validate="'required'"
               data-vv-as="Nội dung"
               name="message"
               key="message"
@@ -238,6 +233,7 @@
         </div>
       </div>
     </div>
+    <NotFound v-else></NotFound>
     <modal-confirm
       :visible.sync="isVisibleConfirmDelete"
       v-if="isVisibleConfirmDelete"
@@ -257,6 +253,7 @@ import mixinRoute from '@core/mixins/route'
 import File from '../components/File'
 import { mapActions, mapState, mapMutations } from 'vuex'
 import Message from '../components/Message'
+import NotFound from '../../../components/shared/NotFound'
 import {
   UPDATE_TICKET,
   UPDATE_FILE_TICKET,
@@ -276,6 +273,7 @@ import { Upload } from '@kit'
 import { MAXIMUM_SIZE } from '../constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import evenBus from '../../../core/utils/evenBus'
+import _ from 'lodash'
 
 export default {
   name: 'ClaimDetail',
@@ -285,6 +283,7 @@ export default {
     Message,
     Upload,
     ModalConfirm,
+    NotFound,
   },
   props: {
     visible: {
@@ -334,6 +333,7 @@ export default {
         },
       },
       number: 0,
+      ticketID: 0,
       styleObject: {},
     }
   },
@@ -342,11 +342,17 @@ export default {
       claim: (state) => state.ticket,
       count: (state) => state.countMess,
     }),
+    isEmpty() {
+      const temp = _.isEmpty(this.claim)
+      return temp
+    },
   },
+  /* Sự kiện evenBus.$on('my',method) dùng để kiểm tra xem file đã upload đủ hay chưa*/
   destroyed() {
     evenBus.$on('my', this.handleF)
   },
   created() {
+    this.ticketID = parseInt(this.$route.params.id)
     this.filter = this.getRouteQuery()
     evenBus.$on('my', this.handleF)
   },
@@ -368,9 +374,9 @@ export default {
     async init() {
       this.handleUpdateRouteQuery()
       window.scrollTo(0, 0)
-      const { id } = this.$route.params
-      await this[FETCH_TICKET](id)
-      await this.handlerFetchTicketMessages(id)
+      await this[FETCH_TICKET](this.ticketID)
+      if (this.isEmpty) return
+      await this.handlerFetchTicketMessages(this.ticketID)
       if (this.claim.attach_files != null) {
         this.claim.attach_files.forEach((x) =>
           this.files.push({ name: x, url: x })
@@ -537,7 +543,10 @@ export default {
         return
       }
 
-      location.reload()
+      // location.reload()
+      this.message = ''
+      this.files = []
+      this.init()
       this.$toast.open({ type: 'success', message: 'Trả lời thành công' })
     },
 

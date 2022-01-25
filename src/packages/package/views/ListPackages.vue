@@ -80,17 +80,14 @@
           </div>
         </div>
         <div class="page-header__title">
-          <button
-            class="pull-right btn-primary btn ml-2 "
-            @click="handleImport"
-          >
+          <button class="pull-right btn-primary btn ml-2" @click="handleImport">
             <inline-svg :src="require('../../../assets/img/uploadex.svg')">
             </inline-svg>
             <span>Nhập Excel</span>
           </button>
           <router-link
             :to="{ name: 'package-create' }"
-            class="pull-right btn-lb-secondary btn "
+            class="pull-right btn-lb-secondary btn"
             @click="handleImport"
           >
             <inline-svg
@@ -137,7 +134,7 @@
                         <th>last mile tracking</th>
                         <th>service</th>
                         <th>created date </th>
-                        <th>status</th>
+                        <th width="150">status</th>
                         <th style="text-align: right">Total fee</th>
                       </template>
                     </tr>
@@ -149,9 +146,6 @@
                       :class="{
                         hover: isChecked(item),
                         deactive:
-                          (item.package_code &&
-                            item.package_code.status ==
-                              PackageStatusDeactive) ||
                           item.status_string == PackageStatusExpiredText,
                         'sm-view': isSmScreen,
                       }"
@@ -202,7 +196,9 @@
                             type="dark"
                           >
                             <inline-svg
-                              :src="require('../../../assets/img/warning.svg')"
+                              :src="
+                                require('../../../assets/img/location-warning.svg')
+                              "
                             ></inline-svg>
                           </p-tooltip>
                         </span>
@@ -210,14 +206,12 @@
                       <td class="action">
                         <span class="code">
                           <p-tooltip
-                            :label="
-                              item.package_code ? item.package_code.code : ''
-                            "
-                            v-if="item.package_code"
+                            :label="item.code"
+                            v-if="item.code"
                             size="large"
                             position="top"
                             type="dark"
-                            :active="item.package_code.code.length > 18"
+                            :active="item.code.length > 18"
                           >
                             <router-link
                               class="text-no-underline"
@@ -228,34 +222,21 @@
                                 },
                               }"
                             >
-                              {{
-                                truncate(
-                                  item.package_code
-                                    ? item.package_code.code
-                                    : '',
-                                  18
-                                )
-                              }}
+                              {{ truncate(item.code, 18) }}
                             </router-link>
                           </p-tooltip>
-                          <span v-else class="no-pkg-code"></span>
+                          <span v-else class="no-pkg-code">N/A</span>
                         </span>
 
                         <span class="link">
-                          <span class="svg" v-if="item.package_code">
+                          <span class="svg" v-if="item.code">
                             <p-tooltip
                               class="item_name"
                               :label="` Copy `"
                               position="top"
                               type="dark"
                             >
-                              <copy
-                                :value="
-                                  item.package_code
-                                    ? item.package_code.code
-                                    : ''
-                                "
-                              >
+                              <copy :value="item.code">
                                 <svg
                                   width="32"
                                   height="32"
@@ -316,7 +297,7 @@
                             </p-tooltip>
                           </span>
 
-                          <span class="svg" v-if="item.package_code">
+                          <span class="svg" v-if="item.code">
                             <p-tooltip
                               class="item_name"
                               :label="` Track `"
@@ -326,11 +307,7 @@
                               <a
                                 target="_blank"
                                 :href="
-                                  `https://t.17track.net/en#nums=${
-                                    item.package_code
-                                      ? item.package_code.code
-                                      : ''
-                                  }`
+                                  `https://t.17track.net/en#nums=${item.code}`
                                 "
                               >
                                 <svg
@@ -365,33 +342,24 @@
                           </span>
                         </span>
                       </td>
-                      <td>
+                      <td v-if="item.tracking_number && item">
                         <a
                           target="_blank"
                           class="tracking"
-                          v-if="item.tracking && item && isSmScreen"
+                          v-if="item.tracking_number && item && isSmScreen"
                           :href="
-                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${item.tracking.tracking_number}`
+                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${item.tracking_number}`
                           "
                         >
                           <p-tooltip
-                            :label="
-                              item.tracking ? item.tracking.tracking_number : ''
-                            "
-                            v-if="item.tracking"
+                            :label="item.tracking_number"
+                            v-if="item.tracking_number"
                             size="large"
                             position="top"
                             type="dark"
-                            :active="item.tracking.tracking_number.length > 25"
+                            :active="item.tracking_number.length > 25"
                           >
-                            {{
-                              truncate(
-                                item.tracking
-                                  ? item.tracking.tracking_number
-                                  : '',
-                                25
-                              )
-                            }}
+                            {{ truncate(item.tracking_number, 25) }}
                             <inline-svg
                               :src="
                                 require('../../../assets/img/arrow-up-right.svg')
@@ -402,12 +370,12 @@
                         <a
                           target="_blank"
                           class="tracking"
-                          v-if="item.tracking && item && !isSmScreen"
+                          v-if="item.tracking_number && item && !isSmScreen"
                           :href="
-                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${item.tracking.tracking_number}`
+                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${item.tracking_number}`
                           "
                         >
-                          {{ item.tracking.tracking_number }}
+                          {{ item.tracking_number }}
                           <inline-svg
                             :src="
                               require('../../../assets/img/arrow-up-right.svg')
@@ -415,15 +383,34 @@
                           ></inline-svg>
                         </a>
                       </td>
-                      <td v-if="item.service">
-                        {{ item.service.name }}
+                      <td v-else><span class="no-track-code">N/A</span> </td>
+                      <td>
+                        {{ item.service_name || 'N/A' }}
                       </td>
-                      <td v-if="!item.service"> N/A </td>
                       <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
                       <td>
                         <span
                           v-status:status="mapStatus[item.status_string].value"
                         ></span>
+                        <span
+                          v-if="item.alert > 0"
+                          class="
+                            pull-right
+                            list-warning
+                            badge badge-round badge-warning-order
+                          "
+                        >
+                          <p-tooltip
+                            class="item_name"
+                            :label="description(item.alert)"
+                            position="top"
+                            type="dark"
+                          >
+                            <inline-svg
+                              :src="require('../../../assets/img/warning.svg')"
+                            ></inline-svg>
+                          </p-tooltip>
+                        </span>
                       </td>
                       <td style="text-align: right">{{
                         item.shipping_fee | formatPrice
@@ -536,6 +523,9 @@ import {
   PackageStatusInTransitText,
   PackageStatusDeliveredText,
   PackageStatusCancelledText,
+  PackageAlertTypeOverPretransit,
+  PackageAlertTypeWarehoseReturn,
+  PackageAlertTypeHubReturn,
 } from '../constants'
 import {
   FETCH_LIST_PACKAGES,
@@ -645,6 +635,9 @@ export default {
       confirmAddress: '',
       loadingValidate: false,
       scrollPosition: null,
+      PackageAlertTypeOverPretransit,
+      PackageAlertTypeWarehoseReturn,
+      PackageAlertTypeHubReturn,
     }
   },
   created() {
@@ -779,7 +772,7 @@ export default {
       this.isVisibleExport = false
     },
     isReturnTab() {
-      return this.filter.status === PackageStatusReturnText
+      return this.filter.status === PackageStatusPendingPickupText
     },
     checkScreen() {
       this.windowWidth = window.innerWidth
@@ -817,7 +810,7 @@ export default {
         case PackageStatusCreatedText:
           return false
         case PackageStatusPendingPickupText:
-          return true
+          return false
         case PackageStatusProcessingText:
           return true
         case PackageStatusInTransitText:
@@ -839,13 +832,16 @@ export default {
     },
     handlerCancelPackages() {
       const selectedInvalid = this.selected.filter(
-        (ele) => ele.status_string !== PackageStatusCreatedText
+        (ele) =>
+          ele.status_string !== PackageStatusCreatedText &&
+          ele.status_string !== PackageStatusPendingPickupText
       )
       if (selectedInvalid.length > 0) {
         let codeSelectedInvalid = selectedInvalid.map((ele) => ele.order_number)
         if (codeSelectedInvalid.length > 3) {
           codeSelectedInvalid = [...codeSelectedInvalid.slice(0, 3), '...']
         }
+
         return this.$toast.open({
           type: 'error',
           message: `Đơn hàng ${codeSelectedInvalid.join(
@@ -859,7 +855,9 @@ export default {
     },
     handlerReturnPackages() {
       const selectedInvalid = this.selected.filter(
-        (ele) => ele.status_string !== PackageStatusReturnText
+        (ele) =>
+          ele.status_string !== PackageStatusPendingPickupText ||
+          ele.alert != PackageAlertTypeWarehoseReturn
       )
 
       if (selectedInvalid.length > 0) {
@@ -1033,7 +1031,7 @@ export default {
       var selected = this.selected.map((x) => {
         return {
           order_number: x.order_number,
-          code: x.package_code ? x.package_code.code : '',
+          code: x.code,
           url: x.label,
         }
       })
@@ -1107,6 +1105,16 @@ export default {
           return false
       }
     },
+    description(alert) {
+      switch (alert) {
+        case PackageAlertTypeOverPretransit:
+          return 'Quá 7 ngày chờ lấy'
+        case PackageAlertTypeWarehoseReturn:
+          return 'Bị kho trả lại'
+        case PackageAlertTypeHubReturn:
+          return 'Hàng bị trả lại'
+      }
+    },
   },
   watch: {
     filter: {
@@ -1138,7 +1146,12 @@ export default {
   }
 }
 .no-pkg-code {
-  display: inline-block;
   min-width: 165px;
+}
+.no-track-code,
+.no-pkg-code {
+  position: relative;
+  left: 52px;
+  display: inline-block;
 }
 </style>

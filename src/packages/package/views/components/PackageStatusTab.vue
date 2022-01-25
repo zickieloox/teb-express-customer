@@ -35,6 +35,7 @@
 <script>
 import { capitalize } from '@core/utils/string'
 import { numFormatter } from '@core/utils/formatter'
+import { PackageStatusAlertText } from '../../constants'
 
 export default {
   name: 'PackageStatusTab',
@@ -70,7 +71,9 @@ export default {
           let count
           let total = 0
           this.countStatus.forEach((obj) => {
-            total += parseInt(obj.count)
+            if (obj.status !== PackageStatusAlertText) {
+              total += parseInt(obj.count)
+            }
             if (obj.status === item.value) {
               count = obj.count
             }
