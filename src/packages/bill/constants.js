@@ -1,9 +1,9 @@
 export const EditFeeBill = 8
 export const ExtraFeeBill = 7
 
-export const BillCreate = 0
-export const BillRefund = 1
-export const BillPay = 2
+export const BillCreate = 'Tạo mới'
+export const BillRefund = 'Hoàn trả'
+export const BillPay = 'Thanh toán'
 
 export const BANK = 'Ngân hàng TMCP Hàng Hải Việt Nam - MSB'
 export const BRANCH = 'Nam Thăng Long'

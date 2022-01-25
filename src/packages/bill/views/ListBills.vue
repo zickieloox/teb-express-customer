@@ -75,7 +75,7 @@
                           :label="`Xuất hóa đơn`"
                           position="top"
                           type="dark"
-                          v-if="handleStatus(item) != 'Tạo mới'"
+                          v-if="handleStatus(item) != BillCreate"
                         >
                           <span class="download-bill">
                             <span @click="handleExport(item.code)">
@@ -141,6 +141,7 @@ import { EXPORT_BILL, FETCH_BILL_LIST } from '../store'
 import { SET_LOADING } from '../../package/store'
 import mixinDownload from '@/packages/shared/mixins/download'
 import PTooltip from '../../../../uikit/components/tooltip/Tooltip'
+import { BillCreate, BillPay, BillRefund } from '../constants'
 export default {
   name: 'ListBills',
   mixins: [mixinRoute, mixinTable, mixinDownload],
@@ -165,6 +166,9 @@ export default {
       },
       labelDate: `Tìm theo ngày`,
       isFetching: true,
+      BillCreate: BillCreate,
+      BillPay: BillPay,
+      BillRefund: BillRefund,
     }
   },
 
@@ -212,12 +216,12 @@ export default {
       let today = dateFormat(new Date())
       let itemDay = dateFormat(item.created_at)
       if (today == itemDay) {
-        return 'Tạo mới'
+        return BillCreate
       } else {
         if (this.total(item.shipping_fee, item.extra_fee) > 0) {
-          return 'Thanh toán'
+          return BillPay
         } else {
-          return 'Hoàn trả'
+          return BillRefund
         }
       }
     },
