@@ -27,7 +27,7 @@
                     @click="handleExport"
                     :disabled="isVisibleExport"
                     class="btn-primary btn"
-                    v-if="handleStatus(bill) != 'Tạo mới'"
+                    v-if="handleStatus(bill) != BillCreate && !isEmptyBill"
                   >
                     <img src="~@/assets/img/arrow-down.svg" />
                     <span>Xuất hóa đơn </span>
@@ -249,6 +249,7 @@ import NotFound from '../../../components/shared/NotFound'
 import mixinDownload from '@/packages/shared/mixins/download'
 import _ from 'lodash'
 import { dateFormat } from '@core/utils/datetime'
+import { BillCreate, BillRefund, BillPay } from '../constants'
 export default {
   name: 'BillDetail',
   mixins: [mixinTable, mixinDownload],
@@ -278,6 +279,9 @@ export default {
       isFetchingFees: false,
       isFetchingRefund: false,
       isVisibleExport: false,
+      BillCreate: BillCreate,
+      BillRefund: BillRefund,
+      BillPay: BillPay,
     }
   },
   computed: {
@@ -302,8 +306,17 @@ export default {
       return code
     },
     isEmpty() {
+      /*Check bill không tồn tại */
       const temp = _.isEmpty(this.bill)
       return temp
+    },
+    isEmptyBill() {
+      /*Check bill rỗng */
+      return (
+        !this.feeCreate.length &&
+        !this.feeRefund.length &&
+        !this.feeExtra.length
+      )
     },
   },
   mounted() {
@@ -381,12 +394,12 @@ export default {
       let today = dateFormat(new Date())
       let itemDay = dateFormat(item.created_at)
       if (today == itemDay) {
-        return 'Tạo mới'
+        return BillCreate
       } else {
         if (this.billAmount > 0) {
-          return 'Thanh toán'
+          return BillPay
         } else {
-          return 'Hoàn trả'
+          return BillRefund
         }
       }
     },
