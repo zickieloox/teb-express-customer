@@ -225,7 +225,7 @@
                               {{ truncate(item.code, 18) }}
                             </router-link>
                           </p-tooltip>
-                          <span v-else class="no-pkg-code"></span>
+                          <span v-else class="no-pkg-code">N/A</span>
                         </span>
 
                         <span class="link">
@@ -342,7 +342,7 @@
                           </span>
                         </span>
                       </td>
-                      <td>
+                      <td v-if="item.tracking_number && item">
                         <a
                           target="_blank"
                           class="tracking"
@@ -383,6 +383,7 @@
                           ></inline-svg>
                         </a>
                       </td>
+                      <td v-else><span class="no-track-code">N/A</span> </td>
                       <td>
                         {{ item.service_name || 'N/A' }}
                       </td>
@@ -1145,7 +1146,12 @@ export default {
   }
 }
 .no-pkg-code {
-  display: inline-block;
   min-width: 165px;
+}
+.no-track-code,
+.no-pkg-code {
+  position: relative;
+  left: 52px;
+  display: inline-block;
 }
 </style>
