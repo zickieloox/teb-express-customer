@@ -10,7 +10,7 @@
             <div class="info-package">Ngày tạo </div>
             <div class="info-package">Trạng thái</div>
             <div class="package-code "
-              >{{ $evaluate('package_detail.package.code_package') }}
+              >{{ $evaluate('package_detail.package.code_package') || 'N/A' }}
               <span
                 @click="showContent"
                 v-if="package_detail.package.label"
@@ -38,6 +38,7 @@
                   :src="require('../../../assets/img/arrow-up-right.svg')"
                 ></inline-svg>
               </a>
+              <a v-else>N/A</a>
             </div>
             <div class="content-title">{{
               package_detail.package.created_at
