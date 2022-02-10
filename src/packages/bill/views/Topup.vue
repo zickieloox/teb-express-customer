@@ -1,194 +1,146 @@
 <template>
-  <div class="pages wallet top-up">
+  <div class="wallet top-up">
     <div class="page-content">
-      <div class="page-header">
-        <div class="page-header__title">Nạp tiền</div>
-        <div class="page-header__action">
-          <router-link
-            :to="{ name: 'wallet' }"
-            class="page-header__wallet btn btn-lb-default"
-          >
-            <inline-svg
-              :src="require('../../../assets/img/rotate.svg')"
-            ></inline-svg>
-            Lịch sử giao dịch</router-link
-          >
-
-          <router-link
-            :to="{ name: 'bill' }"
-            class="page-header__wallet btn btn-lb-default ml-2"
-          >
-            <inline-svg
-              :src="require('../../../assets/img/receipt.svg')"
-            ></inline-svg>
-            Quản lý hóa đơn</router-link
-          >
-        </div>
-      </div>
       <div class="page-body">
-        <div class="container">
-          <div class="row info-money mb-24">
-            <div class="col-7">
-              <div class="box balance">
-                <img src="@assets/img/walletLg.svg" alt="wallet" />
-                <div class="wallet ml-24">
-                  <p class="title">Số dư trong ví</p>
-                  <p class="money">{{ balance | formatPrice }}</p>
+        <div class="d-flex jc-sb topup-content">
+          <div class="method">
+            <a
+              href="javascript:void(0)"
+              @click="setMethod(topupType)"
+              :class="{ deactive: !isTopup, active: isTopup }"
+              ><i class="fa fa-circle"></i>Chuyển khoản</a
+            >
+            <a
+              href="javascript:void(0)"
+              @click="setMethod(payoneerType)"
+              :class="{ deactive: !isPayoneer, active: isPayoneer }"
+              ><i class="fa fa-circle"></i>Payoneer</a
+            >
+            <a
+              href="javascript:void(0)"
+              @click="setMethod(pingPongType)"
+              :class="{ deactive: !isPingPong, active: isPingPong }"
+              ><i class="fa fa-circle"></i>PingPong</a
+            >
+          </div>
+          <div class="form-topup" :class="{ hidden: !isTopup }">
+            <span class="title">
+              Vui lòng chuyển tiền tới số tài khoản dưới đây theo nội dung sau:
+            </span>
+            <div class="card">
+              <div class="card-info">
+                <p
+                  >Ngân hàng:<br /><span>{{ bank }}</span>
+                </p>
+                <p
+                  >Tên chủ thẻ:<br /><span>{{ name }}</span>
+                  <copy :value="name"></copy
+                ></p>
+                <p
+                  >Số tài khoản:<br /><span>{{ accountNumber }}</span>
+                  <copy :value="accountNumber"></copy>
+                </p>
+                <p>
+                  Nội dung chuyển khoản:<br />
+                  <span>Topup {{ topup.id }}</span>
+                  <copy :value="`Topup ${topup.id}`"></copy>
+                </p>
+              </div>
+
+              <div class="swap_money">
+                <div class="money">
+                  <label class="title d-flex justify-content-between">
+                    <span>Nhập số tiền:</span>
+                  </label>
+                  <div class="input">
+                    <input
+                      id="money"
+                      @input="onChangeAmount"
+                      placeholder="Nhập số tiền"
+                      :value="amount"
+                    />
+                    <span>{{ US_FLAG.name }}</span>
+                    <img :src="US_FLAG.icon" alt="flag" class="flag" />
+                  </div>
+                </div>
+                <div @click="swapHandle" class="btn-convert">
+                  <img src="@assets/img/convert.svg" alt="" />
+                </div>
+                <div class="money">
+                  <label class="title">Số tiền tương ứng:</label>
+                  <div class="d-flex">
+                    <div class="w-price">
+                      <span class="price">{{ amountVND }}</span>
+                      <copy :value="amountVND" v-if="amountVND"></copy>
+                      <span class="currency">{{ VN_FLAG.name }}</span>
+                      <img :src="VN_FLAG.icon" alt="flag" class="flag" />
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-5">
-              <div class="box process-money">
-                <img src="@assets/img/time.svg" alt="process-money" />
-                <div class="wallet ml-24">
-                  <p class="title">Tiền chưa thanh toán</p>
-                  <p class="money">{{ debit | formatPrice }}</p>
+              <div class="invalid-error" v-if="error == true">
+                {{ errorText }}
+              </div>
+              <div class="mt-24 btn-exchange">
+                <p-button @click.prevent="handlerRecharge" :loading="loading">
+                  Xác nhận
+                </p-button>
+                <div class="info_exchange">
+                  <div class="rate_exchange"
+                    >Tỷ giá chuyển đổi: 1 USD = {{ currencyRate }} VND</div
+                  >
+                  <div class="rate_exchange_updated"
+                    >Cập nhật lúc
+                    {{ updatedAt | datetime('dd/MM/yyyy HH:mm:ss') }}</div
+                  >
                 </div>
               </div>
             </div>
           </div>
-          <div class="d-flex jc-sb topup-content">
-            <div class="method">
-              <a
-                href="javascript:void(0)"
-                @click="setMethod(topupType)"
-                :class="{ deactive: !isTopup, active: isTopup }"
-                ><i class="fa fa-circle"></i>Chuyển khoản</a
+          <div
+            class="form-topup"
+            :class="{ hidden: !isPayoneer && !isPingPong }"
+          >
+            <div class="form-title">
+              <p
+                ><span
+                  >Vui lòng chuyển tiền tới địa chỉ:
+                  <strong v-if="isPayoneer">trungpq.ftu@gmail.com</strong>
+                  <strong v-if="isPingPong">tungpk@lionnix.com</strong>
+                </span></p
               >
-              <a
-                href="javascript:void(0)"
-                @click="setMethod(payoneerType)"
-                :class="{ deactive: !isPayoneer, active: isPayoneer }"
-                ><i class="fa fa-circle"></i>Payoneer</a
-              >
-              <a
-                href="javascript:void(0)"
-                @click="setMethod(pingPongType)"
-                :class="{ deactive: !isPingPong, active: isPingPong }"
-                ><i class="fa fa-circle"></i>PingPong</a
-              >
+              <p>
+                Copy <strong>Transaction ID</strong> rồi nhập vào ô phía dưới.
+              </p>
+              <p>Nhấn nút <strong>Xác nhận</strong> để nạp topup.</p>
+              <br />
             </div>
-            <div class="form-topup" :class="{ hidden: !isTopup }">
-              <span class="title">
-                Vui lòng chuyển tiền tới số tài khoản dưới đây theo nội dung
-                sau:
-              </span>
-              <div class="card">
-                <div class="card-info">
-                  <p
-                    >Ngân hàng:<br /><span>{{ bank }}</span>
-                  </p>
-                  <p
-                    >Tên chủ thẻ:<br /><span>{{ name }}</span>
-                    <copy :value="name"></copy
-                  ></p>
-                  <p
-                    >Số tài khoản:<br /><span>{{ accountNumber }}</span>
-                    <copy :value="accountNumber"></copy>
-                  </p>
-                  <p>
-                    Nội dung chuyển khoản:<br />
-                    <span>Topup {{ topup.id }}</span>
-                    <copy :value="`Topup ${topup.id}`"></copy>
-                  </p>
-                </div>
-
-                <div class="swap_money">
-                  <div class="money">
-                    <label class="title d-flex justify-content-between">
-                      <span>Nhập số tiền:</span>
-                    </label>
-                    <div class="input">
-                      <input
-                        id="money"
-                        @input="onChangeAmount"
-                        placeholder="Nhập số tiền"
-                        :value="amount"
-                      />
-                      <span>{{ US_FLAG.name }}</span>
-                      <img :src="US_FLAG.icon" alt="flag" class="flag" />
-                    </div>
-                  </div>
-                  <div @click="swapHandle" class="btn-convert">
-                    <img src="@assets/img/convert.svg" alt="" />
-                  </div>
-                  <div class="money">
-                    <label class="title">Số tiền tương ứng:</label>
-                    <div class="d-flex">
-                      <div class="w-price">
-                        <span class="price">{{ amountVND }}</span>
-                        <copy :value="amountVND" v-if="amountVND"></copy>
-                        <span class="currency">{{ VN_FLAG.name }}</span>
-                        <img :src="VN_FLAG.icon" alt="flag" class="flag" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="invalid-error" v-if="error == true">
-                  {{ errorText }}
-                </div>
-                <div class="mt-24  btn-exchange">
-                  <p-button @click.prevent="handlerRecharge" :loading="loading">
-                    Xác nhận
-                  </p-button>
-                  <div class="info_exchange">
-                    <div class="rate_exchange"
-                      >Tỷ giá chuyển đổi: 1 USD = {{ currencyRate }} VND</div
-                    >
-                    <div class="rate_exchange_updated"
-                      >Cập nhật lúc
-                      {{ updatedAt | datetime('dd/MM/yyyy HH:mm:ss') }}</div
-                    >
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="form-topup"
-              :class="{ hidden: !isPayoneer && !isPingPong }"
-            >
-              <div class="form-title">
-                <p
-                  ><span
-                    >Vui lòng chuyển tiền tới địa chỉ:
-                    <strong v-if="isPayoneer">trungpq.ftu@gmail.com</strong>
-                    <strong v-if="isPingPong">tungpk@lionnix.com</strong>
-                  </span></p
-                >
+            <div class="form-body">
+              <p class="mb-8">Transaction ID:</p>
+              <div class="input-trans">
                 <p>
-                  <span
-                    >Copy Transaction ID rồi nhập vào ô phía dưới.<br />
-                    Nhấn nút <strong>Xác nhận</strong> để nạp topup.</span
-                  ></p
-                >
+                  <input
+                    type="text"
+                    class="form-control"
+                    v-model="transactionID"
+                    placeholder="Nhập Transaction ID"
+                  />
+                </p>
               </div>
-              <div class="form-body">
-                <p class="mb-8">Transaction ID:</p>
-                <div class="input-trans ">
-                  <p>
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="transactionID"
-                      placeholder="Nhập Transaction ID"
-                    />
-                  </p>
-                </div>
-                <div class="accept d-flex ">
-                  <p-button
-                    type="primary"
-                    @click="handlerCreateTransaction"
-                    :loading="loading"
+              <div class="accept d-flex">
+                <p-button
+                  type="primary"
+                  @click="handlerCreateTransaction"
+                  :loading="loading"
+                >
+                  Xác nhận
+                </p-button>
+                <div class="note">
+                  <i>
+                    Thời gian xử lý khoảng 15 phút. Nếu tiền không được chuyển
+                    vào topup sau thời gian này, vui lòng liên hệ bộ phận
+                    support của LionBay để được hỗ trợ.</i
                   >
-                    Xác nhận
-                  </p-button>
-                  <div class="note">
-                    <i>
-                      Thời gian xử lý khoảng 15 phút. Nếu tiền không được chuyển
-                      vào topup sau thời gian này, vui lòng liên hệ bộ phận
-                      support của LionBay để được hỗ trợ.</i
-                    >
-                  </div>
                 </div>
               </div>
             </div>
@@ -218,7 +170,6 @@ import {
 } from '../constants'
 import { formatNumber } from '@core/utils/formatter'
 import Copy from '../components/Copy.vue'
-import { GET_USER } from '../../shared/store'
 
 export default {
   name: 'Wallet',
@@ -226,9 +177,6 @@ export default {
   computed: {
     ...mapState('bill', {
       topup: (state) => state.topup,
-    }),
-    ...mapState('shared', {
-      user: (state) => state.user,
     }),
     amountVND() {
       if (!this.amount || this.error) return ''
@@ -258,12 +206,6 @@ export default {
     },
     pingPongType() {
       return TransactionLogTypePingPong
-    },
-    balance() {
-      return this.user.balance > 0 ? this.user.balance : 0
-    },
-    debit() {
-      return this.user.balance < 0 ? Math.abs(this.user.balance) : 0
     },
   },
   data() {
@@ -296,16 +238,14 @@ export default {
       FETCH_RATE_EXCHANGE,
       FETCH_TRANSACTION,
     ]),
-    ...mapActions('shared', [GET_USER]),
 
     async init() {
-      const [exchange, user] = await Promise.all([
+      const [exchange] = await Promise.all([
         this[FETCH_RATE_EXCHANGE](),
-        this[GET_USER](),
         this.createTopup(),
       ])
 
-      if (!exchange || !exchange.success || user.error) {
+      if (!exchange || !exchange.success) {
         this.$toast.error('Something went wrong', { duration: 4000 })
         return
       }
