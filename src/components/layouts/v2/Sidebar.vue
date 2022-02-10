@@ -131,6 +131,7 @@ export default {
           route: { name: 'bill' },
           class: '',
           isOpen: false,
+          // alias: ['/bill/wallet'],
         },
         {
           title: 'Tracking',

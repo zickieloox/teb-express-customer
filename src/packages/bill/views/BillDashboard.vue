@@ -96,6 +96,9 @@ export default {
     this.init()
   },
   mounted() {
+    if (this.$route.path == '/bill/wallet') {
+      this.page = 'transaction'
+    }
     if (this.topup) {
       this.page = 'topup'
     }
