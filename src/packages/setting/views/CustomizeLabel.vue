@@ -176,6 +176,7 @@ export default {
         message: 'Lưu setting label thành công',
         type: 'success',
       })
+      this.activeBtnSave = false
     },
     previewLogoLabel(url) {
       if (url) {
