@@ -29,7 +29,7 @@ export const MAP_NAME_STATUS_TRANSACTION = {
     value: 'Thành công',
   },
   [TransactionStatusFailure]: {
-    value: 'Từ chối',
+    value: 'Không thành công',
   },
 }
 

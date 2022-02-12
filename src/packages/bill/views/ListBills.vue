@@ -1,17 +1,5 @@
 <template>
-  <div class="wallet pages">
-    <div class="page-header">
-      <div class="page-header__title">Quản lý hóa đơn</div>
-      <router-link
-        :to="{ name: 'top-up' }"
-        class="page-header__wallet btn btn-lb-default"
-      >
-        <inline-svg
-          :src="require('../../../assets/img/wallet-icon.svg')"
-        ></inline-svg>
-        Ví của tôi</router-link
-      >
-    </div>
+  <div>
     <div class="page-content">
       <div class="page-body-bill">
         <div class="list__bills">
@@ -51,10 +39,10 @@
                 <table class="table table-hover">
                   <thead>
                     <tr class="table-header">
-                      <th style="width: 25%">MÃ HÓA ĐƠN </th>
-                      <th style="width: 35%">NGÀY TẠO </th>
-                      <th style="width: 25%">LOẠI HÓA ĐƠN </th>
+                      <th style="width: 40%">MÃ HÓA ĐƠN </th>
+                      <th style="width: 25%">NGÀY TẠO </th>
                       <th style="text-align: right">TỔNG TIỀN </th>
+                      <th width="150" style="text-align: right"></th>
                     </tr>
                   </thead>
 
@@ -70,6 +58,25 @@
                         >
                           {{ item.code }}
                         </router-link>
+                      </td>
+
+                      <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>
+
+                      <td
+                        style="text-align: right"
+                        v-if="total(item.shipping_fee, item.extra_fee) < 0"
+                      >
+                        -{{
+                          Math.abs(total(item.shipping_fee, item.extra_fee))
+                            | formatPrice
+                        }}
+                      </td>
+                      <td style="text-align: right" v-else>
+                        {{
+                          total(item.shipping_fee, item.extra_fee) | formatPrice
+                        }}
+                      </td>
+                      <td>
                         <p-tooltip
                           class="item_name"
                           :label="`Xuất hóa đơn`"
@@ -85,28 +92,8 @@
                                 "
                               ></inline-svg>
                             </span>
-                          </span>
-                        </p-tooltip>
-                      </td>
-
-                      <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>
-                      <td>
-                        <span v-status:status="handleStatus(item)"></span>
-                      </td>
-                      <td
-                        style="text-align: right"
-                        v-if="total(item.shipping_fee, item.extra_fee) < 0"
-                      >
-                        -{{
-                          Math.abs(total(item.shipping_fee, item.extra_fee))
-                            | formatPrice
-                        }}
-                      </td>
-                      <td style="text-align: right" v-else>
-                        {{
-                          total(item.shipping_fee, item.extra_fee) | formatPrice
-                        }}
-                      </td>
+                          </span> </p-tooltip
+                      ></td>
                     </tr>
                   </tbody>
                 </table>
@@ -256,9 +243,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .download-bill {
-  opacity: 0;
-  transition: all 0.1s ease;
-
   &:hover {
     span {
       background: #ddf2f2;
