@@ -181,11 +181,17 @@ export default {
       if (url) {
         this.setLogoUrl(url)
         this.generatePreviewLabelHandler()
+        this.activeBtnSave = !!this.shipFrom
+        return
       }
-      this.activeBtnSave = !!url
+      this.activeBtnSave = false
     },
     checkInputShipFrom(value) {
-      this.activeBtnSave = !!value
+      if (value && this.logoUrl) {
+        this.activeBtnSave = true
+        return
+      }
+      this.activeBtnSave = false
     },
     setLogoUrl(url) {
       this.logoUrl = url
