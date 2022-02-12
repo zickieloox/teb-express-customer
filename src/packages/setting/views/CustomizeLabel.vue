@@ -89,6 +89,7 @@ export default {
   },
   created() {
     this.init()
+    this.handleBeforeLeave()
   },
   methods: {
     ...mapActions('setting', [
@@ -186,6 +187,15 @@ export default {
     },
     setLogoUrl(url) {
       this.logoUrl = url
+    },
+    handleBeforeLeave() {
+      window.onbeforeunload = () => {
+        if (this.activeBtnSave) {
+          return 'Thay đổi vẫn chưa được lưu.Bạn có chắc chắn vẫn muốn tiếp tục ?'
+        }
+
+        return null
+      }
     },
   },
 }
