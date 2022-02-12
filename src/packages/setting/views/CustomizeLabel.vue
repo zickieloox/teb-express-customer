@@ -36,14 +36,15 @@
               </div>
               <div class="col-12 mt-6">
                 <div class="save">
-                  <a
+                  <p-button
+                    :loading="isSaving"
                     @click="saveSettingLabelHandler"
                     href="javascript:void(0)"
                     class="btn btn-lb-secondary"
                     :class="{ active: activeBtnSave }"
                   >
                     <span>Lưu lại</span>
-                  </a>
+                  </p-button>
                 </div>
               </div>
             </div>
@@ -80,6 +81,7 @@ export default {
   data() {
     return {
       isFetching: false,
+      isSaving: false,
       activeBtnSave: false,
       logoUrl: '',
       previewUrl: '',
@@ -155,14 +157,14 @@ export default {
       if (!this.activeBtnSave) {
         return
       }
-      this.isFetching = true
+      this.isSaving = true
       const body = {
         logo_url: this.logoUrl,
         preview_url: this.previewUrl,
         ship_from: this.shipFrom,
       }
       const result = await this[SAVE_SETTING_LABEL](body)
-      this.isFetching = false
+      this.isSaving = false
       if (!result.success) {
         this.$toast.open({
           message: result.message,
@@ -201,9 +203,13 @@ export default {
 }
 </script>
 <style>
-#customize-label .btn-lb-secondary {
-  color: #a9e0de;
-  background-color: #f9fdfe;
+.save .btn-lb-secondary {
+  color: #a9e0de !important;
+  background-color: #f9fdfe !important;
+  border-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
 }
 .label {
   margin-bottom: 6px;
@@ -240,5 +246,6 @@ export default {
 .save .active {
   background-color: #00978c !important;
   color: #fff !important;
+  cursor: pointer !important;
 }
 </style>
