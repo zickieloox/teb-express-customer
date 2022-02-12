@@ -10,29 +10,47 @@ export default {
   },
   data() {
     return {
-      isUploading: '',
-      errorMessages: [],
       allowedTypes: ['image/png', 'image/jpeg', 'image/jpg'],
       allowedExtensions: /(\.jpg|\.jpeg|\.png)$/i,
-      deleteItem: {},
     }
   },
   methods: {
-    validate(file) {
+    async validate(file) {
       if (
-        this.allowedExtensions.exec(file.name) ||
-        this.allowedTypes.includes(file.raw.type)
+        !this.allowedExtensions.exec(file.name) ||
+        !this.allowedTypes.includes(file.raw.type)
       ) {
-        return true
-      }
-      this.isUploading = false
-      return false
-    },
-    handleChangeInput(file) {
-      if (!this.validate(file)) {
         this.$toast.error(
           `File không đúng định dạng ! Định dạng upload phải là * PNG, * JPG, * JPEG`
         )
+        return false
+      }
+      let img = await this.readLogo(file.raw)
+      if (img.width > 54) {
+        this.$toast.error(`Chiều cao file upload không vượt quá 54px`)
+        return false
+      }
+      return true
+    },
+    readLogo(file) {
+      return new Promise((resolve) => {
+        let reader = new FileReader()
+        reader.onload = function(e) {
+          let img = new Image()
+          img.src = e.target.result
+          img.onload = function() {
+            resolve({
+              width: img.width,
+              height: img.height,
+            })
+          }
+        }
+        reader.readAsDataURL(file)
+      })
+    },
+    async handleChangeInput(file) {
+      let valid = await this.validate(file)
+      if (!valid) {
         return
       }
       this.handleUpload(file)
