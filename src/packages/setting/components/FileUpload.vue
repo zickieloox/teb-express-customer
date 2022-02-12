@@ -125,6 +125,7 @@ export default {
     },
     async handleDelete() {
       this.logo = null
+      this.$emit('preview', '')
     },
     errorMaximum({ name }) {
       this.pushErrorMessages(`"${name}" exceeds ${MAXIMUM_SIZE} megabytes`)

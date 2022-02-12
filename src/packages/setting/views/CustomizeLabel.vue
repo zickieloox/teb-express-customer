@@ -16,6 +16,7 @@
                   @mouseleave="generatePreviewLabelHandler"
                   v-model="shipFrom"
                   :input="shipFrom"
+                  @input="checkInputShipFrom"
                   placeholder="Nhập ship from ..."
                 />
               </div>
@@ -39,7 +40,7 @@
                     @click="saveSettingLabelHandler"
                     href="javascript:void(0)"
                     class="btn btn-lb-secondary"
-                    :class="{ active: isChange }"
+                    :class="{ active: activeBtnSave }"
                   >
                     <span>Lưu lại</span>
                   </a>
@@ -79,7 +80,7 @@ export default {
   data() {
     return {
       isFetching: false,
-      isChange: false,
+      activeBtnSave: false,
       logoUrl: '',
       previewUrl: '',
       shipFrom: '',
@@ -113,7 +114,7 @@ export default {
     },
     async generatePreviewLabelHandler() {
       if (this.shipFrom === '' || this.logoUrl === '') {
-        this.isChange = false
+        this.activeBtnSave = false
         return
       }
       this.isFetching = true
@@ -128,7 +129,7 @@ export default {
         return
       }
       this.previewUrl = result.url
-      this.isChange = true
+      this.activeBtnSave = true
       await this.fetchPreviewLabel()
     },
     async fetchPreviewLabel() {
@@ -150,7 +151,7 @@ export default {
       document.querySelector('#lbn_preview').src = URL.createObjectURL(res)
     },
     async saveSettingLabelHandler() {
-      if (this.shipFrom === '' || this.logoUrl === '') {
+      if (!this.activeBtnSave) {
         return
       }
       this.isFetching = true
@@ -174,8 +175,14 @@ export default {
       })
     },
     previewLogoLabel(url) {
-      this.setLogoUrl(url)
-      this.generatePreviewLabelHandler()
+      if (url) {
+        this.setLogoUrl(url)
+        this.generatePreviewLabelHandler()
+      }
+      this.activeBtnSave = !!url
+    },
+    checkInputShipFrom(value) {
+      this.activeBtnSave = !!value
     },
     setLogoUrl(url) {
       this.logoUrl = url
