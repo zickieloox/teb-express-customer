@@ -173,7 +173,7 @@ export default {
         return
       }
       this.$toast.open({
-        message: 'Lưu setting label thành công',
+        message: 'Lưu cài đặt nhãn dán thành công',
         type: 'success',
       })
       this.activeBtnSave = false
