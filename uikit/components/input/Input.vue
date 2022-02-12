@@ -44,6 +44,7 @@
         @change="handleChange"
         v-on="listeners"
         v-model="input"
+        @focusout="focusOut"
         :type="type"
         ref="input"
       />
@@ -299,6 +300,10 @@ export default {
     suffixIcon: {
       type: String,
       default: '',
+    },
+    focusOut: {
+      type: Function,
+      default: () => {},
     },
     suffixFunc: {
       type: Function,

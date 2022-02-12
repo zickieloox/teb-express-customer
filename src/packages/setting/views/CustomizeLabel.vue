@@ -13,7 +13,7 @@
                 </div>
                 <p-input
                   type="text"
-                  @mouseleave="generatePreviewLabelHandler"
+                  :focus-out="generatePreviewLabelHandler"
                   v-model="shipFrom"
                   :input="shipFrom"
                   @input="checkInputShipFrom"
