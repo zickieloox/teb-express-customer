@@ -5,7 +5,12 @@
         <div class="gallery">
           <div v-if="logo" class="col-6 col-sm-4">
             <div @click="zoomImage(logo)" class="gallery-item">
-              <file :src="logo.url" />
+              <img
+                :src="logo.url"
+                alt="Thumbnail"
+                id="img-thumb"
+                class="hidden"
+              />
               <template>
                 <div class="gallery-item__actions">
                   <a href="#" class="ml-5">
@@ -53,7 +58,7 @@
 <script>
 import mixinUpload from '../mixins/upload'
 import Upload from '@kit/Upload/Index'
-import File from './File'
+import api from '../api'
 
 const imageProcess = `${process.env.VUE_APP_ASSETS}/design-process.gif`
 const MAXIMUM_SIZE = 1 // MB
@@ -61,13 +66,12 @@ const MAXIMUM_SIZE = 1 // MB
 export default {
   name: 'FileUpload',
   mixins: [mixinUpload],
-  components: { Upload, File },
+  components: { Upload },
   props: {
-    value: {
-      type: Array,
-      default: () => [],
+    logoUrl: {
+      type: String,
+      default: '',
     },
-    error: String,
   },
   computed: {
     classWapperUpload() {
@@ -80,6 +84,7 @@ export default {
       maximumSize: MAXIMUM_SIZE * 2 ** 20,
       isVisibleModal: false,
       url: '',
+      isLoading: false,
     }
   },
   methods: {
@@ -95,14 +100,45 @@ export default {
         this.pushErrorMessages(res.message)
       } else {
         this.logo = { id: 0, name, url: res.url }
+        this.fetchLogo()
         this.$emit('preview', res.url)
       }
+    },
+    async fetchLogo() {
+      this.isLoading = true
+      const res = await api.fetchLabelFile({
+        url: this.logo.url,
+        type: 'labels',
+      })
+      this.isLoading = false
+      if (!res && res.error) {
+        this.$toast.open({
+          type: 'error',
+          message: res.errorMessage,
+          duration: 3000,
+        })
+        return
+      }
+      let URL = window.URL || window.webkitURL
+      document.querySelector('#img-thumb').src = URL.createObjectURL(res)
+      document.querySelector('#img-thumb').classList.remove('hidden')
     },
     async handleDelete() {
       this.logo = null
     },
     errorMaximum({ name }) {
       this.pushErrorMessages(`"${name}" exceeds ${MAXIMUM_SIZE} megabytes`)
+    },
+  },
+  watch: {
+    logoUrl: {
+      handler: function(val) {
+        if (val) {
+          this.logo = { id: 0, name: '', url: this.logoUrl }
+          this.fetchLogo()
+        }
+      },
+      immediate: true,
     },
   },
 }

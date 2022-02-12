@@ -23,7 +23,7 @@
                 <div class="label">
                   <span>Logo</span>
                 </div>
-                <FileUpload @preview="previewLogoLabel" />
+                <FileUpload :logo-url="logoUrl" @preview="previewLogoLabel" />
                 <div class="notice_upload">
                   <p>
                     <img src="~@/assets/img/notice_2.svg" />
@@ -53,7 +53,7 @@
               src=""
               id="lbn_preview"
               :class="{ hidden: isLoadingPreview || !this.logoUrl }"
-              alt="preview label"
+              alt="Preview label"
             />
           </div>
         </div>
@@ -133,7 +133,7 @@ export default {
     },
     async fetchPreviewLabel() {
       this.isLoadingPreview = true
-      const res = await api.fetchPreviewLabel({
+      const res = await api.fetchLabelFile({
         url: this.previewUrl,
         type: 'labels',
       })
