@@ -167,6 +167,10 @@ export default {
               route: '/setting/api',
               title: 'API',
             },
+            {
+              route: '/setting/label',
+              title: 'Customize label',
+            },
           ],
         },
       ],

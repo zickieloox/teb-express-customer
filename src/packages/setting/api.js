@@ -1,5 +1,8 @@
 import http from '@core/services/http'
 import { buildQueryString } from '@core/utils/url'
+
+import { RESPONSE_TYPE_BLOB } from '@core/constants/http'
+
 export default {
   /**
    * update user
@@ -86,5 +89,20 @@ export default {
     return http.get(`/templates/file?${buildQueryString(payload)}`, {
       type: 'blob',
     })
+  },
+  fetchSettingLabel() {
+    return http.get(`/settings/label`)
+  },
+  saveSettingLabel(payload) {
+    return http.post(`/settings/label`, payload)
+  },
+  generatePreviewLabel(payload) {
+    return http.post(`/settings/label/preview`, payload)
+  },
+  fetchPreviewLabel(payload) {
+    return http.get(
+      `/uploads/file-export/download?${buildQueryString(payload)}`,
+      RESPONSE_TYPE_BLOB
+    )
   },
 }

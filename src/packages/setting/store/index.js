@@ -20,6 +20,10 @@ export const COUNT_TEMPLATES = 'countTemplates'
 export const DELETE_TEMPLATES = 'deleteTemplates'
 export const UPDATE_IMPORT_ORDER_TEMPLATE = 'updateImportOrderTemplate'
 export const DOWNLOAD_TEMPLATE_FILE = 'downloadTemplateFile'
+
+export const GENERATE_PREVIEW_LABEL = 'generatePreviewLabel'
+export const FETCH_SETTING_LABEL = 'fetchSettingLabel'
+export const SAVE_SETTING_LABEL = 'saveSettingLabel'
 /**
  * State
  */
@@ -269,5 +273,40 @@ export const actions = {
     }
     result.blob = response
     return result
+  },
+
+  // eslint-disable-next-line no-unused-vars
+  async [GENERATE_PREVIEW_LABEL]({ commit }, payload) {
+    const res = await api.generatePreviewLabel(payload)
+    if (!res || res.error) {
+      return { success: false, message: res.errorMessage || '' }
+    }
+    return { success: true, url: res.url }
+  },
+
+  // eslint-disable-next-line no-unused-vars
+  async [FETCH_SETTING_LABEL]({ commit }) {
+    let res = await api.fetchSettingLabel()
+    if (!res || res.error) {
+      return { success: false, message: res.errorMessage || '' }
+    }
+    return {
+      success: true,
+      setting: res.setting,
+    }
+  },
+
+  // eslint-disable-next-line
+  async [SAVE_SETTING_LABEL]({ commit }, payload) {
+    const response = await api.saveSettingLabel(payload)
+
+    if (response && response.success) {
+      return { success: true }
+    }
+
+    return {
+      success: false,
+      message: response.errorMessage || '',
+    }
   },
 }
