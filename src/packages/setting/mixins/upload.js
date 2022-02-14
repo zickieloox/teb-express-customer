@@ -26,11 +26,12 @@ export default {
         return false
       }
       let img = await this.readLogo(file.raw)
-      if (img.width > 54) {
+
+      if (img.height > 54) {
         this.$toast.error(`Chiều cao file upload không vượt quá 54px`)
         return false
       }
-      if (img.height > 180) {
+      if (img.width > 180) {
         this.$toast.error(`Chiều dài file upload không vượt quá 180px`)
         return false
       }
