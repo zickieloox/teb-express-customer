@@ -30,6 +30,10 @@ export default {
         this.$toast.error(`Chiều cao file upload không vượt quá 54px`)
         return false
       }
+      if (img.height > 180) {
+        this.$toast.error(`Chiều dài file upload không vượt quá 180px`)
+        return false
+      }
       return true
     },
     readLogo(file) {
