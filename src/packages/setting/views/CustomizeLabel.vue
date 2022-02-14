@@ -54,7 +54,7 @@
             <img
               src=""
               id="lbn_preview"
-              :class="{ hidden: isLoadingPreview || !this.logoUrl }"
+              :class="{ hidden: isLoadingPreview }"
               alt="Preview label"
             />
           </div>
@@ -116,7 +116,7 @@ export default {
       }
     },
     async generatePreviewLabelHandler() {
-      if (this.shipFrom === '' || this.logoUrl === '') {
+      if (this.shipFrom === '') {
         this.activeBtnSave = false
         return
       }
@@ -179,13 +179,9 @@ export default {
       this.activeBtnSave = false
     },
     previewLogoLabel(url) {
-      if (url) {
-        this.setLogoUrl(url)
-        this.generatePreviewLabelHandler()
-        this.activeBtnSave = !!this.shipFrom
-        return
-      }
-      this.activeBtnSave = false
+      this.setLogoUrl(url)
+      this.generatePreviewLabelHandler()
+      this.activeBtnSave = !!this.shipFrom
     },
     checkInputShipFrom(value) {
       if (value && this.logoUrl) {
