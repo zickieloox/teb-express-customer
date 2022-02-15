@@ -23,7 +23,11 @@
                 <div class="label">
                   <span>Logo</span>
                 </div>
-                <FileUpload :logo-url="logoUrl" @preview="previewLogoLabel" />
+                <FileUpload
+                  :logo-url="logoUrl"
+                  @uploading="handleUploadingLogo"
+                  @preview="previewLogoLabel"
+                />
                 <div class="notice_upload">
                   <p>
                     <img src="~@/assets/img/notice_2.svg" />
@@ -114,6 +118,9 @@ export default {
         this.shipFrom = setting.ship_from
         await this.fetchPreviewLabel()
       }
+    },
+    handleUploadingLogo(v) {
+      this.activeBtnSave = !v
     },
     async generatePreviewLabelHandler() {
       this.isFetching = true
