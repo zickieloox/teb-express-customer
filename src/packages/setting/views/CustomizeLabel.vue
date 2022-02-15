@@ -16,6 +16,7 @@
                   :focus-out="generatePreviewLabelHandler"
                   v-model="shipFrom"
                   :input="shipFrom"
+                  @input="checkInputShipFrom"
                   placeholder="Nhập ship from ..."
                 />
               </div>
@@ -188,6 +189,9 @@ export default {
       this.setLogoUrl(url)
       this.generatePreviewLabelHandler()
       this.activeBtnSave = !!this.previewUrl
+    },
+    checkInputShipFrom() {
+      this.activeBtnSave = false
     },
     setLogoUrl(url) {
       this.logoUrl = url
