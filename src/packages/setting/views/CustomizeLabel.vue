@@ -125,21 +125,17 @@ export default {
     },
     async generatePreviewLabelHandler() {
       this.isFetching = true
-      this.isSaving = true
-      this.activeBtnSave = false
       const body = {
         ship_from: this.shipFrom,
         url: this.logoUrl,
       }
       const result = await this[GENERATE_PREVIEW_LABEL](body)
       this.isFetching = false
-      this.isSaving = false
       if (!result.success) {
         this.$toast.open({ message: result.message, type: 'error' })
         return
       }
       this.previewUrl = result.url
-      this.activeBtnSave = true
       await this.fetchPreviewLabel()
     },
     async fetchPreviewLabel() {
@@ -166,9 +162,8 @@ export default {
       }
       this.isSaving = true
       const body = {
-        logo_url: this.logoUrl,
-        preview_url: this.previewUrl,
         ship_from: this.shipFrom,
+        logo_url: this.logoUrl,
       }
       const result = await this[SAVE_SETTING_LABEL](body)
       this.isSaving = false
@@ -191,7 +186,7 @@ export default {
       this.activeBtnSave = !!this.previewUrl
     },
     checkInputShipFrom() {
-      this.activeBtnSave = false
+      this.activeBtnSave = true
     },
     setLogoUrl(url) {
       this.logoUrl = url
