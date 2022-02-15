@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-10">
+  <div class="mb-16">
     <div class="loadfile">
       <div class="row">
         <div class="gallery">
@@ -177,6 +177,9 @@ export default {
   height: 200px;
   width: 200px;
   position: relative;
+}
+.mockup-uploader {
+  height: 200px;
 }
 .loadfile .gallery .gallery-item img {
   width: 100%;

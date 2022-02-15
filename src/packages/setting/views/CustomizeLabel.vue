@@ -29,7 +29,8 @@
                   <p>
                     <img src="~@/assets/img/notice_2.svg" />
                     Chấp nhận các tệp có định dạng:<br />
-                    * PNG, * JPG, * JPEG và kích thước dưới 1Mb.
+                    * PNG, * JPG, * JPEG và kích thước dưới 1Mb.<br />
+                    File có chiều cao - chiều rộng tối đa 54px - 180px
                   </p>
                 </div>
                 <hr />
@@ -237,6 +238,16 @@ export default {
   color: #898a8a;
   font-size: 12px;
   padding-bottom: 82px;
+  line-height: 16px;
+}
+.notice_upload p {
+  padding-left: 20px;
+  position: relative;
+}
+.notice_upload img {
+  position: absolute;
+  left: 0;
+  top: -2px;
 }
 .save .active {
   background-color: #00978c !important;
