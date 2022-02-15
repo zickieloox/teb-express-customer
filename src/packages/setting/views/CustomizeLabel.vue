@@ -16,7 +16,6 @@
                   :focus-out="generatePreviewLabelHandler"
                   v-model="shipFrom"
                   :input="shipFrom"
-                  @input="checkInputShipFrom"
                   placeholder="Nhập ship from ..."
                 />
               </div>
@@ -118,12 +117,15 @@ export default {
     },
     async generatePreviewLabelHandler() {
       this.isFetching = true
+      this.isSaving = true
+      this.activeBtnSave = false
       const body = {
         ship_from: this.shipFrom,
         url: this.logoUrl,
       }
       const result = await this[GENERATE_PREVIEW_LABEL](body)
       this.isFetching = false
+      this.isSaving = false
       if (!result.success) {
         this.$toast.open({ message: result.message, type: 'error' })
         return
@@ -178,9 +180,6 @@ export default {
     previewLogoLabel(url) {
       this.setLogoUrl(url)
       this.generatePreviewLabelHandler()
-      this.activeBtnSave = !!this.previewUrl
-    },
-    checkInputShipFrom() {
       this.activeBtnSave = !!this.previewUrl
     },
     setLogoUrl(url) {
