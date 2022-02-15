@@ -95,7 +95,6 @@ export default {
     },
     async handleUpload({ uid, name, raw }) {
       this.logo = { uid, url: imageProcess, name }
-      this.$emit('uploading', true)
       const res = await this.upload(raw)
       if (!res || !res.success) {
         this.pushErrorMessages(res.message)
