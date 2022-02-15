@@ -178,10 +178,10 @@ export default {
     previewLogoLabel(url) {
       this.setLogoUrl(url)
       this.generatePreviewLabelHandler()
-      this.activeBtnSave = !!this.shipFrom
+      this.activeBtnSave = !!this.previewUrl
     },
     checkInputShipFrom() {
-      this.activeBtnSave = true
+      this.activeBtnSave = !!this.previewUrl
     },
     setLogoUrl(url) {
       this.logoUrl = url
