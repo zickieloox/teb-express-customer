@@ -97,7 +97,6 @@ export default {
       this.logo = { uid, url: imageProcess, name }
       this.$emit('uploading', true)
       const res = await this.upload(raw)
-      this.$emit('uploading', false)
       if (!res || !res.success) {
         this.pushErrorMessages(res.message)
       } else {
