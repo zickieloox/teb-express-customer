@@ -116,10 +116,6 @@ export default {
       }
     },
     async generatePreviewLabelHandler() {
-      if (this.shipFrom === '') {
-        this.activeBtnSave = false
-        return
-      }
       this.isFetching = true
       const body = {
         ship_from: this.shipFrom,
@@ -183,12 +179,8 @@ export default {
       this.generatePreviewLabelHandler()
       this.activeBtnSave = !!this.shipFrom
     },
-    checkInputShipFrom(value) {
-      if (value && this.logoUrl) {
-        this.activeBtnSave = true
-        return
-      }
-      this.activeBtnSave = false
+    checkInputShipFrom() {
+      this.activeBtnSave = true
     },
     setLogoUrl(url) {
       this.logoUrl = url
