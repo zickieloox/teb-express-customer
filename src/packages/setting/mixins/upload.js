@@ -32,7 +32,7 @@ export default {
         return false
       }
       if (img.width > 180) {
-        this.$toast.error(`Chiều dài file upload không vượt quá 180px`)
+        this.$toast.error(`Chiều rộng file upload không vượt quá 180px`)
         return false
       }
       return true
