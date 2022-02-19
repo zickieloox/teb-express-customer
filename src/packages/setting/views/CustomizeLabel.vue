@@ -12,7 +12,7 @@
                   <div class="clear-fix"></div>
                 </div>
                 <p-input
-                  type="text"
+                  type="textarea"
                   :focus-out="generatePreviewLabelHandler"
                   v-model="shipFrom"
                   :input="shipFrom"
@@ -117,6 +117,7 @@ export default {
       }
     },
     async generatePreviewLabelHandler() {
+      console.log(1)
       this.isFetching = true
       const body = {
         ship_from: this.shipFrom,

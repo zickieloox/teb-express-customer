@@ -130,6 +130,8 @@
         :readonly="readonly"
         :autocomplete="autocomplete"
         @change="handleChange"
+        @keypress="handleChange"
+        @focusout="focusOut"
         ref="textarea"
       >
       </textarea>
