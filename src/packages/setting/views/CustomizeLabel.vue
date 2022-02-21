@@ -117,10 +117,9 @@ export default {
       }
     },
     async generatePreviewLabelHandler() {
-      console.log(1)
       this.isFetching = true
       const body = {
-        ship_from: this.shipFrom,
+        ship_from: this.shipFrom.trim(),
         url: this.logoUrl,
       }
       const result = await this[GENERATE_PREVIEW_LABEL](body)
@@ -156,7 +155,7 @@ export default {
       }
       this.isSaving = true
       const body = {
-        ship_from: this.shipFrom,
+        ship_from: this.shipFrom.trim(),
         logo_url: this.logoUrl,
       }
       const result = await this[SAVE_SETTING_LABEL](body)
