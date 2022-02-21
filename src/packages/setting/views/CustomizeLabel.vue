@@ -30,7 +30,7 @@
                     <img src="~@/assets/img/notice_2.svg" />
                     Chấp nhận các tệp có định dạng:<br />
                     * PNG, * JPG, * JPEG và kích thước dưới 1Mb.<br />
-                    File có chiều cao - chiều rộng tối đa 50px - 190px
+                    File có chiều cao - chiều rộng tối đa 84px - 84px
                   </p>
                 </div>
                 <hr />
