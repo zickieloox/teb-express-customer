@@ -14,7 +14,7 @@ const ERROR_BUCKET_INVALID = 'Bucket is invalid'
 const UNIX_TIME_ONE_MUUTE = 60 * 1000
 
 const BUCKETS = {
-  designs: process.env.VUE_APP_BUCKET_DESIGNS,
+  labels: process.env.VUE_APP_BUCKET_LABELS,
 }
 
 const S3Service = {
@@ -104,9 +104,7 @@ const S3Service = {
   },
 
   async reloadToken(key) {
-    const res = await http.get(
-      '/admin/fulfill/auth/amazon-access-token?type=' + key
-    )
+    const res = await http.get('/auth/amazon-access-token?type=' + key)
     if (!res || res.error || !res.credentials) {
       return { success: false, message: res.errorMessage || ERROR_MISS_CONFIG }
     }

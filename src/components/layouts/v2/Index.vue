@@ -10,8 +10,10 @@
     <div class="warning-user" v-if="warning"
       ><span
         >Tài khoản của bạn đã quá hạn mức dư nợ. Vui lòng
-        <router-link :to="{ name: 'top-up' }">nạp tiền</router-link> để tiếp
-        tục.</span
+        <router-link :to="{ name: 'bill', params: { topup: true } }"
+          >nạp tiền</router-link
+        >
+        để tiếp tục.</span
       ></div
     >
   </div>

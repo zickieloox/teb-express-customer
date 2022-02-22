@@ -1,7 +1,8 @@
 //wallet
 .wallet {
     height: 100%;
-    .page__empty{
+    padding-top: 40px;
+    .page__empty {
         margin-top: -56px;
     }
     .page-header {
@@ -28,10 +29,10 @@
     .info-money {
         align-items: stretch;
         .box {
-            padding: 2.4rem;
+            padding: 2.6rem;
             border-radius: 12px;
             height: 100%;
-            background: $color-turquoise-1;
+            background: #DDF2F2;
             img {
                 float: left;
             }
@@ -44,7 +45,7 @@
             }
             .title {
                 letter-spacing: 0.2px;
-                color: $color-turquoise-6;
+                color: #00978C;
             }
             .money {
                 font-size: 18px;
@@ -66,7 +67,7 @@
         padding-bottom: 32px;
         background-color: #ffffff;
         .transaction-log {
-            padding-top: 16px;
+            padding-top: 24px;
             .title {
                 padding: 0 16px;
                 margin-bottom: 12px;
@@ -175,6 +176,7 @@
                                 font-size: 14px;
                                 line-height: 22px;
                                 color: $color-neutral-9;
+                                margin-bottom: 4px;
                             }
                             span {
                                 font-size: 12px;
@@ -379,7 +381,6 @@
             position: unset !important;
         }
         width: 805px;
-        padding-top: 16px;
         .title {
             color: $color-neutral-9;
             i {

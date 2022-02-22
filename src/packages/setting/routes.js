@@ -35,4 +35,13 @@ export const routes = [
     component: () =>
       import(/* webpackChunkName: "settings" */ './views/ListTemplate'),
   },
+  {
+    path: '/setting/label',
+    name: 'setting-label',
+    meta: {
+      title: 'Cài đặt',
+    },
+    component: () =>
+      import(/* webpackChunkName: "settings" */ './views/CustomizeLabel'),
+  },
 ]

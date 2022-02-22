@@ -44,6 +44,7 @@
         @change="handleChange"
         v-on="listeners"
         v-model="input"
+        @focusout="focusOut"
         :type="type"
         ref="input"
       />
@@ -128,7 +129,10 @@
         :disabled="disabled"
         :readonly="readonly"
         :autocomplete="autocomplete"
+        :rows="rows"
         @change="handleChange"
+        @keyup="handleChange"
+        @focusout="focusOut"
         ref="textarea"
       >
       </textarea>
@@ -265,6 +269,10 @@ export default {
     value: {
       type: [String, Number],
     },
+    rows: {
+      type: [String, Number],
+      default: '',
+    },
     validate: {
       type: String,
       default: 'off',
@@ -299,6 +307,10 @@ export default {
     suffixIcon: {
       type: String,
       default: '',
+    },
+    focusOut: {
+      type: Function,
+      default: () => {},
     },
     suffixFunc: {
       type: Function,
