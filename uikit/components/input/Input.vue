@@ -129,6 +129,7 @@
         :disabled="disabled"
         :readonly="readonly"
         :autocomplete="autocomplete"
+        :rows="rows"
         @change="handleChange"
         @keyup="handleChange"
         @focusout="focusOut"
@@ -267,6 +268,10 @@ export default {
     },
     value: {
       type: [String, Number],
+    },
+    rows: {
+      type: [String, Number],
+      default: '',
     },
     validate: {
       type: String,

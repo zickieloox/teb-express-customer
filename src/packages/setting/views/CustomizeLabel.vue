@@ -16,6 +16,7 @@
                   :focus-out="generatePreviewLabelHandler"
                   v-model="shipFrom"
                   :input="shipFrom"
+                  :rows="4"
                   @input="checkInputShipFrom"
                   placeholder="Nhập ship from ..."
                 />
