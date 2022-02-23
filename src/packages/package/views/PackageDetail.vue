@@ -29,9 +29,7 @@
               <a
                 target="_blank"
                 v-if="package_detail.package.tracking_number"
-                :href="
-                  `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${package_detail.package.tracking_number}`
-                "
+                :href="linkTrackInfo"
               >
                 {{ $evaluate('package_detail.package.tracking_number') }}
                 <inline-svg
@@ -46,12 +44,7 @@
             }}</div>
 
             <div class="content-title">
-              <span
-                v-if="package_detail.package.status_string"
-                v-status:status="
-                  mapStatus[package_detail.package.status_string].value
-                "
-              ></span>
+              <span v-if="statusValue" v-status:status="statusValue"></span>
             </div>
           </div>
           <div class="page-header__action">
@@ -59,12 +52,7 @@
               href="#"
               type="lb-default"
               @click="handleCancelPackage"
-              v-if="
-                package_detail.package.status_string ===
-                  PackageStatusCreatedText ||
-                  package_detail.package.status_string ===
-                    PackageStatusPendingPickupText
-              "
+              v-if="hasCancelPackage"
             >
               <span>Hủy đơn</span>
             </p-button>
@@ -72,10 +60,7 @@
               @click="handleModal"
               class=" ml-7"
               type="lb-default"
-              v-if="
-                package_detail.package.status_string ===
-                  PackageStatusCreatedText
-              "
+              v-if="hasEditPackage"
             >
               <span>Sửa đơn</span>
             </p-button>
@@ -83,21 +68,14 @@
               class=" ml-7"
               @click="handleWayBill"
               type="primary"
-              v-if="
-                package_detail.package.status_string ===
-                  PackageStatusCreatedText
-              "
+              v-if="hasMakeTracking"
             >
               <span>Tạo tracking</span>
             </p-button>
             <a
               @click="handlerReturnPackage"
               class="btn btn-primary ml-7"
-              v-if="
-                package_detail.package.status_string ===
-                  PackageStatusPendingPickupText &&
-                  package_detail.package.alert == PackageAlertTypeWarehoseReturn
-              "
+              v-if="hasReshipPackage"
             >
               Chuyển lại hàng
             </a>
@@ -275,61 +253,7 @@
                         >
                       </div>
                       <div class="card-content deliver-log">
-                        <div class="timeline-new">
-                          <div
-                            v-for="(item, i) in displayDeliverLogs"
-                            :key="i"
-                            :class="{
-                              'first-item':
-                                i === 0 && timelinePagination.currentPage === 1,
-                            }"
-                            class="timeline-item-new"
-                          >
-                            <div class="item__right">
-                              <div class="title">{{ item.name }}</div>
-                            </div>
-                            <div
-                              v-for="(it, j) in item.data"
-                              :key="j"
-                              class="item__right__data"
-                              :class="{
-                                'first-data': j === 0,
-                              }"
-                            >
-                              <div class="time">
-                                {{ it.ship_time | datetime('HH:mm:ss') }}</div
-                              >
-                              <div class="des"> {{ convertDes(it) }}</div>
-                              <span class="location" v-if="it.location">
-                                ___{{ it.location }}</span
-                              >
-                            </div>
-                          </div>
-                        </div>
-                        <!--                        <div-->
-                        <!--                          class="timeline__next-page"-->
-                        <!--                          :class="{-->
-                        <!--                            'timeline__next-page_history': !displayDeliverDetail,-->
-                        <!--                          }"-->
-                        <!--                        >-->
-                        <!--                          <div-->
-                        <!--                            :class="{-->
-                        <!--                              'disable-next-page':-->
-                        <!--                                timelinePagination.currentPage <= 1,-->
-                        <!--                            }"-->
-                        <!--                            @click="previousTimeLinePage"-->
-                        <!--                            >Trước</div-->
-                        <!--                          ><div-->
-                        <!--                            :class="{-->
-                        <!--                              'disable-next-page':-->
-                        <!--                                timelinePagination.currentPage >=-->
-                        <!--                                  timelinePagination.numberPage ||-->
-                        <!--                                timelinePagination.numberPage <= 1,-->
-                        <!--                            }"-->
-                        <!--                            @click="nextTimeLinePage"-->
-                        <!--                            >Sau</div-->
-                        <!--                          >-->
-                        <!--                        </div>-->
+                        <DeliveryLog :logs="package_detail.deliver_logs" />
                       </div>
                     </div>
                   </div>
@@ -350,69 +274,7 @@
                         >
                       </div>
                       <div class="card-content">
-                        <template>
-                          <div class="table-responsive">
-                            <table class="table table-hover" id="tbl-packages">
-                              <thead>
-                                <tr>
-                                  <th>Thời gian</th>
-                                  <th>Người thực hiện</th>
-                                  <th>Loại thay đổi</th>
-                                  <th>Nội dung cũ</th>
-                                  <th>Nội dung mới</th>
-                                  <th>Phí phát sinh</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr
-                                  v-for="(item, i) in displayAuditLogs"
-                                  :key="i"
-                                >
-                                  <td>
-                                    {{
-                                      item.created_at
-                                        | datetime('dd/MM/yyyy - HH:mm')
-                                    }}
-                                  </td>
-                                  <td v-html="displayRole(item)"></td>
-                                  <td>
-                                    {{
-                                      $evaluate(
-                                        `changePackageType[${item.type}]`
-                                      ) || ''
-                                    }}
-                                  </td>
-                                  <td>
-                                    {{ item.old_value }}
-                                  </td>
-                                  <td>{{ item.value }}</td>
-                                  <td style="text-align: right">{{
-                                    item.fee | formatPrice('after')
-                                  }}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </template>
-                        <div class="timeline__next-page">
-                          <div
-                            :class="{
-                              'disable-next-page':
-                                auditPagination.currentPage <= 1,
-                            }"
-                            @click="previousAuditLogPage"
-                            >Trước</div
-                          ><div
-                            :class="{
-                              'disable-next-page':
-                                auditPagination.currentPage >=
-                                  auditPagination.numberPage ||
-                                auditPagination.numberPage <= 1,
-                            }"
-                            @click="nextAuditLogPage"
-                            >Sau</div
-                          >
-                        </div>
+                        <AuditLog :logs="package_detail.audit_logs" />
                       </div>
                     </div>
                   </div>
@@ -532,8 +394,6 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import { printImage } from '@core/utils/print'
-import Uniq from 'lodash/uniq'
-
 import {
   FETCH_PACKAGE_DETAIL,
   FETCH_LIST_SERVICE,
@@ -544,15 +404,11 @@ import {
 import mixinChaining from '@/packages/shared/mixins/chaining'
 import ModalEditOrder from './components/ModalEditOrder'
 import { LIST_SENDER } from '../../setting/store'
-import NotFound from '../../../components/shared/NotFound'
+import NotFound from '@/components/shared/NotFound'
 import {
   PACKAGE_STATUS_TAB,
   MAP_NAME_STATUS_PACKAGE,
   CHANGE_PACKAGE_TYPE,
-  DELIVER_LOG_PACKAGE,
-  ROLE_ADMIN,
-  ROLE_SUPPORT,
-  ROLE_ACCOUNTANT,
   PackageStatusCreatedText,
   PackageStatusPendingPickupText,
   PackageStatusReturnText,
@@ -562,13 +418,14 @@ import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import { extension } from '@core/utils/url'
 import { cloneDeep } from '@core/utils'
 import api from '../api'
-import { datetime } from '../../../core/utils/datetime'
-import PButton from '../../../../uikit/components/button/Button'
-import _ from 'lodash'
+import mixinPackageDetail from '../mixins/package_detail'
+import AuditLog from './components/AuditLog'
+import DeliveryLog from './components/DeliveryLog'
+
 export default {
   name: 'PackageDetail',
-  mixins: [mixinChaining],
-  components: { PButton, ModalEditOrder, ModalConfirm, NotFound },
+  mixins: [mixinChaining, mixinPackageDetail],
+  components: { ModalEditOrder, ModalConfirm, NotFound, AuditLog, DeliveryLog },
   data() {
     return {
       isFetching: true,
@@ -675,10 +532,6 @@ export default {
     changePackageType() {
       return CHANGE_PACKAGE_TYPE
     },
-    isEmpty() {
-      const temp = _.isEmpty(this.package_detail.package)
-      return temp
-    },
     mapExtraFee() {
       let arr = cloneDeep(this.extraFee),
         result = []
@@ -709,6 +562,7 @@ export default {
       PENDING_PICKUP_PACKAGES,
     ]),
     ...mapActions('setting', [LIST_SENDER]),
+
     async init() {
       this.isFetching = true
       let [detail, service] = await Promise.all([
@@ -730,42 +584,15 @@ export default {
         document.getElementById('item-block').style.height =
           recipientBlockHeight + 'px'
       }
+
       this.isFetching = false
     },
+
     changeDisplayDeliverDetail() {
       this.displayDeliverDetail = !this.displayDeliverDetail
     },
-    convertDes(data) {
-      if (data.description == '') {
-        return DELIVER_LOG_PACKAGE[data.type] || ''
-      }
-      return data.description
-    },
     handleModal() {
       this.isVisibleModal = true
-    },
-    previousTimeLinePage() {
-      this.timelinePagination.currentPage <= 1
-        ? (this.timelinePagination.currentPage = 1)
-        : (this.timelinePagination.currentPage -= 1)
-    },
-    nextTimeLinePage() {
-      this.timelinePagination.currentPage =
-        this.timelinePagination.currentPage >=
-        this.timelinePagination.numberPage
-          ? this.timelinePagination.numberPage
-          : this.timelinePagination.currentPage + 1
-    },
-    previousAuditLogPage() {
-      this.auditPagination.currentPage <= 1
-        ? (this.auditPagination.currentPage = 1)
-        : (this.auditPagination.currentPage -= 1)
-    },
-    nextAuditLogPage() {
-      this.auditPagination.currentPage =
-        this.auditPagination.currentPage >= this.auditPagination.numberPage
-          ? this.auditPagination.numberPage
-          : this.auditPagination.currentPage + 1
     },
     showPopupMoreExtraFee() {
       this.isVisiblePopupMoreExtraFee = true
@@ -800,32 +627,23 @@ export default {
       this.actions.wayBill.Description = `Bạn có chắc chắn muốn tạo tracking?`
       this.isVisibleConfirmWayBill = true
     },
+
     async handleActionWayBill() {
       let id = this.packageID
-
-      let params = {
-        ids: [id],
-      }
+      let params = { ids: [id] }
 
       this.actions.wayBill.loading = true
-      this.result = await this.processPackage(params)
+      const res = await this.processPackage(params)
       this.isVisibleConfirmWayBill = false
       this.actions.wayBill.loading = false
 
-      if (!this.result || !this.result.success) {
-        return this.$toast.open({
-          type: 'error',
-          message: this.result.message,
-          duration: 3000,
-        })
+      if (!res || !res.success) {
+        this.$toast.error(res.message, { duration: 3000 })
+        return
       }
 
       this.init()
-      this.$toast.open({
-        type: 'success',
-        message: 'Tạo tracking thành công',
-        duration: 3000,
-      })
+      this.$toast.success('Tạo tracking thành công', { duration: 3000 })
     },
 
     handleCancelPackage() {
@@ -835,33 +653,27 @@ export default {
 
     async cancelPackageAction() {
       let id = this.packageID
-
-      let payload = {
-        ids: [id],
-      }
+      let payload = { ids: [id] }
 
       this.actions.cancelPackage.loading = true
       const result = await this[CANCEL_PACKAGES](payload)
       this.visibleConfirmCancel = false
       this.actions.cancelPackage.loading = false
+
       if (!result || !result.success) {
-        return this.$toast.open({
-          type: 'error',
-          message: result.message,
-          duration: 3000,
-        })
+        this.$toast.error(result.message, { duration: 3000 })
+        return
       }
+
       this.init()
-      this.$toast.open({
-        type: 'success',
-        message: 'Hủy đơn thành công',
-        duration: 3000,
-      })
+      this.$toast.success('Hủy đơn thành công', { duration: 3000 })
     },
+
     handlerReturnPackage() {
       this.actions.returnPackage.Description = `Bạn có chắc chắn muốn chuyển lại hàng ?`
       this.visibleConfirmReturn = true
     },
+
     async pendingPickupPackageAction() {
       const payload = {
         ids: [this.packageID],
@@ -870,20 +682,16 @@ export default {
       const result = await this[PENDING_PICKUP_PACKAGES](payload)
       this.visibleConfirmReturn = false
       this.actions.returnPackage.loading = false
+
       if (!result || !result.success) {
-        return this.$toast.open({
-          type: 'error',
-          message: result.message,
-          duration: 3000,
-        })
+        this.$toast.error(result.message, { duration: 3000 })
+        return
       }
+
       this.init()
-      this.$toast.open({
-        type: 'success',
-        message: 'Chuyển lại hàng thành công',
-        duration: 3000,
-      })
+      this.$toast.success('Chuyển lại hàng thành công', { duration: 3000 })
     },
+
     async showContent() {
       document.activeElement && document.activeElement.blur()
 
@@ -891,12 +699,9 @@ export default {
         url: this.package_detail.package.label,
         type: 'labels',
       })
+
       if (!res && res.error) {
-        this.$toast.open({
-          type: 'error',
-          message: res.errorMessage,
-          duration: 3000,
-        })
+        this.$toast.error(res.errorMessage, { duration: 3000 })
         return
       }
 
@@ -906,62 +711,6 @@ export default {
       } catch (error) {
         this.$toast.error('File error !!!')
       }
-    },
-
-    displayUserName(item) {
-      if (
-        item.updated_user_role == ROLE_ADMIN ||
-        item.updated_user_role == ROLE_SUPPORT ||
-        item.updated_user_role == ROLE_ACCOUNTANT
-      ) {
-        return 'Bộ phận chăm sóc khách hàng'
-      }
-
-      return item.updated_user_name
-    },
-    displayRole(item) {
-      if (
-        item.updated_user_role == ROLE_ADMIN ||
-        item.updated_user_role == ROLE_SUPPORT ||
-        item.updated_user_role == ROLE_ACCOUNTANT
-      ) {
-        return 'CSKH'
-      }
-
-      return item.updated_user_name
-    },
-  },
-
-  watch: {
-    package_detail: {
-      handler: function(val) {
-        if (val.deliver_logs && val.deliver_logs.length > 0) {
-          const times = this.package_detail.deliver_logs.map((item) =>
-            datetime(item.ship_time, 'dd-MM-yyyy')
-          )
-          this.ConvertData = []
-          const uniqTimes = Uniq(times)
-          uniqTimes.forEach((element) =>
-            this.ConvertData.push({ name: element, data: [] })
-          )
-          this.ConvertData.forEach((item) =>
-            this.package_detail.deliver_logs.forEach(function(it) {
-              if (datetime(it.ship_time, 'dd-MM-yyyy') == item.name) {
-                item.data.push(it)
-              }
-            })
-          )
-          // this.timelinePagination.numberPage = Math.ceil(
-          //   this.ConvertData.length / this.timelinePagination.itemsPerPage
-          // )
-        }
-        if (val.audit_logs && val.audit_logs.length > 0) {
-          this.auditPagination.numberPage = Math.ceil(
-            val.audit_logs.length / this.auditPagination.itemsPerPage
-          )
-        }
-      },
-      deep: true,
     },
   },
 }
