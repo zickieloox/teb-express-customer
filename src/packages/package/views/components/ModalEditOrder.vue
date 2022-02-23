@@ -11,12 +11,10 @@
           <b>Lưu ý:</b> <i>(<span>*</span>) Là các trường bắt buộc nhập.</i>
         </div>
         <div class="modal__edit-order-content">
-          <div class="row sm-gutters  flex-nowrap">
-            <div class="col-lg-6 col-xl-6 item-gutters ">
+          <div class="row sm-gutters flex-nowrap">
+            <div class="col-lg-6 col-xl-6 item-gutters">
               <div class="card__w">
-                <div class="card__w-header">
-                  Người nhận
-                </div>
+                <div class="card__w-header"> Người nhận </div>
                 <div class="card__w-content">
                   <div class="card__w-item">
                     <label class="card__w-label">
@@ -41,9 +39,7 @@
                     </div>
                   </div>
                   <div class="card__w-item">
-                    <label class="card__w-label">
-                      Điện thoại:
-                    </label>
+                    <label class="card__w-label"> Điện thoại: </label>
                     <div class="card__w-input">
                       <input
                         placeholder="Nhập số điện thoại"
@@ -105,9 +101,7 @@
                     </div>
                   </div>
                   <div class="card__w-item">
-                    <label class="card__w-label">
-                      Địa chỉ phụ:
-                    </label>
+                    <label class="card__w-label"> Địa chỉ phụ: </label>
                     <div class="card__w-input">
                       <input
                         placeholder="Nhập địa chỉ phụ"
@@ -194,14 +188,10 @@
             </div>
             <div class="col-lg-6 col-xl-6 item-gutters">
               <div class="card__w">
-                <div class="card__w-header">
-                  Thông tin hàng hóa
-                </div>
+                <div class="card__w-header"> Thông tin hàng hóa </div>
                 <div class="card__w-content">
                   <div class="card__w-item" v-if="false">
-                    <label class="card__w-label">
-                      Danh sách hàng hóa:
-                    </label>
+                    <label class="card__w-label"> Danh sách hàng hóa: </label>
                     <div class="card__w-input">
                       <multiselect
                         class="multiselect-custom dropdown-reason"
@@ -347,9 +337,7 @@
                 </div>
               </div>
               <div class="card__w">
-                <div class="card__w-header">
-                  Dịch vụ gửi
-                </div>
+                <div class="card__w-header"> Dịch vụ gửi </div>
                 <div class="card__w-content">
                   <div class="card__w-item">
                     <label class="card__w-label">
@@ -389,7 +377,7 @@
               >Hủy bỏ</p-button
             >
             <p-button
-              class="btn  btn-primary "
+              class="btn btn-primary"
               :disabled="isUpdate"
               @click="handleUpdate"
               >Cập nhật</p-button
@@ -403,23 +391,13 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 import { GET_SERVICE, UPDATE_PACKAGE } from '../../store'
-import PButton from '../../../../../uikit/components/button/Button'
-// import {GET_SENDER, LIST_SENDER} from "../../../setting/store";
 
 export default {
   name: 'ModalEditOrder',
-  components: { PButton },
   props: {
     visible: {
       type: Boolean,
       default: false,
-    },
-    info_user: {
-      type: Object,
-      default: () => {},
-    },
-    total: {
-      type: Number,
     },
   },
   computed: {
@@ -430,6 +408,9 @@ export default {
     ...mapGetters('package', {
       services: GET_SERVICE,
     }),
+    current() {
+      return this.package_detail.package || {}
+    },
   },
   data() {
     return {
@@ -463,33 +444,31 @@ export default {
     this.init()
   },
   methods: {
-    ...mapActions('package', [UPDATE_PACKAGE]),
+    ...mapActions('package', { updatePackage: UPDATE_PACKAGE }),
+
     async init() {
-      this.fullname = this.package_detail.package.recipient
-      this.phone = this.package_detail.package.phone_number
-      this.city = this.package_detail.package.city
-      this.state = this.package_detail.package.state_code
-      this.postcode = this.package_detail.package.zipcode
-      this.note = this.package_detail.package.note || 'Không có yêu cầu'
-      this.code = this.package_detail.package.code
-      this.items = this.package_detail.package.items
-      this.weight = this.package_detail.package.weight
-      this.length = this.package_detail.package.length
-      this.width = this.package_detail.package.width
-      this.height = this.package_detail.package.height
-      this.countrycode = this.package_detail.package.country_code
+      this.fullname = this.current.recipient
+      this.phone = this.current.phone_number
+      this.city = this.current.city
+      this.state = this.current.state_code
+      this.postcode = this.current.zipcode
+      this.note = this.current.note || 'Không có yêu cầu'
+      this.code = this.current.code
+      this.items = this.current.items
+      this.weight = this.current.weight
+      this.length = this.current.length
+      this.width = this.current.width
+      this.height = this.current.height
+      this.countrycode = this.current.country_code
+      this.address = this.current.address_1
+      this.address2 = this.current.address_2
+      this.order_number = this.current.order_number
+      this.detail = this.current.detail
+
       this.service = {
-        id: this.package_detail.package.service_id
-          ? this.package_detail.package.service_id
-          : 0,
-        name: this.package_detail.package.service_name
-          ? this.package_detail.package.service_name
-          : '',
+        id: this.current.service_id ? this.current.service_id : 0,
+        name: this.current.service_name ? this.current.service_name : '',
       }
-      this.address = this.package_detail.package.address_1
-      this.address2 = this.package_detail.package.address_2
-      this.order_number = this.package_detail.package.order_number
-      this.detail = this.package_detail.package.detail
     },
     handleClose() {
       this.fullname = ''
@@ -508,6 +487,7 @@ export default {
       this.service = ''
       this.address = ''
       this.$validator.pause()
+
       this.$nextTick(() => {
         this.$validator.errors.clear()
         this.$validator.fields.items.forEach((field) => field.reset())
@@ -516,6 +496,7 @@ export default {
         )
         this.$validator.resume()
       })
+
       this.$emit('update:visible', false)
     },
     customLabel(item) {
@@ -533,16 +514,15 @@ export default {
     },
     handleRemove() {
       this.isDisable = false
-      this.weight = this.package_detail.package.weight
-      this.length = this.package_detail.package.length
-      this.width = this.package_detail.package.width
-      this.height = this.package_detail.package.height
+      this.weight = this.current.weight
+      this.length = this.current.length
+      this.width = this.current.width
+      this.height = this.current.height
     },
     async handleUpdate() {
       const validate = await this.$validator.validateAll()
-      if (!validate) {
-        return
-      }
+      if (!validate) return
+
       this.isUpdate = true
       const { id } = this.$route.params
       const params = {
@@ -565,22 +545,15 @@ export default {
         address_2: this.address2,
       }
 
-      let result = await this[UPDATE_PACKAGE](params)
+      let result = await this.updatePackage(params)
+      this.isUpdate = false
+
       if (result.error) {
-        this.isUpdate = false
-        this.$toast.open({
-          type: 'error',
-          message: result.message,
-          duration: 3000,
-        })
+        this.$toast.error(result.message, { duration: 3000 })
         return
       }
-      this.$toast.open({
-        type: 'success',
-        message: 'Sửa đơn thành công',
-        duration: 3000,
-      })
-      this.isUpdate = false
+
+      this.$toast.success('Sửa đơn thành công', { duration: 3000 })
       this.handleClose()
       this.$emit('create', true)
     },
