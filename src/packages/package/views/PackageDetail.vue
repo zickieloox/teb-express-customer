@@ -9,40 +9,36 @@
             <div class="info-package">Last mile tracking </div>
             <div class="info-package">Ngày tạo </div>
             <div class="info-package">Trạng thái</div>
-            <div class="package-code "
-              >{{ $evaluate('package_detail.package.code_package') || 'N/A' }}
+            <div class="package-code"
+              >{{ current.code_package || 'N/A' }}
               <span
                 @click="showContent"
-                v-if="package_detail.package.label"
+                v-if="current.label"
                 class="page-header__barcode"
               >
                 <img
                   src="@/assets/img/Vector-barcode.png"
-                  style="margin-top: 6px; position: absolute;"
+                  style="margin-top: 6px; position: absolute"
                 />
               </span>
             </div>
-            <div class="content-title">{{
-              $evaluate('package_detail.package.service_name')
-            }}</div>
-            <div class="content-title tracking" v-if="package_detail.package">
+            <div class="content-title">{{ current.service_name }}</div>
+            <div class="content-title tracking" v-if="current">
               <a
                 target="_blank"
-                v-if="package_detail.package.tracking_number"
+                v-if="current.tracking_number"
                 :href="linkTrackInfo"
               >
-                {{ $evaluate('package_detail.package.tracking_number') }}
+                {{ current.tracking_number }}
                 <inline-svg
                   :src="require('../../../assets/img/arrow-up-right.svg')"
                 ></inline-svg>
               </a>
               <a v-else>N/A</a>
             </div>
-            <div class="content-title">{{
-              package_detail.package.created_at
-                | datetime('dd/MM/yyyy HH:mm:ss')
-            }}</div>
-
+            <div class="content-title">
+              {{ current.created_at | datetime('dd/MM/yyyy HH:mm:ss') }}
+            </div>
             <div class="content-title">
               <span v-if="statusValue" v-status:status="statusValue"></span>
             </div>
@@ -58,14 +54,14 @@
             </p-button>
             <p-button
               @click="handleModal"
-              class=" ml-7"
+              class="ml-7"
               type="lb-default"
               v-if="hasEditPackage"
             >
               <span>Sửa đơn</span>
             </p-button>
             <p-button
-              class=" ml-7"
+              class="ml-7"
               @click="handleWayBill"
               type="primary"
               v-if="hasMakeTracking"
@@ -85,153 +81,97 @@
       <div class="page-content">
         <div class="card">
           <div class="card-body">
-            <div class="row">
+            <div class="row align-items-stretch mb-24">
               <div class="col-6 p-0">
-                <div class="card-block" id="recipient-block">
+                <div class="card-block h-100">
                   <div class="card-header">
                     <div class="card-title">Người nhận</div>
                   </div>
                   <div class="card-content">
                     <div class="row">
                       <div class="col-4 mb-8">Họ và tên:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.recipient')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.recipient }}</div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Điện thoại:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.phone_number')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.phone_number }}</div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Địa chỉ:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.address_1')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.address_1 }}</div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Địa chỉ phụ:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.address_2')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.address_2 }}</div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Thành phố:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.city')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.city }}</div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Mã vùng:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.state_code')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.state_code }}</div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Mã bưu điện:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.zipcode')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.zipcode }}</div>
                     </div>
                     <div class="row">
                       <div class="col-4">Mã quốc gia:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.country_code')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.country_code }}</div>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="col-6 p-0">
-                <div class="card-block" id="item-block">
+                <div class="card-block h-100">
                   <div class="card-header">
                     <div class="card-title">Thông tin hàng hóa</div>
                   </div>
                   <div class="card-content">
                     <div class="row">
                       <div class="col-4 mb-8">Chi tiết hàng hóa:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.detail')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.detail }}</div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Mã đơn hàng:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.order_number')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.order_number }}</div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Trọng lượng:</div>
-                      <div class="col-8"
-                        ><div
-                          >{{ $evaluate('package_detail.package.weight')
-                          }}<span v-if="isOverThanOld('weight')">
-                            ({{
-                              $evaluate('package_detail.package.actual_weight')
-                            }})
-                          </span></div
+                      <div class="col-8">
+                        {{ current.weight }}
+                        <span v-if="isOverWeight"
+                          >({{ current.actual_weight }})</span
                         >
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Dài:</div>
-                      <div class="col-8"
-                        ><div
-                          >{{ $evaluate('package_detail.package.length')
-                          }}<span v-if="isOverThanOld()">
-                            ({{
-                              $evaluate('package_detail.package.actual_length')
-                            }})
-                          </span></div
-                        ></div
-                      >
+                      <div class="col-8">
+                        {{ current.length }}
+                        <span v-if="isOverVolumes"
+                          >({{ current.actual_length }})</span
+                        >
+                      </div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Rộng:</div>
-                      <div class="col-8"
-                        ><div
-                          >{{ $evaluate('package_detail.package.width')
-                          }}<span v-if="isOverThanOld()">
-                            ({{
-                              $evaluate('package_detail.package.actual_width')
-                            }})
-                          </span></div
-                        ></div
-                      >
+                      <div class="col-8">
+                        {{ current.width }}
+                        <span v-if="isOverVolumes">
+                          ({{ current.actual_width }})
+                        </span>
+                      </div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Cao:</div>
-                      <div class="col-8"
-                        ><div
-                          >{{ $evaluate('package_detail.package.height')
-                          }}<span v-if="isOverThanOld()">
-                            ({{
-                              $evaluate('package_detail.package.actual_height')
-                            }})
-                          </span></div
-                        ></div
-                      >
+                      <div class="col-8">
+                        {{ current.height }}
+                        <span v-if="isOverVolumes">
+                          ({{ current.actual_height }})
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -287,10 +227,8 @@
                 <div class="title">Phí giao hàng:</div>
                 <div class="title">Phí phát sinh:</div>
                 <div class="fee__number">{{
-                  $evaluate('package_detail.package?.shipping_fee')
-                    | formatPrice
+                  (current.shipping_fee || 0) | formatPrice
                 }}</div>
-
                 <div class="fee__number"
                   >{{ sumExtraFee | formatPrice }}
                   <div class="more-extra-fee" v-if="extraFee.length">
@@ -401,21 +339,9 @@ import {
   CANCEL_PACKAGES,
   PENDING_PICKUP_PACKAGES,
 } from '../store/index'
-import mixinChaining from '@/packages/shared/mixins/chaining'
 import ModalEditOrder from './components/ModalEditOrder'
-import { LIST_SENDER } from '../../setting/store'
 import NotFound from '@/components/shared/NotFound'
-import {
-  PACKAGE_STATUS_TAB,
-  MAP_NAME_STATUS_PACKAGE,
-  CHANGE_PACKAGE_TYPE,
-  PackageStatusCreatedText,
-  PackageStatusPendingPickupText,
-  PackageStatusReturnText,
-  PackageAlertTypeWarehoseReturn,
-} from '../constants'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
-import { extension } from '@core/utils/url'
 import { cloneDeep } from '@core/utils'
 import api from '../api'
 import mixinPackageDetail from '../mixins/package_detail'
@@ -424,27 +350,15 @@ import DeliveryLog from './components/DeliveryLog'
 
 export default {
   name: 'PackageDetail',
-  mixins: [mixinChaining, mixinPackageDetail],
+  mixins: [mixinPackageDetail],
   components: { ModalEditOrder, ModalConfirm, NotFound, AuditLog, DeliveryLog },
   data() {
     return {
       isFetching: true,
-      packageID: 0,
       displayDeliverDetail: false,
       isVisibleModal: false,
       isVisiblePopupMoreExtraFee: false,
       isVisibleConfirmWayBill: false,
-      timelinePagination: {
-        numberPage: 0,
-        itemsPerPage: 10,
-        currentPage: 1,
-      },
-      ConvertData: [],
-      auditPagination: {
-        numberPage: 0,
-        itemsPerPage: 10,
-        currentPage: 1,
-      },
       actions: {
         wayBill: {
           type: 'primary',
@@ -477,29 +391,15 @@ export default {
       isVisibleModalLabel: false,
       visibleConfirmReturn: false,
       blob: null,
-      PackageStatusCreatedText: PackageStatusCreatedText,
-      PackageStatusPendingPickupText: PackageStatusPendingPickupText,
-      PackageStatusReturnText: PackageStatusReturnText,
-      PackageAlertTypeWarehoseReturn: PackageAlertTypeWarehoseReturn,
     }
   },
   computed: {
     ...mapState('package', {
       package_detail: (state) => state.package_detail,
     }),
-    displayDeliverLogs() {
-      return this.ConvertData
+    current() {
+      return this.package_detail.package || {}
     },
-    displayAuditLogs() {
-      const start =
-        (this.auditPagination.currentPage - 1) *
-        this.auditPagination.itemsPerPage
-      return this.package_detail.audit_logs.slice(
-        start,
-        start + this.auditPagination.itemsPerPage
-      )
-    },
-
     sumExtraFee() {
       if (
         !this.package_detail.extra_fee ||
@@ -514,23 +414,10 @@ export default {
       )
     },
     sumFee() {
-      return this.package_detail.package.shipping_fee + this.sumExtraFee
-    },
-    mapStatus() {
-      return MAP_NAME_STATUS_PACKAGE
-    },
-    isImage() {
-      const ext = extension(this.package_detail.package.label)
-      return ['png', 'jpg', 'jpeg'].includes(ext)
+      return this.current.shipping_fee + this.sumExtraFee
     },
     extraFee() {
       return this.package_detail.extra_fee ? this.package_detail.extra_fee : []
-    },
-    packageStatus() {
-      return PACKAGE_STATUS_TAB
-    },
-    changePackageType() {
-      return CHANGE_PACKAGE_TYPE
     },
     mapExtraFee() {
       let arr = cloneDeep(this.extraFee),
@@ -546,9 +433,26 @@ export default {
       }
       return result
     },
-  },
-  created() {
-    this.packageID = parseInt(this.$route.params.id, 10)
+    packageID() {
+      return parseInt(this.$route.params.id, 10)
+    },
+    isOverWeight() {
+      const { actual_weight, weight } = this.current
+      return actual_weight > weight
+    },
+    isOverVolumes() {
+      const {
+        actual_height,
+        actual_width,
+        actual_length,
+        height,
+        width,
+        length,
+      } = this.current
+      return (
+        actual_height * actual_width * actual_length > height * width * length
+      )
+    },
   },
   mounted() {
     this.init()
@@ -561,29 +465,14 @@ export default {
       CANCEL_PACKAGES,
       PENDING_PICKUP_PACKAGES,
     ]),
-    ...mapActions('setting', [LIST_SENDER]),
 
     async init() {
       this.isFetching = true
-      let [detail, service] = await Promise.all([
-        this.fetchPackage(this.packageID),
-        this[FETCH_LIST_SERVICE](),
-      ])
-      if (!detail.success || service.error) {
-        return
-      }
 
-      let recipientBlockHeight = document.getElementById('recipient-block')
-        .offsetHeight
-      let itemBlockHeight = document.getElementById('item-block').offsetHeight
-      if (
-        itemBlockHeight < recipientBlockHeight &&
-        this.package_detail.package &&
-        this.package_detail.package.detail
-      ) {
-        document.getElementById('item-block').style.height =
-          recipientBlockHeight + 'px'
-      }
+      await Promise.all([
+        this.fetchPackage(this.packageID),
+        this.fetchListService(),
+      ])
 
       this.isFetching = false
     },
@@ -600,37 +489,13 @@ export default {
     hiddenPopupMoreExtraFee() {
       this.isVisiblePopupMoreExtraFee = false
     },
-
-    isOverThanOld(prop) {
-      if (!this.package_detail.package) {
-        return false
-      }
-
-      if (prop == 'weight') {
-        return (
-          this.package_detail.package.actual_weight >
-          this.package_detail.package[prop]
-        )
-      }
-
-      return (
-        this.package_detail.package.actual_height *
-          this.package_detail.package.actual_width *
-          this.package_detail.package.actual_length >
-        this.package_detail.package.height *
-          this.package_detail.package.width *
-          this.package_detail.package.length
-      )
-    },
-
     handleWayBill() {
       this.actions.wayBill.Description = `Bạn có chắc chắn muốn tạo tracking?`
       this.isVisibleConfirmWayBill = true
     },
 
     async handleActionWayBill() {
-      let id = this.packageID
-      let params = { ids: [id] }
+      let params = { ids: [this.packageID] }
 
       this.actions.wayBill.loading = true
       const res = await this.processPackage(params)
@@ -652,8 +517,7 @@ export default {
     },
 
     async cancelPackageAction() {
-      let id = this.packageID
-      let payload = { ids: [id] }
+      let payload = { ids: [this.packageID] }
 
       this.actions.cancelPackage.loading = true
       const result = await this[CANCEL_PACKAGES](payload)
@@ -675,9 +539,8 @@ export default {
     },
 
     async pendingPickupPackageAction() {
-      const payload = {
-        ids: [this.packageID],
-      }
+      const payload = { ids: [this.packageID] }
+
       this.actions.returnPackage.loading = true
       const result = await this[PENDING_PICKUP_PACKAGES](payload)
       this.visibleConfirmReturn = false
@@ -696,7 +559,7 @@ export default {
       document.activeElement && document.activeElement.blur()
 
       const res = await api.fetchBarcodeFile({
-        url: this.package_detail.package.label,
+        url: this.current.label,
         type: 'labels',
       })
 

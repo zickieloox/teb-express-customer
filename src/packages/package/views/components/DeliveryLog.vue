@@ -64,7 +64,7 @@ export default {
         }
       }
 
-      return items.sort((a, b) => a.name > b.name)
+      return items
     },
   },
   methods: {},
