@@ -76,8 +76,7 @@ export default {
     },
     displayItems() {
       const start = (this.page - 1) * this.limit
-      let end = start + this.limit
-      end = end > this.totalPage ? this.totalPage : end
+      let end = this.page * this.limit
 
       return this.items.slice(start, end)
     },
