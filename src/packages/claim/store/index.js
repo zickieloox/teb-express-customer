@@ -146,16 +146,12 @@ export const actions = {
     return { error: false }
   },
   async [FETCH_MESSAGE]({ commit }, payload) {
-    const [res, count] = await Promise.all([
-      api.fetchMessageTickets(payload),
-      api.countMessage(payload),
-    ])
-    if (!res || res.error || count.error) {
+    const res = await api.fetchMessageTickets(payload)
+    if (!res || res.error) {
       return { error: true, message: res.errorMessage || '' }
     }
 
     commit(APPEND_MESSAGE, res.messages)
-    commit(COUNT_MESSAGE, count.count)
     return { error: false, ...res }
   },
 
