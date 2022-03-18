@@ -11,7 +11,7 @@
     />
     <slot></slot>
   </div>
-  <a v-else :href="image" :download="name" class="thumb">
+  <a v-else href="#" class="thumb" @click="download">
     <img
       :src="image"
       :data-src="src"
