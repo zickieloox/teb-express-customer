@@ -553,6 +553,7 @@ export default {
 
       this.message = ''
       this.files = []
+      this.fileErrors = []
       this.countIsUploading = 0
       this.scrollHandle()
       this.$nextTick(() => {
