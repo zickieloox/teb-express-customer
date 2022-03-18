@@ -82,7 +82,7 @@
         <div class="card">
           <div class="card-body">
             <div class="row align-items-stretch mb-24">
-              <div class="col-6 p-0">
+              <div class="col-4 p-0">
                 <div class="card-block h-100">
                   <div class="card-header">
                     <div class="card-title">Người nhận</div>
@@ -123,7 +123,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-6 p-0">
+              <div class="col-4 p-0">
                 <div class="card-block h-100">
                   <div class="card-header">
                     <div class="card-title">Thông tin hàng hóa</div>
@@ -172,6 +172,38 @@
                           ({{ current.actual_height }})
                         </span>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4 p-0">
+                <div class="card-block h-100 card-tickets">
+                  <div class="card-header">
+                    <div class="card-title">Trợ giúp & khiếu nại</div>
+                  </div>
+                  <div class="card-content">
+                    <div
+                      class="tickets d-flex justify-content-between"
+                      v-for="item in claims"
+                      :key="item.id"
+                    >
+                      <router-link
+                        :to="{ name: 'claim-detail', params: { id: item.id } }"
+                        >{{ item.title }}</router-link
+                      >
+                      <time>{{
+                        item.created_at | datetime('dd/MM/yyyy')
+                      }}</time>
+                    </div>
+                    <div class="more-ticket" v-if="hasMoreTicket">
+                      <router-link
+                        class="text-no-underline"
+                        :to="{
+                          name: 'claims',
+                          query: { search: current.code_package },
+                        }"
+                        >Xem Thêm</router-link
+                      >
                     </div>
                   </div>
                 </div>
@@ -342,6 +374,7 @@ import api from '../api'
 import mixinPackageDetail from '../mixins/package_detail'
 import AuditLog from './components/AuditLog'
 import DeliveryLog from './components/DeliveryLog'
+import { FETCH_TICKETS, COUNT_TICKET } from '../../claim/store'
 
 export default {
   name: 'PackageDetail',
@@ -386,11 +419,16 @@ export default {
       isVisibleModalLabel: false,
       visibleConfirmReturn: false,
       blob: null,
+      ticketLimit: 5,
     }
   },
   computed: {
     ...mapState('package', {
       package_detail: (state) => state.package_detail,
+    }),
+    ...mapState('claim', {
+      claims: (state) => state.claims,
+      totalTicket: (state) => state.count,
     }),
     current() {
       return this.package_detail.package || {}
@@ -448,6 +486,9 @@ export default {
         actual_height * actual_width * actual_length > height * width * length
       )
     },
+    hasMoreTicket() {
+      return this.totalTicket > this.ticketLimit
+    },
   },
   mounted() {
     this.init()
@@ -460,6 +501,7 @@ export default {
       CANCEL_PACKAGES,
       PENDING_PICKUP_PACKAGES,
     ]),
+    ...mapActions('claim', [FETCH_TICKETS, COUNT_TICKET]),
 
     async init() {
       this.isFetching = true
@@ -467,6 +509,14 @@ export default {
       await Promise.all([
         this.fetchPackage(this.packageID),
         this.fetchListService(),
+        this[FETCH_TICKETS]({
+          package_id: this.packageID,
+          limit: this.ticketLimit,
+        }),
+        this[COUNT_TICKET]({
+          package_id: this.packageID,
+          limit: this.ticketLimit,
+        }),
       ])
 
       this.isFetching = false

@@ -1,7 +1,7 @@
 <template>
   <div class="claim-detail-page pages page-sm">
     <div class="container">
-      <div v-if="!isEmpty" class="claim-content-page">
+      <div v-if="!isEmpty" class="page-content claim-content-page">
         <div class="row">
           <div class="col-8 p-0 b-right">
             <div class="card-block claim-content" :class="{ closed: isClosed }">
@@ -141,6 +141,7 @@
                   <span class="col-4 p-0">LB tracking:</span>
                   <span class="col-8 p-0"
                     ><router-link
+                      class="text-no-underline"
                       :to="{
                         name: 'package-detail',
                         params: { id: claim.object_id },
@@ -349,6 +350,7 @@ export default {
       messages.reverse()
 
       const now = format(new Date(), 'yyyyMMdd')
+      const nowYear = format(new Date(), 'yyyy')
 
       for (const message of messages) {
         const dd = datetime(message.created_at, 'yyyyMMdd')
@@ -371,6 +373,8 @@ export default {
         last.datetime = datetime(last.created_at, 'dd/MM hh:mm aa')
         if (now == dd) {
           last.datetime = datetime(last.created_at, 'hh:mm aa')
+        } else if (nowYear != datetime(message.created_at, 'yyyy')) {
+          last.datetime = datetime(last.created_at, 'dd/MM/yyyy hh:mm aa')
         }
 
         if (last.items) {
