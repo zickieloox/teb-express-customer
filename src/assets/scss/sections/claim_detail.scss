@@ -85,6 +85,29 @@
       line-height: 20px;
     }
   }
+
+  .scroll-y, .claim-attachments {
+    &::-webkit-scrollbar {
+      width: 8px;
+      border-radius: 4px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: #fff;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 4px;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+  }
 }
 
 .claim-reply {
@@ -173,8 +196,8 @@
   overflow-y: scroll;
 
   .thumb {
-    width: 64px!important;
-    height: 64px!important;
+    width: 64px !important;
+    height: 64px !important;
     margin-right: 8px;
     display: block;
     position: relative;
@@ -219,6 +242,7 @@
   .item {
     clear: both;
     margin-bottom: 0;
+    margin-right: 16px;
 
     span {
       font-size: 14px;
@@ -254,7 +278,7 @@
   }
 
   .list-messages {
-    padding-right: 30px;
+    padding-right: 16px;
   }
 
   .message {

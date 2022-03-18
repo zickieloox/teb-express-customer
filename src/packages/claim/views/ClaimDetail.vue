@@ -176,7 +176,7 @@
               <div class="card-header">
                 <h3 class="card-title">Tài liệu đính kèm</h3>
               </div>
-              <div class="card-content">
+              <div class="card-content pr-0">
                 <div v-if="attachments.length" class="claim-attachments">
                   <p
                     class="item d-flex"
