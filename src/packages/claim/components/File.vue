@@ -1,5 +1,5 @@
 <template>
-  <div @click="showContent">
+  <div @click="showContent" v-if="!isDownload" class="thumb">
     <img
       :src="image"
       :data-src="src"
@@ -9,7 +9,20 @@
       @error="handleImageError"
       v-bind="$attrs"
     />
+    <slot></slot>
   </div>
+  <a v-else :href="image" :download="name" class="thumb">
+    <img
+      :src="image"
+      :data-src="src"
+      :class="className"
+      v-if="image"
+      alt="Thumbnail"
+      @error="handleImageError"
+      v-bind="$attrs"
+    />
+    <slot></slot>
+  </a>
 </template>
 
 <script>
@@ -36,6 +49,14 @@ export default {
     id: {
       type: Number,
       default: 0,
+    },
+    isDownload: {
+      type: Boolean,
+      default: true,
+    },
+    name: {
+      type: String,
+      default: '',
     },
   },
   computed: {

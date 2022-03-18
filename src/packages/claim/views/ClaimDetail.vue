@@ -74,6 +74,7 @@
                       require: lengthContent,
                     }"
                     maxlength="1000"
+                    v-validate="'required'"
                   ></textarea>
                   <p-button
                     class="btn btn-primary"
@@ -82,15 +83,13 @@
                     >Gửi trả lời</p-button
                   >
                 </div>
-
+                <span class="err-span" v-if="errors.has('message')">{{
+                  errors.first('message')
+                }}</span>
                 <p class="note"
                   >* Định dạng file hợp lệ : XLSX, PNG, JPG, JPEG.Và có dung
                   lượng dưới 5Mb</p
                 >
-                <span class="err-span" v-if="errors.has('message')">{{
-                  errors.first('message')
-                }}</span>
-
                 <div v-if="fileErrors.length > 0" class="ticket__error mb-16">
                   <div class="ticket__error-title">
                     <img
@@ -183,12 +182,11 @@
                     v-for="(item, i) in attachments"
                     :key="i"
                   >
-                    <a class="thumb" :href="item.src" :download="item.name">
-                      <File :src="item.src" />
+                    <file :src="item.src" download="true" :name="item.name">
                       <i class="icon center">
                         <img src="~@/assets/img/download.svg" />
                       </i>
-                    </a>
+                    </file>
                     <span>
                       {{ item.name }}
                       <time>{{
@@ -317,14 +315,7 @@ export default {
     },
 
     attachments() {
-      const attachments = (this.claim.attachment || []).map((src) => ({
-        src,
-        name: src
-          .replace(regexName, `.$1`)
-          .split('/')
-          .pop(),
-        created_at: this.claim.created_at,
-      }))
+      const attachments = []
 
       if (this.messages && this.messages.length) {
         for (const message of this.messages) {
@@ -341,6 +332,16 @@ export default {
         }
       }
 
+      const files = (this.claim.attachment || []).map((src) => ({
+        src,
+        name: src
+          .replace(regexName, `.$1`)
+          .split('/')
+          .pop(),
+        created_at: this.claim.created_at,
+      }))
+
+      attachments.push(...files)
       return attachments
     },
 
@@ -554,6 +555,10 @@ export default {
       this.files = []
       this.countIsUploading = 0
       this.scrollHandle()
+      this.$nextTick(() => {
+        this.errors.clear()
+        this.$validator.reset()
+      })
     },
 
     removeFile(file) {
