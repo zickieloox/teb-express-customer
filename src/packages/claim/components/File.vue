@@ -1,5 +1,5 @@
 <template>
-  <div @click="showContent" v-if="!isDownload" class="thumb">
+  <div @click="showContent" class="thumb">
     <img
       :src="image"
       :data-src="src"
@@ -11,18 +11,6 @@
     />
     <slot></slot>
   </div>
-  <a v-else href="#" class="thumb" @click="download">
-    <img
-      :src="image"
-      :data-src="src"
-      :class="className"
-      v-if="image"
-      alt="Thumbnail"
-      @error="handleImageError"
-      v-bind="$attrs"
-    />
-    <slot></slot>
-  </a>
 </template>
 
 <script>
@@ -117,11 +105,7 @@ export default {
       return `${URL_IMAGES}/${src}`
     },
     showContent() {
-      if (this.isImage) {
-        this.zoomImage()
-      } else {
-        this.download()
-      }
+      this.download()
     },
     async zoomImage() {
       if (!this.isImage) return
