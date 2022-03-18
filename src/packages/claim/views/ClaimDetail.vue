@@ -34,7 +34,7 @@
                 </div>
               </div>
             </div>
-            <div class="card-block claim-reply">
+            <div class="card-block claim-reply" v-if="!isClosed">
               <div class="card-content">
                 <div class="claim-reply-form d-flex">
                   <div class="upload">
