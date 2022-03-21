@@ -585,7 +585,8 @@ export default {
 
       this.$toast.success('Đóng khiếu nại thành công')
       this.files = []
-      this.init()
+
+      await this[FETCH_TICKET](this.ticketID)
     },
 
     errorMaximum({ name }) {
