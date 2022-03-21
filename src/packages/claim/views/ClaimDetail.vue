@@ -182,7 +182,7 @@
                     v-for="(item, i) in attachments"
                     :key="i"
                   >
-                    <file :src="item.src" download="true" :name="item.name">
+                    <file :src="item.src" :name="item.name">
                       <i class="icon center">
                         <img src="~@/assets/img/download.svg" />
                       </i>

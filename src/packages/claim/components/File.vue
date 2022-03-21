@@ -38,10 +38,6 @@ export default {
       type: Number,
       default: 0,
     },
-    isDownload: {
-      type: Boolean,
-      default: true,
-    },
     name: {
       type: String,
       default: '',
@@ -136,7 +132,9 @@ export default {
       if (!res || res.error) {
         return this.$toast.open({ type: 'error', message: res.error })
       }
-      Browser.downloadBlob(res, this.src.split('/').pop())
+
+      const name = this.name || this.src.split('/').pop()
+      Browser.downloadBlob(res, name)
     },
   },
   watch: {
