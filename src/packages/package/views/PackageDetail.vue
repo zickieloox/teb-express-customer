@@ -9,49 +9,38 @@
             <div class="info-package">Last mile tracking </div>
             <div class="info-package">Ngày tạo </div>
             <div class="info-package">Trạng thái</div>
-            <div class="package-code "
-              >{{ $evaluate('package_detail.package.code_package') || 'N/A' }}
+            <div class="package-code"
+              >{{ current.code_package || 'N/A' }}
               <span
                 @click="showContent"
-                v-if="package_detail.package.label"
+                v-if="current.label"
                 class="page-header__barcode"
               >
                 <img
                   src="@/assets/img/Vector-barcode.png"
-                  style="margin-top: 6px; position: absolute;"
+                  style="margin-top: 6px; position: absolute"
                 />
               </span>
             </div>
-            <div class="content-title">{{
-              $evaluate('package_detail.package.service_name')
-            }}</div>
-            <div class="content-title tracking" v-if="package_detail.package">
+            <div class="content-title">{{ current.service_name }}</div>
+            <div class="content-title tracking" v-if="current">
               <a
                 target="_blank"
-                v-if="package_detail.package.tracking_number"
-                :href="
-                  `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${package_detail.package.tracking_number}`
-                "
+                v-if="current.tracking_number"
+                :href="linkTrackInfo"
               >
-                {{ $evaluate('package_detail.package.tracking_number') }}
+                {{ current.tracking_number }}
                 <inline-svg
                   :src="require('../../../assets/img/arrow-up-right.svg')"
                 ></inline-svg>
               </a>
               <a v-else>N/A</a>
             </div>
-            <div class="content-title">{{
-              package_detail.package.created_at
-                | datetime('dd/MM/yyyy HH:mm:ss')
-            }}</div>
-
             <div class="content-title">
-              <span
-                v-if="package_detail.package.status_string"
-                v-status:status="
-                  mapStatus[package_detail.package.status_string].value
-                "
-              ></span>
+              {{ current.created_at | datetime('dd/MM/yyyy HH:mm:ss') }}
+            </div>
+            <div class="content-title">
+              <span v-if="statusValue" v-status:status="statusValue"></span>
             </div>
           </div>
           <div class="page-header__action">
@@ -59,45 +48,30 @@
               href="#"
               type="lb-default"
               @click="handleCancelPackage"
-              v-if="
-                package_detail.package.status_string ===
-                  PackageStatusCreatedText ||
-                  package_detail.package.status_string ===
-                    PackageStatusPendingPickupText
-              "
+              v-if="hasCancelPackage"
             >
               <span>Hủy đơn</span>
             </p-button>
             <p-button
               @click="handleModal"
-              class=" ml-7"
+              class="ml-7"
               type="lb-default"
-              v-if="
-                package_detail.package.status_string ===
-                  PackageStatusCreatedText
-              "
+              v-if="hasEditPackage"
             >
               <span>Sửa đơn</span>
             </p-button>
             <p-button
-              class=" ml-7"
+              class="ml-7"
               @click="handleWayBill"
               type="primary"
-              v-if="
-                package_detail.package.status_string ===
-                  PackageStatusCreatedText
-              "
+              v-if="hasMakeTracking"
             >
               <span>Tạo tracking</span>
             </p-button>
             <a
               @click="handlerReturnPackage"
               class="btn btn-primary ml-7"
-              v-if="
-                package_detail.package.status_string ===
-                  PackageStatusPendingPickupText &&
-                  package_detail.package.alert == PackageAlertTypeWarehoseReturn
-              "
+              v-if="hasReshipPackage"
             >
               Chuyển lại hàng
             </a>
@@ -107,152 +81,128 @@
       <div class="page-content">
         <div class="card">
           <div class="card-body">
-            <div class="row">
-              <div class="col-6 p-0">
-                <div class="card-block" id="recipient-block">
+            <div class="row align-items-stretch mb-24">
+              <div class="col-4 p-0">
+                <div class="card-block h-100">
                   <div class="card-header">
                     <div class="card-title">Người nhận</div>
                   </div>
                   <div class="card-content">
                     <div class="row">
                       <div class="col-4 mb-8">Họ và tên:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.recipient')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.recipient }}</div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Điện thoại:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.phone_number')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.phone_number }}</div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Địa chỉ:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.address_1')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.address_1 }}</div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Địa chỉ phụ:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.address_2')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.address_2 }}</div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Thành phố:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.city')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.city }}</div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Mã vùng:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.state_code')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.state_code }}</div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Mã bưu điện:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.zipcode')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.zipcode }}</div>
                     </div>
                     <div class="row">
                       <div class="col-4">Mã quốc gia:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.country_code')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.country_code }}</div>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="col-6 p-0">
-                <div class="card-block" id="item-block">
+              <div class="col-4 p-0">
+                <div class="card-block h-100">
                   <div class="card-header">
                     <div class="card-title">Thông tin hàng hóa</div>
                   </div>
                   <div class="card-content">
                     <div class="row">
                       <div class="col-4 mb-8">Chi tiết hàng hóa:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.detail')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.detail }}</div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Mã đơn hàng:</div>
-                      <div class="col-8"
-                        ><div>{{
-                          $evaluate('package_detail.package.order_number')
-                        }}</div></div
-                      >
+                      <div class="col-8">{{ current.order_number }}</div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Trọng lượng:</div>
-                      <div class="col-8"
-                        ><div
-                          >{{ $evaluate('package_detail.package.weight')
-                          }}<span v-if="isOverThanOld('weight')">
-                            ({{
-                              $evaluate('package_detail.package.actual_weight')
-                            }})
-                          </span></div
+                      <div class="col-8">
+                        {{ current.weight }}
+                        <span v-if="isOverWeight"
+                          >({{ current.actual_weight }})</span
                         >
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Dài:</div>
-                      <div class="col-8"
-                        ><div
-                          >{{ $evaluate('package_detail.package.length')
-                          }}<span v-if="isOverThanOld()">
-                            ({{
-                              $evaluate('package_detail.package.actual_length')
-                            }})
-                          </span></div
-                        ></div
-                      >
+                      <div class="col-8">
+                        {{ current.length }}
+                        <span v-if="isOverVolumes"
+                          >({{ current.actual_length }})</span
+                        >
+                      </div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Rộng:</div>
-                      <div class="col-8"
-                        ><div
-                          >{{ $evaluate('package_detail.package.width')
-                          }}<span v-if="isOverThanOld()">
-                            ({{
-                              $evaluate('package_detail.package.actual_width')
-                            }})
-                          </span></div
-                        ></div
-                      >
+                      <div class="col-8">
+                        {{ current.width }}
+                        <span v-if="isOverVolumes">
+                          ({{ current.actual_width }})
+                        </span>
+                      </div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Cao:</div>
-                      <div class="col-8"
-                        ><div
-                          >{{ $evaluate('package_detail.package.height')
-                          }}<span v-if="isOverThanOld()">
-                            ({{
-                              $evaluate('package_detail.package.actual_height')
-                            }})
-                          </span></div
-                        ></div
+                      <div class="col-8">
+                        {{ current.height }}
+                        <span v-if="isOverVolumes">
+                          ({{ current.actual_height }})
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4 p-0">
+                <div class="card-block h-100 card-tickets">
+                  <div class="card-header">
+                    <div class="card-title">Trợ giúp & khiếu nại</div>
+                  </div>
+                  <div class="card-content">
+                    <div
+                      class="tickets d-flex justify-content-between"
+                      v-for="item in claims"
+                      :key="item.id"
+                    >
+                      <router-link
+                        :to="{ name: 'claim-detail', params: { id: item.id } }"
+                        >{{ item.title }}</router-link
+                      >
+                      <time>{{
+                        item.created_at | datetime('dd/MM/yyyy')
+                      }}</time>
+                    </div>
+                    <div class="more-ticket" v-if="hasMoreTicket">
+                      <router-link
+                        class="text-no-underline"
+                        :to="{
+                          name: 'claims',
+                          query: { search: current.code_package },
+                        }"
+                        >Xem Thêm</router-link
                       >
                     </div>
                   </div>
@@ -275,61 +225,7 @@
                         >
                       </div>
                       <div class="card-content deliver-log">
-                        <div class="timeline-new">
-                          <div
-                            v-for="(item, i) in displayDeliverLogs"
-                            :key="i"
-                            :class="{
-                              'first-item':
-                                i === 0 && timelinePagination.currentPage === 1,
-                            }"
-                            class="timeline-item-new"
-                          >
-                            <div class="item__right">
-                              <div class="title">{{ item.name }}</div>
-                            </div>
-                            <div
-                              v-for="(it, j) in item.data"
-                              :key="j"
-                              class="item__right__data"
-                              :class="{
-                                'first-data': j === 0,
-                              }"
-                            >
-                              <div class="time">
-                                {{ it.ship_time | datetime('HH:mm:ss') }}</div
-                              >
-                              <div class="des"> {{ convertDes(it) }}</div>
-                              <span class="location" v-if="it.location">
-                                ___{{ it.location }}</span
-                              >
-                            </div>
-                          </div>
-                        </div>
-                        <!--                        <div-->
-                        <!--                          class="timeline__next-page"-->
-                        <!--                          :class="{-->
-                        <!--                            'timeline__next-page_history': !displayDeliverDetail,-->
-                        <!--                          }"-->
-                        <!--                        >-->
-                        <!--                          <div-->
-                        <!--                            :class="{-->
-                        <!--                              'disable-next-page':-->
-                        <!--                                timelinePagination.currentPage <= 1,-->
-                        <!--                            }"-->
-                        <!--                            @click="previousTimeLinePage"-->
-                        <!--                            >Trước</div-->
-                        <!--                          ><div-->
-                        <!--                            :class="{-->
-                        <!--                              'disable-next-page':-->
-                        <!--                                timelinePagination.currentPage >=-->
-                        <!--                                  timelinePagination.numberPage ||-->
-                        <!--                                timelinePagination.numberPage <= 1,-->
-                        <!--                            }"-->
-                        <!--                            @click="nextTimeLinePage"-->
-                        <!--                            >Sau</div-->
-                        <!--                          >-->
-                        <!--                        </div>-->
+                        <DeliveryLog :logs="package_detail.deliver_logs" />
                       </div>
                     </div>
                   </div>
@@ -350,69 +246,7 @@
                         >
                       </div>
                       <div class="card-content">
-                        <template>
-                          <div class="table-responsive">
-                            <table class="table table-hover" id="tbl-packages">
-                              <thead>
-                                <tr>
-                                  <th>Thời gian</th>
-                                  <th>Người thực hiện</th>
-                                  <th>Loại thay đổi</th>
-                                  <th>Nội dung cũ</th>
-                                  <th>Nội dung mới</th>
-                                  <th>Phí phát sinh</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr
-                                  v-for="(item, i) in displayAuditLogs"
-                                  :key="i"
-                                >
-                                  <td>
-                                    {{
-                                      item.created_at
-                                        | datetime('dd/MM/yyyy - HH:mm')
-                                    }}
-                                  </td>
-                                  <td v-html="displayRole(item)"></td>
-                                  <td>
-                                    {{
-                                      $evaluate(
-                                        `changePackageType[${item.type}]`
-                                      ) || ''
-                                    }}
-                                  </td>
-                                  <td>
-                                    {{ item.old_value }}
-                                  </td>
-                                  <td>{{ item.value }}</td>
-                                  <td style="text-align: right">{{
-                                    item.fee | formatPrice('after')
-                                  }}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </template>
-                        <div class="timeline__next-page">
-                          <div
-                            :class="{
-                              'disable-next-page':
-                                auditPagination.currentPage <= 1,
-                            }"
-                            @click="previousAuditLogPage"
-                            >Trước</div
-                          ><div
-                            :class="{
-                              'disable-next-page':
-                                auditPagination.currentPage >=
-                                  auditPagination.numberPage ||
-                                auditPagination.numberPage <= 1,
-                            }"
-                            @click="nextAuditLogPage"
-                            >Sau</div
-                          >
-                        </div>
+                        <AuditLog :logs="package_detail.audit_logs" />
                       </div>
                     </div>
                   </div>
@@ -425,10 +259,8 @@
                 <div class="title">Phí giao hàng:</div>
                 <div class="title">Phí phát sinh:</div>
                 <div class="fee__number">{{
-                  $evaluate('package_detail.package?.shipping_fee')
-                    | formatPrice
+                  (current.shipping_fee || 0) | formatPrice
                 }}</div>
-
                 <div class="fee__number"
                   >{{ sumExtraFee | formatPrice }}
                   <div class="more-extra-fee" v-if="extraFee.length">
@@ -462,12 +294,7 @@
     </div>
     <NotFound v-else></NotFound>
 
-    <modal-edit-order
-      :visible.sync="isVisibleModal"
-      :info_user="package_detail"
-      @create="init"
-      :total="sumFee"
-    >
+    <modal-edit-order :visible.sync="isVisibleModal" @create="init">
     </modal-edit-order>
     <modal-confirm
       :visible.sync="isVisibleConfirmWayBill"
@@ -532,8 +359,6 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import { printImage } from '@core/utils/print'
-import Uniq from 'lodash/uniq'
-
 import {
   FETCH_PACKAGE_DETAIL,
   FETCH_LIST_SERVICE,
@@ -541,53 +366,27 @@ import {
   CANCEL_PACKAGES,
   PENDING_PICKUP_PACKAGES,
 } from '../store/index'
-import mixinChaining from '@/packages/shared/mixins/chaining'
 import ModalEditOrder from './components/ModalEditOrder'
-import { LIST_SENDER } from '../../setting/store'
-import NotFound from '../../../components/shared/NotFound'
-import {
-  PACKAGE_STATUS_TAB,
-  MAP_NAME_STATUS_PACKAGE,
-  CHANGE_PACKAGE_TYPE,
-  DELIVER_LOG_PACKAGE,
-  ROLE_ADMIN,
-  ROLE_SUPPORT,
-  ROLE_ACCOUNTANT,
-  PackageStatusCreatedText,
-  PackageStatusPendingPickupText,
-  PackageStatusReturnText,
-  PackageAlertTypeWarehoseReturn,
-} from '../constants'
+import NotFound from '@/components/shared/NotFound'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
-import { extension } from '@core/utils/url'
 import { cloneDeep } from '@core/utils'
 import api from '../api'
-import { datetime } from '../../../core/utils/datetime'
-import PButton from '../../../../uikit/components/button/Button'
-import _ from 'lodash'
+import mixinPackageDetail from '../mixins/package_detail'
+import AuditLog from './components/AuditLog'
+import DeliveryLog from './components/DeliveryLog'
+import { FETCH_TICKETS, COUNT_TICKET } from '../../claim/store'
+
 export default {
   name: 'PackageDetail',
-  mixins: [mixinChaining],
-  components: { PButton, ModalEditOrder, ModalConfirm, NotFound },
+  mixins: [mixinPackageDetail],
+  components: { ModalEditOrder, ModalConfirm, NotFound, AuditLog, DeliveryLog },
   data() {
     return {
       isFetching: true,
-      packageID: 0,
       displayDeliverDetail: false,
       isVisibleModal: false,
       isVisiblePopupMoreExtraFee: false,
       isVisibleConfirmWayBill: false,
-      timelinePagination: {
-        numberPage: 0,
-        itemsPerPage: 10,
-        currentPage: 1,
-      },
-      ConvertData: [],
-      auditPagination: {
-        numberPage: 0,
-        itemsPerPage: 10,
-        currentPage: 1,
-      },
       actions: {
         wayBill: {
           type: 'primary',
@@ -620,29 +419,20 @@ export default {
       isVisibleModalLabel: false,
       visibleConfirmReturn: false,
       blob: null,
-      PackageStatusCreatedText: PackageStatusCreatedText,
-      PackageStatusPendingPickupText: PackageStatusPendingPickupText,
-      PackageStatusReturnText: PackageStatusReturnText,
-      PackageAlertTypeWarehoseReturn: PackageAlertTypeWarehoseReturn,
+      ticketLimit: 5,
     }
   },
   computed: {
     ...mapState('package', {
       package_detail: (state) => state.package_detail,
     }),
-    displayDeliverLogs() {
-      return this.ConvertData
+    ...mapState('claim', {
+      claims: (state) => state.claims,
+      totalTicket: (state) => state.count,
+    }),
+    current() {
+      return this.package_detail.package || {}
     },
-    displayAuditLogs() {
-      const start =
-        (this.auditPagination.currentPage - 1) *
-        this.auditPagination.itemsPerPage
-      return this.package_detail.audit_logs.slice(
-        start,
-        start + this.auditPagination.itemsPerPage
-      )
-    },
-
     sumExtraFee() {
       if (
         !this.package_detail.extra_fee ||
@@ -657,27 +447,10 @@ export default {
       )
     },
     sumFee() {
-      return this.package_detail.package.shipping_fee + this.sumExtraFee
-    },
-    mapStatus() {
-      return MAP_NAME_STATUS_PACKAGE
-    },
-    isImage() {
-      const ext = extension(this.package_detail.package.label)
-      return ['png', 'jpg', 'jpeg'].includes(ext)
+      return this.current.shipping_fee + this.sumExtraFee
     },
     extraFee() {
       return this.package_detail.extra_fee ? this.package_detail.extra_fee : []
-    },
-    packageStatus() {
-      return PACKAGE_STATUS_TAB
-    },
-    changePackageType() {
-      return CHANGE_PACKAGE_TYPE
-    },
-    isEmpty() {
-      const temp = _.isEmpty(this.package_detail.package)
-      return temp
     },
     mapExtraFee() {
       let arr = cloneDeep(this.extraFee),
@@ -693,9 +466,29 @@ export default {
       }
       return result
     },
-  },
-  created() {
-    this.packageID = parseInt(this.$route.params.id, 10)
+    packageID() {
+      return parseInt(this.$route.params.id, 10)
+    },
+    isOverWeight() {
+      const { actual_weight, weight } = this.current
+      return actual_weight > weight
+    },
+    isOverVolumes() {
+      const {
+        actual_height,
+        actual_width,
+        actual_length,
+        height,
+        width,
+        length,
+      } = this.current
+      return (
+        actual_height * actual_width * actual_length > height * width * length
+      )
+    },
+    hasMoreTicket() {
+      return this.totalTicket > this.ticketLimit
+    },
   },
   mounted() {
     this.init()
@@ -708,64 +501,32 @@ export default {
       CANCEL_PACKAGES,
       PENDING_PICKUP_PACKAGES,
     ]),
-    ...mapActions('setting', [LIST_SENDER]),
+    ...mapActions('claim', [FETCH_TICKETS, COUNT_TICKET]),
+
     async init() {
       this.isFetching = true
-      let [detail, service] = await Promise.all([
-        this.fetchPackage(this.packageID),
-        this[FETCH_LIST_SERVICE](),
-      ])
-      if (!detail.success || service.error) {
-        return
-      }
 
-      let recipientBlockHeight = document.getElementById('recipient-block')
-        .offsetHeight
-      let itemBlockHeight = document.getElementById('item-block').offsetHeight
-      if (
-        itemBlockHeight < recipientBlockHeight &&
-        this.package_detail.package &&
-        this.package_detail.package.detail
-      ) {
-        document.getElementById('item-block').style.height =
-          recipientBlockHeight + 'px'
-      }
+      await Promise.all([
+        this.fetchPackage(this.packageID),
+        this.fetchListService(),
+        this[FETCH_TICKETS]({
+          package_id: this.packageID,
+          limit: this.ticketLimit,
+        }),
+        this[COUNT_TICKET]({
+          package_id: this.packageID,
+          limit: this.ticketLimit,
+        }),
+      ])
+
       this.isFetching = false
     },
+
     changeDisplayDeliverDetail() {
       this.displayDeliverDetail = !this.displayDeliverDetail
     },
-    convertDes(data) {
-      if (data.description == '') {
-        return DELIVER_LOG_PACKAGE[data.type] || ''
-      }
-      return data.description
-    },
     handleModal() {
       this.isVisibleModal = true
-    },
-    previousTimeLinePage() {
-      this.timelinePagination.currentPage <= 1
-        ? (this.timelinePagination.currentPage = 1)
-        : (this.timelinePagination.currentPage -= 1)
-    },
-    nextTimeLinePage() {
-      this.timelinePagination.currentPage =
-        this.timelinePagination.currentPage >=
-        this.timelinePagination.numberPage
-          ? this.timelinePagination.numberPage
-          : this.timelinePagination.currentPage + 1
-    },
-    previousAuditLogPage() {
-      this.auditPagination.currentPage <= 1
-        ? (this.auditPagination.currentPage = 1)
-        : (this.auditPagination.currentPage -= 1)
-    },
-    nextAuditLogPage() {
-      this.auditPagination.currentPage =
-        this.auditPagination.currentPage >= this.auditPagination.numberPage
-          ? this.auditPagination.numberPage
-          : this.auditPagination.currentPage + 1
     },
     showPopupMoreExtraFee() {
       this.isVisiblePopupMoreExtraFee = true
@@ -773,59 +534,26 @@ export default {
     hiddenPopupMoreExtraFee() {
       this.isVisiblePopupMoreExtraFee = false
     },
-
-    isOverThanOld(prop) {
-      if (!this.package_detail.package) {
-        return false
-      }
-
-      if (prop == 'weight') {
-        return (
-          this.package_detail.package.actual_weight >
-          this.package_detail.package[prop]
-        )
-      }
-
-      return (
-        this.package_detail.package.actual_height *
-          this.package_detail.package.actual_width *
-          this.package_detail.package.actual_length >
-        this.package_detail.package.height *
-          this.package_detail.package.width *
-          this.package_detail.package.length
-      )
-    },
-
     handleWayBill() {
       this.actions.wayBill.Description = `Bạn có chắc chắn muốn tạo tracking?`
       this.isVisibleConfirmWayBill = true
     },
-    async handleActionWayBill() {
-      let id = this.packageID
 
-      let params = {
-        ids: [id],
-      }
+    async handleActionWayBill() {
+      let params = { ids: [this.packageID] }
 
       this.actions.wayBill.loading = true
-      this.result = await this.processPackage(params)
+      const res = await this.processPackage(params)
       this.isVisibleConfirmWayBill = false
       this.actions.wayBill.loading = false
 
-      if (!this.result || !this.result.success) {
-        return this.$toast.open({
-          type: 'error',
-          message: this.result.message,
-          duration: 3000,
-        })
+      if (!res || !res.success) {
+        this.$toast.error(res.message, { duration: 3000 })
+        return
       }
 
       this.init()
-      this.$toast.open({
-        type: 'success',
-        message: 'Tạo tracking thành công',
-        duration: 3000,
-      })
+      this.$toast.success('Tạo tracking thành công', { duration: 3000 })
     },
 
     handleCancelPackage() {
@@ -834,69 +562,54 @@ export default {
     },
 
     async cancelPackageAction() {
-      let id = this.packageID
-
-      let payload = {
-        ids: [id],
-      }
+      let payload = { ids: [this.packageID] }
 
       this.actions.cancelPackage.loading = true
       const result = await this[CANCEL_PACKAGES](payload)
       this.visibleConfirmCancel = false
       this.actions.cancelPackage.loading = false
+
       if (!result || !result.success) {
-        return this.$toast.open({
-          type: 'error',
-          message: result.message,
-          duration: 3000,
-        })
+        this.$toast.error(result.message, { duration: 3000 })
+        return
       }
+
       this.init()
-      this.$toast.open({
-        type: 'success',
-        message: 'Hủy đơn thành công',
-        duration: 3000,
-      })
+      this.$toast.success('Hủy đơn thành công', { duration: 3000 })
     },
+
     handlerReturnPackage() {
       this.actions.returnPackage.Description = `Bạn có chắc chắn muốn chuyển lại hàng ?`
       this.visibleConfirmReturn = true
     },
+
     async pendingPickupPackageAction() {
-      const payload = {
-        ids: [this.packageID],
-      }
+      const payload = { ids: [this.packageID] }
+
       this.actions.returnPackage.loading = true
       const result = await this[PENDING_PICKUP_PACKAGES](payload)
       this.visibleConfirmReturn = false
       this.actions.returnPackage.loading = false
+
       if (!result || !result.success) {
-        return this.$toast.open({
-          type: 'error',
-          message: result.message,
-          duration: 3000,
-        })
+        this.$toast.error(result.message, { duration: 3000 })
+        return
       }
+
       this.init()
-      this.$toast.open({
-        type: 'success',
-        message: 'Chuyển lại hàng thành công',
-        duration: 3000,
-      })
+      this.$toast.success('Chuyển lại hàng thành công', { duration: 3000 })
     },
+
     async showContent() {
       document.activeElement && document.activeElement.blur()
 
       const res = await api.fetchBarcodeFile({
-        url: this.package_detail.package.label,
+        url: this.current.label,
         type: 'labels',
       })
+
       if (!res && res.error) {
-        this.$toast.open({
-          type: 'error',
-          message: res.errorMessage,
-          duration: 3000,
-        })
+        this.$toast.error(res.errorMessage, { duration: 3000 })
         return
       }
 
@@ -906,62 +619,6 @@ export default {
       } catch (error) {
         this.$toast.error('File error !!!')
       }
-    },
-
-    displayUserName(item) {
-      if (
-        item.updated_user_role == ROLE_ADMIN ||
-        item.updated_user_role == ROLE_SUPPORT ||
-        item.updated_user_role == ROLE_ACCOUNTANT
-      ) {
-        return 'Bộ phận chăm sóc khách hàng'
-      }
-
-      return item.updated_user_name
-    },
-    displayRole(item) {
-      if (
-        item.updated_user_role == ROLE_ADMIN ||
-        item.updated_user_role == ROLE_SUPPORT ||
-        item.updated_user_role == ROLE_ACCOUNTANT
-      ) {
-        return 'CSKH'
-      }
-
-      return item.updated_user_name
-    },
-  },
-
-  watch: {
-    package_detail: {
-      handler: function(val) {
-        if (val.deliver_logs && val.deliver_logs.length > 0) {
-          const times = this.package_detail.deliver_logs.map((item) =>
-            datetime(item.ship_time, 'dd-MM-yyyy')
-          )
-          this.ConvertData = []
-          const uniqTimes = Uniq(times)
-          uniqTimes.forEach((element) =>
-            this.ConvertData.push({ name: element, data: [] })
-          )
-          this.ConvertData.forEach((item) =>
-            this.package_detail.deliver_logs.forEach(function(it) {
-              if (datetime(it.ship_time, 'dd-MM-yyyy') == item.name) {
-                item.data.push(it)
-              }
-            })
-          )
-          // this.timelinePagination.numberPage = Math.ceil(
-          //   this.ConvertData.length / this.timelinePagination.itemsPerPage
-          // )
-        }
-        if (val.audit_logs && val.audit_logs.length > 0) {
-          this.auditPagination.numberPage = Math.ceil(
-            val.audit_logs.length / this.auditPagination.itemsPerPage
-          )
-        }
-      },
-      deep: true,
     },
   },
 }

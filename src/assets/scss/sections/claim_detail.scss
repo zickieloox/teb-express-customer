@@ -1,388 +1,741 @@
 .claim-detail-page {
+  height: 100%;
+  .container {
     height: 100%;
-    .page__empty{
-        margin-top: -56px;
+  }
+
+  .b-right {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 100px);
+  }
+  .page__empty {
+    margin-top: -56px;
+  }
+  .table {
+    margin: 0;
+    th {
+      height: 66px;
+      &:first-child {
+        padding-left: 8px;
+      }
     }
-    .table {
-        margin: 0;
-        th {
-            height: 66px;
-            &:first-child {
-                padding-left: 8px;
-            }
+    td {
+      height: 84px !important;
+      &:first-child {
+        padding-left: 8px;
+        .design-image {
+          width: 60px;
+          height: 60px;
+          position: relative;
+          border-radius: 4px;
+          object-fit: cover;
         }
-        td {
-            height: 84px !important;
-            &:first-child {
-                padding-left: 8px;
-                .design-image {
-                    width: 60px;
-                    height: 60px;
-                    position: relative;
-                    border-radius: 4px;
-                    object-fit: cover;
-                }
-            }
-            &:last-child {
-                text-align: center;
-                .icon-download {
-                    margin-right: 10px;
-                }
-            }
+      }
+      &:last-child {
+        text-align: center;
+        .icon-download {
+          margin-right: 10px;
         }
+      }
     }
+  }
+
+  .claim-content {
+    position: relative;
+    &::before {
+      content: '';
+      width: 2px;
+      height: 100%;
+      position: absolute;
+      border-radius: 4px;
+      z-index: 999;
+      background-color: #ffd591;
+    }
+
+    &.closed::before {
+      background-color: #c5e6cf;
+    }
+
+    .status {
+      font-size: 14px;
+      padding: 6px 8px;
+      border-radius: 32px;
+      background: #f0fff3;
+      font-weight: 500;
+      line-height: 20px;
+      color: #48be78;
+      margin-bottom: 16px;
+      display: inline-block;
+
+      img {
+        width: 20px;
+        margin-right: 5px;
+        vertical-align: bottom;
+      }
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 28px;
+    }
+
+    .description {
+      line-height: 20px;
+    }
+  }
+
+  .scroll-y, .claim-attachments {
+    &::-webkit-scrollbar {
+      width: 8px;
+      border-radius: 4px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+      background: #fff;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+      background: #edeeee;
+      border-radius: 4px;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+      background: #888;
+    }
+  }
 }
 
-.claim-detail-page {
-    background: #FFFFFF;
-    .page-header-group {
-        margin-bottom: 12px;
-    }
-    .claim-content-page {
-        width: 1080px;
-        margin: auto;
-        .page-header {
-            padding: 0;
-            margin-bottom: 24px;
-            // top: 56px;
-            // width: 1080px;
-            // position: fixed;
-            // padding-top: 24px;
-            // z-index: 999;
-            // background: white;
-            .page-header_back {
-                .text {
-                    color: #626363;
-                }
-                .page-header_back_icon {
-                    margin-bottom: 2px;
-                }
-            }
-            .page-header_title {
-                margin-bottom: 0;
-                font-style: normal;
-                font-weight: normal;
-                font-size: 36px;
-                line-height: 54px;
-                color: #111212;
-                .edit-ticket {
-                    position: relative;
-                    left: 16px;
-                    bottom: 2px;
-                    cursor: pointer;
-                }
-            }
-            .note-content {
-                background: #F6F7F7;
-                border-radius: 8px;
-                height: 40px;
-                color: $color-neutral-7;
-                font-style: italic;
-                font-weight: normal;
-                font-size: 12px;
-                line-height: 16px;
-                display: flex;
-                align-items: center;
-                margin-bottom: 24px;
-                span {
-                    margin-left: 16px;
-                }
-            }
-            .p-tooltip {
-                &::after {
-                    font-size: 1.25rem;
-                    padding: 5px;
-                    line-height: 24px
-                }
-            }
-        }
-        .page-content {
-            .card {
-                padding: 12px 16px 16px 16px;
-                margin-bottom: 24px;
-                background: #FFFFFF;
-                border: 1px solid #E1E2E2;
-                box-sizing: border-box;
-                border-radius: 4px;
-            }
-            .menu_content {
-                .reply {
-                    background: #F6F7F7;
-                    border-radius: 8px;
-                    padding: 16px;
-                    .form-control {
-                        position: relative;
-                        height: 20vh;
-                    }
-                    .btn-reply {
-                        button {
-                            height: 48px;
-                            width: 116px;
-                            font-weight: bold;
-                        }
-                        .upload {
-                            margin-left: 16px;
-                            position: relative;
-                            .p-tooltip::after {
-                                width: 100px;
-                                left: 20px;
-                                text-align: center;
-                            }
-                            .p-tooltip::before {
-                                left: 13px;
-                            }
-                            .el-upload-dragger {
-                                height: 24px;
-                                width: 24px;
-                                background: none;
-                                border: none;
-                                position: absolute;
-                                top: 12px;
-                            }
-                        }
-                    }
-                    .btn-close {
-                        border: 1px solid #CFD0D0;
-                        box-sizing: border-box;
-                        border-radius: 12px;
-                        width: 168px;
-                        height: 48px;
-                        color: $color-neutral-7;
-                        font-weight: 600;
-                        font-size: 14px;
-                        line-height: 22px;
-                        img {
-                            margin-right: 4px;
-                        }
-                    }
-                }
-                .bookmark {
-                    position: absolute;
-                    left: -24px;
-                    top: 0;
-                }
-                .main-claim {
-                    // top: 236px;
-                    // width: 1080px;
-                    // position: fixed !important;
-                    // z-index: 998;
-                }
-                .user-content {
-                    position: relative;
-                    border-left: 1px solid #AAB2FB;
-                    .user-title {
-                        padding-bottom: 12px;
-                        border-bottom: 1px solid #dfe3e8;
-                        .info-user {
-                            .user-name {
-                                color: #37393e;
-                                font-weight: 700;
-                                line-height: 24px;
-                                margin-left: 8px;
-                            }
-                            .role-user {
-                                background-color: #def6f3;
-                                color: #1dc9b7;
-                                font-size: 12px;
-                                border-radius: 50px;
-                                padding: 2px 8px;
-                                font-weight: 500;
-                                margin-left: 8px;
-                            }
-                        }
-                        .user-time {
-                            font-style: normal;
-                            font-weight: normal;
-                            font-size: 14px;
-                            line-height: 22px;
-                            color: #626363;
-                        }
-                    }
-                    .user-text {
-                        margin-top: 16px;
-                        font-size: 14px;
-                        line-height: 22px;
-                        color: $color-neutral-9;
-                        a {
-                            color: $color-turquoise-4;
-                        }
-                    }
-                    .ticket-attach-files {
-                        margin-top: 16px;
-                        .list-item {
-                            display: flex;
-                            .item {
-                                margin-right: 16px;
-                                .gallery-item {
-                                    position: relative;
-                                    img {
-                                        width: 84px !important;
-                                        height: 84px !important;
-                                        object-fit: cover;
-                                    }
-                                    .icon {
-                                        color: #fff;
-                                        position: absolute;
-                                        top: 50%;
-                                        left: 50%;
-                                        transform: translate(-50%, -50%);
-                                        font-size: 25px;
-                                        cursor: pointer;
-                                        display: none;
-                                    }
-                                    &:before {
-                                        content: '';
-                                        position: absolute;
-                                        background-color: rgba(0, 0, 0, 0.2);
-                                        width: 100%;
-                                        height: 100%;
-                                        opacity: 0;
-                                    }
-                                    &:hover::before {
-                                        opacity: 1;
-                                        transition: 0.4s;
-                                    }
-                                    &:hover .icon {
-                                        display: block;
-                                        transition: 0.4s;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            .cs-reply {
-                .card {
-                    border-left: 1px solid #02BABA !important;
-                }
-            }
-        }
-        &.card {
-            padding: 24px;
-        }
-    }
-    .footer {
-        width: 100%;
-        .group-button {
-            float: right;
-            button {
-                margin: 0 4px;
-            }
-        }
-    }
-}
-
-.modal-reply-ticket {
-    background: #FFFFFF;
-    border-radius: 4px;
-    .modal-header {
-        padding: 12px 16px 12px 16px;
-    }
-    .modal-body {
-        padding: 16px;
-    }
-    .page-content {
-        margin: 0 !important;
-    }
-    .rule {
-        margin-top: 8px;
-        flex: 0 0 60%;
-        text-align: left;
-        font-size: 12px;
-        line-height: 18px;
-        color: #b0b3b9;
-    }
-    .form-control {
-        margin-top: 8px;
-        position: relative;
-        width: 100%;
-        border: 1px solid $color-neutral-4;
-        box-sizing: border-box;
-        border-radius: 8px;
-        min-height: 120px;
-        padding: 5px 0 0 16px;
-        color: $color-neutral-9;
-        &::placeholder {
-            color: $color-neutral-4
-        }
-    }
-    .footer {
-        i {
-            font-size: 12px;
-            line-height: 16px;
-            /* identical to box height, or 133% */
-            /* Neutral / Neutral 7 */
-            color: #626363;
-        }
-        .group-button {
-            flex: 0 0 40%;
-            text-align: right;
-        }
-    }
-    .el-upload-dragger {
-        height: auto;
-        .el-upload__text {
-            line-height: 64px;
-            color: $color-java-blue-10;
-            font-weight: normal;
-        }
-    }
-    .remove-file {
-        cursor: pointer;
-        &:hover {
-            color: #db1802;
-        }
-    }
-}
-
-.ticket-attach-files {
-    .gallery-item::before {
-        content: none !important;
-    }
-    .gallery-item>div {
-        cursor: pointer;
-        &::before {
-            content: '';
-            position: absolute;
-            background-color: rgba(0, 0, 0, 0.2);
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-        }
-    }
-    .gallery-item:hover>div {
-        &::before {
-            opacity: 1;
-        }
-    }
-}
-
-.ticket__error {
+.claim-reply {
+  .note {
+    margin-top: 15px;
+    font-style: italic;
     font-size: 12px;
-    border: 1px solid #ED857A;
-    background-color: #FFF4F3;
-    border-radius: 4px;
-    &-title {
-        padding: 10px;
+    line-height: 16px;
+    color: #aaabab;
+
+    & + .ticket__reply-files::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background-color: #e1e2e2;
+      margin-top: 8px;
+      margin-bottom: 15px;
     }
-    &-list {
-        padding: 0 10px 10px;
-    }
+  }
+
+  .card-content {
+    overflow: unset;
+  }
 }
 
-.ticket__reply-files {
-    img {
-        cursor: pointer;
+.claim-reply-form {
+  position: relative;
+
+  .upload {
+    position: absolute;
+    z-index: 9;
+    left: 15px;
+    line-height: 44px;
+    height: 44px;
+    display: flex;
+
+    &:after {
+      content: '';
+      display: inline-block;
+      width: 1px;
+      height: 24px;
+      background-color: #ddd;
+      margin-left: 14px;
+      margin-top: 10px;
     }
+
+    .el-upload-dragger {
+      width: auto;
+      height: auto;
+      background-color: transparent;
+      border: 0;
+      opacity: 0.6;
+
+      img {
+        width: 15px;
+      }
+    }
+
+    .p-tooltip {
+      display: inline-block;
+      height: 44px;
+
+      &:after {
+        width: auto;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  textarea {
+    position: relative;
+    resize: none;
+    padding-left: 58px;
+    height: 44px;
+    margin-right: 8px;
+  }
+
+  button {
+    white-space: nowrap;
+  }
+}
+
+.claim-attachments {
+  height: 274px;
+  overflow-y: scroll;
+
+  .thumb {
+    width: 64px !important;
+    height: 64px !important;
+    margin-right: 8px;
+    display: block;
+    position: relative;
+    background-color: #f6f7f7;
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+
+    .icon {
+      position: absolute;
+      z-index: 99;
+      display: none;
+      width: 24px;
+      height: 24px;
+    }
+
+    &:hover::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.75);
+    }
+
+    &:hover {
+      .icon {
+        display: block;
+      }
+    }
+
+    img {
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      max-height: 100%;
+      max-width: 100%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .item {
+    clear: both;
+    margin-bottom: 0;
+    margin-right: 16px;
+
+    span {
+      font-size: 14px;
+      width: calc(100% - 72px);
+    }
+    time {
+      display: block;
+      font-size: 12px;
+      line-height: 16px;
+      color: #aaabab;
+    }
+
+    + .item {
+      border-top: 1px solid #edeeee;
+      margin-top: 16px;
+      padding-top: 16px;
+    }
+  }
 }
 
 .claim-messages {
-    width: 100%;
-    position: relative;
-}
+  min-height: 300px;
 
-.err-span {
-    color: red;
-    font-size: 12px;
+  .card-content {
+    height: 100%;
+    padding-right: 0;
+  }
+
+  .scroll-y {
+    overflow-y: scroll;
+    position: relative;
+    height: 100%;
+  }
+
+  .list-messages {
+    padding-right: 16px;
+  }
+
+  .message {
+    & + .message {
+      margin-top: 24px;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    .avatar {
+      height: 32px;
+      width: 32px;
+      margin-right: 8px;
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .user {
+      display: flex;
+      margin-bottom: 4px;
+
+      .info {
+        height: 32px;
+      }
+      .user-name {
+        line-height: 20px;
+        margin-bottom: -5px;
+        font-weight: 700;
+      }
+
+      .user-role {
+        font-size: 12px;
+        padding: 2px 8px;
+        color: #00b7b0;
+        border-radius: 50px;
+        background: #ddf2f2;
+        line-height: 16px;
+        margin-left: 4px;
+      }
+
+      .post-time {
+        font-size: 10px;
+        color: #626363;
+        font-weight: 600;
+      }
+    }
+
+    .message-content {
+      margin-left: 40px;
+      margin-right: 10%;
+      .message-text {
+        text-align: left;
+        .w-text {
+          padding: 16px;
+          background-color: #f6f7f7;
+          border-radius: 0 32px 32px 0;
+          display: inline-block;
+        }
+
+        & + .message-text {
+          margin-top: 1px;
+        }
+
+        &:last-child .w-text {
+          border-bottom-left-radius: 32px;
+        }
+      }
+    }
+  }
+
+  .message.me {
+    .user {
+      flex-direction: row-reverse;
+    }
+    .info {
+      text-align: right;
+    }
+
+    .avatar {
+      margin-right: 0;
+      margin-left: 8px;
+    }
+
+    .message-content {
+      flex-direction: row-reverse;
+      margin-left: 10%;
+      margin-right: 40px;
+
+      .message-text {
+        text-align: right;
+        .w-text {
+          background-color: #3f51b5;
+          color: #fff;
+          border-radius: 32px 0 0 32px;
+
+          a {
+            color: #fff;
+            text-decoration: underline;
+          }
+        }
+
+        &:last-child .w-text {
+          border-bottom-right-radius: 32px;
+        }
+      }
+    }
+  }
 }
+// .claim-detail-page {
+//   .page-header-group {
+//     margin-bottom: 12px;
+//   }
+//   .claim-content-page {
+//     width: 1080px;
+//     margin: auto;
+//     .page-header {
+//       padding: 0;
+//       margin-bottom: 24px;
+//       // top: 56px;
+//       // width: 1080px;
+//       // position: fixed;
+//       // padding-top: 24px;
+//       // z-index: 999;
+//       // background: white;
+//       .page-header_back {
+//         .text {
+//           color: #626363;
+//         }
+//         .page-header_back_icon {
+//           margin-bottom: 2px;
+//         }
+//       }
+//       .page-header_title {
+//         margin-bottom: 0;
+//         font-style: normal;
+//         font-weight: normal;
+//         font-size: 36px;
+//         line-height: 54px;
+//         color: #111212;
+//         .edit-ticket {
+//           position: relative;
+//           left: 16px;
+//           bottom: 2px;
+//           cursor: pointer;
+//         }
+//       }
+//       .note-content {
+//         background: #f6f7f7;
+//         border-radius: 8px;
+//         height: 40px;
+//         color: $color-neutral-7;
+//         font-style: italic;
+//         font-weight: normal;
+//         font-size: 12px;
+//         line-height: 16px;
+//         display: flex;
+//         align-items: center;
+//         margin-bottom: 24px;
+//         span {
+//           margin-left: 16px;
+//         }
+//       }
+//       .p-tooltip {
+//         &::after {
+//           font-size: 1.25rem;
+//           padding: 5px;
+//           line-height: 24px;
+//         }
+//       }
+//     }
+//     .page-content {
+//       .card {
+//         padding: 12px 16px 16px 16px;
+//         margin-bottom: 24px;
+//         background: #ffffff;
+//         border: 1px solid #e1e2e2;
+//         box-sizing: border-box;
+//         border-radius: 4px;
+//       }
+//       .menu_content {
+//         .reply {
+//           background: #f6f7f7;
+//           border-radius: 8px;
+//           padding: 16px;
+//           .form-control {
+//             position: relative;
+//             height: 20vh;
+//           }
+//           .btn-reply {
+//             button {
+//               height: 48px;
+//               width: 116px;
+//               font-weight: bold;
+//             }
+//             .upload {
+//               margin-left: 16px;
+//               position: relative;
+//               .p-tooltip::after {
+//                 width: 100px;
+//                 left: 20px;
+//                 text-align: center;
+//               }
+//               .p-tooltip::before {
+//                 left: 13px;
+//               }
+//               .el-upload-dragger {
+//                 height: 24px;
+//                 width: 24px;
+//                 background: none;
+//                 border: none;
+//                 position: absolute;
+//                 top: 12px;
+//               }
+//             }
+//           }
+//           .btn-close {
+//             border: 1px solid #cfd0d0;
+//             box-sizing: border-box;
+//             border-radius: 12px;
+//             width: 168px;
+//             height: 48px;
+//             color: $color-neutral-7;
+//             font-weight: 600;
+//             font-size: 14px;
+//             line-height: 22px;
+//             img {
+//               margin-right: 4px;
+//             }
+//           }
+//         }
+//         .bookmark {
+//           position: absolute;
+//           left: -24px;
+//           top: 0;
+//         }
+//         .main-claim {
+//           // top: 236px;
+//           // width: 1080px;
+//           // position: fixed !important;
+//           // z-index: 998;
+//         }
+//         .user-content {
+//           position: relative;
+//           border-left: 1px solid #aab2fb;
+//           .user-title {
+//             padding-bottom: 12px;
+//             border-bottom: 1px solid #dfe3e8;
+//             .info-user {
+//               .user-name {
+//                 color: #37393e;
+//                 font-weight: 700;
+//                 line-height: 24px;
+//                 margin-left: 8px;
+//               }
+//               .role-user {
+//                 background-color: #def6f3;
+//                 color: #1dc9b7;
+//                 font-size: 12px;
+//                 border-radius: 50px;
+//                 padding: 2px 8px;
+//                 font-weight: 500;
+//                 margin-left: 8px;
+//               }
+//             }
+//             .user-time {
+//               font-style: normal;
+//               font-weight: normal;
+//               font-size: 14px;
+//               line-height: 22px;
+//               color: #626363;
+//             }
+//           }
+//           .user-text {
+//             margin-top: 16px;
+//             font-size: 14px;
+//             line-height: 22px;
+//             color: $color-neutral-9;
+//             a {
+//               color: $color-turquoise-4;
+//             }
+//           }
+//           .ticket-attach-files {
+//             margin-top: 16px;
+//             .list-item {
+//               display: flex;
+//               .item {
+//                 margin-right: 16px;
+//                 .gallery-item {
+//                   position: relative;
+//                   img {
+//                     width: 84px !important;
+//                     height: 84px !important;
+//                     object-fit: cover;
+//                   }
+//                   .icon {
+//                     color: #fff;
+//                     position: absolute;
+//                     top: 50%;
+//                     left: 50%;
+//                     transform: translate(-50%, -50%);
+//                     font-size: 25px;
+//                     cursor: pointer;
+//                     display: none;
+//                   }
+//                   &:before {
+//                     content: '';
+//                     position: absolute;
+//                     background-color: rgba(0, 0, 0, 0.2);
+//                     width: 100%;
+//                     height: 100%;
+//                     opacity: 0;
+//                   }
+//                   &:hover::before {
+//                     opacity: 1;
+//                     transition: 0.4s;
+//                   }
+//                   &:hover .icon {
+//                     display: block;
+//                     transition: 0.4s;
+//                   }
+//                 }
+//               }
+//             }
+//           }
+//         }
+//       }
+//       .cs-reply {
+//         .card {
+//           border-left: 1px solid #02baba !important;
+//         }
+//       }
+//     }
+//     &.card {
+//       padding: 24px;
+//     }
+//   }
+//   .footer {
+//     width: 100%;
+//     .group-button {
+//       float: right;
+//       button {
+//         margin: 0 4px;
+//       }
+//     }
+//   }
+// }
+
+// .modal-reply-ticket {
+//   background: #ffffff;
+//   border-radius: 4px;
+//   .modal-header {
+//     padding: 12px 16px 12px 16px;
+//   }
+//   .modal-body {
+//     padding: 16px;
+//   }
+//   .page-content {
+//     margin: 0 !important;
+//   }
+//   .rule {
+//     margin-top: 8px;
+//     flex: 0 0 60%;
+//     text-align: left;
+//     font-size: 12px;
+//     line-height: 18px;
+//     color: #b0b3b9;
+//   }
+//   .form-control {
+//     margin-top: 8px;
+//     position: relative;
+//     width: 100%;
+//     border: 1px solid $color-neutral-4;
+//     box-sizing: border-box;
+//     border-radius: 8px;
+//     min-height: 120px;
+//     padding: 5px 0 0 16px;
+//     color: $color-neutral-9;
+//     &::placeholder {
+//       color: $color-neutral-4;
+//     }
+//   }
+//   .footer {
+//     i {
+//       font-size: 12px;
+//       line-height: 16px;
+//       /* identical to box height, or 133% */
+//       /* Neutral / Neutral 7 */
+//       color: #626363;
+//     }
+//     .group-button {
+//       flex: 0 0 40%;
+//       text-align: right;
+//     }
+//   }
+//   .el-upload-dragger {
+//     height: auto;
+//     .el-upload__text {
+//       line-height: 64px;
+//       color: $color-java-blue-10;
+//       font-weight: normal;
+//     }
+//   }
+//   .remove-file {
+//     cursor: pointer;
+//     &:hover {
+//       color: #db1802;
+//     }
+//   }
+// }
+
+// .ticket-attach-files {
+//   .gallery-item::before {
+//     content: none !important;
+//   }
+//   .gallery-item > div {
+//     cursor: pointer;
+//     &::before {
+//       content: '';
+//       position: absolute;
+//       background-color: rgba(0, 0, 0, 0.2);
+//       width: 100%;
+//       height: 100%;
+//       opacity: 0;
+//     }
+//   }
+//   .gallery-item:hover > div {
+//     &::before {
+//       opacity: 1;
+//     }
+//   }
+// }
+
+// .ticket__error {
+//   font-size: 12px;
+//   border: 1px solid #ed857a;
+//   background-color: #fff4f3;
+//   border-radius: 4px;
+//   &-title {
+//     padding: 10px;
+//   }
+//   &-list {
+//     padding: 0 10px 10px;
+//   }
+// }
+
+// .ticket__reply-files {
+//   img {
+//     cursor: pointer;
+//   }
+// }
+
+// .err-span {
+//   color: red;
+//   font-size: 12px;
+// }

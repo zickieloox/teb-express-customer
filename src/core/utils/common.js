@@ -2,6 +2,7 @@ import { hasOwn } from '@core/utils/object'
 import { isObject } from '@core/utils/type'
 import _debounce from 'lodash/debounce'
 import _isEqual from 'lodash/isEqual'
+import _isEmpty from 'lodash/isEmpty'
 
 /**
  * Is def
@@ -128,4 +129,8 @@ export const debounce = (fn, wait) => {
 
 export const isEqual = (v1, v2) => {
   return _isEqual(v1, v2)
+}
+
+export const isEmpty = (val) => {
+  return _isEmpty(val)
 }

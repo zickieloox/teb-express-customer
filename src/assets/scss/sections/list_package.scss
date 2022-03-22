@@ -1,18 +1,19 @@
 .list-packages {
-    .action-header{
+    .action-header {
         display: flex;
         justify-content: space-between;
     }
-    .page-header{
+    .page-header {
         padding: 8px 24px 25px 24px;
     }
-    .page-header-temp{
+    .page-header-temp {
         height: 77px;
     }
-    .card-body{
-        padding: 16px 24px 24px 24px !important; ;
+    .card-body {
+        padding: 16px 24px 24px 24px !important;
+        ;
     }
-    .page-header.on-scroll{
+    .page-header.on-scroll {
         position: fixed;
         z-index: 4;
         background: white;
@@ -24,10 +25,13 @@
         transition: 0.3s all;
     }
     @keyframes fadeIn {
-        0% {opacity:0;}
-        100% {opacity:1;}
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
     }
-
     .page-header__title {
         .btn-excel {
             border: none;
@@ -56,8 +60,8 @@
             color: $color-java-blue-6;
         }
     }
-    .page-header__input{
-        .input-group{
+    .page-header__input {
+        .input-group {
             width: 510px;
         }
     }
@@ -69,8 +73,7 @@
                 margin-left: 30px;
                 font-weight: normal;
                 position: relative;
-
-                &:before{
+                &:before {
                     content: '';
                     position: absolute;
                     top: 0;
@@ -81,10 +84,9 @@
                 }
             }
             .bulk-actions__selection-status {
-               margin-right: 8px;
+                margin-right: 8px;
             }
         }
-
     }
     .p-modal {
         table {
@@ -201,6 +203,9 @@
                 color: $color-neutral-5;
             }
         }
+        .reportrange-text {
+            min-width: max-content;
+        }
     }
     #nav_container {
         position: relative;
@@ -272,12 +277,12 @@
         .svg {
             opacity: 0;
         }
-        tr{
-            span.code{
+        tr {
+            span.code {
                 position: relative;
                 top: 2px;
             }
-            .action{
+            .action {
                 padding: 0;
                 max-width: 30vw;
             }
@@ -300,46 +305,40 @@
                     }
                 }
             }
-            .tracking{
+            .tracking {
                 color: $color-neutral-9;
-                svg{
+                svg {
                     margin-bottom: 2px;
                 }
-                &:hover{
+                &:hover {
                     color: $color-turquoise-6;
-                    svg{
-                        path{
+                    svg {
+                        path {
                             stroke: $color-turquoise-6;
                         }
                     }
                 }
             }
-
-
-
-            .list-warning{
-                svg{
+            .list-warning {
+                svg {
                     margin-bottom: 4px;
                 }
             }
         }
-        tr.deactive{
-            a.tracking{
-                svg{
-                    path{
+        tr.deactive {
+            a.tracking {
+                svg {
+                    path {
                         stroke: $color-neutral-5;
                     }
                 }
             }
         }
-
-     //responsive on resize screen
-     .sm-view{
-         .action{
-             max-width: 22vw !important;
-         }
-     }
-
-
+        //responsive on resize screen
+        .sm-view {
+            .action {
+                max-width: 22vw !important;
+            }
+        }
     }
 }

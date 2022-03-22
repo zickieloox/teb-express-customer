@@ -37,7 +37,8 @@
             <div class="group-button">
               <button
                 v-if="showCancel"
-                class="btn btn-danger"
+                class="btn"
+                :class="`btn-${typeCancel}`"
                 ref="cancelButton"
                 @click="cancel('button')"
               >
@@ -82,6 +83,10 @@ export default {
     type: {
       type: String,
       default: 'primary',
+    },
+    typeCancel: {
+      type: String,
+      default: 'danger',
     },
     confirmText: {
       type: String,

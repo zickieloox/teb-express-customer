@@ -1,43 +1,38 @@
 <template>
-  <div class="message" :class="{ 'cs-reply': roleName }">
-    <div class="user-content card">
-      <div class="user-title d-flex justify-content-between align-items-center">
-        <div class="info-user">
-          <img
-            src="~@/assets/img/avatar-dark.svg"
-            alt="avatar"
-            class="avatar-user"
-          />
-          <span class="user-name">{{ displayName }}</span>
-          <span class="role-user" v-show="roleName">{{ roleName }}</span>
-        </div>
-        <div class="user-time">
-          {{ current.created_at | datetime('dd/MM/yyyy HH:mm:ss') }}
-        </div>
+  <div class="message" :class="{ me: isMeReply }">
+    <div class="user">
+      <div class="avatar">
+        <img
+          src="~@/assets/img/avatar-dark.svg"
+          alt="avatar"
+          class="avatar-user"
+        />
       </div>
-      <div class="user-text">
-        <span v-html="formatText(current.content)"></span>
+      <div class="info">
+        <p class="user-name">
+          <span>{{ displayName }}</span>
+          <span class="user-role" v-show="roleName">{{ roleName }}</span>
+        </p>
+        <time class="post-time">{{ current.datetime }}</time>
       </div>
-      <div class="gallery ticket-attach-files" v-if="hasFiles">
-        <div class="list-item">
-          <div class="item" v-for="(file, i) in files" :key="i">
-            <div :class="classImage(file)">
-              <File :src="file" :id="messageId" />
-            </div>
-          </div>
+    </div>
+    <div class="message-content">
+      <div class="message-text" v-for="(item, i) in current.items" :key="i">
+        <div class="w-text">
+          <p v-html="formatText(item)"></p>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import File from './File'
 import AuthService from '@core/services/auth'
 import { ROLE_ADMIN, ROLE_SUPPORT, ROLE_ACCOUNTANT } from '@core/constants'
 
+const ROLE_LIONBAY = [ROLE_ADMIN, ROLE_SUPPORT, ROLE_ACCOUNTANT]
+
 export default {
   name: 'TicketMessage',
-  components: { File },
   props: {
     current: {
       type: Object,
@@ -59,26 +54,21 @@ export default {
         return this.current.full_name || 'Me'
       }
 
-      if (
-        this.current.role === ROLE_ADMIN ||
-        this.current.role === ROLE_SUPPORT ||
-        this.current.role === ROLE_ACCOUNTANT
-      ) {
+      if (ROLE_LIONBAY.includes(this.current.role)) {
         return this.current.full_name || 'Support'
       }
 
       return this.current.user_name || 'Undefined'
     },
     roleName() {
-      if (
-        this.current.role == ROLE_ADMIN ||
-        this.current.role === ROLE_SUPPORT ||
-        this.current.role === ROLE_ACCOUNTANT
-      ) {
+      if (ROLE_LIONBAY.includes(this.current.role)) {
         return 'CSKH'
       }
 
       return ''
+    },
+    isMeReply() {
+      return this.current.user_id == this.authId
     },
     authId() {
       return AuthService.getId()

@@ -13,6 +13,8 @@ export const PackageStatusReturned = 40
 export const PackageStatusCancelled = 50
 export const PackageStatusExpired = 70
 
+export const PACKAGE_DELIVERY_LOG_TYPE__RESHIP = 80
+
 export const PackageStatusCreatedText = 'pending'
 export const PackageStatusPendingPickupText = 'pre-transit'
 export const PackageStatusProcessingText = 'processing'
@@ -131,6 +133,7 @@ export const CHANGE_PACKAGE_TYPE = [
   'Phí phát sinh khác',
   'Xác nhận xóa cảnh báo địa chỉ không hợp lệ',
   'Bỏ qua kiểm tra địa chỉ bằng API',
+  'Reship',
   'Mã đơn hàng',
 ]
 
@@ -143,6 +146,7 @@ export const DELIVER_LOG_PACKAGE = {
   [PackageStatusCancelled]: 'Label canceled',
   [PackageStatusDelivered]: 'Delivered',
   [PackageStatusWareHouseExport]: 'Departed from LionBay Processing Center',
+  [PACKAGE_DELIVERY_LOG_TYPE__RESHIP]: 'Reship package',
 }
 
 export const ROLE_ADMIN = 'admin'
