@@ -6,31 +6,29 @@
     <button class="icon-nav prev active" @click="clickRightNav">
       <i class="right-nav"></i>
     </button>
-    <div class="wrap-status-list">
-      <ul
-        role="tablist"
-        class="nav nav-tabs nav-tabs-line"
-        id="nav_packages"
-        :style="setRight"
+    <ul
+      role="tablist"
+      class="nav nav-tabs nav-tabs-line"
+      id="nav_packages"
+      :style="setRight"
+    >
+      <li
+        role="presentation"
+        class="nav-item"
+        v-for="(item, i) in cleanStatus"
+        :id="getClass(i)"
+        :key="i"
       >
-        <li
-          role="presentation"
-          class="nav-item"
-          v-for="(item, i) in cleanStatus"
-          :id="getClass(i)"
-          :key="i"
+        <a
+          href="#"
+          class="nav-link"
+          :class="{ active: item.value === value }"
+          @click.prevent="handleClick(item.value)"
         >
-          <a
-            href="#"
-            class="nav-link"
-            :class="{ active: item.value === value }"
-            @click.prevent="handleClick(item.value)"
-          >
-            {{ item.text }}
-          </a>
-        </li>
-      </ul>
-    </div>
+          {{ item.text }}
+        </a>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -179,7 +177,7 @@ export default {
     right: 0 !important;
   }
 }
-.wrap-status-list {
+/* .wrap-status-list {
   overflow-x: scroll;
 }
 .wrap-status-list .nav-tabs {
@@ -188,5 +186,5 @@ export default {
 }
 .wrap-status-list .nav-tabs .nav-item {
   white-space: nowrap;
-}
+} */
 </style>
