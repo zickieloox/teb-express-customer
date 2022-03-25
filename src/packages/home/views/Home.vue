@@ -126,6 +126,8 @@ import {
   PACKAGE_STATUS_RETURNED,
   PACKAGE_STATUS_CANCELLED,
   PACKAGE_STATUS_WAREHOUSE_EXPORT,
+  PACKAGE_STATUS_IMPORT_HUB,
+  PACKAGE_STATUS_EXPORT_HUB,
 } from '../constant'
 // import ModalTracking from '../../tracking/components/ModalTracking.vue'
 
@@ -267,6 +269,8 @@ export default {
             this.numbers.processing += count
             this.datavalues.processing[index] += count
             break
+          case PACKAGE_STATUS_IMPORT_HUB:
+          case PACKAGE_STATUS_EXPORT_HUB:
           case PACKAGE_STATUS_INTRANSIT:
             this.numbers.intransit += count
             this.datavalues.intransit[index] += count
