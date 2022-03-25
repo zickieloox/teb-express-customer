@@ -1,7 +1,6 @@
 FROM node:12.2.0 as builder
 WORKDIR /shipping-customer
 ADD ./ /shipping-customer
-RUN yarn global add @vue/cli
 RUN yarn install
 ARG MODE
 RUN yarn run build --mode ${MODE}
