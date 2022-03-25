@@ -109,6 +109,7 @@ const getFormatStatus = (status) => {
     case 'Từ chối':
     case 'canceled':
     case 'Không thành công':
+    case 'Giao không thành công':
     case 'undelivered':
       statusClass = 'danger'
       break
