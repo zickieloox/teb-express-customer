@@ -1,10 +1,15 @@
-export const CLAIM_STATUS = {
-  'Đang xử lý': 1,
-  'Đã xử lý': 2,
-}
-
 export const CLAIM_STATUS_PENDING = 1
 export const CLAIM_STATUS_PROCESSED = 2
+
+export const CLAIM_STATUS = {
+  'Đang xử lý': CLAIM_STATUS_PENDING,
+  'Đã xử lý': CLAIM_STATUS_PROCESSED,
+}
+
+export const CLAIM_STATUS_TEXT = {
+  [CLAIM_STATUS_PENDING]: 'Đang xử lý',
+  [CLAIM_STATUS_PROCESSED]: 'Đã xử lý',
+}
 
 export const CLAIMCLAIM_CUSTOMER_REPLY_INIT = 0
 export const CLAIM_ADMIN_REPLY = 1

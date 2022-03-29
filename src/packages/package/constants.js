@@ -12,6 +12,7 @@ export const PackageStatusDelivered = 60
 export const PackageStatusReturned = 40
 export const PackageStatusCancelled = 50
 export const PackageStatusExpired = 70
+export const PackageStatusUndelivered = 90
 
 export const PACKAGE_DELIVERY_LOG_TYPE__RESHIP = 80
 
@@ -23,7 +24,7 @@ export const PackageStatusDeliveredText = 'delivered'
 export const PackageStatusAlertText = 'alert'
 export const PackageStatusCancelledText = 'canceled'
 export const PackageStatusExpiredText = 'expired'
-export const PackageStatusUndelivered = 'undelivered'
+export const PackageStatusUndeliveredText = 'undelivered'
 export const PackageStatusReturnText = 'return'
 
 export const PackageAlertTypeOverPretransit = 1
@@ -67,6 +68,10 @@ export const PACKAGE_STATUS_TAB = [
     value: PackageStatusExpiredText,
     text: 'Expired',
   },
+  {
+    value: PackageStatusUndeliveredText,
+    text: 'Undelivered',
+  },
 ]
 
 export const MAP_NAME_STATUS_PACKAGE = {
@@ -104,6 +109,10 @@ export const MAP_NAME_STATUS_PACKAGE = {
   },
   [PackageStatusExpiredText]: {
     value: 'expired',
+    class: 'badge-cancel',
+  },
+  [PackageStatusUndeliveredText]: {
+    value: 'undelivered',
     class: 'badge-cancel',
   },
 }

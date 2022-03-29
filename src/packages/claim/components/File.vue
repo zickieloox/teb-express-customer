@@ -1,5 +1,5 @@
 <template>
-  <div @click="showContent">
+  <div @click="showContent" class="thumb">
     <img
       :src="image"
       :data-src="src"
@@ -9,6 +9,7 @@
       @error="handleImageError"
       v-bind="$attrs"
     />
+    <slot></slot>
   </div>
 </template>
 
@@ -36,6 +37,10 @@ export default {
     id: {
       type: Number,
       default: 0,
+    },
+    name: {
+      type: String,
+      default: '',
     },
   },
   computed: {
@@ -96,11 +101,7 @@ export default {
       return `${URL_IMAGES}/${src}`
     },
     showContent() {
-      if (this.isImage) {
-        this.zoomImage()
-      } else {
-        this.download()
-      }
+      this.download()
     },
     async zoomImage() {
       if (!this.isImage) return
@@ -131,7 +132,9 @@ export default {
       if (!res || res.error) {
         return this.$toast.open({ type: 'error', message: res.error })
       }
-      Browser.downloadBlob(res, this.src.split('/').pop())
+
+      const name = this.name || this.src.split('/').pop()
+      Browser.downloadBlob(res, name)
     },
   },
   watch: {
