@@ -1,5 +1,9 @@
 <template>
-  <div id="nav_container" class="p-tabs nav-tabs-horizontal">
+  <div
+    id="nav_container"
+    class="p-tabs nav-tabs-horizontal"
+    style="overflow: hidden;"
+  >
     <button class="icon-nav next" @click="clickLeftNav">
       <i class="left-nav"></i>
     </button>
@@ -163,7 +167,7 @@ export default {
 }
 </script>
 <style>
-@media only screen and (max-width: 1366px) {
+@media only screen and (max-width: 1666px) {
   .icon-nav {
     display: block !important;
   }
@@ -172,9 +176,15 @@ export default {
     width: 400%;
   }
 }
-@media only screen and (min-width: 1367px) {
+@media only screen and (min-width: 1667px) {
   ul#nav_packages {
     right: 0 !important;
   }
+}
+ul#nav_packages {
+  flex-wrap: nowrap;
+}
+ul#nav_packages .nav-item {
+  white-space: nowrap;
 }
 </style>
