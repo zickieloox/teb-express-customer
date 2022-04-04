@@ -1,7 +1,13 @@
 <template>
-  <div class="animsition dashboard site-menubar-unfold">
+  <div
+    class="animsition dashboard"
+    :class="{
+      'site-menubar-unfold': isSidebarOpen,
+      'site-menubar-hide': !isSidebarOpen,
+    }"
+  >
     <p-header :user="user" />
-    <p-sidebar />
+    <p-sidebar @toggleShowSidebar="toggleShowSidebar" />
 
     <router-view
       :key="$route.path"
@@ -91,6 +97,9 @@ export default {
       }
       this.warning = false
       this.$store.commit('shared/checkDebt', false)
+    },
+    toggleShowSidebar() {
+      this.isSidebarOpen = !this.isSidebarOpen
     },
   },
 }
