@@ -1,5 +1,5 @@
 <template>
-  <div class="site-menubar">
+  <div class="site-menubar" :class="{ 'active-collap': !isSidebarOpen }">
     <div class="site-menubar-logo">
       <router-link to="/"
         ><img src="@assets/img/logo_lionbay_white.svg" alt="lionbay"
@@ -78,13 +78,14 @@
         </li>
       </ul>
     </div>
+
     <div class="site-menubar-claim">
       <div
         class="site-menu"
         :class="{ 'site-menu-active': visibleModal }"
         @click="handleVisibleModalClaim"
       >
-        <div>
+        <div class="claim-icon">
           <inline-svg
             :src="
               require('../../../../src/assets/img/message-question-bold.svg')
@@ -94,6 +95,17 @@
         <div class="claim">Tạo trợ giúp, khiếu nại</div>
       </div>
     </div>
+
+    <div class="site-menubar-footer">
+      <p-tooltip label="Thu gọn menu" size="large" position="top" type="dark">
+        <div class="menubar-icon" @click="toggleSidebar">
+          <inline-svg
+            :src="require('../../../../src/assets/img/leftcollapse.svg')"
+          ></inline-svg>
+        </div>
+      </p-tooltip>
+    </div>
+
     <modal-add-claim :visible.sync="visibleModal" :title="`Khiếu nại`">
     </modal-add-claim>
   </div>
@@ -111,10 +123,10 @@ export default {
     ModalAddClaim,
   },
   props: {
-    isSidebarOpen: {
-      type: Boolean,
-      default: true,
-    },
+    // isSidebarOpen: {
+    //   type: Boolean,
+    //   default: true,
+    // },
   },
 
   computed: {
@@ -124,6 +136,7 @@ export default {
   },
   data() {
     return {
+      isSidebarOpen: true,
       hoverIndex: -1,
       isActiveSub: false,
       activeSubIndex: 0,
@@ -243,6 +256,11 @@ export default {
     },
     closeItem(menu) {
       menu.isOpen = false
+    },
+
+    toggleSidebar() {
+      this.isSidebarOpen = !this.isSidebarOpen
+      this.$emit('toggleShowSidebar')
     },
     handleVisibleModalClaim() {
       this.visibleModal = true

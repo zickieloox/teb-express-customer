@@ -3,6 +3,7 @@ $menubar-height:510px;
 .site-navbar {
     position: fixed;
     z-index: 5;
+    transition: width .3s;
 }
 
 .site-menu {
@@ -77,6 +78,7 @@ $menubar-height:510px;
     position: fixed;
     width: $sidebar-width;
     background: #FFFFFF;
+    transition: width 0.3s ease;
     height: 100%;
     z-index: 5;
     background: #141F65;
@@ -91,8 +93,36 @@ $menubar-height:510px;
         }
     }
     &-body {
-        height: $menubar-height
+        height: max-content;
     }
+    &.active-collap{
+        .menubar-icon{
+            transform: rotate(180deg);
+        }
+        .site-menu-title{
+            display: none;
+        }
+        width: calc( #{$sidebar-width} / 2 );
+        .site-menubar-footer{
+            width: calc( #{$sidebar-width} / 2 );
+        }
+        .claim{
+            display: none;
+        }
+        .site-menubar-claim{
+            justify-content: center;
+        }
+        .item-link{
+            margin: 16px 0;
+            padding: 3px;
+            border-radius: 8px !important;
+        }
+        .open-right{
+            top: -80px;
+            left: calc(120px - 70px);
+        }
+    }
+
 }
 
 .site-menu-item {
@@ -167,21 +197,40 @@ $menubar-height:510px;
     }
 }
 
-//Logout
-.site-menubar-hide .site-menu-title {
-    opacity: 0;
-    visibility: hidden;
-}
 
-.site-menubar-hide .package-user {
-    display: none;
-}
-
-@keyframes fade-in {
-    from {
-        opacity: 0;
+.site-menubar-hide {
+    .package-user {
+        display: none;
     }
-    to {
-        opacity: 1;
+    .site-navbar{
+        width: calc(100% - 60px);
     }
 }
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    .site-menubar-footer{
+        text-align: center;
+        position: fixed;
+        width: $sidebar-width;
+        bottom: 1%;
+        .menubar-icon{
+            cursor: pointer;
+        }
+        .menubar-icon{
+            transition:  0.3s;
+        }
+        .p-tooltip.is-dark:after{
+            color:#141F65 ;
+            background: #DDF2F2;
+        }
+        .p-tooltip.is-top.is-dark:before{
+            border-top: 5px solid #DDF2F2;
+        }
+    }
