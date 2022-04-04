@@ -181,8 +181,13 @@
     .cc-unoo {
         left: unset !important;
         bottom: 80px !important;
+
     }
     .cc-ge4v{
         left: unset !important;
     }
+}
+.crisp-client .cc-kv6t[data-position-reverse=true] .cc-1xry .cc-ge4v, .crisp-client .cc-kv6t[data-position-reverse=true] .cc-1xry .cc-unoo{
+    left: unset !important;
+    right: 20px !important;
 }

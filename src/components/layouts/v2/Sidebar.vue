@@ -85,7 +85,7 @@
         :class="{ 'site-menu-active': visibleModal }"
         @click="handleVisibleModalClaim"
       >
-        <div>
+        <div class="claim-icon">
           <inline-svg
             :src="
               require('../../../../src/assets/img/message-question-bold.svg')
