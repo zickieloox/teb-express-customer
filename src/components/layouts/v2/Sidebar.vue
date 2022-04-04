@@ -78,6 +78,24 @@
         </li>
       </ul>
     </div>
+    <div class="site-menubar-claim">
+      <div
+        class="site-menu"
+        :class="{ 'site-menu-active': visibleModal }"
+        @click="handleVisibleModalClaim"
+      >
+        <div>
+          <inline-svg
+            :src="
+              require('../../../../src/assets/img/message-question-bold.svg')
+            "
+          ></inline-svg
+        ></div>
+        <div class="claim">Tạo trợ giúp, khiếu nại</div>
+      </div>
+    </div>
+    <modal-add-claim :visible.sync="visibleModal" :title="`Khiếu nại`">
+    </modal-add-claim>
   </div>
 </template>
 
@@ -85,9 +103,13 @@
 
 <script>
 import { isObject } from '@core/utils/type'
+import ModalAddClaim from '../../../packages/claim/components/ModalAddClaim.vue'
 
 export default {
   name: 'Sidebar',
+  components: {
+    ModalAddClaim,
+  },
   props: {
     isSidebarOpen: {
       type: Boolean,
@@ -174,6 +196,7 @@ export default {
           ],
         },
       ],
+      visibleModal: false,
     }
   },
 
@@ -220,6 +243,9 @@ export default {
     },
     closeItem(menu) {
       menu.isOpen = false
+    },
+    handleVisibleModalClaim() {
+      this.visibleModal = true
     },
   },
 }
