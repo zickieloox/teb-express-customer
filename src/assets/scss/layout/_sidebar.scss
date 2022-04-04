@@ -121,6 +121,10 @@ $menubar-height:510px;
             top: -80px;
             left: calc(120px - 70px);
         }
+        .p-tooltip.is-dark:after{
+           white-space: break-spaces;
+           width: min-content;
+        }
     }
 
 }
