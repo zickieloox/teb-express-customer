@@ -13,6 +13,8 @@ export const routes = [
     name: 'claim-detail',
     meta: {
       title: 'Chi tiết khiếu nại',
+      detail: true,
+      routeParent: { name: 'claims' },
     },
     component: () =>
       import(/* webpackChunkName: "settings" */ './views/ClaimDetail.vue'),

@@ -2,6 +2,14 @@
   <div class="claim-detail-page pages page-sm">
     <div class="container">
       <div v-if="!isEmpty" class="page-content claim-content-page">
+        <!-- <router-link :to="{ name: 'claims' }" class="text">
+            <img
+              src="@/assets/img/Arrow - Left Square 24px.png"
+              class="page-header_back_icon"
+            />
+
+            Khiếu nại
+          </router-link> -->
         <div class="row">
           <div class="col-8 p-0 b-right">
             <div class="card-block claim-content" :class="{ closed: isClosed }">

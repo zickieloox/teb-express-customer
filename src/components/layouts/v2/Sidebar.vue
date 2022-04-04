@@ -140,13 +140,13 @@ export default {
           route: { name: 'tracking' },
           class: '',
         },
-        {
-          title: 'Khiếu nại',
-          icon: require('@assets/img/Claim.png'),
-          iconActive: require('@assets/img/ClaimActive.png'),
-          route: { name: 'claims' },
-          class: '',
-        },
+        // {
+        //   title: 'Khiếu nại',
+        //   icon: require('@assets/img/Claim.png'),
+        //   iconActive: require('@assets/img/ClaimActive.png'),
+        //   route: { name: 'claims' },
+        //   class: '',
+        // },
         {
           title: 'Cài đặt',
           icon: require('@assets/img/Setting.png'),

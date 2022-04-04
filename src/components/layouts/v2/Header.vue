@@ -117,12 +117,18 @@
             </div>
           </div>
           <p-dropdown-item>
-            <img
-              src="@/assets/img/Circle 16px.svg"
-              class="navbar__header-icon"
-            />
+            <img src="@/assets/img/lifebuoy.svg" class="navbar__header-icon" />
             <router-link to="/" class="nav-item">
               Hỏi đáp trợ giúp
+            </router-link>
+          </p-dropdown-item>
+          <p-dropdown-item>
+            <img
+              src="@/assets/img/message-question.svg"
+              class="navbar__header-icon"
+            />
+            <router-link :to="{ name: 'claims' }" class="nav-item">
+              Khiếu nại
             </router-link>
           </p-dropdown-item>
           <p-dropdown-item>
