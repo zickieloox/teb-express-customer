@@ -160,3 +160,9 @@ $menubar-height:510px;
         opacity: 1;
     }
 }
+.site-menubar-footer{
+    text-align: center;
+    .menubar-icon{
+        cursor: pointer;
+    }
+}
