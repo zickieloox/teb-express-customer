@@ -74,9 +74,7 @@
               <p-dropdown-item class="all">
                 <div class="noti__dropdown-footer d-flex">
                   <div v-if="notifications.length > 0" class="view-all">
-                    <router-link to="/notification">
-                      Xem tất cả
-                    </router-link>
+                    <router-link to="/notification"> Xem tất cả </router-link>
                   </div>
                 </div>
               </p-dropdown-item>
@@ -117,23 +115,36 @@
             </div>
           </div>
           <p-dropdown-item>
-            <img src="@/assets/img/lifebuoy.svg" class="navbar__header-icon" />
-            <router-link to="/" class="nav-item">
+            <router-link
+              :to="{ name: 'home' }"
+              class="nav-item nav-item-disabled"
+            >
+              <inline-svg
+                class="navbar__header-icon"
+                :src="require('../../../../src/assets/img/lifebuoy.svg')"
+              ></inline-svg>
               Hỏi đáp trợ giúp
             </router-link>
           </p-dropdown-item>
           <p-dropdown-item>
-            <img
-              src="@/assets/img/message-question.svg"
-              class="navbar__header-icon"
-            />
             <router-link :to="{ name: 'claims' }" class="nav-item">
+              <inline-svg
+                class="navbar__header-icon"
+                :src="
+                  require('../../../../src/assets/img/message-question.svg')
+                "
+              ></inline-svg>
               Khiếu nại
             </router-link>
           </p-dropdown-item>
           <p-dropdown-item>
-            <img src="@/assets/img/Logout.svg" class="navbar__header-icon" />
-            <router-link to="/logout" class="nav-item"> Đăng xuất </router-link>
+            <router-link to="/logout" class="nav-item">
+              <inline-svg
+                class="navbar__header-icon"
+                :src="require('../../../../src/assets/img/Logout.svg')"
+              ></inline-svg>
+              Đăng xuất
+            </router-link>
           </p-dropdown-item>
         </p-dropdown>
       </div>
