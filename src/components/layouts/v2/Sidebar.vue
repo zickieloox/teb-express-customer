@@ -97,7 +97,13 @@
     </div>
 
     <div class="site-menubar-footer">
-      <p-tooltip label="Thu gọn menu" size="large" position="top" type="dark">
+      <hr class="site-menubar-hr" />
+      <p-tooltip
+        :label="isSidebarOpen ? `Thu gọn menu` : `Mở rộng menu`"
+        size="large"
+        position="top"
+        type="dark"
+      >
         <div class="menubar-icon" @click="toggleSidebar">
           <inline-svg
             :src="require('../../../../src/assets/img/leftcollapse.svg')"

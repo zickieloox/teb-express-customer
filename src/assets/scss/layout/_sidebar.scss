@@ -101,7 +101,6 @@ $menubar-height:510px;
             padding-bottom: 20px;
             padding-top: 0;
             border-top: unset;
-            border-bottom: 1px solid rgba(221, 242, 242, 0.16);
         }
         .site-menu-title {
             display: none;
@@ -236,8 +235,11 @@ $menubar-height:510px;
     }
     .menubar-icon {
         transition: 0.3s;
-        border-top: 1px solid rgba(221, 242, 242, 0.16);
+
         padding-top: 20px;
+    }
+    .site-menubar-hr{
+        background: rgba(221, 242, 242, 0.16);
     }
     .p-tooltip.is-dark:after {
         color: #141F65;
