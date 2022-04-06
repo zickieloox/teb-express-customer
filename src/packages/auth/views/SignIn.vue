@@ -62,6 +62,7 @@ import { mapActions, mapState } from 'vuex'
 import mixinRoute from '@core/mixins/route'
 import Storage from '@core/helpers/storage'
 import { signin } from '../validate'
+import crisp from '../../../core/services/crisp'
 
 export default {
   components: {},
@@ -148,6 +149,8 @@ export default {
           } else {
             path = decodeURIComponent(path.replace(/\+/g, '%20'))
           }
+
+          crisp.hide()
           this.$router.push(path)
         }, 1000)
       } else {

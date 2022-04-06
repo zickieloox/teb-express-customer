@@ -1,4 +1,5 @@
 import crypto from 'crypto'
+import { guid } from '../utils/hash'
 
 const SECRET_KEY = '66ae68d4-8fdf-45f4-9fb2-3678e538a92b'
 
@@ -12,8 +13,13 @@ function signEmail(email) {
 export default {
   init(userId) {
     window.$crisp = []
-    window.CRISP_TOKEN_ID = `LIONBAY-USER-${userId}`
     window.CRISP_WEBSITE_ID = '66ae68d4-8fdf-45f4-9fb2-3678e538a92b'
+    if (userId) {
+      window.CRISP_TOKEN_ID = `LIONBAY-USER-${userId}`
+    } else {
+      window.CRISP_TOKEN_ID = `LIONBAY-USER-guest-${guid()}`
+    }
+
     ;(function() {
       const d = document
       const s = d.createElement('script')
@@ -40,5 +46,10 @@ export default {
   },
   logout() {
     if (!window || !window.$crisp) return
+  },
+  hide() {
+    if (window.$crisp) {
+      window.$crisp.push(['do', 'chat:hide'])
+    }
   },
 }

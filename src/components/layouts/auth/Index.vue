@@ -25,7 +25,12 @@
   </div>
 </template>
 <script>
+import crisp from '../../../core/services/crisp'
+
 export default {
   name: 'LayoutAuth',
+  created() {
+    crisp.init(null)
+  },
 }
 </script>
