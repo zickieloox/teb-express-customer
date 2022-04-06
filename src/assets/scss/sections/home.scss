@@ -1,193 +1,207 @@
 .home-page {
-    .container {
-        width: 1104px;
-        margin: 0 auto;
+  .container {
+    width: 1104px;
+    margin: 0 auto;
+  }
+  .icon-search:after {
+    content: url('../img/search-home.svg');
+  }
+  .icon-export:after {
+    content: url('../img/export-h.svg');
+  }
+  .page-header .actions {
+    text-align: right;
+    select {
+      font-size: 1.4rem;
+      line-height: 2.2rem;
+      color: #626363;
+      background: #f6f7f7;
+      border-radius: 0.8rem;
+      padding: 3px 12px 7px;
     }
-    .icon-search:after {
-        content: url('../img/search-home.svg');
+    p {
+      font-size: 13px;
+      margin-top: 5px;
     }
-    .icon-export:after {
-        content: url('../img/export-h.svg');
+  }
+  .page-header {
+    padding: 0 0 24px;
+  }
+  .page-title {
+    font-size: 3.6rem;
+    line-height: 5.4rem;
+    margin-bottom: 0;
+  }
+  .w-search {
+    position: relative;
+    width: 100%;
+    input {
+      height: 4.8rem;
+      width: 100%;
+      padding-left: 3.2rem;
+      border: 1px solid #cfd0d0;
+      border-radius: 4.8rem;
+      font-size: 1.4rem;
+      line-height: 2.2rem;
     }
-    .page-header .actions {
-        text-align: right;
-        select {
-            font-size: 1.4rem;
-            line-height: 2.2rem;
-            color: #626363;
-            background: #f6f7f7;
-            border-radius: 0.8rem;
-            padding: 3px 12px 7px;
-        }
+    .icon {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+    }
+  }
+  .page-content {
+    padding: 0;
+  }
+  .box {
+    padding: 2rem;
+    border-radius: 0.8rem;
+    .w-icon {
+      float: left;
+    }
+    p,
+    span {
+      font-family: Be Vietnam Pro;
+      font-weight: bold;
+      font-style: normal;
+      margin: 0;
+    }
+    .title {
+      margin-left: 5.5rem;
+      font-size: 1.2rem;
+      line-height: 1.4rem;
+      letter-spacing: 0.75px;
+      text-transform: uppercase;
+    }
+    .value {
+      padding-left: 5.5rem;
+      font-size: 2.8rem;
+      line-height: 4.2rem;
+      color: #111212;
+    }
+    &-warning {
+      background-color: #fff7e6;
+      .title {
+        color: #fa8c16;
+      }
+    }
+    &-info {
+      background-color: #ddf3f4;
+      .title {
+        color: #02baba;
+      }
+    }
+    &-success {
+      background-color: #f0fff3;
+      .title {
+        color: #48be78;
+      }
+    }
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    font-family: Be Vietnam Pro;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 28px;
+    color: #111212;
+  }
+  .bg-gray {
+    background-color: #f6f7f7;
+  }
+  .card {
+    border-radius: 0.8rem;
+    &-title {
+      padding: 1.6rem;
+      margin: 0;
+    }
+    &-body {
+      padding: 0 1.6rem 50px !important;
+    }
+  }
+  ul.messages {
+    li {
+      border-bottom: 1px solid #fff;
+      padding: 8px 0;
+      .icon {
+        float: left;
+      }
+      p {
+        padding-left: 24px;
+        font-size: 14px;
+        line-height: 22px;
+        color: #313232;
+        margin: 0;
+      }
+      &:hover {
+        .icon,
         p {
-            font-size: 13px;
-            margin-top: 5px;
+          color: #4a9d98;
         }
+      }
     }
-    .page-header {
-        padding: 0 0 24px;
-    }
-    .page-title {
-        font-size: 3.6rem;
-        line-height: 5.4rem;
-        margin-bottom: 0;
-    }
-    .w-search {
-        position: relative;
-        width: 100%;
-        input {
-            height: 4.8rem;
-            width: 100%;
-            padding-left: 3.2rem;
-            border: 1px solid #cfd0d0;
-            border-radius: 4.8rem;
-            font-size: 1.4rem;
-            line-height: 2.2rem;
-        }
-        .icon {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-        }
-    }
-    .page-content {
-        padding: 0;
-    }
-    .box {
-        padding: 2rem;
-        border-radius: 0.8rem;
-        .w-icon {
-            float: left;
-        }
-        p,
-        span {
-            font-family: Be Vietnam Pro;
-            font-weight: bold;
-            font-style: normal;
-            margin: 0;
-        }
-        .title {
-            margin-left: 5.5rem;
-            font-size: 1.2rem;
-            line-height: 1.4rem;
-            letter-spacing: 0.75px;
-            text-transform: uppercase;
-        }
-        .value {
-            padding-left: 5.5rem;
-            font-size: 2.8rem;
-            line-height: 4.2rem;
-            color: #111212;
-        }
-        &-warning {
-            background-color: #fff7e6;
-            .title {
-                color: #fa8c16;
-            }
-        }
-        &-info {
-            background-color: #ddf3f4;
-            .title {
-                color: #02baba;
-            }
-        }
-        &-success {
-            background-color: #f0fff3;
-            .title {
-                color: #48be78;
-            }
-        }
-    }
-    h1,
-    h2,
-    h3,
-    h4,
-    h5 {
-        font-family: Be Vietnam Pro;
-        font-style: normal;
-        font-weight: 500;
-        font-size: 18px;
-        line-height: 28px;
-        color: #111212;
-    }
-    .bg-gray {
-        background-color: #f6f7f7;
-    }
+  }
+  .list-actions {
+    align-items: stretch;
     .card {
-        border-radius: 0.8rem;
-        &-title {
-            padding: 1.6rem;
-            margin: 0;
-        }
-        &-body {
-            padding: 0 1.6rem 50px !important;
-        }
+      min-height: 100%;
     }
-    ul.messages {
-        li {
-            border-bottom: 1px solid #fff;
-            padding: 8px 0;
-            .icon {
-                float: left;
-            }
-            p {
-                padding-left: 24px;
-                font-size: 14px;
-                line-height: 22px;
-                color: #313232;
-                margin: 0;
-            }
-            &:hover {
-                .icon,
-                p {
-                    color: #4a9d98;
-                }
-            }
+  }
+  .modal-tracking {
+    .search {
+      width: auto;
+      display: flex;
+      .search-input {
+        width: 947px;
+        margin-right: 8px;
+        .wrapper {
+          margin-bottom: 0;
         }
-    }
-    .list-actions {
-        align-items: stretch;
-        .card {
-            min-height: 100%;
+      }
+      .button-group {
+        width: 125px;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        .btn {
+          width: 125px;
+          &-clear {
+            margin-bottom: 8px;
+          }
         }
+      }
     }
-    .modal-tracking {
-        .search {
-            width: auto;
-            display: flex;
-            .search-input {
-                width: 947px;
-                margin-right: 8px;
-                .wrapper {
-                    margin-bottom: 0;
-                }
-            }
-            .button-group {
-                width: 125px;
-                position: absolute;
-                bottom: 0;
-                right: 0;
-                .btn {
-                    width: 125px;
-                    &-clear {
-                        margin-bottom: 8px;
-                    }
-                }
-            }
-        }
-    }
+  }
 }
 body .crisp-client .cc-kv6t .cc-1xry {
-    .cc-unoo {
-        left: unset !important;
-        bottom: 80px !important;
-
-    }
-    .cc-ge4v{
-        left: unset !important;
-    }
-}
-.crisp-client .cc-kv6t[data-position-reverse=true] .cc-1xry .cc-ge4v, .crisp-client .cc-kv6t[data-position-reverse=true] .cc-1xry .cc-unoo{
+  .cc-unoo {
     left: unset !important;
-    right: 20px !important;
+    bottom: 80px !important;
+  }
+}
+
+body .crisp-client .cc-kv6t[data-full-view='true'] .cc-1xry {
+  .cc-unoo {
+    bottom: 60px !important;
+    margin-bottom: 75px !important;
+  }
+}
+.crisp-client .cc-kv6t .cc-1xry {
+  .cc-unoo {
+    left: unset !important;
+    bottom: 60px !important;
+    margin-bottom: 75px !important;
+  }
+  .cc-ge4v {
+    left: unset !important;
+  }
+}
+.crisp-client .cc-kv6t[data-position-reverse='true'] .cc-1xry .cc-ge4v,
+.crisp-client .cc-kv6t[data-position-reverse='true'] .cc-1xry .cc-unoo {
+  left: unset !important;
+  right: 20px !important;
 }

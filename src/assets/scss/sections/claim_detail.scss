@@ -1,397 +1,349 @@
 .claim-detail-page {
-  height: 100%;
-  .container {
     height: 100%;
-  }
-
-  .b-right {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 100px);
-  }
-  .page__empty {
-    margin-top: -56px;
-  }
-  .table {
-    margin: 0;
-    th {
-      height: 66px;
-      &:first-child {
-        padding-left: 8px;
-      }
+    .container {
+        height: 100%;
     }
-    td {
-      height: 84px !important;
-      &:first-child {
-        padding-left: 8px;
-        .design-image {
-          width: 60px;
-          height: 60px;
-          position: relative;
-          border-radius: 4px;
-          object-fit: cover;
+    .b-right {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 100px);
+    }
+    .page__empty {
+        margin-top: -56px;
+    }
+    .table {
+        margin: 0;
+        th {
+            height: 66px;
+            &:first-child {
+                padding-left: 8px;
+            }
         }
-      }
-      &:last-child {
-        text-align: center;
-        .icon-download {
-          margin-right: 10px;
+        td {
+            height: 84px !important;
+            &:first-child {
+                padding-left: 8px;
+                .design-image {
+                    width: 60px;
+                    height: 60px;
+                    position: relative;
+                    border-radius: 4px;
+                    object-fit: cover;
+                }
+            }
+            &:last-child {
+                text-align: center;
+                .icon-download {
+                    margin-right: 10px;
+                }
+            }
         }
-      }
     }
-  }
-
-  .claim-content {
-    position: relative;
-    &::before {
-      content: '';
-      width: 2px;
-      height: 100%;
-      position: absolute;
-      border-radius: 4px;
-      z-index: 999;
-      background-color: #ffd591;
+    .claim-content {
+        position: relative;
+        &::before {
+            content: '';
+            width: 2px;
+            height: 100%;
+            position: absolute;
+            border-radius: 4px;
+            background-color: #ffd591;
+        }
+        &.closed::before {
+            background-color: #c5e6cf;
+        }
+        .status {
+            font-size: 14px;
+            padding: 6px 8px;
+            border-radius: 32px;
+            background: #f0fff3;
+            font-weight: 500;
+            line-height: 20px;
+            color: #48be78;
+            margin-bottom: 16px;
+            display: inline-block;
+            img {
+                width: 20px;
+                margin-right: 5px;
+                vertical-align: bottom;
+            }
+        }
+        .title {
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 28px;
+        }
+        .description {
+            line-height: 20px;
+        }
     }
-
-    &.closed::before {
-      background-color: #c5e6cf;
+    .scroll-y,
+    .claim-attachments {
+        &::-webkit-scrollbar {
+            width: 8px;
+            border-radius: 4px;
+        }
+        /* Track */
+        &::-webkit-scrollbar-track {
+            background: #fff;
+        }
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+            background: #edeeee;
+            border-radius: 4px;
+        }
+        /* Handle on hover */
+        &::-webkit-scrollbar-thumb:hover {
+            background: #888;
+        }
     }
-
-    .status {
-      font-size: 14px;
-      padding: 6px 8px;
-      border-radius: 32px;
-      background: #f0fff3;
-      font-weight: 500;
-      line-height: 20px;
-      color: #48be78;
-      margin-bottom: 16px;
-      display: inline-block;
-
-      img {
-        width: 20px;
-        margin-right: 5px;
-        vertical-align: bottom;
-      }
-    }
-
-    .title {
-      font-size: 24px;
-      font-weight: 700;
-      line-height: 28px;
-    }
-
-    .description {
-      line-height: 20px;
-    }
-  }
-
-  .scroll-y, .claim-attachments {
-    &::-webkit-scrollbar {
-      width: 8px;
-      border-radius: 4px;
-    }
-
-    /* Track */
-    &::-webkit-scrollbar-track {
-      background: #fff;
-    }
-
-    /* Handle */
-    &::-webkit-scrollbar-thumb {
-      background: #edeeee;
-      border-radius: 4px;
-    }
-
-    /* Handle on hover */
-    &::-webkit-scrollbar-thumb:hover {
-      background: #888;
-    }
-  }
 }
 
 .claim-reply {
-  .note {
-    margin-top: 15px;
-    font-style: italic;
-    font-size: 12px;
-    line-height: 16px;
-    color: #aaabab;
-
-    & + .ticket__reply-files::before {
-      content: '';
-      display: block;
-      width: 32px;
-      height: 1px;
-      background-color: #e1e2e2;
-      margin-top: 8px;
-      margin-bottom: 15px;
+    .note {
+        margin-top: 15px;
+        font-style: italic;
+        font-size: 12px;
+        line-height: 16px;
+        color: #aaabab;
+        &+.ticket__reply-files::before {
+            content: '';
+            display: block;
+            width: 32px;
+            height: 1px;
+            background-color: #e1e2e2;
+            margin-top: 8px;
+            margin-bottom: 15px;
+        }
     }
-  }
-
-  .card-content {
-    overflow: unset;
-  }
+    .card-content {
+        overflow: unset;
+    }
 }
 
 .claim-reply-form {
-  position: relative;
-
-  .upload {
-    position: absolute;
-    z-index: 9;
-    left: 15px;
-    line-height: 44px;
-    height: 44px;
-    display: flex;
-
-    &:after {
-      content: '';
-      display: inline-block;
-      width: 1px;
-      height: 24px;
-      background-color: #ddd;
-      margin-left: 14px;
-      margin-top: 10px;
-    }
-
-    .el-upload-dragger {
-      width: auto;
-      height: auto;
-      background-color: transparent;
-      border: 0;
-      opacity: 0.6;
-
-      img {
-        width: 15px;
-      }
-    }
-
-    .p-tooltip {
-      display: inline-block;
-      height: 44px;
-
-      &:after {
-        width: auto;
-        white-space: nowrap;
-      }
-    }
-  }
-
-  textarea {
     position: relative;
-    resize: none;
-    padding-left: 58px;
-    height: 44px;
-    margin-right: 8px;
-  }
-
-  button {
-    white-space: nowrap;
-  }
+    .upload {
+        position: absolute;
+        z-index: 4;
+        left: 15px;
+        line-height: 44px;
+        height: 44px;
+        display: flex;
+        &:after {
+            content: '';
+            display: inline-block;
+            width: 1px;
+            height: 24px;
+            background-color: #ddd;
+            margin-left: 14px;
+            margin-top: 10px;
+        }
+        .el-upload-dragger {
+            width: auto;
+            height: auto;
+            background-color: transparent;
+            border: 0;
+            opacity: 0.6;
+            img {
+                width: 15px;
+            }
+        }
+        .p-tooltip {
+            display: inline-block;
+            height: 44px;
+            &:after {
+                width: auto;
+                white-space: nowrap;
+            }
+        }
+    }
+    textarea {
+        position: relative;
+        resize: none;
+        padding-left: 58px;
+        height: 44px;
+        margin-right: 8px;
+    }
+    button {
+        white-space: nowrap;
+    }
 }
 
 .claim-attachments {
-  height: 274px;
-  overflow-y: scroll;
-
-  .thumb {
-    width: 64px !important;
-    height: 64px !important;
-    margin-right: 8px;
-    display: block;
-    position: relative;
-    background-color: #f6f7f7;
-    border-radius: 4px;
-    overflow: hidden;
-    cursor: pointer;
-
-    .icon {
-      position: absolute;
-      z-index: 99;
-      display: none;
-      width: 24px;
-      height: 24px;
-    }
-
-    &:hover::after {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.75);
-    }
-
-    &:hover {
-      .icon {
+    height: 274px;
+    overflow-y: scroll;
+    .thumb {
+        width: 64px !important;
+        height: 64px !important;
+        margin-right: 8px;
         display: block;
-      }
+        position: relative;
+        background-color: #f6f7f7;
+        border-radius: 4px;
+        overflow: hidden;
+        cursor: pointer;
+        .icon {
+            position: absolute;
+            z-index: 99;
+            display: none;
+            width: 24px;
+            height: 24px;
+        }
+        &:hover::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.75);
+        }
+        &:hover {
+            .icon {
+                display: block;
+            }
+        }
+        img {
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            max-height: 100%;
+            max-width: 100%;
+            transform: translate(-50%, -50%);
+        }
     }
-
-    img {
-      display: block;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      max-height: 100%;
-      max-width: 100%;
-      transform: translate(-50%, -50%);
+    .item {
+        clear: both;
+        margin-bottom: 0;
+        margin-right: 16px;
+        span {
+            font-size: 14px;
+            width: calc(100% - 72px);
+        }
+        time {
+            display: block;
+            font-size: 12px;
+            line-height: 16px;
+            color: #aaabab;
+        }
+        +.item {
+            border-top: 1px solid #edeeee;
+            margin-top: 16px;
+            padding-top: 16px;
+        }
     }
-  }
-
-  .item {
-    clear: both;
-    margin-bottom: 0;
-    margin-right: 16px;
-
-    span {
-      font-size: 14px;
-      width: calc(100% - 72px);
-    }
-    time {
-      display: block;
-      font-size: 12px;
-      line-height: 16px;
-      color: #aaabab;
-    }
-
-    + .item {
-      border-top: 1px solid #edeeee;
-      margin-top: 16px;
-      padding-top: 16px;
-    }
-  }
 }
 
 .claim-messages {
-  min-height: 300px;
-
-  .card-content {
-    height: 100%;
-    padding-right: 0;
-  }
-
-  .scroll-y {
-    overflow-y: scroll;
-    position: relative;
-    height: 100%;
-  }
-
-  .list-messages {
-    padding-right: 16px;
-  }
-
-  .message {
-    & + .message {
-      margin-top: 24px;
-    }
-
-    p {
-      margin: 0;
-    }
-
-    .avatar {
-      height: 32px;
-      width: 32px;
-      margin-right: 8px;
-
-      img {
-        width: 100%;
+    min-height: 300px;
+    .card-content {
         height: 100%;
-      }
+        padding-right: 0;
     }
-
-    .user {
-      display: flex;
-      margin-bottom: 4px;
-
-      .info {
-        height: 32px;
-      }
-      .user-name {
-        line-height: 20px;
-        margin-bottom: -5px;
-        font-weight: 700;
-      }
-
-      .user-role {
-        font-size: 12px;
-        padding: 2px 8px;
-        color: #00b7b0;
-        border-radius: 50px;
-        background: #ddf2f2;
-        line-height: 16px;
-        margin-left: 4px;
-      }
-
-      .post-time {
-        font-size: 10px;
-        color: #626363;
-        font-weight: 600;
-      }
+    .scroll-y {
+        overflow-y: scroll;
+        position: relative;
+        height: 100%;
     }
-
-    .message-content {
-      margin-left: 40px;
-      margin-right: 10%;
-      .message-text {
-        text-align: left;
-        .w-text {
-          padding: 16px;
-          background-color: #f6f7f7;
-          border-radius: 0 32px 32px 0;
-          display: inline-block;
+    .list-messages {
+        padding-right: 16px;
+    }
+    .message {
+        &+.message {
+            margin-top: 24px;
         }
-
-        & + .message-text {
-          margin-top: 1px;
+        p {
+            margin: 0;
         }
-
-        &:last-child .w-text {
-          border-bottom-left-radius: 32px;
+        .avatar {
+            height: 32px;
+            width: 32px;
+            margin-right: 8px;
+            img {
+                width: 100%;
+                height: 100%;
+            }
         }
-      }
-    }
-  }
-
-  .message.me {
-    .user {
-      flex-direction: row-reverse;
-    }
-    .info {
-      text-align: right;
-    }
-
-    .avatar {
-      margin-right: 0;
-      margin-left: 8px;
-    }
-
-    .message-content {
-      flex-direction: row-reverse;
-      margin-left: 10%;
-      margin-right: 40px;
-
-      .message-text {
-        text-align: right;
-        .w-text {
-          background-color: #3f51b5;
-          color: #fff;
-          border-radius: 32px 0 0 32px;
-
-          a {
-            color: #fff;
-            text-decoration: underline;
-          }
+        .user {
+            display: flex;
+            margin-bottom: 4px;
+            .info {
+                height: 32px;
+            }
+            .user-name {
+                line-height: 20px;
+                margin-bottom: -5px;
+                font-weight: 700;
+            }
+            .user-role {
+                font-size: 12px;
+                padding: 2px 8px;
+                color: #00b7b0;
+                border-radius: 50px;
+                background: #ddf2f2;
+                line-height: 16px;
+                margin-left: 4px;
+            }
+            .post-time {
+                font-size: 10px;
+                color: #626363;
+                font-weight: 600;
+            }
         }
-
-        &:last-child .w-text {
-          border-bottom-right-radius: 32px;
+        .message-content {
+            margin-left: 40px;
+            margin-right: 10%;
+            .message-text {
+                text-align: left;
+                .w-text {
+                    padding: 16px;
+                    background-color: #f6f7f7;
+                    border-radius: 0 32px 32px 0;
+                    display: inline-block;
+                }
+                &+.message-text {
+                    margin-top: 1px;
+                }
+                &:last-child .w-text {
+                    border-bottom-left-radius: 32px;
+                }
+            }
         }
-      }
     }
-  }
+    .message.me {
+        .user {
+            flex-direction: row-reverse;
+        }
+        .info {
+            text-align: right;
+        }
+        .avatar {
+            margin-right: 0;
+            margin-left: 8px;
+        }
+        .message-content {
+            flex-direction: row-reverse;
+            margin-left: 10%;
+            margin-right: 40px;
+            .message-text {
+                text-align: right;
+                .w-text {
+                    background-color: #3f51b5;
+                    color: #fff;
+                    border-radius: 32px 0 0 32px;
+                    a {
+                        color: #fff;
+                        text-decoration: underline;
+                    }
+                }
+                &:last-child .w-text {
+                    border-bottom-right-radius: 32px;
+                }
+            }
+        }
+    }
 }
+
 // .claim-detail-page {
 //   .page-header-group {
 //     margin-bottom: 12px;
@@ -630,7 +582,6 @@
 //     }
 //   }
 // }
-
 // .modal-reply-ticket {
 //   background: #ffffff;
 //   border-radius: 4px;
@@ -693,7 +644,6 @@
 //     }
 //   }
 // }
-
 // .ticket-attach-files {
 //   .gallery-item::before {
 //     content: none !important;
@@ -715,7 +665,6 @@
 //     }
 //   }
 // }
-
 // .ticket__error {
 //   font-size: 12px;
 //   border: 1px solid #ed857a;
@@ -728,13 +677,11 @@
 //     padding: 0 10px 10px;
 //   }
 // }
-
 // .ticket__reply-files {
 //   img {
 //     cursor: pointer;
 //   }
 // }
-
 // .err-span {
 //   color: red;
 //   font-size: 12px;
