@@ -6,9 +6,11 @@
       </div>
       <div class="login__page-form-content">
         <div v-if="error" class="login__page-error">{{ error }}</div>
-        <div class="mb-16">
+        <div class="form-group form-input">
+          <label for=""
+            >Số điện thoại hoặc Email: <span style="color:red">*</span></label
+          >
           <m-input
-            icon="envelope-o"
             v-model.trim="email"
             :error="valider.hasError('email')"
             :messages="valider.error('email')"
@@ -20,10 +22,10 @@
             </template>
           </m-input>
         </div>
-        <div class="mb-60">
+        <div class="form-group form-input">
+          <label for="">Mật khẩu: <span class="text-danger">*</span></label>
           <m-input
             type="password"
-            icon="lock-o"
             v-model.trim="password"
             :password="true"
             :error="valider.hasError('password')"
@@ -45,13 +47,33 @@
           @click="onSignIn"
           :disabled="disableBtn"
         >
-          Đăng nhập
+          Đăng nhập tài khoản
         </p-button>
         <p class="new-member">
           <span>Bạn là thành viên mới?</span>
           <router-link class="create__acount" :to="{ name: 'sign-up' }">
             Tạo tài khoản
           </router-link>
+        </p>
+        <p class="forgot_password">
+          <router-link :to="{ name: 'forgot' }">
+            Quên mật khẩu?
+          </router-link>
+        </p>
+        <p class="police__text-bottom text-center gg-captche">
+          Được bảo vệ bởi reCAPTCHA và tuân theo
+          <a
+            href="https://www.google.com/intl/en/policies/privacy/"
+            target="_blank"
+            >Chính sách quyền riêng tư</a
+          >
+          và
+          <a
+            href="https://www.google.com/intl/en/policies/terms/"
+            target="_blank"
+            >Điều khoản dịch vụ</a
+          >
+          của Google.
         </p>
       </div>
     </div>
@@ -168,8 +190,9 @@ export default {
         }
 
         this.$toast.open({
-          type: 'error',
+          type: 'primary',
           message: this.result.message,
+          duration: 100000,
         })
       }
     },
