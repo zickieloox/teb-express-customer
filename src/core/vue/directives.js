@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import { domOn } from '../utils/dom'
 import { capitalize } from '@core/utils/string'
+import { MAP_STATUS_CLASS_NAME } from '../../packages/package/constants'
 
 const nodeList = []
 const ctx = '@@clickoutsideContext'
@@ -79,64 +80,47 @@ export const clickoutside = {
 }
 
 const getFormatStatus = (status) => {
-  let statusClass = ''
-  switch (status) {
-    case 'Tạo mới':
-    case 'in-Transit':
-      statusClass = 'default'
-      break
-    case 'Chờ lấy':
-    case 'pending':
-      statusClass = 'await'
-      break
-    case 'Đã lấy':
-    case 'Đang giao':
-    case 'processing':
-      statusClass = 'primary'
-      break
-    case 'Giao thành công':
-    case 'Thành công':
-    case 'delivered':
-      statusClass = 'success'
-      break
-    case 'Trả hàng':
-    case 'Hoàn trả':
-    case 'returned':
-      statusClass = 'info'
-      break
-    case 'Đã hủy':
-    case 'Thất bại':
-    case 'Từ chối':
-    case 'canceled':
-    case 'Không thành công':
-    case 'Giao không thành công':
-    case 'undelivered':
-      statusClass = 'danger'
-      break
-
-    case 'Đang xử lý':
-    case 'Chờ xác nhận':
-    case 'Pre-Transit':
-      statusClass = 'pending'
-      break
-    case 'Đã xử lý':
-    case 'Thanh toán':
-      statusClass = 'done'
-      break
-    case 'Chưa thanh toán':
-      statusClass = 'unpaid'
-      break
-    case 'alert':
-      statusClass = 'alert'
-      break
-    case 'expired':
-      statusClass = 'expired'
-      break
+  // cSpell:disable
+  const defaultClassLists = {
+    'tạo mới': 'default',
+    'in-transit': 'default',
+    'chờ lấy': 'await',
+    pending: 'await',
+    'đã lấy': 'primary',
+    'đang giao': 'primary',
+    processing: 'primary',
+    'giao thành công': 'success',
+    'thành công': 'success',
+    delivered: 'success',
+    'trả hàng': 'info',
+    'hoàn trả': 'info',
+    returned: 'info',
+    'đã hủy': 'danger',
+    'thất bại': 'danger',
+    'từ chối': 'danger',
+    canceled: 'danger',
+    'không thành công': 'danger',
+    'giao không thành công': 'danger',
+    undelivered: 'danger',
+    'đang xử lý': 'pending',
+    'chờ xác nhận': 'pending',
+    'pre-transit': 'pending',
+    'đã xử lý': 'done',
+    'thanh toán': 'done',
+    'chưa thanh toán': 'unpaid',
+    alert: 'alert',
+    expired: 'expired',
   }
+  // cSpell:enable
+
+  const classLists = Object.assign(defaultClassLists, MAP_STATUS_CLASS_NAME)
+
+  status = status.toLowerCase()
+  const className = classLists[status] || 'unknown'
 
   return {
     text: capitalize(status),
-    classList: `badge badge-round badge-${statusClass}`,
+    classList: `badge badge-round badge-${className}`,
   }
 }
 

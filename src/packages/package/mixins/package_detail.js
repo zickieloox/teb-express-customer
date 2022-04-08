@@ -1,9 +1,8 @@
 import { isEmpty } from '@/core/utils/common'
 import {
-  MAP_NAME_STATUS_PACKAGE,
-  PackageStatusCreatedText,
-  PackageStatusPendingPickupText,
-  PackageAlertTypeWarehoseReturn,
+  PACKAGE_STATUS_CREATED_TEXT,
+  PACKAGE_STATUS_PENDING_PICKUP_TEXT,
+  PACKAGE_ALERT_TYPE_WAREHOUSE_RETURN,
 } from '../constants'
 
 export default {
@@ -17,30 +16,24 @@ export default {
     hasCancelPackage() {
       const { status_string } = this.current
       return (
-        status_string === PackageStatusCreatedText ||
-        status_string === PackageStatusPendingPickupText
+        status_string === PACKAGE_STATUS_CREATED_TEXT ||
+        status_string === PACKAGE_STATUS_PENDING_PICKUP_TEXT
       )
     },
     hasEditPackage() {
       const { status_string } = this.current
-      return status_string === PackageStatusCreatedText
+      return status_string === PACKAGE_STATUS_CREATED_TEXT
     },
     hasMakeTracking() {
       const { status_string } = this.current
-      return status_string === PackageStatusCreatedText
+      return status_string === PACKAGE_STATUS_CREATED_TEXT
     },
     hasReshipPackage() {
       const { status_string, alert } = this.current
       return (
-        status_string === PackageStatusPendingPickupText &&
-        alert == PackageAlertTypeWarehoseReturn
+        status_string === PACKAGE_STATUS_PENDING_PICKUP_TEXT &&
+        alert == PACKAGE_ALERT_TYPE_WAREHOUSE_RETURN
       )
-    },
-    statusValue() {
-      const { status_string } = this.current
-      return status_string
-        ? (MAP_NAME_STATUS_PACKAGE[status_string] || {}).value
-        : ''
     },
     linkTrackInfo() {
       const { tracking_number } = this.current
