@@ -1,7 +1,7 @@
 import { isEmail, isPhone } from '@core/utils/validate'
 
-function validFullname(fullname) {
-  if (!fullname) return 'Vui lòng không để trống!'
+function validAccount(account) {
+  if (!account) return 'Vui lòng không để trống!'
   return true
 }
 
@@ -49,12 +49,12 @@ export const signup = {
     return valid
   },
 
-  validFullname(fullname) {
-    this.clean('fullname')
-    const msg = validFullname(fullname)
+  validAccount(fullname) {
+    this.clean('account')
+    const msg = validAccount(fullname)
     if (msg === true) return true
 
-    this.errors.fullname = msg
+    this.errors.account = msg
     return false
   },
 
