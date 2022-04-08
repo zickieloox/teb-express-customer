@@ -115,7 +115,7 @@ const getFormatStatus = (status) => {
 
   const classLists = Object.assign(defaultClassLists, MAP_STATUS_CLASS_NAME)
 
-  status = status.toLowerCase()
+  status = (status || '').toLowerCase()
   const className = classLists[status] || 'unknown'
 
   return {
