@@ -10,7 +10,7 @@
             <div class="info-package">Ngày tạo </div>
             <div class="info-package">Trạng thái</div>
             <div class="package-code"
-              >{{ current.code_package || 'N/A' }}
+              >{{ current.code_package || 'No data' }}
               <span
                 @click="showContent"
                 v-if="current.label"
@@ -34,7 +34,7 @@
                   :src="require('../../../assets/img/arrow-up-right.svg')"
                 ></inline-svg>
               </a>
-              <a v-else>N/A</a>
+              <a v-else>No data</a>
             </div>
             <div class="content-title">
               {{ current.created_at | datetime('dd/MM/yyyy HH:mm:ss') }}
