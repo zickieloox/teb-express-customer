@@ -242,7 +242,7 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                   <td
                     >{{ item.package_code.code }}
                     <br />
-                    <span v-status:status="item.status_string"></span>
+                    <span v-status="item.status_string"></span>
                     <span
                       class="badge badge-round badge-success"
                       v-if="item.status_string == statusDelivered"

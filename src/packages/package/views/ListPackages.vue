@@ -389,7 +389,7 @@
                       </td>
                       <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
                       <td>
-                        <span v-status:status="item.status_string"></span>
+                        <span v-status="item.status_string"></span>
                         <span
                           v-if="item.alert > 0"
                           class="

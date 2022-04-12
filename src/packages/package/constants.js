@@ -76,15 +76,42 @@ export const PACKAGE_STATUS_TAB = [
 ]
 
 export const MAP_STATUS_CLASS_NAME = {
-  [PACKAGE_STATUS_CREATED_TEXT]: 'await',
-  [PACKAGE_STATUS_PENDING_PICKUP_TEXT]: 'pending',
-  [PACKAGE_STATUS_PROCESSING_TEXT]: 'primary',
-  [PACKAGE_STATUS_IN_TRANSIT_TEXT]: 'default',
-  [PACKAGE_STATUS_DELIVERED_TEXT]: 'success',
-  [PACKAGE_STATUS_ALERT_TEXT]: 'alert',
-  [PACKAGE_STATUS_CANCELLED_TEXT]: 'danger',
-  [PACKAGE_STATUS_EXPIRED_TEXT]: 'expired',
-  [PACKAGE_STATUS_UNDELIVERED_TEXT]: 'danger',
+  [PACKAGE_STATUS_CREATED_TEXT]: {
+    text: PACKAGE_STATUS_CREATED_TEXT,
+    className: 'await',
+  },
+  [PACKAGE_STATUS_PENDING_PICKUP_TEXT]: {
+    text: PACKAGE_STATUS_PENDING_PICKUP_TEXT,
+    className: 'pending',
+  },
+  [PACKAGE_STATUS_PROCESSING_TEXT]: {
+    text: PACKAGE_STATUS_PROCESSING_TEXT,
+    className: 'primary',
+  },
+  [PACKAGE_STATUS_IN_TRANSIT_TEXT]: {
+    text: PACKAGE_STATUS_IN_TRANSIT_TEXT,
+    className: 'default',
+  },
+  [PACKAGE_STATUS_DELIVERED_TEXT]: {
+    text: PACKAGE_STATUS_DELIVERED_TEXT,
+    className: 'success',
+  },
+  [PACKAGE_STATUS_ALERT_TEXT]: {
+    text: PACKAGE_STATUS_ALERT_TEXT,
+    className: 'alert',
+  },
+  [PACKAGE_STATUS_CANCELLED_TEXT]: {
+    text: PACKAGE_STATUS_CANCELLED_TEXT,
+    className: 'danger',
+  },
+  [PACKAGE_STATUS_EXPIRED_TEXT]: {
+    text: PACKAGE_STATUS_EXPIRED_TEXT,
+    className: 'expired',
+  },
+  [PACKAGE_STATUS_UNDELIVERED_TEXT]: {
+    text: PACKAGE_STATUS_UNDELIVERED_TEXT,
+    className: 'danger',
+  },
 }
 
 // cSpell:disable
