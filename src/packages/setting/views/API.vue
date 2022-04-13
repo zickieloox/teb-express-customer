@@ -86,7 +86,7 @@
           <div class="input-setting">
             <p-input
               type="text"
-              v-model="webhookUrl"
+              v-model.trim="webhookUrl"
               :input="webhookUrl"
               :placeholder="`Nhập url`"
               @input="onInputWebhookUrl"
@@ -203,7 +203,7 @@ export default {
         return true
       }
       // eslint-disable-next-line no-useless-escape
-      const expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
+      const expression = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
       const regex = new RegExp(expression)
       return !!url.match(regex)
     },
