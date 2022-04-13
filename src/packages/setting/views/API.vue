@@ -82,6 +82,7 @@
               v-model="webhookUrl"
               :input="webhookUrl"
               :placeholder="`Nhập url`"
+              @input="onInputWebhookUrl"
             >
             </p-input>
           </div>
@@ -90,6 +91,7 @@
             :type="`default`"
             class="btn-lb-secondary"
             @click="hanleSaveSettingWebhook"
+            :disabled="disbaleSaveWebhook"
           >
             Save webhook
           </p-button>
@@ -137,6 +139,7 @@ export default {
       webhookUrl: '',
       isSaving: false,
       isFetching: false,
+      disbaleSaveWebhook: true,
     }
   },
   mounted() {
@@ -188,7 +191,28 @@ export default {
         await this.init()
       }
     },
+    checkUrlValid(url) {
+      // eslint-disable-next-line no-useless-escape
+      const expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
+      const regex = new RegExp(expression)
+      return !!url.match(regex)
+    },
+    onInputWebhookUrl() {
+      this.disbaleSaveWebhook = false
+    },
     async hanleSaveSettingWebhook() {
+      if (this.disbaleSaveWebhook) {
+        return
+      }
+
+      if (!this.checkUrlValid(this.webhookUrl)) {
+        this.$toast.open({
+          message: 'Webhook url không hợp lệ',
+          type: 'error',
+        })
+        return
+      }
+
       this.isSaving = true
       const body = {
         webhook_url: this.webhookUrl,
