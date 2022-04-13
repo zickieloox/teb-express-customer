@@ -8,20 +8,41 @@
               href="javascript:void(0)"
               @click="setMethod(topupType)"
               :class="{ deactive: !isTopup, active: isTopup }"
-              ><i class="fa fa-circle"></i>Chuyển khoản</a
+            >
+              <inline-svg
+                class="svg-card"
+                :src="require('../../../../src/assets/img/card.svg')"
+              ></inline-svg
+              >Chuyển khoản</a
             >
             <a
               href="javascript:void(0)"
               @click="setMethod(payoneerType)"
               :class="{ deactive: !isPayoneer, active: isPayoneer }"
-              ><i class="fa fa-circle"></i>Payoneer</a
             >
+              <inline-svg
+                class="svg"
+                :src="require('../../../../src/assets/img/payoneer.svg')"
+              ></inline-svg>
+              <inline-svg
+                class="svg-active"
+                :src="require('../../../../src/assets/img/payoneer-active.svg')"
+              ></inline-svg>
+            </a>
             <a
               href="javascript:void(0)"
               @click="setMethod(pingPongType)"
               :class="{ deactive: !isPingPong, active: isPingPong }"
-              ><i class="fa fa-circle"></i>PingPong</a
             >
+              <inline-svg
+                class="svg"
+                :src="require('../../../../src/assets/img/pingpong.svg')"
+              ></inline-svg>
+              <inline-svg
+                class="svg-active"
+                :src="require('../../../../src/assets/img/pingpong-active.svg')"
+              ></inline-svg>
+            </a>
           </div>
           <div class="form-topup" :class="{ hidden: !isTopup }">
             <span class="title">

@@ -314,28 +314,30 @@
         display: flex;
         flex-direction: column;
         font-style: normal;
-        font-weight: normal;
-        font-size: 14px;
-        line-height: 22px;
-        i {
-            font-size: 4px;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 24px;
+        svg {
             margin-right: 8px;
         }
         .active {
             display: flex;
             align-items: center;
-            color: $color-neutral-10;
+            color: $color-turquoise-4;
+            .svg-card {
+                path {
+                    fill: $color-turquoise-4;
+                }
+            }
+            .svg {
+                display: none;
+            }
         }
         .deactive {
             // cursor: not-allowed;
             color: $color-neutral-6;
-            i {
-                visibility: hidden;
-            }
-            span {
-                font-style: italic;
-                font-size: 12px;
-                line-height: 16px;
+            .svg-active {
+                display: none;
             }
         }
     }
