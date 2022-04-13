@@ -192,6 +192,9 @@ export default {
       }
     },
     checkUrlValid(url) {
+      if (!url) {
+        return true
+      }
       // eslint-disable-next-line no-useless-escape
       const expression = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
       const regex = new RegExp(expression)
@@ -220,6 +223,7 @@ export default {
 
       const result = await this[SAVE_SETTING_WEBHOOK](body)
       this.isSaving = false
+      this.disbaleSaveWebhook = true
       if (!result.success) {
         this.$toast.open({
           message: result.message,
