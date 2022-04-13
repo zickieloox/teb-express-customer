@@ -2,7 +2,14 @@
   <div class="setting setting-api pages">
     <div class="page-content">
       <div class="setting-section card" id="user-token">
-        <div class="card-header">API</div>
+        <div class="card-header"
+          >API
+          <a target="_blank" :href="`${urlDocument}`"
+            >Documentation
+            <inline-svg
+              :src="require('@assets/img/external-link.svg')"
+            ></inline-svg></a
+        ></div>
         <div class="user-token-input card-content">
           <label class="lbn-input-setting">Token</label>
           <div
