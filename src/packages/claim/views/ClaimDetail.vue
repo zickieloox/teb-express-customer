@@ -169,7 +169,11 @@
                 </div>
                 <div class="row m-0 mb-5">
                   <span class="col-4 p-0">Trạng thái:</span>
-                  <span class="col-8 p-0">{{ statusText }}</span>
+                  <span
+                    class="col-8 p-0"
+                    v-status="claim.status"
+                    type="claim"
+                  ></span>
                 </div>
                 <button
                   class="btn btn-outline-info w-100"

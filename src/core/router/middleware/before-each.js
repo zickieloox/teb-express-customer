@@ -14,7 +14,7 @@ const beforeEach = (router, store) => {
       AuthService.clear()
       S3Service.destroy()
       await firebase.unsubscribe()
-      Browser.redirect('/')
+      Browser.redirect('/sign-in')
       return
     }
 

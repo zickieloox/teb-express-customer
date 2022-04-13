@@ -40,7 +40,7 @@
               {{ current.created_at | datetime('dd/MM/yyyy HH:mm:ss') }}
             </div>
             <div class="content-title">
-              <span v-if="statusValue" v-status:status="statusValue"></span>
+              <span v-status:status="current.status_string"></span>
             </div>
           </div>
           <div class="page-header__action">

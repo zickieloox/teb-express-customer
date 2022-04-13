@@ -93,9 +93,7 @@
                         item.updated_at | datetime('dd/MM/yyyy')
                       }}</td>
                       <td width="150">
-                        <span
-                          v-status:status="converStatus(item.status)"
-                        ></span>
+                        <span v-status="item.status" type="claim"></span>
                       </td>
                     </tr>
                   </tbody>
@@ -190,14 +188,6 @@ export default {
       // Default result after search in page 1
       this.filter.page = 1
       this.$set(this.filter, 'search', e.target.value.trim())
-    },
-    converStatus(status) {
-      switch (status) {
-        case 1:
-          return 'Đang xử lý'
-        case 2:
-          return 'Đã xử lý'
-      }
     },
   },
   watch: {

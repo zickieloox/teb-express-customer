@@ -146,7 +146,9 @@
                               item.amount | formatPrice2
                             }}</td>
                             <td class="text-right" v-if="item.status == 10">
-                              <span v-status:status="`Chưa thanh toán`"></span>
+                              <span class="badge badge-round badge-unpaid"
+                                >Chưa thanh toán</span
+                              >
                             </td>
                           </tr>
                         </tbody>
@@ -199,7 +201,9 @@
                               item.created_at | datetime('dd/MM/yyyy HH:mm:ss')
                             }}</td>
                             <td v-if="item.status == 10">
-                              <span v-status:status="`Chưa thanh toán`"></span>
+                              <span class="badge badge-round badge-unpaid"
+                                >Chưa thanh toán</span
+                              >
                             </td>
                             <td>
                               <p-tooltip

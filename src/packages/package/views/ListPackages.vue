@@ -389,9 +389,7 @@
                       </td>
                       <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
                       <td>
-                        <span
-                          v-status:status="mapStatus[item.status_string].value"
-                        ></span>
+                        <span v-status="item.status_string"></span>
                         <span
                           v-if="item.alert > 0"
                           class="
@@ -513,19 +511,17 @@ import { formatPrice } from '@core/utils/formatter'
 
 import {
   PACKAGE_STATUS_TAB,
-  PackageStatusCreatedText,
-  PackageStatusReturnText,
-  MAP_NAME_STATUS_PACKAGE,
-  PackageStatusDeactive,
-  PackageStatusExpiredText,
-  PackageStatusPendingPickupText,
-  PackageStatusProcessingText,
-  PackageStatusInTransitText,
-  PackageStatusDeliveredText,
-  PackageStatusCancelledText,
-  PackageAlertTypeOverPretransit,
-  PackageAlertTypeWarehoseReturn,
-  PackageAlertTypeHubReturn,
+  PACKAGE_STATUS_CREATED_TEXT,
+  PACKAGE_STATUS_RETURN_TEXT,
+  PACKAGE_STATUS_EXPIRED_TEXT,
+  PACKAGE_STATUS_PENDING_PICKUP_TEXT,
+  PACKAGE_STATUS_PROCESSING_TEXT,
+  PACKAGE_STATUS_IN_TRANSIT_TEXT,
+  PACKAGE_STATUS_DELIVERED_TEXT,
+  PACKAGE_STATUS_CANCELLED_TEXT,
+  PACKAGE_ALERT_TYPE_OVER_PRE_TRANSIT,
+  PACKAGE_ALERT_TYPE_WAREHOUSE_RETURN,
+  PACKAGE_ALERT_TYPE_HUB_RETURN,
 } from '../constants'
 import {
   FETCH_LIST_PACKAGES,
@@ -622,22 +618,12 @@ export default {
       visibleConfirmValidate: false,
       selected: [],
       idSelected: 0,
-      PackageStatusDeactive: PackageStatusDeactive,
-      PackageStatusProcessingText: PackageStatusProcessingText,
-      PackageStatusCreatedText: PackageStatusCreatedText,
-      PackageStatusPendingPickupText: PackageStatusPendingPickupText,
-      PackageStatusDeliveredText: PackageStatusDeliveredText,
-      PackageStatusExpiredText: PackageStatusExpiredText,
-      PackageStatusReturnText: PackageStatusReturnText,
-      PackageStatusCancelledText: PackageStatusCancelledText,
+      PackageStatusExpiredText: PACKAGE_STATUS_EXPIRED_TEXT,
       windowWidth: 0,
       isSmScreen: false,
       confirmAddress: '',
       loadingValidate: false,
       scrollPosition: null,
-      PackageAlertTypeOverPretransit,
-      PackageAlertTypeWarehoseReturn,
-      PackageAlertTypeHubReturn,
     }
   },
   created() {
@@ -655,7 +641,7 @@ export default {
         return this.action.selected.length > 0 || this.isAllChecked
       },
       isFilterInitTab() {
-        return this.filter.status_string === PackageStatusCreatedText
+        return this.filter.status_string === PACKAGE_STATUS_CREATED_TEXT
       },
       items() {
         return this.packages
@@ -663,9 +649,6 @@ export default {
     }),
     statusTab() {
       return PACKAGE_STATUS_TAB
-    },
-    mapStatus() {
-      return MAP_NAME_STATUS_PACKAGE
     },
   },
   methods: {
@@ -772,7 +755,7 @@ export default {
       this.isVisibleExport = false
     },
     isReturnTab() {
-      return this.filter.status === PackageStatusPendingPickupText
+      return this.filter.status === PACKAGE_STATUS_PENDING_PICKUP_TEXT
     },
     checkScreen() {
       this.windowWidth = window.innerWidth
@@ -784,21 +767,21 @@ export default {
     },
     createOrder(value) {
       switch (value) {
-        case PackageStatusCreatedText:
+        case PACKAGE_STATUS_CREATED_TEXT:
           return false
-        case PackageStatusPendingPickupText:
+        case PACKAGE_STATUS_PENDING_PICKUP_TEXT:
           return true
-        case PackageStatusProcessingText:
+        case PACKAGE_STATUS_PROCESSING_TEXT:
           return true
-        case PackageStatusInTransitText:
+        case PACKAGE_STATUS_IN_TRANSIT_TEXT:
           return true
-        case PackageStatusDeliveredText:
+        case PACKAGE_STATUS_DELIVERED_TEXT:
           return true
-        case PackageStatusReturnText:
+        case PACKAGE_STATUS_RETURN_TEXT:
           return true
-        case PackageStatusCancelledText:
+        case PACKAGE_STATUS_CANCELLED_TEXT:
           return true
-        case PackageStatusExpiredText:
+        case PACKAGE_STATUS_EXPIRED_TEXT:
           return true
         default:
           return false
@@ -807,21 +790,21 @@ export default {
 
     cancelOrder(status) {
       switch (status) {
-        case PackageStatusCreatedText:
+        case PACKAGE_STATUS_CREATED_TEXT:
           return false
-        case PackageStatusPendingPickupText:
+        case PACKAGE_STATUS_PENDING_PICKUP_TEXT:
           return false
-        case PackageStatusProcessingText:
+        case PACKAGE_STATUS_PROCESSING_TEXT:
           return true
-        case PackageStatusInTransitText:
+        case PACKAGE_STATUS_IN_TRANSIT_TEXT:
           return true
-        case PackageStatusDeliveredText:
+        case PACKAGE_STATUS_DELIVERED_TEXT:
           return true
-        case PackageStatusReturnText:
+        case PACKAGE_STATUS_RETURN_TEXT:
           return true
-        case PackageStatusCancelledText:
+        case PACKAGE_STATUS_CANCELLED_TEXT:
           return true
-        case PackageStatusExpiredText:
+        case PACKAGE_STATUS_EXPIRED_TEXT:
           return true
         default:
           return false
@@ -833,8 +816,8 @@ export default {
     handlerCancelPackages() {
       const selectedInvalid = this.selected.filter(
         (ele) =>
-          ele.status_string !== PackageStatusCreatedText &&
-          ele.status_string !== PackageStatusPendingPickupText
+          ele.status_string !== PACKAGE_STATUS_CREATED_TEXT &&
+          ele.status_string !== PACKAGE_STATUS_PENDING_PICKUP_TEXT
       )
       if (selectedInvalid.length > 0) {
         let codeSelectedInvalid = selectedInvalid.map((ele) => ele.order_number)
@@ -856,8 +839,8 @@ export default {
     handlerReturnPackages() {
       const selectedInvalid = this.selected.filter(
         (ele) =>
-          ele.status_string !== PackageStatusPendingPickupText ||
-          ele.alert != PackageAlertTypeWarehoseReturn
+          ele.status_string !== PACKAGE_STATUS_PENDING_PICKUP_TEXT ||
+          ele.alert != PACKAGE_ALERT_TYPE_WAREHOUSE_RETURN
       )
 
       if (selectedInvalid.length > 0) {
@@ -922,7 +905,7 @@ export default {
     },
     handleWayBill() {
       let selectedInvalid = this.selected.filter(
-        (ele) => ele.status_string !== PackageStatusCreatedText
+        (ele) => ele.status_string !== PACKAGE_STATUS_CREATED_TEXT
       )
       if (selectedInvalid.length > 0) {
         let codeSelectedInvalid = selectedInvalid.map((ele) => ele.order_number)
@@ -1085,21 +1068,21 @@ export default {
     },
     downloadLabel() {
       switch (this.filter.status) {
-        case PackageStatusCreatedText:
+        case PACKAGE_STATUS_CREATED_TEXT:
           return true
-        case PackageStatusPendingPickupText:
+        case PACKAGE_STATUS_PENDING_PICKUP_TEXT:
           return false
-        case PackageStatusProcessingText:
+        case PACKAGE_STATUS_PROCESSING_TEXT:
           return false
-        case PackageStatusInTransitText:
+        case PACKAGE_STATUS_IN_TRANSIT_TEXT:
           return false
-        case PackageStatusDeliveredText:
+        case PACKAGE_STATUS_DELIVERED_TEXT:
           return false
-        case PackageStatusReturnText:
+        case PACKAGE_STATUS_RETURN_TEXT:
           return false
-        case PackageStatusCancelledText:
+        case PACKAGE_STATUS_CANCELLED_TEXT:
           return true
-        case PackageStatusExpiredText:
+        case PACKAGE_STATUS_EXPIRED_TEXT:
           return true
         default:
           return false
@@ -1107,11 +1090,11 @@ export default {
     },
     description(alert) {
       switch (alert) {
-        case PackageAlertTypeOverPretransit:
+        case PACKAGE_ALERT_TYPE_OVER_PRE_TRANSIT:
           return 'Quá 7 ngày chờ lấy'
-        case PackageAlertTypeWarehoseReturn:
+        case PACKAGE_ALERT_TYPE_WAREHOUSE_RETURN:
           return 'Bị kho trả lại'
-        case PackageAlertTypeHubReturn:
+        case PACKAGE_ALERT_TYPE_HUB_RETURN:
           return 'Hàng bị trả lại'
       }
     },

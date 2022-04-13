@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import { domOn } from '../utils/dom'
 import { capitalize } from '@core/utils/string'
+import { MAP_STATUS_CLASS_NAME } from '../../packages/package/constants'
+import { MAP_CLAIM_STATUS } from '../../packages/claim/constants'
+import { MAP_TRANSACTION_STATUS } from '../../packages/bill/constants'
 
 const nodeList = []
 const ctx = '@@clickoutsideContext'
@@ -78,76 +81,72 @@ export const clickoutside = {
   },
 }
 
-const getFormatStatus = (status) => {
-  let statusClass = ''
-  switch (status) {
-    case 'Tạo mới':
-    case 'in-Transit':
-      statusClass = 'default'
-      break
-    case 'Chờ lấy':
-    case 'pending':
-      statusClass = 'await'
-      break
-    case 'Đã lấy':
-    case 'Đang giao':
-    case 'processing':
-      statusClass = 'primary'
-      break
-    case 'Giao thành công':
-    case 'Thành công':
-    case 'delivered':
-      statusClass = 'success'
-      break
-    case 'Trả hàng':
-    case 'Hoàn trả':
-    case 'returned':
-      statusClass = 'info'
-      break
-    case 'Đã hủy':
-    case 'Thất bại':
-    case 'Từ chối':
-    case 'canceled':
-    case 'Không thành công':
-    case 'Giao không thành công':
-    case 'undelivered':
-      statusClass = 'danger'
-      break
+const getFormatStatus = (status, type) => {
+  type = type || 'package'
+  let value = { text: 'unknown', className: 'unknown' }
 
-    case 'Đang xử lý':
-    case 'Chờ xác nhận':
-    case 'Pre-Transit':
-      statusClass = 'pending'
-      break
-    case 'Đã xử lý':
-    case 'Thanh toán':
-      statusClass = 'done'
-      break
-    case 'Chưa thanh toán':
-      statusClass = 'unpaid'
-      break
-    case 'alert':
-      statusClass = 'alert'
-      break
-    case 'expired':
-      statusClass = 'expired'
-      break
+  // cSpell:disable
+  // const defaultClassLists = {
+  //   'tạo mới': 'default',
+  //   'in-transit': 'default',
+  //   'chờ lấy': 'await',
+  //   pending: 'await',
+  //   'đã lấy': 'primary',
+  //   'đang giao': 'primary',
+  //   processing: 'primary',
+  //   'giao thành công': 'success',
+  //   'thành công': 'success',
+  //   delivered: 'success',
+  //   'trả hàng': 'info',
+  //   'hoàn trả': 'info',
+  //   returned: 'info',
+  //   'đã hủy': 'danger',
+  //   'thất bại': 'danger',
+  //   'từ chối': 'danger',
+  //   canceled: 'danger',
+  //   'không thành công': 'danger',
+  //   'giao không thành công': 'danger',
+  //   undelivered: 'danger',
+  //   'đang xử lý': 'pending',
+  //   'chờ xác nhận': 'pending',
+  //   'pre-transit': 'pending',
+  //   'đã xử lý': 'done',
+  //   'thanh toán': 'done',
+  //   'chưa thanh toán': 'unpaid',
+  //   alert: 'alert',
+  //   expired: 'expired',
+  // }
+  // cSpell:enable
+
+  if (type == 'package') {
+    status = (status || '').toLowerCase()
+    value = MAP_STATUS_CLASS_NAME[status] || {}
+  }
+
+  if (type == 'claim') {
+    value = MAP_CLAIM_STATUS[status] || {}
+  }
+
+  if (type == 'transaction') {
+    value = MAP_TRANSACTION_STATUS[status] || {}
   }
 
   return {
-    text: capitalize(status),
-    classList: `badge badge-round badge-${statusClass}`,
+    text: capitalize(value.text),
+    classList: `badge badge-round badge-${value.className}`,
   }
 }
 
 export const labelStatus = {
   update(el, binding) {
-    const { text, classList } = getFormatStatus(binding.value)
+    const type = el.getAttribute('type')
+    const { text, classList } = getFormatStatus(binding.value, type)
     el.classList = classList
     el.innerText = text
   },
   inserted(el, binding) {
-    const { text, classList } = getFormatStatus(binding.value)
+    const type = el.getAttribute('type')
+    const { text, classList } = getFormatStatus(binding.value, type)
     el.classList = classList
     el.innerText = text
   },
