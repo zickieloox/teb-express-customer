@@ -30,7 +30,7 @@ node {
         // Build stage: build image then push to private registry. Only build on branch master
         image = "${deploySettings.image_name}:${deploySettings.image_tag}"
         stage ('Build') {
-            if (deploySettings.branch == 'master' || deploySettings.branch == 'dev' || deploySettings.branch == 'sandbox') {
+            if (deploySettings.branch == 'master' || deploySettings.branch == 'dev' || deploySettings.branch == 'sandbox' || deploySettings.branch == 'dev-eks') {
                 dir('shipping-customer') {
                     withDockerRegistry([
                         credentialsId: 'docker-registry-credentials',
@@ -108,17 +108,25 @@ def getDeploySettings() {
         kubeConfig = "/var/lib/jenkins/.kube/lionnix-dev"
         dockerImageTag = "dev-${buildNumber}"
         mode = "development"
+        deploySettings['helm_release'] = serviceName
 
-    }
+    } else if (branchName == 'dev-eks') {
+        // deploy code on master branch to master
+        helmValueFile = "default.values.dev-eks.yaml"
+        kubeConfig = "/var/lib/jenkins/.kube/lionnix-prod"
+        dockerImageTag = "dev-${buildNumber}"
+        mode = "development"
+        namespace = "dev-${namespace}"
+        deploySettings['helm_release'] = "${serviceName}-dev"
 
-    else if (branchName == 'sandbox') {
+    } else if (branchName == 'sandbox') {
         // deploy code on master branch to master
         helmValueFile = "default.values.sandbox.yaml"
-        kubeConfig = "/var/lib/jenkins/.kube/lionnix-dev"
+        kubeConfig = "/var/lib/jenkins/.kube/lionnix-prod"
         dockerImageTag = "sandbox-${buildNumber}"
         mode = "development"
-        namespace = "sandbox-shipment-web-ui"
-        serviceName = "sandbox-shipment-customer"
+        namespace = "sandbox-${namespace}"
+        serviceName = "sandbox-${serviceName}"
     }
 
     // docker image info to build
@@ -130,7 +138,6 @@ def getDeploySettings() {
     deploySettings['mode'] = mode
 
     // k8s/helm info for deployment
-    deploySettings['helm_release'] = serviceName
     deploySettings['helm_values_file'] = "${helmValueFile}"
     deploySettings['kube_config'] = kubeConfig
     deploySettings['namespace'] = namespace
