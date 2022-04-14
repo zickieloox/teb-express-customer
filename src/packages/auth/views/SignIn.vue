@@ -56,7 +56,7 @@
           </router-link>
         </p>
         <p class="forgot_password">
-          <router-link :to="{ name: 'forgot' }">
+          <router-link to="/">
             Quên mật khẩu?
           </router-link>
         </p>
