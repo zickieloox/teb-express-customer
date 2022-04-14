@@ -55,11 +55,6 @@
             Tạo tài khoản
           </router-link>
         </p>
-        <p class="forgot_password">
-          <router-link :to="{ name: 'forgot' }">
-            Quên mật khẩu?
-          </router-link>
-        </p>
         <p class="police__text-bottom text-center gg-captche">
           Được bảo vệ bởi reCAPTCHA và tuân theo
           <a

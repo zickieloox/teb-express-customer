@@ -68,7 +68,7 @@
           </m-input>
         </div>
         <div class="form-group form-input">
-          <label for="">Email:</label>
+          <label for="">Email: <span class="text-danger">*</span></label>
           <m-input
             v-model.trim="user.email"
             :error="valider.hasError('email')"
