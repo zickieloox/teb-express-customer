@@ -179,7 +179,9 @@ export default {
       }
 
       this.warehousesDTO = this.warehouses.filter((warehouse) =>
-        this.validSearch(warehouse.address).includes(this.search.toUpperCase())
+        this.validSearch(warehouse.address + ' ' + warehouse.city).includes(
+          this.search.toUpperCase()
+        )
       )
 
       if (city != '') {
