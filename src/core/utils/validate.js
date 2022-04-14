@@ -7,3 +7,8 @@ export function isPhone(val) {
   const re = /^[+]?[0-9]{1,20}$/
   return re.test(val)
 }
+
+export function isAccount(val) {
+  const re = /^[A-Za-z0-9-_]*$/
+  return re.test(val)
+}
