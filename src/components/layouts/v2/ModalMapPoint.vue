@@ -186,11 +186,7 @@ export default {
         this.warehousesDTO = this.warehousesDTO.filter((warehouse) =>
           this.validSearch(warehouse.city).includes(city.toUpperCase())
         )
-
-        console.log(this.warehousesDTO)
       }
-
-      console.log(this.warehousesDTO)
     },
 
     validSearch(text) {
