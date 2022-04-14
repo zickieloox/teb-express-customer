@@ -49,8 +49,8 @@
             </div>
             <div class="time-open">
               <inline-svg
+                class="icon-map"
                 :src="require('@assets/img/clock-open.svg')"
-                class=""
               ></inline-svg>
               {{ warehouse.time_open }}
             </div>
@@ -61,8 +61,8 @@
                 :href="warehouse.link_address"
               >
                 <inline-svg
+                  class="icon-map"
                   :src="require('@assets/img/link-location.svg')"
-                  class=""
                 ></inline-svg>
                 {{ warehouse.address }}, {{ warehouse.city }}
               </a>
