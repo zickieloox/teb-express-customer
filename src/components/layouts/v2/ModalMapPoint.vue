@@ -55,7 +55,11 @@
               {{ warehouse.time_open }}
             </div>
             <div class="link-location" v-if="isActive == warehouse.id">
-              <a :href="warehouse.link_address">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                :href="warehouse.link_address"
+              >
                 <inline-svg
                   :src="require('@assets/img/link-location.svg')"
                   class=""
