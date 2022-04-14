@@ -1,7 +1,8 @@
-import { isEmail, isPhone } from '@core/utils/validate'
+import { isEmail, isPhone, isAccount } from '@core/utils/validate'
 
 function validAccount(account) {
   if (!account) return 'Vui lòng không để trống!'
+  if (!isAccount(account)) return 'Tên tài khoản không hợp lệ'
   return true
 }
 
