@@ -18,7 +18,7 @@
             @keyup.enter="onSignIn"
           >
             <template v-if="!email">
-              Nhập số điện thoại hoặc email <span class="text-danger">*</span>
+              Nhập số điện thoại hoặc email
             </template>
           </m-input>
         </div>
@@ -34,7 +34,7 @@
             @keyup.enter="onSignIn"
           >
             <template v-if="!password">
-              Mật khẩu của bạn <span class="text-danger">*</span>
+              Mật khẩu của bạn
             </template>
             <template v-slot:toggle-password="{ type }">
               {{ type === 'text' ? 'Ẩn' : 'Hiển thị' }}
