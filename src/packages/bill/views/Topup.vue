@@ -10,8 +10,12 @@
               :class="{ deactive: !isTopup, active: isTopup }"
             >
               <inline-svg
-                class="svg-card"
+                :class="{ hidden: isTopup }"
                 :src="require('../../../../src/assets/img/card.svg')"
+              ></inline-svg>
+              <inline-svg
+                :class="{ hidden: !isTopup }"
+                :src="require('../../../../src/assets/img/card-active.svg')"
               ></inline-svg
               >Chuyển khoản</a
             >
@@ -20,14 +24,14 @@
               @click="setMethod(payoneerType)"
               :class="{ deactive: !isPayoneer, active: isPayoneer }"
             >
-              <inline-svg
-                class="svg"
-                :src="require('../../../../src/assets/img/payoneer.svg')"
-              ></inline-svg>
-              <inline-svg
-                class="svg-active"
-                :src="require('../../../../src/assets/img/payoneer-active.svg')"
-              ></inline-svg>
+              <img
+                :class="{ hidden: isPayoneer }"
+                src="@assets/img/payoneer.svg"
+              />
+              <img
+                :class="{ hidden: !isPayoneer }"
+                src="@assets/img/payoneer-active.svg"
+              />
             </a>
             <a
               href="javascript:void(0)"
@@ -35,11 +39,11 @@
               :class="{ deactive: !isPingPong, active: isPingPong }"
             >
               <inline-svg
-                class="svg"
+                :class="{ hidden: isPingPong }"
                 :src="require('../../../../src/assets/img/pingpong.svg')"
               ></inline-svg>
               <inline-svg
-                class="svg-active"
+                :class="{ hidden: !isPingPong }"
                 :src="require('../../../../src/assets/img/pingpong-active.svg')"
               ></inline-svg>
             </a>
@@ -63,8 +67,8 @@
                 </p>
                 <p>
                   Nội dung chuyển khoản:<br />
-                  <span>Topup {{ topup.id }}</span>
-                  <copy :value="`Topup ${topup.id}`"></copy>
+                  <span>Nap topup {{ topup.id }}</span>
+                  <copy :value="`Nap topup ${topup.id}`"></copy>
                 </p>
               </div>
 
