@@ -238,9 +238,8 @@ export default {
       if (!this.valider.isValid(this.user)) {
         return
       }
-
       const payload = {
-        full_name: this.user.full_name.trim(),
+        full_name: this.user.fullname.trim(),
         email: this.user.email.trim().toLowerCase(),
         password: this.user.password,
         phone_number: this.user.phone.trim(),
