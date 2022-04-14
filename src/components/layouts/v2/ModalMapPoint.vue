@@ -35,7 +35,7 @@
             @click="handleActive(warehouse.id)"
           >
             <div class="warehouse-location d-flex">
-              <p>{{ warehouse.address }}</p>
+              <p>{{ warehouse.address }}, {{ warehouse.city }}</p>
               <div class="dropdown-icon">
                 <inline-svg
                   :src="require('@assets/img/Chevron - Down 16px.svg')"
@@ -64,7 +64,7 @@
                   :src="require('@assets/img/link-location.svg')"
                   class=""
                 ></inline-svg>
-                {{ warehouse.address }}
+                {{ warehouse.address }}, {{ warehouse.city }}
               </a>
             </div>
             <div class="time-active " v-if="isActive == warehouse.id">
