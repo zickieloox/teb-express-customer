@@ -80,11 +80,19 @@
         </div>
       </div>
       <div class="setting-section card" id="webhook-url">
-        <div class="card-header">Webhook</div>
+        <div class="card-header"
+          >Webhook
+          <i
+            style="font-weight:400;font-size:12px;text-decoration:underline;color:#AAABAB;"
+          >
+            (Coming soon)
+          </i></div
+        >
         <div class="webhook-url-input card-content">
           <label class="lbn-input-setting">URL</label>
           <div class="input-setting">
             <p-input
+              :disabled="true"
               type="text"
               v-model.trim="webhookUrl"
               :input="webhookUrl"
