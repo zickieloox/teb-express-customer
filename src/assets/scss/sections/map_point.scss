@@ -26,6 +26,13 @@
     overflow-y: auto;
   }
 
+  .is-loading{
+    margin-top: 17px;
+    overflow-y: auto;
+    text-align: center;
+    vertical-align: middle;
+  }
+
   .warehouse-item{
     .warehouse-item-content {
       padding: 16px;
