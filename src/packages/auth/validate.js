@@ -1,8 +1,7 @@
-import { isEmail, isPhone, isAccount } from '@core/utils/validate'
+import { isEmail, isPhone } from '@core/utils/validate'
 
-function validAccount(account) {
-  if (!account) return 'Vui lòng không để trống!'
-  if (!isAccount(account)) return 'Tên tài khoản không hợp lệ'
+function validFullname(fullname) {
+  if (!fullname) return 'Vui lòng không để trống!'
   return true
 }
 
@@ -36,7 +35,7 @@ export const signup = {
     let valid = true
     this.clean()
 
-    if (!this.validAccount(user.account)) {
+    if (!this.validFullname(user.fullname)) {
       valid = false
     }
 
@@ -59,12 +58,12 @@ export const signup = {
     return valid
   },
 
-  validAccount(account) {
-    this.clean('account')
-    const msg = validAccount(account)
+  validFullname(fullname) {
+    this.clean('fullname')
+    const msg = validFullname(fullname)
     if (msg === true) return true
 
-    this.errors.account = msg
+    this.errors.fullname = msg
     return false
   },
 
