@@ -227,6 +227,11 @@ $bg-end: #1571b1;
       }
     }
     .form-input{
+      &.error-input{
+        .multiselect-package .multiselect__tags{
+          border-color: #F5222D;
+        }
+      }
       margin-bottom: 16px;
       >label{
         line-height: 20px;
@@ -322,9 +327,10 @@ $bg-end: #1571b1;
     opacity: 0;
     width: 100%;
     min-height: 3rem;
-    line-height: 1.6rem;
+    line-height: 2rem;
     padding: 5px 1.2rem;
-    margin-bottom: 0;
+    margin-bottom:16px;
+    margin-top: -8px;
 
     &.success {
       color: #48BE78;
