@@ -83,7 +83,7 @@
           </div>
         </div>
       </div>
-      <div class="is-loading" v-else>
+      <div class="is-loading" v-else-if="isLoading">
         <img src="@assets/img/loading.gif" />
       </div>
     </div>
@@ -172,15 +172,25 @@ export default {
     },
 
     handleSearch() {
-      let city = this.city.name
+      let city = ''
+
+      if (this.city) {
+        city = this.city.name
+      }
+
       this.warehousesDTO = this.warehouses.filter((warehouse) =>
         this.validSearch(warehouse.address).includes(this.search.toUpperCase())
       )
+
       if (city != '') {
-        this.warehousesDTO = this.warehouses.filter((warehouse) =>
+        this.warehousesDTO = this.warehousesDTO.filter((warehouse) =>
           this.validSearch(warehouse.city).includes(city.toUpperCase())
         )
+
+        console.log(this.warehousesDTO)
       }
+
+      console.log(this.warehousesDTO)
     },
 
     validSearch(text) {
