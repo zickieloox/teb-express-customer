@@ -178,5 +178,13 @@ export default {
       this.handleSearch()
     },
   },
+  watch: {
+    city: {
+      handler: function() {
+        this.handleSearch()
+      },
+      deep: true,
+    },
+  },
 }
 </script>
