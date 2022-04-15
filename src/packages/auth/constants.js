@@ -5,18 +5,22 @@ export const UserStatusInactive = 2
 export const OPTIONS_PACKAGES = [
   {
     id: 1,
-    name: 'Từ 6000 đơn hàng / tháng trở lên',
+    name: 'Không có nhu cầu thường xuyên',
   },
   {
     id: 2,
-    name: 'Từ 7000 đơn hàng / tháng trở lên',
+    name: 'Từ 150 - dưới 900 đơn hàng / tháng',
   },
   {
     id: 3,
-    name: 'Từ 8000 đơn hàng / tháng trở lên',
+    name: 'Từ 900 - dưới 3000 đơn hàng / tháng',
   },
   {
     id: 4,
-    name: 'Từ 9000 đơn hàng / tháng trở lên',
+    name: 'Từ 3000 - dưới 6000 đơn hàng / tháng',
+  },
+  {
+    id: 5,
+    name: 'Từ 6000 đơn hàng trên tháng trở lên',
   },
 ]
