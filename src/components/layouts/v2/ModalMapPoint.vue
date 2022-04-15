@@ -35,7 +35,7 @@
             @click="handleActive(warehouse.id)"
           >
             <div class="warehouse-location d-flex">
-              <p>{{ warehouse.address }}</p>
+              <p>{{ warehouse.address }}, {{ warehouse.city }}</p>
               <div class="dropdown-icon">
                 <inline-svg
                   :src="require('@assets/img/Chevron - Down 16px.svg')"
@@ -64,7 +64,7 @@
                   :src="require('@assets/img/link-location.svg')"
                   class=""
                 ></inline-svg>
-                {{ warehouse.address }}
+                {{ warehouse.address }}, {{ warehouse.city }}
               </a>
             </div>
             <div class="time-active " v-if="isActive == warehouse.id">
@@ -83,7 +83,7 @@
           </div>
         </div>
       </div>
-      <div class="is-loading" v-else>
+      <div class="is-loading" v-else-if="isLoading">
         <img src="@assets/img/loading.gif" />
       </div>
     </div>
@@ -172,12 +172,20 @@ export default {
     },
 
     handleSearch() {
-      let city = this.city.name
+      let city = ''
+
+      if (this.city) {
+        city = this.city.name
+      }
+
       this.warehousesDTO = this.warehouses.filter((warehouse) =>
-        this.validSearch(warehouse.address).includes(this.search.toUpperCase())
+        this.validSearch(warehouse.address + ' ' + warehouse.city).includes(
+          this.search.toUpperCase()
+        )
       )
+
       if (city != '') {
-        this.warehousesDTO = this.warehouses.filter((warehouse) =>
+        this.warehousesDTO = this.warehousesDTO.filter((warehouse) =>
           this.validSearch(warehouse.city).includes(city.toUpperCase())
         )
       }
