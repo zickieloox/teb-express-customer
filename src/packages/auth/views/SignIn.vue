@@ -82,7 +82,6 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import mixinRoute from '@core/mixins/route'
-import Storage from '@core/helpers/storage'
 import { signin } from '../validate'
 import crisp from '../../../core/services/crisp'
 
@@ -177,7 +176,7 @@ export default {
         }, 1000)
       } else {
         if (this.result.userInActive) {
-          Storage.set('userEmail', this.currentUser.email)
+          // Storage.set('userEmail', this.currentUser.email)
           // setTimeout(() => {
           //   this.$router.push('/verify-email')
           // }, 1000)

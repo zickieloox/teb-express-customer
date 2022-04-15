@@ -149,7 +149,6 @@
 
 <script>
 import { mapActions } from 'vuex'
-import Storage from '@core/helpers/storage'
 import { signup } from '../validate'
 import SmsOtp from '../components/SmsOtp'
 import Requested from '../components/Requested'
@@ -236,8 +235,8 @@ export default {
         this.isSubmitting = false
         if (res && res.success) {
           this.error = false
-          Storage.set('userEmail', this.user.email)
-          Storage.set('expried', null)
+          // Storage.set('userEmail', this.user.email)
+          // Storage.set('expried', null)
           this.visibleSignInForm = false
           this.visibleCompleteRequest = true
         } else {
