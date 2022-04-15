@@ -1,6 +1,6 @@
 <template>
-  <div class="card">
-    <div class="sign-up" v-if="visibleSignInForm">
+  <div class="card sign-up">
+    <div class="sign-up-form" v-if="visibleSignInForm">
       <div class="header">
         <h2>Tạo tài khoản mới</h2>
       </div>
