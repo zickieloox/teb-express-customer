@@ -178,12 +178,13 @@ export default {
       } else {
         if (this.result.userInActive) {
           Storage.set('userEmail', this.currentUser.email)
-          setTimeout(() => {
-            this.$router.push('/verify-email')
-          }, 1000)
+          // setTimeout(() => {
+          //   this.$router.push('/verify-email')
+          // }, 1000)
           this.$toast.open({
-            type: 'error',
-            message: this.result.message,
+            type: 'primary',
+            message:
+              'Tài khoản đang được xác thực. Vui lòng chờ chúng tôi liên hệ với bạn.',
           })
           return
         }
@@ -193,9 +194,8 @@ export default {
         }
 
         this.$toast.open({
-          type: 'primary',
+          type: 'error',
           message: this.result.message,
-          duration: 100000,
         })
       }
     },
