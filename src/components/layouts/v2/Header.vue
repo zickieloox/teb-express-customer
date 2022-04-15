@@ -16,8 +16,19 @@
       </div>
 
       <!--      Start Notifications  -->
-
       <div class="navbar__header-right d-flex align-items-center">
+        <div class="navbar_header-map-point mr-30">
+          <button class="btn btn-map-point" @click="handleMapPoint">
+            <inline-svg
+              :src="
+                require('../../../../src/assets/img/location-warehouse.svg')
+              "
+            >
+            </inline-svg>
+            <span>Lionbay Point</span>
+          </button>
+        </div>
+
         <div class="navbar__header-noti">
           <p-dropdown :multiple="false" class="">
             <div class="noti__dropdown-icon" slot="trigger">
@@ -149,6 +160,12 @@
         </p-dropdown>
       </div>
     </div>
+    <modal-map-point
+      :visible.sync="isVisibleMapPoint"
+      :uploading="true"
+      v-if="isVisibleMapPoint"
+    >
+    </modal-map-point>
   </nav>
 </template>
 <script>
@@ -170,9 +187,10 @@ import {
   NotificationUnread,
 } from '../../../packages/shared/constants'
 import PDropdownItem from '../../../../uikit/components/dropdown/DropdownItem'
+import ModalMapPoint from './ModalMapPoint.vue'
 
 export default {
-  components: { PDropdownItem, PDropdown },
+  components: { PDropdownItem, PDropdown, ModalMapPoint },
   mixins: [mixinRoute, mixinTable],
   name: 'Header',
   props: {
@@ -214,6 +232,7 @@ export default {
         },
       },
       NotificationUnread: NotificationUnread,
+      isVisibleMapPoint: false,
     }
   },
   methods: {
@@ -222,6 +241,9 @@ export default {
       READ_NOTIFICATIONS,
       READ_NOTIFICATION,
     ]),
+    handleMapPoint() {
+      this.isVisibleMapPoint = true
+    },
     async init() {
       const result = await this[FETCH_NOTIFICATIONS](this.filter)
       if (!result.success) {

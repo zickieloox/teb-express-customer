@@ -20,12 +20,12 @@
             >Tên tài khoản: <span class="text-danger">*</span></label
           >
           <m-input
-            v-model.trim="user.account"
-            :error="valider.hasError('account')"
-            :messages="valider.error('account')"
-            @input="onInput('account')"
+            v-model.trim="user.fullname"
+            :error="valider.hasError('fullname')"
+            :messages="valider.error('fullname')"
+            @input="onInput('fullname')"
           >
-            <template v-if="!user.account">
+            <template v-if="!user.fullname">
               Nhập tên tài khoản
             </template>
           </m-input>
@@ -68,7 +68,7 @@
           </m-input>
         </div>
         <div class="form-group form-input">
-          <label for="">Email:</label>
+          <label for="">Email: <span class="text-danger">*</span></label>
           <m-input
             v-model.trim="user.email"
             :error="valider.hasError('email')"
@@ -159,7 +159,7 @@ export default {
     disableBtn() {
       return (
         this.isSubmitting ||
-        this.user.account === '' ||
+        this.user.fullname === '' ||
         this.user.email === '' ||
         this.user.phone === '' ||
         this.user.password === ''
@@ -172,7 +172,7 @@ export default {
   data() {
     return {
       user: {
-        account: '',
+        fullname: '',
         package: null,
         email: '',
         phone: '',
@@ -210,8 +210,8 @@ export default {
 
     onInput(key) {
       switch (key) {
-        case 'account':
-          this.valider.validAccount(this.user.account)
+        case 'fullname':
+          this.valider.validFullname(this.user.fullname)
           break
         case 'phone':
           this.valider.validPhone(this.user.phone)
@@ -238,9 +238,8 @@ export default {
       if (!this.valider.isValid(this.user)) {
         return
       }
-
       const payload = {
-        username: this.user.account.trim(),
+        full_name: this.user.fullname.trim(),
         email: this.user.email.trim().toLowerCase(),
         password: this.user.password,
         phone_number: this.user.phone.trim(),

@@ -130,6 +130,37 @@ $sidebar-width:120px;
             }
         }
     }
+
+    .navbar_header-map-point {
+        .btn-map-point {
+            background-color: inherit;
+            display: flex;
+            align-items: center;
+            border: 1px solid #E1E2E2;
+            box-sizing: border-box;
+            border-radius: 4px;
+            padding: 8px 12px;
+            color: #000;
+            width: 157px;
+            span {
+                font-style: normal;
+                font-weight: 700;
+                font-size: 14px;
+                line-height: 20px;
+                display: flex;
+                align-items: center;
+                text-align: center;
+                color: #111212;
+                flex: none;
+                order: 1;
+                flex-grow: 0;
+            }
+            img {
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
 }
 
 .noti__dropdown {
