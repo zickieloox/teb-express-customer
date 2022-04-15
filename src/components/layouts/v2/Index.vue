@@ -1,7 +1,13 @@
 <template>
-  <div class="animsition dashboard site-menubar-unfold">
+  <div
+    class="animsition dashboard"
+    :class="{
+      'site-menubar-unfold': isSidebarOpen,
+      'site-menubar-hide': !isSidebarOpen,
+    }"
+  >
     <p-header :user="user" />
-    <p-sidebar />
+    <p-sidebar @toggleShowSidebar="toggleShowSidebar" />
 
     <router-view
       :key="$route.path"
@@ -28,6 +34,7 @@ import PHeader from './Header'
 import PSidebar from './Sidebar'
 import { GET_USER } from '../../../packages/shared/store'
 import firebase from '../../../core/services/firebase'
+import crisp from '../../../core/services/crisp'
 
 export default {
   name: 'Version2',
@@ -58,6 +65,11 @@ export default {
     async init() {
       await this.getUser()
       this.checkDebtUser()
+
+      if (this.user) {
+        crisp.init(this.user.id)
+        crisp.setup(this.user)
+      }
     },
     checkDebtUser() {
       if (!this.user.user_info) {
@@ -85,6 +97,9 @@ export default {
       }
       this.warning = false
       this.$store.commit('shared/checkDebt', false)
+    },
+    toggleShowSidebar() {
+      this.isSidebarOpen = !this.isSidebarOpen
     },
   },
 }

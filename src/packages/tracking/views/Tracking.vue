@@ -242,9 +242,7 @@ Với nhiều mã tracking, các mã được phân cách bởi dấu enter`
                   <td
                     >{{ item.package_code.code }}
                     <br />
-                    <span
-                      v-status:status="mapStatus[item.status_string].value"
-                    ></span>
+                    <span v-status="item.status_string"></span>
                     <span
                       class="badge badge-round badge-success"
                       v-if="item.status_string == statusDelivered"
@@ -406,15 +404,14 @@ import Uniq from 'lodash/uniq'
 import { datetime } from '../../../core/utils/datetime'
 import {
   DELIVER_LOG_PACKAGE,
-  MAP_NAME_STATUS_PACKAGE,
-  PackageStatusDeliveredText,
-  PackageStatusProcessingText,
-  PackageStatusInTransitText,
-  PackageStatusAlertText,
-  PackageStatusPendingPickupText,
-  PackageStatusCancelledText,
-  PackageStatusExpiredText,
-  PackageStatusUndeliveredText,
+  PACKAGE_STATUS_DELIVERED_TEXT,
+  PACKAGE_STATUS_PROCESSING_TEXT,
+  PACKAGE_STATUS_IN_TRANSIT_TEXT,
+  PACKAGE_STATUS_ALERT_TEXT,
+  PACKAGE_STATUS_PENDING_PICKUP_TEXT,
+  PACKAGE_STATUS_CANCELLED_TEXT,
+  PACKAGE_STATUS_EXPIRED_TEXT,
+  PACKAGE_STATUS_UNDELIVERED_TEXT,
 } from '../../package/constants'
 import ModalTracking from '../components/ModalTracking.vue'
 import Copy from '../../bill/components/Copy.vue'
@@ -438,14 +435,14 @@ export default {
       errText: '',
       open: false,
       opened: [],
-      statusProcessing: PackageStatusProcessingText,
-      statusInTransit: PackageStatusInTransitText,
-      statusDelivered: PackageStatusDeliveredText,
-      statusAlert: PackageStatusAlertText,
-      statusUndelivered: PackageStatusUndeliveredText,
-      statusPendingPickup: PackageStatusPendingPickupText,
-      statusCancel: PackageStatusCancelledText,
-      statusExpried: PackageStatusExpiredText,
+      statusProcessing: PACKAGE_STATUS_PROCESSING_TEXT,
+      statusInTransit: PACKAGE_STATUS_IN_TRANSIT_TEXT,
+      statusDelivered: PACKAGE_STATUS_DELIVERED_TEXT,
+      statusAlert: PACKAGE_STATUS_ALERT_TEXT,
+      statusUndelivered: PACKAGE_STATUS_UNDELIVERED_TEXT,
+      statusPendingPickup: PACKAGE_STATUS_PENDING_PICKUP_TEXT,
+      statusCancel: PACKAGE_STATUS_CANCELLED_TEXT,
+      statusExpried: PACKAGE_STATUS_EXPIRED_TEXT,
       statusNotFound: 'Not Found',
       filter: {
         limit: 10,
@@ -565,9 +562,6 @@ Origin:\n`,
     },
     count() {
       return this.ListPackages.length
-    },
-    mapStatus() {
-      return MAP_NAME_STATUS_PACKAGE
     },
     notFoundCodes() {
       let notFoundArr = []

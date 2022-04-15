@@ -96,6 +96,12 @@ export default {
   saveSettingLabel(payload) {
     return http.post(`/settings/label`, payload)
   },
+  saveSettingWebhook(payload) {
+    return http.post(`/settings/webhook`, payload)
+  },
+  fetchSettingWebhook() {
+    return http.get(`/settings/webhook`)
+  },
   generatePreviewLabel(payload) {
     return http.post(`/settings/label/preview`, payload)
   },

@@ -17,4 +17,7 @@ export default {
   readNotification(payload) {
     return http.get(`/users/notifications/read/${payload}`)
   },
+  fetchWarehouses(payload) {
+    return http.get(`/packages/warehouses?${buildQueryString(payload)}`)
+  },
 }

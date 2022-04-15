@@ -16,8 +16,19 @@
       </div>
 
       <!--      Start Notifications  -->
-
       <div class="navbar__header-right d-flex align-items-center">
+        <div class="navbar_header-map-point mr-30">
+          <button class="btn btn-map-point" @click="handleMapPoint">
+            <inline-svg
+              :src="
+                require('../../../../src/assets/img/location-warehouse.svg')
+              "
+            >
+            </inline-svg>
+            <span>Lionbay Point</span>
+          </button>
+        </div>
+
         <div class="navbar__header-noti">
           <p-dropdown :multiple="false" class="">
             <div class="noti__dropdown-icon" slot="trigger">
@@ -74,9 +85,7 @@
               <p-dropdown-item class="all">
                 <div class="noti__dropdown-footer d-flex">
                   <div v-if="notifications.length > 0" class="view-all">
-                    <router-link to="/notification">
-                      Xem tất cả
-                    </router-link>
+                    <router-link to="/notification"> Xem tất cả </router-link>
                   </div>
                 </div>
               </p-dropdown-item>
@@ -117,21 +126,46 @@
             </div>
           </div>
           <p-dropdown-item>
-            <img
-              src="@/assets/img/Circle 16px.svg"
-              class="navbar__header-icon"
-            />
-            <router-link to="/" class="nav-item">
+            <router-link
+              :to="{ name: 'home' }"
+              class="nav-item nav-item-disabled"
+            >
+              <inline-svg
+                class="navbar__header-icon"
+                :src="require('../../../../src/assets/img/lifebuoy.svg')"
+              ></inline-svg>
               Hỏi đáp trợ giúp
             </router-link>
           </p-dropdown-item>
           <p-dropdown-item>
-            <img src="@/assets/img/Logout.svg" class="navbar__header-icon" />
-            <router-link to="/logout" class="nav-item"> Đăng xuất </router-link>
+            <router-link :to="{ name: 'claims' }" class="nav-item">
+              <inline-svg
+                class="navbar__header-icon"
+                :src="
+                  require('../../../../src/assets/img/message-question.svg')
+                "
+              ></inline-svg>
+              Khiếu nại
+            </router-link>
+          </p-dropdown-item>
+          <p-dropdown-item>
+            <router-link to="/logout" class="nav-item">
+              <inline-svg
+                class="navbar__header-icon"
+                :src="require('../../../../src/assets/img/Logout.svg')"
+              ></inline-svg>
+              Đăng xuất
+            </router-link>
           </p-dropdown-item>
         </p-dropdown>
       </div>
     </div>
+    <modal-map-point
+      :visible.sync="isVisibleMapPoint"
+      :uploading="true"
+      v-if="isVisibleMapPoint"
+    >
+    </modal-map-point>
   </nav>
 </template>
 <script>
@@ -153,9 +187,10 @@ import {
   NotificationUnread,
 } from '../../../packages/shared/constants'
 import PDropdownItem from '../../../../uikit/components/dropdown/DropdownItem'
+import ModalMapPoint from './ModalMapPoint.vue'
 
 export default {
-  components: { PDropdownItem, PDropdown },
+  components: { PDropdownItem, PDropdown, ModalMapPoint },
   mixins: [mixinRoute, mixinTable],
   name: 'Header',
   props: {
@@ -197,6 +232,7 @@ export default {
         },
       },
       NotificationUnread: NotificationUnread,
+      isVisibleMapPoint: false,
     }
   },
   methods: {
@@ -205,6 +241,9 @@ export default {
       READ_NOTIFICATIONS,
       READ_NOTIFICATION,
     ]),
+    handleMapPoint() {
+      this.isVisibleMapPoint = true
+    },
     async init() {
       const result = await this[FETCH_NOTIFICATIONS](this.filter)
       if (!result.success) {

@@ -1,48 +1,95 @@
-.setting {
+.setting-api {
+    padding-top: 0px;
     .page-content {
-        .page-header {
-            height: 86px;
-            .page-header_back {
-                a {
-                    font-weight: 500;
+        .setting-section{
+            margin: 24px;
+            padding: 16px 24px 24px;
+            border: unset;
+            border-radius: 4px;
+            .card-header{
+                display: block;
+                margin-bottom: 16px;
+                border: unset;
+                padding: unset;
+                font-weight: 700;
+                font-size: 16px;
+                line-height: 24px;
+                color: $color-neutral-10;
+                a{
+                    font-weight: 400;
                     font-size: 14px;
-                    line-height: 22px;
-                    letter-spacing: 0.2px;
-                    color: $color-neutral-7;
-                    span {
-                        margin-left: 10px;
-                    }
+                    line-height: 20px;
+                    color: #006A5E;
+                    display: inline-block;
+                    margin-left: 10px;
                 }
             }
-        }
-        .user-token,
-        .user-token>div {
-            margin-right: 15px;
+        } 
+    }
+    #user-token{
+        .user-token-input {
+            padding: unset;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
         }
-        .user-token-input>div {
-            background: #fff;
-            width: 400px;
-            overflow: hidden;
-            border-radius: 4px;
+        .user-token-note {
+            margin-left: 60px;
+            font-style: italic;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 16px;
+            color: $color-neutral-7;
+            max-width: 484px;
         }
-        .user-token-input {
-            position: relative;
+    }
+    .lbn-input-setting{
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 14px;
+        letter-spacing: 0.75px;
+        text-transform: uppercase;
+        color: $color-neutral-5;
+    }
+    .input-setting {
+        margin-left: 14px;
+        position: relative;
+        .p-tooltip{
+            &::before{
+                bottom: calc(100%);
+            }
+            &::after{
+                width: auto;
+                white-space: nowrap;
+                font-weight: 500;
+                font-size: 12px;
+                line-height: 16px;
+                letter-spacing: 0.2px;
+                border-radius: 4px;
+                padding: 4px 8px;
+                background-color: $color-neutral-9;
+                bottom: calc(100% + 5px);
+            }
         }
-        .user-token-input .btn {
+        .tooltip-token {
             position: absolute;
-            right: 0;
-            z-index: 10;
-            outline: none;
-        }
-        .user-token-input .copy {
-            position: absolute;
-            outline: none;
-            top: 6px;
-            right: 80px;
+            right: 13px;
+            top: 10px;
+            z-index: 4;
             cursor: pointer;
-            z-index: 10;
+        }
+        .p-input-group {
+            background: #fff;
+            width: 500px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .tooltip-copy {
+            position: absolute;
+            top: 10px;
+            right: 43px;
+            cursor: pointer;
+            z-index: 4;
             .tooltip-text {
                 position: absolute;
                 width: 100px;
@@ -55,22 +102,33 @@
                 right: -41px;
             }
         }
-        .title {
-            font-weight: bold;
-            font-size: 12px;
-            line-height: 16px;
-            letter-spacing: 0.75px;
-            text-transform: uppercase;
-            color: $color-neutral-5;
+        .form-control {
+            padding: 12px 80px 12px 16px;
+            line-height: 20px;
+        }
+        &.hidden-password{
+            .form-control {
+                letter-spacing: 0.1em;
+            }
+        }
+        & + .btn{
+            margin-left: 9px;
+            padding: 12px 20px;
+            line-height: 20px;
+        }
+    }
+    #webhook-url{
+        .card-header{
+            margin-bottom: 22px;
+        }
+        .webhook-url-input {
+            padding: unset;
             margin-bottom: 16px;
+            display: flex;
+            align-items: center;   
         }
-        .user-token-note {
-            padding-top: 5px;
-            font-style: italic;
-            max-width: 600px;
-        }
-        .user-token-input .form-control {
-            padding: 12px 100px 12px 16px;
+        .input-setting{
+            margin-left: 33px;
         }
     }
 }

@@ -12,6 +12,8 @@ export const READ_NOTIFICATIONS = 'readNotifications'
 export const READ_NOTIFICATION = 'readNotification'
 export const GET_COUNT = 'getCount'
 export const GET_NOTIFICATION = 'getNotification'
+export const FETCH_WAREHOUSES = 'fetchWarehouses'
+export const GET_WAREHOUSES = 'getWarehouses'
 import addresses from '../../../assets/json/address.json'
 import union from 'lodash/union'
 import { NotificationRead } from '../constants'
@@ -23,11 +25,15 @@ export const state = {
   notificationAll: [],
   countNoti: 0,
   countNotiAll: 0,
+  warehouses: [],
 }
 
 export const getters = {
   [GET_COUNT](state) {
     return state.countNoti
+  },
+  [GET_WAREHOUSES](state) {
+    return state.warehouses
   },
   [GET_NOTIFICATION](state) {
     return state.notifications
@@ -54,6 +60,10 @@ export const mutations = {
   },
   [FETCH_NOTIFICATIONS]: (state, payload) => {
     state.notifications = payload
+  },
+
+  [FETCH_WAREHOUSES]: (state, payload) => {
+    state.warehouses = payload
   },
   [FETCH_NOTIFICATIONS_ALL]: (state, payload) => {
     state.notificationAll = payload
@@ -183,6 +193,19 @@ export const actions = {
     }
     commit(FETCH_NOTIFICATIONS_ALL, list.notifications)
     commit(COUNT_NOTIFICATIONS_ALL, count.count)
+    return result
+  },
+
+  async fetchWarehouses({ commit }, payload) {
+    let result = { success: true }
+    let response = await api.fetchWarehouses(payload)
+
+    if (response && response.errorMessage) {
+      result = { success: false, message: response.errorMessage }
+      response.warehouses = {}
+    }
+
+    commit(FETCH_WAREHOUSES, response.warehouses)
     return result
   },
 }

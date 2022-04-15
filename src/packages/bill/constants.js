@@ -21,15 +21,18 @@ export const TransactionStatusSuccess = 2
 export const TransactionStatusFailure = 3
 export const TransactionStatusWaiting = 5
 
-export const MAP_NAME_STATUS_TRANSACTION = {
+export const MAP_TRANSACTION_STATUS = {
   [TransactionStatusProcess]: {
-    value: 'Chờ xác nhận',
+    text: 'Chờ xác nhận',
+    className: 'pending',
   },
   [TransactionStatusSuccess]: {
-    value: 'Thành công',
+    text: 'Thành công',
+    className: 'success',
   },
   [TransactionStatusFailure]: {
-    value: 'Không thành công',
+    text: 'Không thành công',
+    className: 'danger',
   },
 }
 

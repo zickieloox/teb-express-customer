@@ -109,7 +109,7 @@
                       >{{ item.type == typePay ? '-' : '+' }}
                       {{ Math.abs(item.amount) | formatPrice }}</span
                     >
-                    <span v-status:status="mapStatus[item.status].value"></span>
+                    <span v-status="item.status" type="transaction"></span>
                   </div>
                 </div>
               </div>
@@ -154,7 +154,6 @@ import {
   TransactionLogTypeRefund,
   TransactionLogTypePayoneer,
   TransactionLogTypePingPong,
-  MAP_NAME_STATUS_TRANSACTION,
   TRANSACTION_STATUS,
 } from '../constants'
 
@@ -188,7 +187,6 @@ export default {
       typePay: TransactionLogTypePay,
       typeRefund: TransactionLogTypeRefund,
       label: 'Tìm theo ngày',
-      mapStatus: MAP_NAME_STATUS_TRANSACTION,
       transactionStatus: TRANSACTION_STATUS,
     }
   },

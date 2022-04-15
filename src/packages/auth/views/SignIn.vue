@@ -6,9 +6,11 @@
       </div>
       <div class="login__page-form-content">
         <div v-if="error" class="login__page-error">{{ error }}</div>
-        <div class="mb-16">
+        <div class="form-group form-input">
+          <label for=""
+            >Số điện thoại hoặc Email: <span style="color:red">*</span></label
+          >
           <m-input
-            icon="envelope-o"
             v-model.trim="email"
             :error="valider.hasError('email')"
             :messages="valider.error('email')"
@@ -16,14 +18,14 @@
             @keyup.enter="onSignIn"
           >
             <template v-if="!email">
-              Nhập số điện thoại hoặc email <span class="text-danger">*</span>
+              Nhập số điện thoại hoặc email
             </template>
           </m-input>
         </div>
-        <div class="mb-60">
+        <div class="form-group form-input">
+          <label for="">Mật khẩu: <span class="text-danger">*</span></label>
           <m-input
             type="password"
-            icon="lock-o"
             v-model.trim="password"
             :password="true"
             :error="valider.hasError('password')"
@@ -32,7 +34,7 @@
             @keyup.enter="onSignIn"
           >
             <template v-if="!password">
-              Mật khẩu của bạn <span class="text-danger">*</span>
+              Mật khẩu của bạn
             </template>
             <template v-slot:toggle-password="{ type }">
               {{ type === 'text' ? 'Ẩn' : 'Hiển thị' }}
@@ -45,13 +47,33 @@
           @click="onSignIn"
           :disabled="disableBtn"
         >
-          Đăng nhập
+          Đăng nhập tài khoản
         </p-button>
         <p class="new-member">
           <span>Bạn là thành viên mới?</span>
           <router-link class="create__acount" :to="{ name: 'sign-up' }">
             Tạo tài khoản
           </router-link>
+        </p>
+        <p class="forgot_password">
+          <router-link to="/">
+            Quên mật khẩu?
+          </router-link>
+        </p>
+        <p class="police__text-bottom text-center gg-captche">
+          Được bảo vệ bởi reCAPTCHA và tuân theo
+          <a
+            href="https://www.google.com/intl/en/policies/privacy/"
+            target="_blank"
+            >Chính sách quyền riêng tư</a
+          >
+          và
+          <a
+            href="https://www.google.com/intl/en/policies/terms/"
+            target="_blank"
+            >Điều khoản dịch vụ</a
+          >
+          của Google.
         </p>
       </div>
     </div>
@@ -60,8 +82,8 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 import mixinRoute from '@core/mixins/route'
-import Storage from '@core/helpers/storage'
 import { signin } from '../validate'
+import crisp from '../../../core/services/crisp'
 
 export default {
   components: {},
@@ -148,17 +170,20 @@ export default {
           } else {
             path = decodeURIComponent(path.replace(/\+/g, '%20'))
           }
+
+          crisp.hide()
           this.$router.push(path)
         }, 1000)
       } else {
         if (this.result.userInActive) {
-          Storage.set('userEmail', this.currentUser.email)
-          setTimeout(() => {
-            this.$router.push('/verify-email')
-          }, 1000)
+          // Storage.set('userEmail', this.currentUser.email)
+          // setTimeout(() => {
+          //   this.$router.push('/verify-email')
+          // }, 1000)
           this.$toast.open({
-            type: 'error',
-            message: this.result.message,
+            type: 'primary',
+            message:
+              'Tài khoản đang được xác thực. Vui lòng chờ chúng tôi liên hệ với bạn.',
           })
           return
         }
