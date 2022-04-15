@@ -23,7 +23,7 @@
         >
         </multiselect>
       </div>
-      <div class="list-warehouse">
+      <div class="list-warehouse" v-if="!isLoading">
         <div
           class="warehouse-item "
           v-for="(warehouse, i) in warehousesDTO"
@@ -55,7 +55,11 @@
               {{ warehouse.time_open }}
             </div>
             <div class="link-location" v-if="isActive == warehouse.id">
-              <a :href="warehouse.link_address">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                :href="warehouse.link_address"
+              >
                 <inline-svg
                   :src="require('@assets/img/link-location.svg')"
                   class=""
@@ -78,6 +82,9 @@
             </div>
           </div>
         </div>
+      </div>
+      <div class="is-loading" v-else>
+        <img src="@assets/img/loading.gif" />
       </div>
     </div>
   </p-modal>
@@ -106,6 +113,7 @@ export default {
       uploading: true,
       search: '',
       warehousesDTO: [],
+      isLoading: true,
     }
   },
 
@@ -136,6 +144,7 @@ export default {
     },
 
     async init() {
+      this.isLoading = true
       let payload = { type: 2, status: 1 }
       const result = await this[FETCH_WAREHOUSES](payload)
       if (!result.success) {
@@ -146,23 +155,30 @@ export default {
       let options = []
 
       this.warehouses.forEach((warehouse) => {
-        options.push({ name: warehouse.city })
+        options.push(warehouse.city)
       })
 
-      options = options.concat(this.optionsCity)
+      options = options.filter((element, index) => {
+        return options.indexOf(element) == index
+      })
 
-      this.optionsCity = options
+      options.forEach((item) => {
+        this.optionsCity.push({ name: item })
+      })
 
       this.warehousesDTO = this.warehouses
+
+      this.isLoading = false
     },
 
     handleSearch() {
+      let city = this.city.name
       this.warehousesDTO = this.warehouses.filter((warehouse) =>
         this.validSearch(warehouse.address).includes(this.search.toUpperCase())
       )
-      if (this.city != '') {
+      if (city != '') {
         this.warehousesDTO = this.warehouses.filter((warehouse) =>
-          this.validSearch(warehouse.city).includes(this.city.toUpperCase())
+          this.validSearch(warehouse.city).includes(city.toUpperCase())
         )
       }
     },
