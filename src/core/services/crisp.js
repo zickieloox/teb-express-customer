@@ -13,7 +13,7 @@ function signEmail(email) {
 export default {
   init(userId) {
     window.$crisp = []
-    window.CRISP_WEBSITE_ID = '66ae68d4-8fdf-45f4-9fb2-3678e538a92b'
+    window.CRISP_WEBSITE_ID = process.env.VUE_APP_CRISP_WEBSITE_ID
     if (userId) {
       window.CRISP_TOKEN_ID = `LIONBAY-USER-${userId}`
     } else {
