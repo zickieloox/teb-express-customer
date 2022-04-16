@@ -140,36 +140,36 @@
                     <div class="row">
                       <div class="col-4 mb-8">Trọng lượng:</div>
                       <div class="col-8">
-                        {{ current.weight }}
+                        {{ current.weight }} gram
                         <span v-if="isOverWeight"
-                          >({{ current.actual_weight }})</span
+                          >({{ current.actual_weight }} gram)</span
                         >
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Dài:</div>
                       <div class="col-8">
-                        {{ current.length }}
+                        {{ current.length }} cm
                         <span v-if="isOverVolumes"
-                          >({{ current.actual_length }})</span
+                          >({{ current.actual_length }} cm)</span
                         >
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Rộng:</div>
                       <div class="col-8">
-                        {{ current.width }}
+                        {{ current.width }} cm
                         <span v-if="isOverVolumes">
-                          ({{ current.actual_width }})
+                          ({{ current.actual_width }} cm)
                         </span>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Cao:</div>
                       <div class="col-8">
-                        {{ current.height }}
+                        {{ current.height }} cm
                         <span v-if="isOverVolumes">
-                          ({{ current.actual_height }})
+                          ({{ current.actual_height }} cm)
                         </span>
                       </div>
                     </div>
