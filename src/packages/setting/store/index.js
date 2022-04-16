@@ -11,6 +11,8 @@ export const UPDATE_SENDER = 'updateSender'
 export const GET_SENDER = 'getSender'
 export const GET_USER_TOKEN = 'getUserToken'
 export const RESET_USER_TOKEN = 'resetUserToken'
+export const SAVE_SETTING_WEBHOOK = 'saveSettingWebhook'
+export const FETCH_SETTING_WEBHOOK = 'fetchSettingWebhook'
 
 export const UPLOAD_TEMPLATE_FILE = 'uploadTemplateFile'
 export const CREATE_TEMPLATE_IMPORT_ORDER = 'createTempateImportOrder'
@@ -32,6 +34,7 @@ export const state = {
   senders: [],
   count_sender: 0,
   user_token: '',
+  webhook_url: '',
   templates: [],
   count: 0,
 }
@@ -62,6 +65,9 @@ export const mutations = {
   },
   [GET_USER_TOKEN]: (state, payload) => {
     state.user_token = payload
+  },
+  [FETCH_SETTING_WEBHOOK]: (state, payload) => {
+    state.webhook_url = payload
   },
   [FETCH_TEMPLATES]: (state, payload) => {
     state.templates = payload
@@ -299,6 +305,32 @@ export const actions = {
   // eslint-disable-next-line
   async [SAVE_SETTING_LABEL]({ commit }, payload) {
     const response = await api.saveSettingLabel(payload)
+
+    if (response && response.success) {
+      return { success: true }
+    }
+
+    return {
+      success: false,
+      message: response.errorMessage || '',
+    }
+  },
+
+  // eslint-disable-next-line no-unused-vars
+  async [FETCH_SETTING_WEBHOOK]({ commit }) {
+    let res = await api.fetchSettingWebhook()
+    if (!res || res.error) {
+      return { success: false, message: res.errorMessage || '' }
+    }
+    commit(FETCH_SETTING_WEBHOOK, res.setting.value)
+    return {
+      success: true,
+    }
+  },
+
+  // eslint-disable-next-line
+  async [SAVE_SETTING_WEBHOOK]({ commit }, payload) {
+    const response = await api.saveSettingWebhook(payload)
 
     if (response && response.success) {
       return { success: true }

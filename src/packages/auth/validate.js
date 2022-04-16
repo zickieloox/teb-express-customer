@@ -1,7 +1,13 @@
-import { isEmail, isPhone } from '@core/utils/validate'
+import { isEmail, isPhone, isAccount } from '@core/utils/validate'
 
 function validAccount(account) {
   if (!account) return 'Vui lòng không để trống!'
+  if (!isAccount(account)) return 'Tên tài khoản không hợp lệ'
+  return true
+}
+
+function validPackage(pkg) {
+  if (!pkg) return 'Vui lòng chọn quy mô vận chuyển!'
   return true
 }
 
@@ -26,35 +32,48 @@ function validPassword(password) {
 export const signup = {
   errors: {},
 
-  isValid({ fullname, phone, email, password }) {
+  isValid(user) {
     let valid = true
     this.clean()
 
-    if (!this.validFullname(fullname)) {
+    if (!this.validAccount(user.account)) {
       valid = false
     }
 
-    if (!this.validPhone(phone)) {
+    if (!this.validPackage(user.package)) {
       valid = false
     }
 
-    if (!this.validEmail(email)) {
+    if (!this.validPhone(user.phone)) {
       valid = false
     }
 
-    if (!this.validPassword(password)) {
+    if (!this.validEmail(user.email)) {
+      valid = false
+    }
+
+    if (!this.validPassword(user.password)) {
       valid = false
     }
 
     return valid
   },
 
-  validAccount(fullname) {
+  validAccount(account) {
     this.clean('account')
-    const msg = validAccount(fullname)
+    const msg = validAccount(account)
     if (msg === true) return true
 
     this.errors.account = msg
+    return false
+  },
+
+  validPackage(pkg) {
+    this.clean('package')
+    const msg = validPackage(pkg)
+    if (msg === true) return true
+
+    this.errors.package = msg
     return false
   },
 

@@ -225,7 +225,7 @@
                               {{ truncate(item.code, 18) }}
                             </router-link>
                           </p-tooltip>
-                          <span v-else class="no-pkg-code">No data</span>
+                          <span v-else class="no-pkg-code">N/A</span>
                         </span>
 
                         <span class="link">
@@ -383,11 +383,9 @@
                           ></inline-svg>
                         </a>
                       </td>
-                      <td v-else
-                        ><span class="no-track-code">No data</span>
-                      </td>
+                      <td v-else><span class="no-track-code">N/A</span> </td>
                       <td>
-                        {{ item.service_name || 'No data' }}
+                        {{ item.service_name || 'N/A' }}
                       </td>
                       <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
                       <td>

@@ -21,7 +21,7 @@ export const routes = [
     path: '/setting/api',
     name: 'api',
     meta: {
-      title: 'API',
+      title: 'Cài đặt',
     },
     component: () =>
       import(/* webpackChunkName: "settings" */ './views/API.vue'),
