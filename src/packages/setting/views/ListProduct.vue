@@ -73,17 +73,17 @@
           </template>
           <EmptySearchResult v-else></EmptySearchResult>
         </div>
-        <div
-          class="d-flex justify-content-between align-items-center mb-16"
-          v-if="count > 0"
-        >
-          <p-pagination
-            :total="count"
-            :perPage.sync="filter.limit"
-            :current.sync="filter.page"
-            size="sm"
-          ></p-pagination>
-        </div>
+      </div>
+      <div
+        class="d-flex justify-content-between align-items-center mb-16 paginate"
+        v-if="count > 0"
+      >
+        <p-pagination
+          :total="count"
+          :perPage.sync="filter.limit"
+          :current.sync="filter.page"
+          size="sm"
+        ></p-pagination>
       </div>
     </div>
     <modal-product
@@ -130,7 +130,7 @@ export default {
   data() {
     return {
       filter: {
-        limit: 20,
+        limit: 25,
         search: '',
         status: '',
       },
