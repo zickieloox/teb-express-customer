@@ -3,7 +3,7 @@
     <div class="page-header row">
       <div class="col-6">
         <p-input
-          placeholder="Tìm kiếm theo mã hàng hóa hoặc sku"
+          placeholder="Tìm kiếm theo tên hàng hóa hoặc sku"
           prefixIcon="search"
           class="mb-2"
           type="search"
@@ -24,69 +24,65 @@
     <div class="page-content">
       <div class="card">
         <div class="card-body">
-          <div class="list__product-list">
-            <vcl-table class="md-20" v-if="isFetching"></vcl-table>
-            <template v-else-if="listProducts.length > 0">
-              <div class="table-responsive">
-                <table class="table table-hover">
-                  <thead>
-                    <tr class="list__product-title">
-                      <th>TÊN HÀNG HÓA</th>
-                      <th>SKU</th>
-                      <th>LOẠI HÀNG HÓA</th>
-                      <th class="text-center">TRỌNG LƯỢNG (GRAM)</th>
-                      <th class="text-center">KÍCH THƯỚC (CM)</th>
-                      <th></th>
-                    </tr>
-                  </thead>
+          <vcl-table class="md-20" v-if="isFetching"></vcl-table>
+          <template v-else-if="listProducts.length > 0">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr class="list__product-title">
+                    <th>TÊN HÀNG HÓA</th>
+                    <th>SKU</th>
+                    <th>LOẠI HÀNG HÓA</th>
+                    <th class="text-center">TRỌNG LƯỢNG (GRAM)</th>
+                    <th class="text-center">KÍCH THƯỚC (CM)</th>
+                    <th></th>
+                  </tr>
+                </thead>
 
-                  <tbody>
-                    <tr v-for="(item, i) in listProducts" :key="i">
-                      <td>{{ item.name }}</td>
-                      <td>
-                        {{ item.sku }}
-                      </td>
-                      <td>{{ item.detail }}</td>
-                      <td class="text-center">{{ item.weight }}</td>
-                      <td class="text-center">{{ size(item) }}</td>
-                      <td>
-                        <a href="javascript:void(0)" @click="handleModal(item)">
-                          <inline-svg
-                            :src="
-                              require('../../../assets/img/edit_product.svg')
-                            "
-                          ></inline-svg>
-                        </a>
-                        <a
-                          class="ml-18"
-                          href="javascript:void(0)"
-                          @click="confirmDelete(item)"
-                        >
-                          <inline-svg
-                            :src="
-                              require('../../../assets/img/delete_product.svg')
-                            "
-                          ></inline-svg>
-                        </a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </template>
-            <EmptySearchResult v-else></EmptySearchResult>
-          </div>
-          <div
-            class="d-flex justify-content-between align-items-center mb-16"
-            v-if="count > 0"
-          >
-            <p-pagination
-              :total="count"
-              :perPage.sync="filter.limit"
-              :current.sync="filter.page"
-              size="sm"
-            ></p-pagination>
-          </div>
+                <tbody>
+                  <tr v-for="(item, i) in listProducts" :key="i">
+                    <td>{{ item.name }}</td>
+                    <td>
+                      {{ item.sku }}
+                    </td>
+                    <td>{{ item.detail }}</td>
+                    <td class="text-center">{{ item.weight }}</td>
+                    <td class="text-center">{{ size(item) }}</td>
+                    <td>
+                      <a href="javascript:void(0)" @click="handleModal(item)">
+                        <inline-svg
+                          :src="require('../../../assets/img/edit_product.svg')"
+                        ></inline-svg>
+                      </a>
+                      <a
+                        class="ml-18"
+                        href="javascript:void(0)"
+                        @click="confirmDelete(item)"
+                      >
+                        <inline-svg
+                          :src="
+                            require('../../../assets/img/delete_product.svg')
+                          "
+                        ></inline-svg>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </template>
+          <EmptySearchResult v-else></EmptySearchResult>
+        </div>
+        <div
+          class="d-flex justify-content-between align-items-center mb-16"
+          v-if="count > 0"
+        >
+          <p-pagination
+            :total="count"
+            :perPage.sync="filter.limit"
+            :current.sync="filter.page"
+            size="sm"
+          ></p-pagination>
         </div>
       </div>
     </div>
@@ -240,6 +236,8 @@ export default {
         })
         return
       }
+      this.visibleModal = false
+
       this.$toast.open({
         type: 'success',
         message: !params.id ? 'Tạo thành công' : 'Cập nhật thành công',
