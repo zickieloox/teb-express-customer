@@ -41,12 +41,8 @@ export default {
   methods: {
     handleImageError() {
       const thumbnailDefault = `${process.env.VUE_APP_ASSETS}/thumbnail.png`
-      const thumbnailPsdDefault = `${
-        process.env.VUE_APP_ASSETS
-      }/psd-default.png`
-      const thumbnailCsvDefault = `${
-        process.env.VUE_APP_ASSETS
-      }/csv-default.png`
+      const thumbnailPsdDefault = `${process.env.VUE_APP_ASSETS}/psd-default.png`
+      const thumbnailCsvDefault = `${process.env.VUE_APP_ASSETS}/csv-default.png`
 
       if (!this.src) {
         this.image = thumbnailDefault

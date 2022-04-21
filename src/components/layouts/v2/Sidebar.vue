@@ -201,6 +201,10 @@ export default {
               title: 'Thông tin tài khoản',
             },
             {
+              route: '/setting/product',
+              title: 'Danh sách hàng hóa',
+            },
+            {
               route: '/setting/templates',
               title: 'Import templates',
             },

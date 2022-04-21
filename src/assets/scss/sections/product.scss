@@ -1,0 +1,17 @@
+.list__product {
+    .btn-add {
+        .btn {
+            float: right;
+            svg {
+                path {
+                    stroke: #FFFFFF
+                }
+            }
+        }
+    }
+    .table {
+        thead {
+            font-size: 12px;
+        }
+    }
+}

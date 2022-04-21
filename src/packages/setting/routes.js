@@ -44,4 +44,13 @@ export const routes = [
     component: () =>
       import(/* webpackChunkName: "settings" */ './views/CustomizeLabel'),
   },
+  {
+    path: '/setting/product',
+    name: 'list-product',
+    meta: {
+      title: 'Danh sách hàng hóa',
+    },
+    component: () =>
+      import(/* webpackChunkName: "settings" */ './views/ListProduct.vue'),
+  },
 ]

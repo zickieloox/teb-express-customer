@@ -1,179 +1,260 @@
-<!--<template>-->
-<!--  <div class="pages list__product">-->
-<!--    <div class="page-header">-->
-<!--      <div class="page-header_title header-2">Danh sách hàng hóa</div>-->
-<!--    </div>-->
-<!--    <div class="page-content">-->
-<!--      <div class="card">-->
-<!--        <div class="card-body">-->
-<!--          <div class="d-flex list__product-search">-->
-<!--            <p-input-->
-<!--              placeholder="Tìm kiếm theo mã hàng hóa hoặc tên hàng hóa"-->
-<!--              prefixIcon="search"-->
-<!--              class="mb-2"-->
-<!--              type="search"-->
-<!--              :value="filter.search"-->
-<!--              @keyup.enter="handleSearch"-->
-<!--            >-->
-<!--            </p-input>-->
-<!--            <a href="#" class="btn btn-primary ml-10" @click="handleModal">-->
-<!--              <span>Thêm mới</span>-->
-<!--            </a>-->
-<!--          </div>-->
-<!--          <div class="list__product-list">-->
-<!--            <vcl-table class=" md-20" v-if="isFetching"></vcl-table>-->
-<!--            <template v-else-if="listproduct.length > 0">-->
-<!--              <div class="table-responsive">-->
-<!--                <table class="table table-hover">-->
-<!--                  <thead>-->
-<!--                  <tr class="list__product-title">-->
-<!--                    <th>Mã</th>-->
-<!--                    <th>Tên hàng</th>-->
-<!--                    <th>Trọng lượng (g)</th>-->
-<!--                    <th>Dài x Rộng x Cao (cm)</th>-->
-<!--                    <th></th>-->
-<!--                  </tr>-->
-<!--                  </thead>-->
+<template>
+  <div class="pages list__product">
+    <div class="page-header row">
+      <div class="col-6">
+        <p-input
+          placeholder="Tìm kiếm theo mã hàng hóa hoặc sku"
+          prefixIcon="search"
+          class="mb-2"
+          type="search"
+          :value="filter.search"
+          @keyup.enter="handleSearch"
+        >
+        </p-input>
+      </div>
+      <div class="col-6 btn-add">
+        <p-button type="primary" @click="handleModal(null)">
+          <inline-svg
+            :src="require('../../../assets/img/Plus 16px.svg')"
+          ></inline-svg>
+          Thêm hàng hóa
+        </p-button>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="card">
+        <div class="card-body">
+          <div class="list__product-list">
+            <vcl-table class="md-20" v-if="isFetching"></vcl-table>
+            <template v-else-if="listProducts.length > 0">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr class="list__product-title">
+                      <th>TÊN HÀNG HÓA</th>
+                      <th>SKU</th>
+                      <th>LOẠI HÀNG HÓA</th>
+                      <th class="text-center">TRỌNG LƯỢNG (GRAM)</th>
+                      <th class="text-center">KÍCH THƯỚC (CM)</th>
+                      <th></th>
+                    </tr>
+                  </thead>
 
-<!--                  <tbody>-->
-<!--                  <tr v-for="(item, i) in listproduct" :key="i">-->
-<!--                    <td>-->
-<!--                      <router-link-->
-<!--                        class="text-no-underline"-->
-<!--                        :to="{-->
-<!--                            name: 'claim-detail',-->
-<!--                            params: { id: item.id },-->
-<!--                          }"-->
-<!--                      >-->
-<!--                        {{ item.code }}-->
-<!--                      </router-link>-->
-<!--                    </td>-->
-<!--                    <td>{{ item.name }}</td>-->
-<!--                    <td width="300">-->
-<!--                      <p-tooltip-->
-<!--                        :label="item.title"-->
-<!--                        size="large"-->
-<!--                        position="top"-->
-<!--                        type="dark"-->
-<!--                        :active="item.title.length > 15"-->
-<!--                      >-->
-<!--                        {{ truncate(item.title, 15) }}-->
-<!--                      </p-tooltip>-->
-<!--                    </td>-->
-<!--                    <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>-->
-<!--                    <td>{{ item.updated_at | datetime('dd/MM/yyyy') }}</td>-->
-<!--                    <td>{{ converStatus(item.status) }}</td>-->
-<!--                  </tr>-->
-<!--                  </tbody>-->
-<!--                </table>-->
-<!--              </div>-->
-<!--            </template>-->
-<!--            <EmptySearchResult v-else></EmptySearchResult>-->
-<!--          </div>-->
-<!--          <div-->
-<!--            class="d-flex justify-content-between align-items-center mb-16"-->
-<!--            v-if="count > 0"-->
-<!--          >-->
-<!--            <p-pagination-->
-<!--              :total="count"-->
-<!--              :perPage.sync="filter.limit"-->
-<!--              :current.sync="filter.page"-->
-<!--              size="sm"-->
-<!--            ></p-pagination>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+                  <tbody>
+                    <tr v-for="(item, i) in listProducts" :key="i">
+                      <td>{{ item.name }}</td>
+                      <td>
+                        {{ item.sku }}
+                      </td>
+                      <td>{{ item.detail }}</td>
+                      <td class="text-center">{{ item.weight }}</td>
+                      <td class="text-center">{{ size(item) }}</td>
+                      <td>
+                        <a href="javascript:void(0)" @click="handleModal(item)">
+                          <inline-svg
+                            :src="
+                              require('../../../assets/img/edit_product.svg')
+                            "
+                          ></inline-svg>
+                        </a>
+                        <a
+                          class="ml-18"
+                          href="javascript:void(0)"
+                          @click="confirmDelete(item)"
+                        >
+                          <inline-svg
+                            :src="
+                              require('../../../assets/img/delete_product.svg')
+                            "
+                          ></inline-svg>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </template>
+            <EmptySearchResult v-else></EmptySearchResult>
+          </div>
+          <div
+            class="d-flex justify-content-between align-items-center mb-16"
+            v-if="count > 0"
+          >
+            <p-pagination
+              :total="count"
+              :perPage.sync="filter.limit"
+              :current.sync="filter.page"
+              size="sm"
+            ></p-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+    <modal-product
+      :visible.sync="visibleModal"
+      :title="title"
+      :product="product"
+      @saveProduct="saveProduct"
+    >
+    </modal-product>
+    <modal-confirm
+      :visible.sync="visibleModalDelete"
+      v-if="visibleModalDelete"
+      :actionConfirm="'Xóa'"
+      :description="description"
+      :title="'Xóa hàng hóa'"
+      @action="handleDelete(item)"
+    >
+    </modal-confirm>
+  </div>
+</template>
+<script>
+import EmptySearchResult from '../../../components/shared/EmptySearchResult'
+import { truncate } from '@core/utils/string'
+import mixinRoute from '@core/mixins/route'
+import mixinTable from '@core/mixins/table'
+import { mapActions, mapState } from 'vuex'
+import {
+  LIST_PRODUCT,
+  CREATE_PRODUCT,
+  UPDATE_PRODUCT,
+  DELETE_PRODUCT,
+} from '../store/index'
+import ModalProduct from '../components/ModalProduct'
+import ModalConfirm from '@components/shared/modal/ModalConfirm'
 
-<!--&lt;!&ndash;    <modal-add-claim&ndash;&gt;-->
-<!--&lt;!&ndash;      :visible.sync="visibleModal"&ndash;&gt;-->
-<!--&lt;!&ndash;      :title="`Khiếu nại`"&ndash;&gt;-->
-<!--&lt;!&ndash;      @create="init"&ndash;&gt;-->
-<!--&lt;!&ndash;    >&ndash;&gt;-->
-<!--&lt;!&ndash;    </modal-add-claim>&ndash;&gt;-->
-<!--  </div>-->
-<!--</template>-->
-<!--<script>-->
-<!--import EmptySearchResult from '../../../components/shared/EmptySearchResult'-->
-<!--import { CLAIM_STATUS } from '../constants'-->
-<!--import { truncate } from '@core/utils/string'-->
-<!--import mixinRoute from '@core/mixins/route'-->
-<!--import mixinTable from '@core/mixins/table'-->
-<!--import { mapActions, mapState } from 'vuex'-->
+export default {
+  name: 'ListProduct',
+  mixins: [mixinRoute, mixinTable],
+  components: {
+    EmptySearchResult,
+    ModalProduct,
+    ModalConfirm,
+  },
+  data() {
+    return {
+      filter: {
+        limit: 20,
+        search: '',
+        status: '',
+      },
+      visibleModal: false,
+      visibleModalDelete: false,
+      isFetching: false,
+      product: {},
+      title: '',
+      description: '',
+    }
+  },
+  created() {
+    this.filter = this.getRouteQuery()
+  },
+  mounted() {
+    this.init()
+  },
+  computed: {
+    ...mapState('setting', {
+      count: (state) => state.count_product,
+      listProducts: (state) => state.products,
+    }),
+  },
+  methods: {
+    ...mapActions('setting', [
+      LIST_PRODUCT,
+      CREATE_PRODUCT,
+      UPDATE_PRODUCT,
+      DELETE_PRODUCT,
+    ]),
+    truncate,
+    async init() {
+      this.isFetching = true
+      this.handleUpdateRouteQuery()
+      let result = await this.listProduct(this.filter)
+      if (!result.success) {
+        this.$toast.open({ type: 'danger', message: result.message })
+        return
+      }
+      this.isFetching = false
+    },
 
-<!--export default {-->
-<!--  name: 'ListProduct',-->
-<!--  mixins: [mixinRoute, mixinTable],-->
-<!--  components: {-->
-<!--    EmptySearchResult,-->
-<!--  },-->
-<!--  data() {-->
-<!--    return {-->
-<!--      filter: {-->
-<!--        limit: 20,-->
-<!--        search: '',-->
-<!--        status: '',-->
-<!--      },-->
-<!--      visibleModal: false,-->
-<!--      isFetching: false,-->
-<!--      listproduct:[{-->
-<!--        code:'xnxx',-->
-<!--        name:'2D Casual Zipper Hoodie',-->
-<!--        weight:'1230',-->
-<!--        info:'12x9x6',-->
-<!--      }]-->
-<!--    }-->
-<!--  },-->
-<!--  created() {-->
-<!--    this.filter = this.getRouteQuery()-->
-<!--  },-->
-<!--  mounted() {-->
-<!--    this.init()-->
-<!--  },-->
-<!--  computed: {-->
-<!--    ...mapState('claim', {-->
-<!--      count: (state) => state.count,-->
-<!--      listclaim: (state) => state.claims,-->
-<!--      totalCount: (state) => state.totalCount,-->
-<!--    }),-->
-<!--  },-->
-<!--  methods: {-->
-<!--    ...mapActions('claim', [FETCH_CLAIMS]),-->
-<!--    truncate,-->
-<!--    async init() {-->
-<!--      this.isFetching = true-->
-<!--      this.handleUpdateRouteQuery()-->
-<!--      let result = await this[FETCH_CLAIMS](this.filter)-->
-<!--      if (result.error) {-->
-<!--        this.$toast.open({ type: 'danger', message: result.message })-->
-<!--        return-->
-<!--      }-->
-<!--      this.isFetching = false-->
-<!--    },-->
-<!--    handleModal() {-->
-<!--      this.visibleModal = true-->
-<!--    },-->
-<!--    handleSearch(e) {-->
-<!--      // Default result after search in page 1-->
-<!--      this.filter.page = 1-->
-<!--      this.$set(this.filter, 'search', e.target.value.trim())-->
-<!--    },-->
-<!--    converStatus(status) {-->
-<!--      switch (status) {-->
-<!--        case 1:-->
-<!--          return 'Đang xử lý'-->
-<!--        case 2:-->
-<!--          return 'Đã xử lý'-->
-<!--      }-->
-<!--    },-->
-<!--  },-->
-<!--  watch: {-->
-<!--    filter: {-->
-<!--      handler: function() {-->
-<!--        this.init()-->
-<!--      },-->
-<!--      deep: true,-->
-<!--    },-->
-<!--  },-->
-<!--}-->
-<!--</script>-->
+    handleModal(item) {
+      if (item) {
+        this.title = 'Cập nhật hàng hóa'
+        this.product = item
+      } else {
+        this.title = 'Thêm mới hàng hóa'
+        this.product = {}
+      }
+      this.visibleModal = true
+    },
+
+    confirmDelete(item) {
+      this.description = `Bạn có chắc chắn muốn xóa <b>${item.name}</b> ?`
+      this.visibleModalDelete = true
+      this.item = item
+    },
+
+    async handleDelete(item) {
+      let result = await this.deleteProduct(item)
+      this.visibleModalDelete = false
+
+      if (!result || !result.success) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 3000,
+        })
+        return
+      }
+
+      this.$toast.open({
+        type: 'success',
+        message: 'Cập nhật thành công',
+        duration: 3000,
+      })
+
+      await this.init()
+    },
+
+    size(item) {
+      return `${item.length}x${item.width}x${item.height}`
+    },
+
+    async saveProduct(product) {
+      let params = {
+        ...product,
+      }
+
+      let result
+      if (!params.id) {
+        result = await this.createProduct(params)
+      } else {
+        result = await this.updateProduct(params)
+      }
+
+      if (!result || !result.success) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 3000,
+        })
+        return
+      }
+      this.$toast.open({
+        type: 'success',
+        message: !params.id ? 'Tạo thành công' : 'Cập nhật thành công',
+        duration: 3000,
+      })
+      await this.init()
+    },
+  },
+  watch: {
+    filter: {
+      handler: function() {
+        this.init()
+      },
+      deep: true,
+    },
+  },
+}
+</script>
