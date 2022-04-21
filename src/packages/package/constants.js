@@ -14,6 +14,7 @@ export const PACKAGE_STATUS_CANCELLED = 50
 export const PACKAGE_STATUS_EXPIRED = 70
 export const PACKAGE_STATUS_RESHIP = 80
 export const PACKAGE_STATUS_UNDELIVERED = 90
+export const PACKAGE_STATUS_ARCHIVED = 55
 
 export const PACKAGE_DELIVERY_LOG_TYPE_RESHIP = 80
 
@@ -27,6 +28,7 @@ export const PACKAGE_STATUS_CANCELLED_TEXT = 'canceled'
 export const PACKAGE_STATUS_EXPIRED_TEXT = 'expired'
 export const PACKAGE_STATUS_UNDELIVERED_TEXT = 'undelivered'
 export const PACKAGE_STATUS_RETURN_TEXT = 'return'
+export const PACKAGE_STATUS_ARCHIVED_TEXT = 'archived'
 
 export const PACKAGE_ALERT_TYPE_OVER_PRE_TRANSIT = 1
 export const PACKAGE_ALERT_TYPE_WAREHOUSE_RETURN = 2
@@ -73,6 +75,10 @@ export const PACKAGE_STATUS_TAB = [
     value: PACKAGE_STATUS_UNDELIVERED_TEXT,
     text: 'Undelivered',
   },
+  {
+    value: PACKAGE_STATUS_ARCHIVED_TEXT,
+    text: 'Archived',
+  },
 ]
 
 export const MAP_STATUS_CLASS_NAME = {
@@ -110,6 +116,10 @@ export const MAP_STATUS_CLASS_NAME = {
   },
   [PACKAGE_STATUS_UNDELIVERED_TEXT]: {
     text: PACKAGE_STATUS_UNDELIVERED_TEXT,
+    className: 'danger',
+  },
+  [PACKAGE_STATUS_ARCHIVED_TEXT]: {
+    text: PACKAGE_STATUS_ARCHIVED_TEXT,
     className: 'danger',
   },
 }
