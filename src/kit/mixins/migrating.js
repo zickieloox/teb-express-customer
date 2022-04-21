@@ -10,9 +10,7 @@ export default {
     for (let propName in definedProps) {
       if (definedProps.hasOwnProperty(propName) && props[propName]) {
         console.warn(
-          `[Element Migrating][${this.$options.name}][Attribute]: ${
-            props[propName]
-          }`
+          `[Element Migrating][${this.$options.name}][Attribute]: ${props[propName]}`
         )
       }
     }
@@ -20,9 +18,7 @@ export default {
     for (let eventName in definedEvents) {
       if (definedEvents.hasOwnProperty(eventName) && events[eventName]) {
         console.warn(
-          `[Element Migrating][${this.$options.name}][Event]: ${
-            events[eventName]
-          }`
+          `[Element Migrating][${this.$options.name}][Event]: ${events[eventName]}`
         )
       }
     }

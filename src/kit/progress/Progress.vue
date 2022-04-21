@@ -55,9 +55,7 @@
       v-if="showText && !textInside"
       :style="{ fontSize: progressTextSize + 'px' }"
     >
-      <template v-if="!status"
-        >{{ percentage }}%</template
-      >
+      <template v-if="!status">{{ percentage }}%</template>
       <template v-else>
         <slot v-if="status === 'text'"></slot>
         <i v-else :class="iconClass"></i>

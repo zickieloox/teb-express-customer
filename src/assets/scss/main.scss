@@ -1,6 +1,5 @@
 // Import var
 @import "vars/vars";
-
 // Import helpers
 @import "helpers/bem";
 @import "helpers/functions";
@@ -8,18 +7,14 @@
 @import "helpers/include-media";
 @import "helpers/mixins";
 @import "helpers/variables";
-
 // Import font
 @import "fonts/Mulish";
 @import "fonts/BeVietNamPro";
-
 // Import base
 @import "base/reset";
 @import "base/setting";
 @import "base/typography";
-
 @import "layout/grid";
-
 // Import components
 @import "components/animation";
 @import "components/icon";
@@ -34,21 +29,16 @@
 @import "components/card__w";
 @import "components/table";
 //@import "components/car";
-
-
 // Import layout
 @import "layout/spacing";
 @import "layout/sidebar";
 @import "layout/ticket";
 @import "layout/auth";
 @import "layout/template";
-
 // Import pages
 @import "pages/login";
 @import "pages/404";
 @import "pages/help";
-
-
 // Import sections
 @import "sections/pages";
 @import "sections/order.scss";
@@ -67,6 +57,6 @@
 @import "sections/tracking";
 @import "sections/notification";
 @import "sections/map_point.scss";
+@import "sections/product.scss";
 // Import themes
-
 // Import vendors
