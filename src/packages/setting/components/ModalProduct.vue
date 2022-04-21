@@ -155,16 +155,33 @@ export default {
         return
       }
 
+      console.log(this.productEdit.detail)
+
       const data = {
         name: this.productEdit.name.trim(),
         sku: this.productEdit.sku.trim(),
-        detail: this.productEdit.detail.trim(),
-        weight: +this.productEdit.weight,
-        length: +this.productEdit.length,
-        width: +this.productEdit.width,
-        height: +this.productEdit.height,
+        // detail: this.productEdit.detail?this.productEdit.detail.trim():'',
+        // weight: this.productEdit.weight?+this.productEdit.weight:'',
+        // length: this.productEdit.length?+this.productEdit.length:'',
+        // width: this.productEdit.width?+this.productEdit.width:'',
+        // height: this.productEdit.height?+this.productEdit.height:'',
       }
 
+      if (this.productEdit.detail) {
+        data.detail = this.productEdit.detail.trim()
+      }
+      if (this.productEdit.weight) {
+        data.weight = +this.productEdit.weight
+      }
+      if (this.productEdit.length) {
+        data.length = +this.productEdit.length
+      }
+      if (this.productEdit.width) {
+        data.width = +this.productEdit.width
+      }
+      if (this.productEdit.height) {
+        data.height = +this.productEdit.height
+      }
       if (this.productEdit.id > 0) {
         data.id = this.productEdit.id
       }
