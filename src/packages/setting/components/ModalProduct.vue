@@ -63,6 +63,7 @@
               placeholder="Nhập trọng lượng"
               v-model="productEdit.weight"
               min="0"
+              oninput="this.value = Math.abs(this.value)"
             />
             <div class="card__w-unit">gram</div>
           </div>
@@ -77,6 +78,7 @@
               placeholder="Nhập chiều dài"
               v-model="productEdit.length"
               min="0"
+              oninput="this.value = Math.abs(this.value)"
             />
             <div class="card__w-unit">cm</div>
           </div>
@@ -89,6 +91,7 @@
               placeholder="Nhập chiều rộng"
               v-model="productEdit.width"
               min="0"
+              oninput="this.value = Math.abs(this.value)"
             />
             <div class="card__w-unit">cm</div>
           </div>
@@ -101,6 +104,7 @@
               placeholder="Nhập chiều cao"
               v-model="productEdit.height"
               min="0"
+              oninput="this.value = Math.abs(this.value)"
             />
             <div class="card__w-unit">cm</div>
           </div>
