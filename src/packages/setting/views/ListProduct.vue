@@ -1,6 +1,6 @@
 <template>
   <div class="pages list__product">
-    <div class="page-header row">
+    <div class="page-header d-flex">
       <div class="col-6">
         <p-input
           placeholder="Tìm kiếm theo tên hàng hóa hoặc sku"
@@ -35,7 +35,7 @@
                     <th>LOẠI HÀNG HÓA</th>
                     <th class="text-center">TRỌNG LƯỢNG (GRAM)</th>
                     <th class="text-center">KÍCH THƯỚC (CM)</th>
-                    <th></th>
+                    <th width="100"></th>
                   </tr>
                 </thead>
 
