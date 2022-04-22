@@ -192,6 +192,59 @@
                     </div>
                   </div>
                 </div>
+                <div class="card__w">
+                  <div class="card__w-header">
+                    Sản phẩm
+                  </div>
+                  <div class="card__w-content">
+                    <div class="card__w-item">
+                      <div
+                        class="card__w-input"
+                        v-for="(product, index) in products"
+                        :key="index"
+                      >
+                        <div class="d-flex">
+                          <div class="row product-info">
+                            <div class="select-product col-md-7 ">
+                              <multiselect
+                                class="multiselect-custom dropdown-reason "
+                                v-model="service"
+                                :options="services"
+                                placeholder="Chọn sản phẩm"
+                                :allow-empty="false"
+                                @select="handleSelectService"
+                                :custom-label="customLabel"
+                              ></multiselect>
+                            </div>
+                            <div class="select-product col-md-5">
+                              <div class="product-name">
+                                Concac
+                              </div>
+                            </div>
+                          </div>
+
+                          <input
+                            placeholder="Số lượng"
+                            v-model="fullname"
+                            :input="fullname"
+                            class="form-control select-product product-quantity"
+                            name="name"
+                            :class="{ 'error-color': errors.has('name') }"
+                          />
+                          <div class="add-product">
+                            <a
+                              :class="{ 'is-disabled': isCreate }"
+                              @click="handleCreate"
+                              class="btn btn-add"
+                            >
+                              <img src="~@assets/img/Add 20px.png" />
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="col-lg-6 col-xl-6 item-gutters">
                 <div class="card__w">
@@ -411,6 +464,7 @@ import {
   GET_SERVICE,
   CREATE_PACKAGE,
 } from '../store'
+import { LIST_PRODUCT } from '../../setting/store'
 export default {
   name: 'CreatePackage',
   data() {
@@ -455,6 +509,7 @@ export default {
       FETCH_LIST_SERVICE,
       CREATE_PACKAGE,
     ]),
+    ...mapActions('setting', [LIST_PRODUCT]),
     async init() {
       await this[FETCH_LIST_SERVICE]()
       await this[FETCH_LIST_PRODUCTS]()
