@@ -176,11 +176,8 @@
                           <span
                             v-if="!item.validate_address"
                             @click="handleValidateAddress(item)"
-                            class="
-                              pull-right
-                              list-warning
-                              badge badge-round badge-warning-order
-                            "
+                            class="list-warning badge badge-round badge-warning-order"
+                            style="white-space: pre;"
                           >
                             <p-tooltip
                               class="item_name"
