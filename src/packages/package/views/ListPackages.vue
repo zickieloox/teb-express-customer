@@ -115,7 +115,10 @@
             <VclTable class="mt-20" v-if="isFetching"></VclTable>
             <template v-else-if="packages.length">
               <div class="table-responsive">
-                <table class="table table-hover" id="tbl-packages">
+                <table
+                  class="table table-hover table-packages"
+                  id="tbl-packages"
+                >
                   <thead>
                     <tr>
                       <th width="40">
@@ -157,15 +160,8 @@
                           @input="handleValue($event)"
                         ></p-checkbox>
                       </td>
-                      <td>
-                        <p-tooltip
-                          :label="item.order_number"
-                          v-if="item.order_number"
-                          size="large"
-                          position="top"
-                          type="dark"
-                          :active="item.order_number.length > 20"
-                        >
+                      <td class="order-number">
+                        <div class="d-flex justify-content-between">
                           <router-link
                             class="text-no-underline"
                             :to="{
@@ -175,33 +171,30 @@
                               },
                             }"
                           >
-                            {{ truncate(item.order_number, 20) }}
+                            {{ item.order_number }}
                           </router-link>
-                        </p-tooltip>
-                        <span
-                          v-if="!item.validate_address"
-                          @click="handleValidateAddress(item)"
-                          class="
-                            pull-right
-                            list-warning
-                            badge badge-round badge-warning-order
-                          "
-                        >
-                          <p-tooltip
-                            class="item_name"
-                            :label="
-                              `Địa chỉ không hợp lệ \n Kích vào đây để xác nhận rằng địa chỉ hiện tại chắc chắn hợp lệ`
-                            "
-                            position="top"
-                            type="dark"
+                          <span
+                            v-if="!item.validate_address"
+                            @click="handleValidateAddress(item)"
+                            class="list-warning badge badge-round badge-warning-order"
+                            style="white-space: pre;"
                           >
-                            <inline-svg
-                              :src="
-                                require('../../../assets/img/location-warning.svg')
+                            <p-tooltip
+                              class="item_name"
+                              :label="
+                                `Địa chỉ không hợp lệ \n Kích vào đây để xác nhận rằng địa chỉ hiện tại chắc chắn hợp lệ`
                               "
-                            ></inline-svg>
-                          </p-tooltip>
-                        </span>
+                              position="top"
+                              type="dark"
+                            >
+                              <inline-svg
+                                :src="
+                                  require('../../../assets/img/location-warning.svg')
+                                "
+                              ></inline-svg>
+                            </p-tooltip>
+                          </span>
+                        </div>
                       </td>
                       <td class="action">
                         <span class="code">

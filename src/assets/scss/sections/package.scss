@@ -226,3 +226,25 @@
         margin-bottom: 9px;
     }
 }
+.table-packages {
+    tbody tr td {
+        vertical-align: top;
+        height: auto!important;
+        padding: 14px 5px 8px;
+    }
+
+    .order-number {
+        a {
+            width: calc(100% - 36px);
+        }
+    }
+
+    tr td.action {
+        padding: 14px 5px 8px;
+    }
+}
+
+
+.list-packages #tbl-packages tr td.action {
+    padding: 9px 5px 8px;
+}
