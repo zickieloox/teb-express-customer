@@ -185,6 +185,69 @@
                   </div>
                 </div>
               </div>
+              <div class="card__w">
+                <div class="card__w-header">
+                  Sản phẩm
+                </div>
+                <div class="card__w-content">
+                  <div class="card__w-item">
+                    <div class="card__w-input">
+                      <div
+                        class="d-flex product-item"
+                        v-for="(prod, index) in package_prods"
+                        :key="index"
+                      >
+                        <div class="row product-info">
+                          <div class="select-product col-md-7 ">
+                            <multiselect
+                              class="multiselect-custom dropdown-reason"
+                              v-model="product_sku[index]"
+                              :options="listProducts"
+                              placeholder="Chọn sản phẩm"
+                              @select="handleSelectProd($event, index)"
+                              @remove="handleRemove(index)"
+                              :custom-label="customLabelProd"
+                            ></multiselect>
+                          </div>
+                          <div class="select-product col-md-5">
+                            <div class="product-name">
+                              {{ prod.name }}
+                            </div>
+                          </div>
+                          <span class="err-span" v-if="prod.err != ''">
+                            {{ prod.err }}
+                          </span>
+                        </div>
+
+                        <input
+                          placeholder="Số lượng"
+                          v-model="prod.quantity"
+                          :input="prod.quantity"
+                          class="form-control select-product product-quantity"
+                          name="quantity"
+                          :class="{ 'error-color': errors.has('name') }"
+                        />
+                        <div
+                          class="add-product"
+                          v-if="index == package_prods.length - 1"
+                        >
+                          <a @click="handleAddProduct" class="btn btn-add">
+                            <img src="~@assets/img/Add 20px.png" />
+                          </a>
+                        </div>
+                        <div class="add-product" v-else>
+                          <a
+                            @click="handleRemoveProduct(index)"
+                            class="btn btn-remove"
+                          >
+                            <img src="~@assets/img/X 20px.png" />
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="col-lg-6 col-xl-6 item-gutters">
               <div class="card__w">
@@ -391,6 +454,7 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
 import { GET_SERVICE, UPDATE_PACKAGE } from '../../store'
+import { LIST_PRODUCT } from '../../../setting/store'
 
 export default {
   name: 'ModalEditOrder',
@@ -404,6 +468,9 @@ export default {
     ...mapState('package', {
       package_detail: (state) => state.package_detail,
       products: (state) => state.products,
+    }),
+    ...mapState('setting', {
+      listProducts: (state) => state.products,
     }),
     ...mapGetters('package', {
       services: GET_SERVICE,
@@ -438,6 +505,8 @@ export default {
       isDisable: false,
       address2: '',
       isUpdate: false,
+      package_prods: [],
+      product_sku: [],
     }
   },
   created() {
@@ -445,8 +514,14 @@ export default {
   },
   methods: {
     ...mapActions('package', { updatePackage: UPDATE_PACKAGE }),
+    ...mapActions('setting', [LIST_PRODUCT]),
 
     async init() {
+      let result = await this.listProduct()
+      if (!result.success) {
+        this.$toast.open({ type: 'danger', message: result.message })
+        return
+      }
       this.fullname = this.current.recipient
       this.phone = this.current.phone_number
       this.city = this.current.city
@@ -464,12 +539,69 @@ export default {
       this.address2 = this.current.address_2
       this.order_number = this.current.order_number
       this.detail = this.current.detail
+      this.package_prods = []
+      this.product_sku = []
+
+      if (this.current.package_products) {
+        for (let i = 0; i < this.current.package_products.length; i++) {
+          let prod = this.listProducts.find(
+            (prod) => prod.id == this.current.package_products[i].product_id
+          )
+
+          this.package_prods.push({
+            product_id: this.current.package_products[i].product_id,
+            sku: prod.sku,
+            quantity: this.current.package_products[i].quantity,
+            name: prod.name,
+            err: '',
+          })
+
+          this.product_sku.push(prod)
+        }
+      }
+
+      this.package_prods.push({
+        product_id: 0,
+        sku: 'Chọn sản phẩm',
+        quantity: '',
+        name: 'Tên sản phẩm',
+        err: '',
+      })
+
+      this.product_sku.push({
+        product_id: 0,
+        sku: 'Chọn sản phẩm',
+        quantity: '',
+        name: 'Tên sản phẩm',
+      })
 
       this.service = {
         id: this.current.service_id ? this.current.service_id : 0,
         name: this.current.service_name ? this.current.service_name : '',
       }
     },
+
+    handleSelectProd(value, index) {
+      this.package_prods[index].product_id = value.id
+      this.package_prods[index].sku = value.sku
+      this.package_prods[index].name = value.name
+
+      this.product_sku[index] = value
+
+      console.log(this.product_sku)
+    },
+
+    handleRemoveProd(index) {
+      this.package_prods[index].product_id = 0
+      this.package_prods[index].sku = 'Chọn sản phẩm'
+      this.package_prods[index].quantity = ''
+      this.package_prods[index].name = 'Tên sản phẩm'
+    },
+
+    customLabelProd(item) {
+      return item.sku
+    },
+
     handleClose() {
       this.fullname = ''
       this.phone = ''
@@ -486,6 +618,8 @@ export default {
       this.countrycode = ''
       this.service = ''
       this.address = ''
+      this.package_prods = []
+      this.product_sku = []
       this.$validator.pause()
 
       this.$nextTick(() => {
@@ -499,9 +633,11 @@ export default {
 
       this.$emit('update:visible', false)
     },
+
     customLabel(item) {
       return item.name
     },
+
     handleSelect(value) {
       this.width = value.width
       this.height = value.height
@@ -512,6 +648,7 @@ export default {
     handleSelectService(value) {
       this.service = value
     },
+
     handleRemove() {
       this.isDisable = false
       this.weight = this.current.weight
@@ -519,9 +656,57 @@ export default {
       this.width = this.current.width
       this.height = this.current.height
     },
+
     async handleUpdate() {
       const validate = await this.$validator.validateAll()
-      if (!validate) return
+
+      let invalidProd = true
+
+      const regex = new RegExp(/^[0-9]{1,4}$/)
+
+      for (let i = 0; i < this.package_prods.length; i++) {
+        this.package_prods[i].quantity = String(
+          this.package_prods[i].quantity
+        ).trim()
+
+        if (
+          (this.package_prods[i].product_id < 1 &&
+            this.package_prods[i].quantity != '') ||
+          (this.package_prods[i].quantity == '' &&
+            this.package_prods[i].product_id > 0)
+        ) {
+          this.package_prods[i].err = 'Sku cùng số lượng sản phẩm là bắt buộc'
+          invalidProd = false
+          continue
+        }
+
+        if (
+          (!regex.test(this.package_prods[i].quantity) ||
+            this.package_prods[i].quantity < 1) &&
+          this.package_prods[i].quantity != ''
+        ) {
+          this.package_prods[i].err = 'Số lượng sản phẩm không hợp lệ'
+          invalidProd = false
+          continue
+        }
+
+        this.package_prods[i].err = ''
+      }
+
+      let package_products = []
+
+      this.package_prods
+        .filter((prod) => prod.product_id > 0 && prod.err == '')
+        .forEach((prod) => {
+          package_products.push({
+            product_id: prod.product_id,
+            quantity: parseInt(prod.quantity),
+          })
+        })
+
+      if (!invalidProd || !validate) {
+        return
+      }
 
       this.isUpdate = true
       const { id } = this.$route.params
@@ -543,6 +728,7 @@ export default {
         service: this.service.name,
         note: this.note,
         address_2: this.address2,
+        package_products: package_products,
       }
 
       let result = await this.updatePackage(params)
@@ -556,6 +742,28 @@ export default {
       this.$toast.success('Sửa đơn thành công', { duration: 3000 })
       this.handleClose()
       this.$emit('create', true)
+    },
+
+    handleAddProduct() {
+      this.package_prods.push({
+        product_id: 0,
+        sku: 'Chọn sản phẩm',
+        quantity: '',
+        name: 'Tên sản phẩm',
+        err: '',
+      })
+
+      this.product_sku.push({
+        product_id: 0,
+        sku: 'Chọn sản phẩm',
+        quantity: '',
+        name: 'Tên sản phẩm',
+      })
+    },
+
+    handleRemoveProduct(index) {
+      this.package_prods.splice(index, 1)
+      this.product_sku.splice(index, 1)
     },
   },
   watch: {

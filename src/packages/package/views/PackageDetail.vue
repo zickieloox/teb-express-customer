@@ -124,7 +124,7 @@
                 </div>
               </div>
               <div class="col-4 p-0">
-                <div class="card-block h-100">
+                <div class="card-block ">
                   <div class="card-header">
                     <div class="card-title">Thông tin hàng hóa</div>
                   </div>
@@ -172,6 +172,30 @@
                           ({{ current.actual_height }} cm)
                         </span>
                       </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card-block ">
+                  <div class="card-header">
+                    <div class="card-title">Thông tin sản phẩm</div>
+                  </div>
+                  <div class="card-content">
+                    <div class="row product-title">
+                      <div class="col-5 mb-8">SKU</div>
+                      <div class="col-5">Tên sản phẩm</div>
+                      <div class="col-2 mb-8">Số lượng</div>
+                    </div>
+                    <div
+                      class="row product-item"
+                      v-for="(prod, index) in current.package_products"
+                      :key="index"
+                    >
+                      <div class="col-5 mb-8">{{ prod.sku }}</div>
+                      <div class="col-5">{{ prod.name }}</div>
+                      <div class="col-2 mb-8 product-quantity">{{
+                        prod.quantity
+                      }}</div>
                     </div>
                   </div>
                 </div>
