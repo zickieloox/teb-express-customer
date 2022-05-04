@@ -78,6 +78,13 @@
               @clear="clearSearchDate"
             ></p-datepicker>
           </div>
+          <button class="search-advanced">
+            <inline-svg
+              :src="require('../../../assets/img/search-advanced.svg')"
+            >
+            </inline-svg>
+            <span>Tìm nâng cao</span>
+          </button>
         </div>
         <div class="page-header__title">
           <button class="pull-right btn-primary btn ml-2" @click="handleImport">
