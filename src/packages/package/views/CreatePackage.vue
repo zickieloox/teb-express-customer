@@ -617,7 +617,7 @@ export default {
           (this.package_prods[i].quantity == '' &&
             this.package_prods[i].product_id > 0)
         ) {
-          this.package_prods[i].err = 'Sku cùng số lượng sản phẩm là bắt buộc'
+          this.package_prods[i].err = 'Vui lòng chọn SKU hoặc Tên sản phẩm'
           invalidProd = false
           continue
         }
