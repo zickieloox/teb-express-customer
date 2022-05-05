@@ -80,21 +80,34 @@
           </div>
         </div>
         <div class="page-header__title">
-          <button class="pull-right btn-primary btn ml-2" @click="handleImport">
-            <inline-svg :src="require('../../../assets/img/uploadex.svg')">
-            </inline-svg>
-            <span>Nhập Excel</span>
-          </button>
-          <router-link
-            :to="{ name: 'package-create' }"
-            class="pull-right btn-lb-secondary btn"
-            @click="handleImport"
-          >
+          <div></div>
+          <!-- <button class="search-advanced ml-12" @click="visibleModalSearch">
             <inline-svg
-              :src="require('../../../assets/img/addactive.svg')"
-            ></inline-svg>
-            <span>Tạo đơn</span>
-          </router-link>
+              :src="require('../../../assets/img/search-advanced.svg')"
+            >
+            </inline-svg>
+            <span>Tìm nâng cao</span>
+          </button> -->
+          <div>
+            <button
+              class="pull-right btn-primary btn ml-2"
+              @click="handleImport"
+            >
+              <inline-svg :src="require('../../../assets/img/uploadex.svg')">
+              </inline-svg>
+              <span>Nhập Excel</span>
+            </button>
+            <router-link
+              :to="{ name: 'package-create' }"
+              class="pull-right btn-lb-secondary btn"
+              @click="handleImport"
+            >
+              <inline-svg
+                :src="require('../../../assets/img/addactive.svg')"
+              ></inline-svg>
+              <span>Tạo đơn</span>
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -176,8 +189,11 @@
                           <span
                             v-if="!item.validate_address"
                             @click="handleValidateAddress(item)"
-                            class="list-warning badge badge-round badge-warning-order"
-                            style="white-space: pre;"
+                            class="
+                              list-warning
+                              badge badge-round badge-warning-order
+                            "
+                            style="white-space: pre"
                           >
                             <p-tooltip
                               class="item_name"
@@ -488,6 +504,9 @@
       @action="validateAddressPackage"
     >
     </ModalConfirmAddress>
+
+    <!-- <ModalSearchAdvanced :visible.sync="isVisibleModalSearch">
+    </ModalSearchAdvanced> -->
   </div>
 </template>
 <script>
@@ -537,6 +556,7 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { SET_LOADING } from '../store'
 import Copy from '../../bill/components/Copy.vue'
+// import ModalSearchAdvanced from './components/ModalSearchAdvanced'
 
 export default {
   name: 'ListPackages',
@@ -550,6 +570,7 @@ export default {
     ModalConfirm,
     Copy,
     ModalConfirmAddress,
+    // ModalSearchAdvanced,
   },
   mounted() {
     window.addEventListener('scroll', this.updateScroll)
@@ -617,6 +638,7 @@ export default {
       confirmAddress: '',
       loadingValidate: false,
       scrollPosition: null,
+      isVisibleModalSearch: false,
     }
   },
   created() {
@@ -1090,6 +1112,9 @@ export default {
         case PACKAGE_ALERT_TYPE_HUB_RETURN:
           return 'Hàng bị trả lại'
       }
+    },
+    visibleModalSearch() {
+      this.isVisibleModalSearch = true
     },
   },
   watch: {
