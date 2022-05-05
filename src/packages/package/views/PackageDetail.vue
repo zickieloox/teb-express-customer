@@ -191,7 +191,16 @@
                       v-for="(prod, index) in current.package_products"
                       :key="index"
                     >
-                      <div class="col-5 mb-8">{{ prod.sku }}</div>
+                      <div class="col-5 mb-8">
+                        <router-link
+                          :to="{
+                            name: 'list-product',
+                            query: { search: prod.sku },
+                          }"
+                        >
+                          {{ prod.sku }}
+                        </router-link>
+                      </div>
                       <div class="col-5">{{ prod.name }}</div>
                       <div class="col-2 mb-8 product-quantity">{{
                         prod.quantity
