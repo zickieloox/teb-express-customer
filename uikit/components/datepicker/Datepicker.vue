@@ -18,6 +18,7 @@
     :linkedCalendars="linkedCalendars"
     :dateFormat="dateFormat"
     :close-on-esc="true"
+    :ranges="ranges"
   >
     <div slot="input" slot-scope="picker" style="width: 100%;">
       <img
@@ -142,6 +143,10 @@ export default {
       default() {
         return {}
       },
+    },
+    ranges: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {
