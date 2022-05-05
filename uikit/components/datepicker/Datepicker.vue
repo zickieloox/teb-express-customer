@@ -20,10 +20,10 @@
     :close-on-esc="true"
     :ranges="ranges"
   >
-    <div slot="input" slot-scope="picker" style="width: 100%;">
+    <div slot="input" slot-scope="picker" style="width: 100%">
       <img
         src="@assets/img/calendar.svg"
-        style="float: right; margin-left: 2px; margin-top: 9px;"
+        style="float: right; margin-left: 2px; margin-top: 9px"
       />
       <span
         class="label-date-picker"
@@ -145,8 +145,32 @@ export default {
       },
     },
     ranges: {
-      type: Boolean,
-      default: true,
+      type: [Boolean, Object],
+      default() {
+        let today = new Date()
+        today.setHours(0, 0, 0, 0)
+
+        let yesterday = new Date()
+        yesterday.setDate(today.getDate() - 1)
+        yesterday.setHours(0, 0, 0, 0)
+
+        return {
+          Today: [today, today],
+          Yesterday: [yesterday, yesterday],
+          'This month': [
+            new Date(today.getFullYear(), today.getMonth(), 1),
+            new Date(today.getFullYear(), today.getMonth() + 1, 0),
+          ],
+          'This year': [
+            new Date(today.getFullYear(), 0, 1),
+            new Date(today.getFullYear(), 11, 31),
+          ],
+          'Last month': [
+            new Date(today.getFullYear(), today.getMonth() - 1, 1),
+            new Date(today.getFullYear(), today.getMonth(), 0),
+          ],
+        }
+      },
     },
   },
   data() {

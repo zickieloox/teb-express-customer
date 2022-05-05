@@ -80,13 +80,14 @@
           </div>
         </div>
         <div class="page-header__title">
-          <button class="search-advanced ml-12" @click="visibleModalSearch">
+          <div></div>
+          <!-- <button class="search-advanced ml-12" @click="visibleModalSearch">
             <inline-svg
               :src="require('../../../assets/img/search-advanced.svg')"
             >
             </inline-svg>
             <span>Tìm nâng cao</span>
-          </button>
+          </button> -->
           <div>
             <button
               class="pull-right btn-primary btn ml-2"
@@ -504,8 +505,8 @@
     >
     </ModalConfirmAddress>
 
-    <ModalSearchAdvanced :visible.sync="isVisibleModalSearch">
-    </ModalSearchAdvanced>
+    <!-- <ModalSearchAdvanced :visible.sync="isVisibleModalSearch">
+    </ModalSearchAdvanced> -->
   </div>
 </template>
 <script>
@@ -555,7 +556,7 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { SET_LOADING } from '../store'
 import Copy from '../../bill/components/Copy.vue'
-import ModalSearchAdvanced from './components/ModalSearchAdvanced'
+// import ModalSearchAdvanced from './components/ModalSearchAdvanced'
 
 export default {
   name: 'ListPackages',
@@ -569,7 +570,7 @@ export default {
     ModalConfirm,
     Copy,
     ModalConfirmAddress,
-    ModalSearchAdvanced,
+    // ModalSearchAdvanced,
   },
   mounted() {
     window.addEventListener('scroll', this.updateScroll)
