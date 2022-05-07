@@ -1,0 +1,30 @@
+.list__product {
+    .btn-add {
+        .btn {
+            float: right;
+            svg {
+                path {
+                    stroke: #FFFFFF
+                }
+            }
+        }
+    }
+    .table {
+        thead {
+            font-size: 12px;
+        }
+        tbody {
+            tr:last-child {
+                td {
+                    border-bottom: none;
+                }
+            }
+        }
+    }
+    .card-body {
+        padding: 24px !important;
+    }
+    .paginate {
+        padding: 0 24px
+    }
+}

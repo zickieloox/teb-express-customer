@@ -26,6 +26,13 @@ export const DOWNLOAD_TEMPLATE_FILE = 'downloadTemplateFile'
 export const GENERATE_PREVIEW_LABEL = 'generatePreviewLabel'
 export const FETCH_SETTING_LABEL = 'fetchSettingLabel'
 export const SAVE_SETTING_LABEL = 'saveSettingLabel'
+
+export const LIST_PRODUCT = 'listProduct'
+export const COUNT_PRODUCT = 'countProduct'
+export const CREATE_PRODUCT = 'createProduct'
+export const UPDATE_PRODUCT = 'updateProduct'
+export const DELETE_PRODUCT = 'deleteProduct'
+
 /**
  * State
  */
@@ -37,6 +44,8 @@ export const state = {
   webhook_url: '',
   templates: [],
   count: 0,
+  products: [],
+  count_product: 0,
 }
 
 /**
@@ -74,6 +83,12 @@ export const mutations = {
   },
   [COUNT_TEMPLATES]: (state, payload) => {
     state.count = payload
+  },
+  [LIST_PRODUCT]: (state, payload) => {
+    state.products = payload
+  },
+  [COUNT_PRODUCT]: (state, payload) => {
+    state.count_product = payload
   },
 }
 
@@ -331,6 +346,68 @@ export const actions = {
   // eslint-disable-next-line
   async [SAVE_SETTING_WEBHOOK]({ commit }, payload) {
     const response = await api.saveSettingWebhook(payload)
+
+    if (response && response.success) {
+      return { success: true }
+    }
+
+    return {
+      success: false,
+      message: response.errorMessage || '',
+    }
+  },
+
+  async listProduct({ commit }, payload) {
+    let result = { success: true }
+
+    let [list, count] = await Promise.all([
+      api.fetchListProducts(payload),
+      api.countListProducts(payload),
+    ])
+    if (!list || list.error || !count) {
+      list = []
+      count = 0
+      result = {
+        success: false,
+        message: list.errorMessage || '',
+      }
+    }
+    commit(LIST_PRODUCT, list.products)
+    commit(COUNT_PRODUCT, count.count)
+    return result
+  },
+
+  // eslint-disable-next-line
+  async createProduct({ commit }, payload) {
+    const response = await api.createProduct(payload)
+
+    if (response && response.product) {
+      return { success: true }
+    }
+
+    return {
+      success: false,
+      message: response.errorMessage || '',
+    }
+  },
+
+  // eslint-disable-next-line
+  async updateProduct({ commit }, payload) {
+    const response = await api.updateProduct(payload)
+
+    if (response && response.success) {
+      return { success: true }
+    }
+
+    return {
+      success: false,
+      message: response.errorMessage || '',
+    }
+  },
+
+  // eslint-disable-next-line
+  async deleteProduct({ commit }, payload) {
+    const response = await api.deleteProduct(payload)
 
     if (response && response.success) {
       return { success: true }

@@ -111,4 +111,21 @@ export default {
       RESPONSE_TYPE_BLOB
     )
   },
+
+  //api products
+  fetchListProducts(payload) {
+    return http.get(`/products?${buildQueryString(payload)}`)
+  },
+  countListProducts(payload) {
+    return http.get(`/products/count?${buildQueryString(payload)}`)
+  },
+  createProduct(payload) {
+    return http.post(`/products/create`, payload)
+  },
+  updateProduct(payload) {
+    return http.put(`/products/${payload.id}`, payload)
+  },
+  deleteProduct(payload) {
+    return http.put(`/products/delete/${payload.id}`)
+  },
 }

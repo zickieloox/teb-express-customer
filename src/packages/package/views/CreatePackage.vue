@@ -192,6 +192,68 @@
                     </div>
                   </div>
                 </div>
+                <div class="card__w">
+                  <div
+                    class="card__w-header d-flex justify-content-between align-items-center"
+                  >
+                    Sản phẩm
+                    <div class="add-product">
+                      <a @click="handleAddProduct" class="btn btn-add">
+                        <img src="~@assets/img/Add 20px.png" />
+                      </a>
+                    </div>
+                  </div>
+                  <div class="card__w-content pr-8">
+                    <div class="card__w-item">
+                      <div class="card__w-input ml-0">
+                        <div
+                          class="d-flex product-item"
+                          v-for="(prod, index) in package_prods"
+                          :key="index"
+                        >
+                          <div class="row product-info">
+                            <div class="select-product col-md-7 ">
+                              <multiselect
+                                class="multiselect-custom dropdown-reason"
+                                v-model="product_sku[index]"
+                                :options="listProducts"
+                                placeholder="Chọn sản phẩm"
+                                @select="handleSelectProd($event, index)"
+                                @remove="handleRemove(index)"
+                                :custom-label="customLabelProd"
+                              ></multiselect>
+                            </div>
+                            <div class="select-product col-md-5">
+                              <div class="product-name">
+                                {{ prod.name }}
+                              </div>
+                            </div>
+                            <span class="err-span" v-if="prod.err != ''">
+                              {{ prod.err }}
+                            </span>
+                          </div>
+
+                          <input
+                            placeholder="Số lượng"
+                            v-model="prod.quantity"
+                            :input="prod.quantity"
+                            class="form-control select-product product-quantity"
+                            name="quantity"
+                            :class="{ 'error-color': errors.has('name') }"
+                          />
+                          <div class="add-product">
+                            <a
+                              @click="handleRemoveProduct(index)"
+                              class="btn btn-remove"
+                            >
+                              <img src="~@assets/img/X 20px.png" />
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div class="col-lg-6 col-xl-6 item-gutters">
                 <div class="card__w">
@@ -411,6 +473,7 @@ import {
   GET_SERVICE,
   CREATE_PACKAGE,
 } from '../store'
+import { LIST_PRODUCT } from '../../setting/store'
 export default {
   name: 'CreatePackage',
   data() {
@@ -436,11 +499,31 @@ export default {
         id: 0,
         name: 'Chọn một dịch vụ',
       },
+      package_prods: [
+        {
+          product_id: 0,
+          sku: 'Chọn sản phẩm',
+          quantity: '',
+          name: 'Tên sản phẩm',
+          err: '',
+        },
+      ],
+      product_sku: [
+        {
+          product_id: 0,
+          sku: 'Chọn sản phẩm',
+          quantity: '',
+          name: 'Tên sản phẩm',
+        },
+      ],
     }
   },
   computed: {
     ...mapState('package', {
       products: (state) => state.products,
+    }),
+    ...mapState('setting', {
+      listProducts: (state) => state.products,
     }),
     ...mapGetters('package', {
       services: GET_SERVICE,
@@ -455,6 +538,7 @@ export default {
       FETCH_LIST_SERVICE,
       CREATE_PACKAGE,
     ]),
+    ...mapActions('setting', [LIST_PRODUCT]),
     async init() {
       await this[FETCH_LIST_SERVICE]()
       await this[FETCH_LIST_PRODUCTS]()
@@ -478,7 +562,16 @@ export default {
         id: 0,
         name: 'Chọn một dịch vụ',
       }
+      let result = await this.listProduct()
+      if (!result.success) {
+        this.$toast.open({ type: 'danger', message: result.message })
+        return
+      }
     },
+    customLabelProd(item) {
+      return item.sku
+    },
+
     customLabel(item) {
       return item.name
     },
@@ -488,11 +581,74 @@ export default {
     handleSelectService(value) {
       this.service = value
     },
+
+    handleSelectProd(value, index) {
+      this.package_prods[index].product_id = value.id
+      this.package_prods[index].sku = value.sku
+      this.package_prods[index].name = value.name
+
+      this.product_sku[index] = value
+
+      console.log(this.product_sku)
+    },
+
+    handleRemove(index) {
+      this.package_prods[index].product_id = 0
+      this.package_prods[index].sku = 'Chọn sản phẩm'
+      this.package_prods[index].quantity = ''
+      this.package_prods[index].name = 'Tên sản phẩm'
+    },
     async handleCreate() {
       const validate = await this.$validator.validateAll()
-      if (!validate) {
+
+      let invalidProd = true
+
+      const regex = new RegExp(/^[0-9]{1,4}$/)
+
+      for (let i = 0; i < this.package_prods.length; i++) {
+        this.package_prods[i].quantity = String(
+          this.package_prods[i].quantity
+        ).trim()
+
+        if (
+          (this.package_prods[i].product_id < 1 &&
+            this.package_prods[i].quantity != '') ||
+          (this.package_prods[i].quantity == '' &&
+            this.package_prods[i].product_id > 0)
+        ) {
+          this.package_prods[i].err = 'Vui lòng chọn SKU hoặc Tên sản phẩm'
+          invalidProd = false
+          continue
+        }
+
+        if (
+          (!regex.test(this.package_prods[i].quantity) ||
+            this.package_prods[i].quantity < 1) &&
+          this.package_prods[i].quantity != ''
+        ) {
+          this.package_prods[i].err = 'Số lượng sản phẩm không hợp lệ'
+          invalidProd = false
+          continue
+        }
+
+        this.package_prods[i].err = ''
+      }
+
+      let package_products = []
+
+      this.package_prods
+        .filter((prod) => prod.product_id > 0 && prod.err == '')
+        .forEach((prod) => {
+          package_products.push({
+            product_id: prod.product_id,
+            quantity: parseInt(prod.quantity),
+          })
+        })
+
+      if (!invalidProd || !validate) {
         return
       }
+
       if (!this.service || !this.service.id) {
         this.isCreate = false
         this.$toast.open({
@@ -502,6 +658,7 @@ export default {
         })
         return
       }
+
       this.isCreate = true
       const params = {
         recipient: this.fullname.trim(),
@@ -519,6 +676,7 @@ export default {
         height: +this.height.trim(),
         service: this.service.name.trim(),
         address_2: this.address2.trim(),
+        package_products: package_products,
       }
       let result = await this[CREATE_PACKAGE](params)
       if (!result.id || result.error) {
@@ -540,6 +698,28 @@ export default {
         name: 'package-detail',
         params: { id: result.id },
       })
+    },
+
+    handleAddProduct() {
+      this.package_prods.push({
+        product_id: 0,
+        sku: 'Chọn sản phẩm',
+        quantity: '',
+        name: 'Tên sản phẩm',
+        err: '',
+      })
+
+      this.product_sku.push({
+        product_id: 0,
+        sku: 'Chọn sản phẩm',
+        quantity: '',
+        name: 'Tên sản phẩm',
+      })
+    },
+
+    handleRemoveProduct(index) {
+      this.package_prods.splice(index, 1)
+      this.product_sku.splice(index, 1)
     },
   },
 }

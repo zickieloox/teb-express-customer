@@ -124,7 +124,7 @@
                 </div>
               </div>
               <div class="col-4 p-0">
-                <div class="card-block h-100">
+                <div class="card-block ">
                   <div class="card-header">
                     <div class="card-title">Thông tin hàng hóa</div>
                   </div>
@@ -140,38 +140,71 @@
                     <div class="row">
                       <div class="col-4 mb-8">Trọng lượng:</div>
                       <div class="col-8">
-                        {{ current.weight }}
+                        {{ current.weight }} gram
                         <span v-if="isOverWeight"
-                          >({{ current.actual_weight }})</span
+                          >({{ current.actual_weight }} gram)</span
                         >
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Dài:</div>
                       <div class="col-8">
-                        {{ current.length }}
+                        {{ current.length }} cm
                         <span v-if="isOverVolumes"
-                          >({{ current.actual_length }})</span
+                          >({{ current.actual_length }} cm)</span
                         >
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Rộng:</div>
                       <div class="col-8">
-                        {{ current.width }}
+                        {{ current.width }} cm
                         <span v-if="isOverVolumes">
-                          ({{ current.actual_width }})
+                          ({{ current.actual_width }} cm)
                         </span>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Cao:</div>
                       <div class="col-8">
-                        {{ current.height }}
+                        {{ current.height }} cm
                         <span v-if="isOverVolumes">
-                          ({{ current.actual_height }})
+                          ({{ current.actual_height }} cm)
                         </span>
                       </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card-block ">
+                  <div class="card-header">
+                    <div class="card-title">Thông tin sản phẩm</div>
+                  </div>
+                  <div class="card-content">
+                    <div class="row product-title">
+                      <div class="col-5 mb-8">SKU</div>
+                      <div class="col-5">Tên sản phẩm</div>
+                      <div class="col-2 mb-8">Số lượng</div>
+                    </div>
+                    <div
+                      class="row product-item"
+                      v-for="(prod, index) in current.package_products"
+                      :key="index"
+                    >
+                      <div class="col-5 mb-8">
+                        <router-link
+                          :to="{
+                            name: 'list-product',
+                            query: { search: prod.sku },
+                          }"
+                        >
+                          {{ prod.sku }}
+                        </router-link>
+                      </div>
+                      <div class="col-5">{{ prod.name }}</div>
+                      <div class="col-2 mb-8 product-quantity">{{
+                        prod.quantity
+                      }}</div>
                     </div>
                   </div>
                 </div>

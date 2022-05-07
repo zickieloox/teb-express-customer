@@ -128,6 +128,7 @@ import {
   PACKAGE_STATUS_WAREHOUSE_EXPORT,
   PACKAGE_STATUS_IMPORT_HUB,
   PACKAGE_STATUS_EXPORT_HUB,
+  PACKAGE_STATUS_RESHIP,
 } from '../constant'
 // import ModalTracking from '../../tracking/components/ModalTracking.vue'
 
@@ -272,6 +273,7 @@ export default {
           case PACKAGE_STATUS_IMPORT_HUB:
           case PACKAGE_STATUS_EXPORT_HUB:
           case PACKAGE_STATUS_INTRANSIT:
+          case PACKAGE_STATUS_RESHIP:
             this.numbers.intransit += count
             this.datavalues.intransit[index] += count
             break
