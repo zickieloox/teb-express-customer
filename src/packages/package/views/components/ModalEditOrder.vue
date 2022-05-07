@@ -197,7 +197,7 @@
                   </div>
                 </div>
 
-                <div class="card__w-content pr-13">
+                <div class="card__w-content pr-13 pl-13">
                   <div class="card__w-item">
                     <div class="card__w-input ml-0">
                       <div
