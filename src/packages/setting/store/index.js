@@ -395,7 +395,7 @@ export const actions = {
   async updateProduct({ commit }, payload) {
     const response = await api.updateProduct(payload)
 
-    if (response && response.product) {
+    if (response && response.success) {
       return { success: true }
     }
 
