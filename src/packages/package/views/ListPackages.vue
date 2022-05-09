@@ -427,7 +427,7 @@
                 </table>
               </div>
               <div
-                class="d-flex justify-content-between align-items-center mb-16"
+                class="d-flex justify-content-between align-items-center mb-80"
                 v-if="count > 0"
               >
                 <p-pagination
