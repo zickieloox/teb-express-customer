@@ -130,10 +130,17 @@
               <p
                 ><span
                   >Vui lòng chuyển tiền tới địa chỉ:
-                  <strong v-if="isPayoneer">trungpq.ftu@gmail.com</strong>
-                  <strong v-if="isPingPong">tungpk@lionnix.com</strong>
-                </span></p
-              >
+                  <strong v-if="isPayoneer"
+                    >trungpq.ftu@gmail.com<copy
+                      :value="`trungpq.ftu@gmail.com`"
+                    ></copy
+                  ></strong>
+                  <strong v-if="isPingPong"
+                    >tungpk@lionnix.com<copy
+                      :value="`tungpk@lionnix.com`"
+                    ></copy
+                  ></strong> </span
+              ></p>
               <p>
                 Copy <strong>Transaction ID</strong> rồi nhập vào ô phía dưới.
               </p>
@@ -417,9 +424,9 @@ export default {
       if (this.loading) return
       this.checkValidAmount()
       if (this.error) return
-
+      let rate
       if (this.toUSD) {
-        const rate = await this[FETCH_RATE_EXCHANGE]()
+        rate = await this[FETCH_RATE_EXCHANGE]()
         if (!rate || !rate.success) {
           this.$toast.error('Something went wrong', { duration: 4000 })
           return
@@ -440,6 +447,7 @@ export default {
         type: this.method,
         transaction_id: this.transactionID,
         amount: amount,
+        rate: rate.usdtovnd || 0,
       }
 
       const result = await this[CREATE_TRANSACTION](payload)
