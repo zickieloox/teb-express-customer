@@ -588,8 +588,6 @@ export default {
       this.package_prods[index].name = value.name
 
       this.product_sku[index] = value
-
-      console.log(this.product_sku)
     },
 
     handleRemove(index) {

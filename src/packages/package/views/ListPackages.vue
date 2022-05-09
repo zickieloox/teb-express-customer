@@ -80,14 +80,13 @@
           </div>
         </div>
         <div class="page-header__title">
-          <div></div>
-          <!-- <button class="search-advanced ml-12" @click="visibleModalSearch">
+          <button class="search-advanced ml-12" @click="visibleModalSearch">
             <inline-svg
               :src="require('../../../assets/img/search-advanced.svg')"
             >
             </inline-svg>
             <span>Tìm nâng cao</span>
-          </button> -->
+          </button>
           <div>
             <button
               class="pull-right btn-primary btn ml-2"
@@ -505,8 +504,14 @@
     >
     </ModalConfirmAddress>
 
-    <!-- <ModalSearchAdvanced :visible.sync="isVisibleModalSearch">
-    </ModalSearchAdvanced> -->
+    <ModalSearchAdvanced
+      :visible.sync="isVisibleModalSearch"
+      :loadingView="isFetching"
+      :loadingExport="isVisibleExport"
+      @export="handleExport"
+      @fetch="searchAdvanced"
+    >
+    </ModalSearchAdvanced>
   </div>
 </template>
 <script>
@@ -556,7 +561,7 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { SET_LOADING } from '../store'
 import Copy from '../../bill/components/Copy.vue'
-// import ModalSearchAdvanced from './components/ModalSearchAdvanced'
+import ModalSearchAdvanced from './components/ModalSearchAdvanced'
 
 export default {
   name: 'ListPackages',
@@ -570,7 +575,7 @@ export default {
     ModalConfirm,
     Copy,
     ModalConfirmAddress,
-    // ModalSearchAdvanced,
+    ModalSearchAdvanced,
   },
   mounted() {
     window.addEventListener('scroll', this.updateScroll)
@@ -681,12 +686,16 @@ export default {
     async init() {
       this.isFetching = true
       this.action.selected = []
-      this.handleUpdateRouteQuery()
       const result = await this.fetchListPackages(this.filter)
       this.isFetching = false
       if (!result.success) {
         this.$toast.open({ message: result.message, type: 'error' })
+        return
       }
+      this.isVisibleModalSearch = false
+    },
+    async searchAdvanced(filter) {
+      this.filter = { ...filter }
     },
     selectDate(v) {
       this.filter.start_date = date(v.startDate, 'yyyy-MM-dd')
@@ -747,27 +756,41 @@ export default {
         message: this.resultImport.message || 'File không đúng định dạng',
       })
     },
-    async handleExport() {
+    async handleExport(filter) {
       this.isVisibleExport = true
-      const result = await this[EXPORT_PACKAGE]({
-        ids: this.selectedIds,
-      })
+      let result
+      if (this.selectedIds.length > 0) {
+        result = await this[EXPORT_PACKAGE]({
+          ids: this.selectedIds,
+        })
+      } else {
+        result = await this[EXPORT_PACKAGE]({
+          search: filter.search,
+          search_by: filter.search_by,
+          status: filter.status,
+          start_date: filter.start_date,
+          end_date: filter.end_date,
+        })
+      }
+
+      this.isVisibleExport = false
+
       if (!result.success) {
         this.$toast.open({
           type: 'error',
           message: result.message,
           duration: 3000,
         })
-        this.isVisibleExport = false
         return
       }
+      this.isVisibleModalSearch = false
+
       this.downloadFile(
         result.url,
         'packages',
         result.url.split('/'),
         'danh_sach_van_don_'
       )
-      this.isVisibleExport = false
     },
     isReturnTab() {
       return this.filter.status === PACKAGE_STATUS_PENDING_PICKUP_TEXT

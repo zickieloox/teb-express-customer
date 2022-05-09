@@ -591,12 +591,8 @@ export default {
       this.package_prods[index].product_id = value.id
       this.package_prods[index].sku = value.sku
       this.package_prods[index].name = value.name
-
       this.product_sku[index] = value
-
       this.selected_prod.push(value)
-
-      console.log(this.selected_prod)
     },
 
     handleRemoveProd(value, index) {
