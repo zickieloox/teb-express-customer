@@ -80,14 +80,13 @@
           </div>
         </div>
         <div class="page-header__title">
-          <div></div>
-          <!-- <button class="search-advanced ml-12" @click="visibleModalSearch">
+          <button class="search-advanced ml-12" @click="visibleModalSearch">
             <inline-svg
               :src="require('../../../assets/img/search-advanced.svg')"
             >
             </inline-svg>
             <span>Tìm nâng cao</span>
-          </button> -->
+          </button>
           <div>
             <button
               class="pull-right btn-primary btn ml-2"
@@ -505,8 +504,12 @@
     >
     </ModalConfirmAddress>
 
-    <!-- <ModalSearchAdvanced :visible.sync="isVisibleModalSearch">
-    </ModalSearchAdvanced> -->
+    <ModalSearchAdvanced
+      :visible.sync="isVisibleModalSearch"
+      :loadingView.sync="isFetching"
+      @fetch="searchAdvanced"
+    >
+    </ModalSearchAdvanced>
   </div>
 </template>
 <script>
@@ -556,7 +559,7 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { SET_LOADING } from '../store'
 import Copy from '../../bill/components/Copy.vue'
-// import ModalSearchAdvanced from './components/ModalSearchAdvanced'
+import ModalSearchAdvanced from './components/ModalSearchAdvanced'
 
 export default {
   name: 'ListPackages',
@@ -570,7 +573,7 @@ export default {
     ModalConfirm,
     Copy,
     ModalConfirmAddress,
-    // ModalSearchAdvanced,
+    ModalSearchAdvanced,
   },
   mounted() {
     window.addEventListener('scroll', this.updateScroll)
@@ -681,12 +684,16 @@ export default {
     async init() {
       this.isFetching = true
       this.action.selected = []
-      this.handleUpdateRouteQuery()
       const result = await this.fetchListPackages(this.filter)
       this.isFetching = false
       if (!result.success) {
         this.$toast.open({ message: result.message, type: 'error' })
+        return
       }
+      this.isVisibleModalSearch = false
+    },
+    async searchAdvanced(filter) {
+      this.filter = { ...filter }
     },
     selectDate(v) {
       this.filter.start_date = date(v.startDate, 'yyyy-MM-dd')

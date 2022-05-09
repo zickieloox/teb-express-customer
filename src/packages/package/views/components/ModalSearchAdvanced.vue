@@ -74,11 +74,11 @@
               <div class="item">
                 <input
                   type="radio"
-                  id="zip_code"
-                  value="zip_code"
+                  id="zipcode"
+                  value="zipcode"
                   v-model="filter.search_by"
                 />
-                <label for="zip_code">Mã bưu điện</label>
+                <label for="zipcode">Mã bưu điện</label>
               </div>
             </div>
             <div class="col-4">
@@ -142,12 +142,16 @@
         </div>
         <div class="d-flex">
           <div>
-            <p-button class="btn-lb-secondary" type="default" @click="submit"
+            <p-button
+              class="btn-lb-secondary"
+              type="default"
+              @click="view"
+              :loading="loadingView"
               >Hiển thị</p-button
             >
           </div>
           <div class="ml-7">
-            <p-button type="primary" @click="submit"> Tải excel </p-button>
+            <p-button type="primary"> Tải excel </p-button>
           </div>
         </div>
       </template>
@@ -162,6 +166,10 @@ export default {
   name: 'ModalSearchAdvanced',
   props: {
     visible: {
+      type: Boolean,
+      default: false,
+    },
+    loadingView: {
       type: Boolean,
       default: false,
     },
@@ -196,6 +204,14 @@ export default {
       this.$emit('close')
     },
     selectDate(v) {
+      if (v.startDate !== null && v.endDate !== null) {
+        const time = v.endDate.getTime() - v.startDate.getTime()
+        const diff_days = Math.floor(time / (1000 * 3600 * 24))
+        if (diff_days > 29) {
+          this.$toast.error('Giới hạn tìm kiếm chỉ trong vòng 30 ngày')
+          return
+        }
+      }
       this.filter.start_date = date(v.startDate, 'yyyy-MM-dd')
       this.filter.end_date = date(v.endDate, 'yyyy-MM-dd')
     },
@@ -203,8 +219,9 @@ export default {
       this.filter.end_date = ''
       this.filter.start_date = ''
     },
-    submit() {
-      console.log(this.filter)
+    view() {
+      this.filter.search = this.filter.search.trim()
+      this.$emit('fetch', this.filter)
     },
     checkAll() {
       this.filter.status = []
