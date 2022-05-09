@@ -152,6 +152,49 @@
                   />
                 </p>
               </div>
+              <div class="swap_money">
+                <div class="money">
+                  <label class="title d-flex justify-content-between">
+                    <span>Nhập số tiền:</span>
+                  </label>
+                  <div class="input">
+                    <input
+                      id="money"
+                      @input="onChangeAmount"
+                      placeholder="Nhập số tiền"
+                      :value="amount"
+                    />
+                    <span>{{ US_FLAG.name }}</span>
+                    <img :src="US_FLAG.icon" alt="flag" class="flag" />
+                  </div>
+                </div>
+                <div @click="swapHandle" class="btn-convert">
+                  <img src="@assets/img/convert.svg" alt="" />
+                </div>
+                <div class="money">
+                  <label class="title">Số tiền tương ứng:</label>
+                  <div class="d-flex">
+                    <div class="w-price">
+                      <span class="price">{{ amountVND }}</span>
+                      <copy :value="amountVND" v-if="amountVND"></copy>
+                      <span class="currency">{{ VN_FLAG.name }}</span>
+                      <img :src="VN_FLAG.icon" alt="flag" class="flag" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="invalid-error" v-if="error == true">
+                {{ errorText }}
+              </div>
+              <div class="info_exchange text-right mt-24">
+                <div class="rate_exchange"
+                  >Tỷ giá chuyển đổi: 1 USD = {{ currencyRate }} VND</div
+                >
+                <div class="rate_exchange_updated"
+                  >Cập nhật lúc
+                  {{ updatedAt | datetime('dd/MM/yyyy HH:mm:ss') }}</div
+                >
+              </div>
               <div class="accept d-flex">
                 <p-button
                   type="primary"
@@ -365,15 +408,38 @@ export default {
 
     setMethod(type) {
       this.method = type
+      this.amount = ''
+      this.error = false
     },
 
     async handlerCreateTransaction() {
+      let amount = +this.amount.replaceAll(',', '')
       if (this.loading) return
+      this.checkValidAmount()
+      if (this.error) return
+
+      if (this.toUSD) {
+        const rate = await this[FETCH_RATE_EXCHANGE]()
+        if (!rate || !rate.success) {
+          this.$toast.error('Something went wrong', { duration: 4000 })
+          return
+        }
+
+        this.USDTOVND = rate.usdtovnd
+        amount = amount / +this.USDTOVND
+      }
+
+      if (amount < 1) {
+        this.errorText = 'Số tiền nhập tối thiểu 1$!'
+        this.error = true
+        return
+      }
 
       this.loading = true
       let payload = {
         type: this.method,
         transaction_id: this.transactionID,
+        amount: amount,
       }
 
       const result = await this[CREATE_TRANSACTION](payload)
@@ -386,6 +452,10 @@ export default {
 
       this.$toast.success('Yêu cầu của bạn đang được xử lý', { duration: 3000 })
       this.$set(this, 'transactionID', '')
+      this.error = false
+      this.errorText = ''
+      this.moneyText = ''
+      this.amount = ''
     },
   },
 }
