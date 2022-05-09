@@ -148,61 +148,39 @@
               <br />
             </div>
             <div class="form-body">
-              <p class="mb-8">Transaction ID:</p>
-              <div class="input-trans">
-                <p>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="transactionID"
-                    placeholder="Nhập Transaction ID"
-                  />
-                </p>
-              </div>
-              <div class="swap_money">
-                <div class="money">
-                  <label class="title d-flex justify-content-between">
-                    <span>Nhập số tiền:</span>
-                  </label>
-                  <div class="input">
+              <div
+                class="transaction-content"
+                style="margin: 0;display: block;"
+              >
+                <div class="row mb-10">
+                  <div class="col-2 lb-trans">Transaction ID:</div>
+                  <div class="input-trans col-8">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="transactionID"
+                      placeholder="Nhập Transaction ID"
+                    />
+                  </div>
+                </div>
+                <div class="amount row">
+                  <div class="col-2 lb-trans">Nhập số tiền:</div>
+                  <div class="input col-8">
                     <input
                       id="money"
                       @input="onChangeAmount"
                       placeholder="Nhập số tiền"
                       :value="amount"
+                      class="form-control"
                     />
                     <span>{{ US_FLAG.name }}</span>
-                    <img :src="US_FLAG.icon" alt="flag" class="flag" />
-                  </div>
-                </div>
-                <div @click="swapHandle" class="btn-convert">
-                  <img src="@assets/img/convert.svg" alt="" />
-                </div>
-                <div class="money">
-                  <label class="title">Số tiền tương ứng:</label>
-                  <div class="d-flex">
-                    <div class="w-price">
-                      <span class="price">{{ amountVND }}</span>
-                      <copy :value="amountVND" v-if="amountVND"></copy>
-                      <span class="currency">{{ VN_FLAG.name }}</span>
-                      <img :src="VN_FLAG.icon" alt="flag" class="flag" />
-                    </div>
                   </div>
                 </div>
               </div>
               <div class="invalid-error" v-if="error == true">
                 {{ errorText }}
               </div>
-              <div class="info_exchange text-right mt-24">
-                <div class="rate_exchange"
-                  >Tỷ giá chuyển đổi: 1 USD = {{ currencyRate }} VND</div
-                >
-                <div class="rate_exchange_updated"
-                  >Cập nhật lúc
-                  {{ updatedAt | datetime('dd/MM/yyyy HH:mm:ss') }}</div
-                >
-              </div>
-              <div class="accept d-flex">
+              <div class="accept d-flex mt-24">
                 <p-button
                   type="primary"
                   @click="handlerCreateTransaction"
@@ -424,9 +402,8 @@ export default {
       if (this.loading) return
       this.checkValidAmount()
       if (this.error) return
-      let rate
       if (this.toUSD) {
-        rate = await this[FETCH_RATE_EXCHANGE]()
+        const rate = await this[FETCH_RATE_EXCHANGE]()
         if (!rate || !rate.success) {
           this.$toast.error('Something went wrong', { duration: 4000 })
           return
@@ -447,7 +424,6 @@ export default {
         type: this.method,
         transaction_id: this.transactionID,
         amount: amount,
-        rate: rate.usdtovnd || 0,
       }
 
       const result = await this[CREATE_TRANSACTION](payload)
