@@ -193,12 +193,19 @@
                   </div>
                 </div>
                 <div class="card__w">
-                  <div class="card__w-header">
+                  <div
+                    class="card__w-header d-flex justify-content-between align-items-center"
+                  >
                     Sản phẩm
+                    <div class="add-product">
+                      <a @click="handleAddProduct" class="btn btn-add">
+                        <img src="~@assets/img/Add 20px.png" />
+                      </a>
+                    </div>
                   </div>
-                  <div class="card__w-content">
+                  <div class="card__w-content pr-8">
                     <div class="card__w-item">
-                      <div class="card__w-input">
+                      <div class="card__w-input ml-0">
                         <div
                           class="d-flex product-item"
                           v-for="(prod, index) in package_prods"
@@ -234,15 +241,7 @@
                             name="quantity"
                             :class="{ 'error-color': errors.has('name') }"
                           />
-                          <div
-                            class="add-product"
-                            v-if="index == package_prods.length - 1"
-                          >
-                            <a @click="handleAddProduct" class="btn btn-add">
-                              <img src="~@assets/img/Add 20px.png" />
-                            </a>
-                          </div>
-                          <div class="add-product" v-else>
+                          <div class="add-product">
                             <a
                               @click="handleRemoveProduct(index)"
                               class="btn btn-remove"

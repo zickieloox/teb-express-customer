@@ -506,7 +506,9 @@
 
     <ModalSearchAdvanced
       :visible.sync="isVisibleModalSearch"
-      :loadingView.sync="isFetching"
+      :loadingView="isFetching"
+      :loadingExport="isVisibleExport"
+      @export="handleExport"
       @fetch="searchAdvanced"
     >
     </ModalSearchAdvanced>
@@ -754,27 +756,41 @@ export default {
         message: this.resultImport.message || 'File không đúng định dạng',
       })
     },
-    async handleExport() {
+    async handleExport(filter) {
       this.isVisibleExport = true
-      const result = await this[EXPORT_PACKAGE]({
-        ids: this.selectedIds,
-      })
+      let result
+      if (this.selectedIds.length > 0) {
+        result = await this[EXPORT_PACKAGE]({
+          ids: this.selectedIds,
+        })
+      } else {
+        result = await this[EXPORT_PACKAGE]({
+          search: filter.search,
+          search_by: filter.search_by,
+          status: filter.status,
+          start_date: filter.start_date,
+          end_date: filter.end_date,
+        })
+      }
+
+      this.isVisibleExport = false
+
       if (!result.success) {
         this.$toast.open({
           type: 'error',
           message: result.message,
           duration: 3000,
         })
-        this.isVisibleExport = false
         return
       }
+      this.isVisibleModalSearch = false
+
       this.downloadFile(
         result.url,
         'packages',
         result.url.split('/'),
         'danh_sach_van_don_'
       )
-      this.isVisibleExport = false
     },
     isReturnTab() {
       return this.filter.status === PACKAGE_STATUS_PENDING_PICKUP_TEXT

@@ -186,12 +186,20 @@
                 </div>
               </div>
               <div class="card__w">
-                <div class="card__w-header">
+                <div
+                  class="card__w-header d-flex justify-content-between align-items-center"
+                >
                   Sản phẩm
+                  <div class="add-product">
+                    <a @click="handleAddProduct" class="btn btn-add">
+                      <img src="~@assets/img/Add 20px.png" />
+                    </a>
+                  </div>
                 </div>
-                <div class="card__w-content">
+
+                <div class="card__w-content pr-13 pl-13">
                   <div class="card__w-item">
-                    <div class="card__w-input">
+                    <div class="card__w-input ml-0">
                       <div
                         class="d-flex product-item"
                         v-for="(prod, index) in package_prods"
@@ -205,7 +213,7 @@
                               :options="listProducts"
                               placeholder="Chọn sản phẩm"
                               @select="handleSelectProd($event, index)"
-                              @remove="handleRemoveProd(index)"
+                              @remove="handleRemoveProd($event, index)"
                               :custom-label="customLabelProd"
                             ></multiselect>
                           </div>
@@ -229,13 +237,8 @@
                         />
                         <div
                           class="add-product"
-                          v-if="index == package_prods.length - 1"
+                          v-if="package_prods.length > 0"
                         >
-                          <a @click="handleAddProduct" class="btn btn-add">
-                            <img src="~@assets/img/Add 20px.png" />
-                          </a>
-                        </div>
-                        <div class="add-product" v-else>
                           <a
                             @click="handleRemoveProduct(index)"
                             class="btn btn-remove"
@@ -264,6 +267,8 @@
                         @select="handleSelect"
                         :custom-label="customLabel"
                         @remove="handleRemove"
+                        @open="checkOpen"
+                        @close="checkClose"
                       ></multiselect>
                     </div>
                   </div>
@@ -507,6 +512,7 @@ export default {
       isUpdate: false,
       package_prods: [],
       product_sku: [],
+      selected_prod: [],
     }
   },
   created() {
@@ -586,9 +592,10 @@ export default {
       this.package_prods[index].sku = value.sku
       this.package_prods[index].name = value.name
       this.product_sku[index] = value
+      this.selected_prod.push(value)
     },
 
-    handleRemoveProd(index) {
+    handleRemoveProd(value, index) {
       this.package_prods[index].product_id = 0
       this.package_prods[index].sku = 'Chọn sản phẩm'
       this.package_prods[index].quantity = ''

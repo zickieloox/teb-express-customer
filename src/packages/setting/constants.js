@@ -74,4 +74,9 @@ export const LIST_DEFAULT_FIELD = [
     name: 'Dịch vụ',
     require: true,
   },
+  {
+    key: 15,
+    name: 'SKU',
+    require: false,
+  },
 ]
