@@ -604,7 +604,8 @@ export default {
           (this.package_prods[i].quantity == '' &&
             this.package_prods[i].product_id > 0)
         ) {
-          this.package_prods[i].err = 'Vui lòng chọn SKU'
+          this.package_prods[i].err =
+            'Vui lòng chọn SKU và nhập số lượng sản phẩm'
           invalidProd = false
           continue
         }
