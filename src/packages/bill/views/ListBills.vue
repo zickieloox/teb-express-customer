@@ -88,7 +88,7 @@
                             <span @click="handleExport(item.code)">
                               <inline-svg
                                 :src="
-                                  require('../../../assets/img/getbill.svg')
+                                  require('../../../assets/img/export_bill.svg')
                                 "
                               ></inline-svg>
                             </span>
