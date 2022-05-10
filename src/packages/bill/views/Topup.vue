@@ -423,7 +423,7 @@ export default {
       let payload = {
         type: this.method,
         transaction_id: this.transactionID,
-        amount: amount,
+        amount: Math.trunc(amount * 100) / 100,
       }
 
       const result = await this[CREATE_TRANSACTION](payload)
