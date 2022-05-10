@@ -503,7 +503,7 @@ export default {
       package_prods: [
         {
           product_id: 0,
-          sku: 'Chọn sản phẩm',
+          sku: 'Chọn SKU',
           quantity: '',
           name: 'Tên sản phẩm',
           err: '',
@@ -512,7 +512,7 @@ export default {
       product_sku: [
         {
           product_id: 0,
-          sku: 'Chọn sản phẩm',
+          sku: 'Chọn SKU',
           quantity: '',
           name: 'Tên sản phẩm',
         },
@@ -691,7 +691,7 @@ export default {
     handleAddProduct() {
       this.package_prods.push({
         product_id: 0,
-        sku: 'Chọn sản phẩm',
+        sku: 'Chọn SKU',
         quantity: '',
         name: 'Tên sản phẩm',
         err: '',
@@ -699,7 +699,7 @@ export default {
 
       this.product_sku.push({
         product_id: 0,
-        sku: 'Chọn sản phẩm',
+        sku: 'Chọn SKU',
         quantity: '',
         name: 'Tên sản phẩm',
       })
@@ -726,7 +726,7 @@ export default {
       }
 
       this.package_prods[index].product_id = 0
-      this.package_prods[index].sku = 'Chọn sản phẩm'
+      this.package_prods[index].sku = 'Chọn SKU'
       this.package_prods[index].quantity = ''
       this.package_prods[index].name = 'Tên sản phẩm'
     },
