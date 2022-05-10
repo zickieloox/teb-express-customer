@@ -194,7 +194,7 @@
                 </div>
                 <div class="card__w">
                   <div
-                    class="card__w-header d-flex justify-content-between align-items-center"
+                    class="card__w-header d-flex justify-content-between align-items-center pr-16 pl-16"
                   >
                     Sản phẩm
                     <div class="add-product">
@@ -203,7 +203,7 @@
                       </a>
                     </div>
                   </div>
-                  <div class="card__w-content pr-8 pl-13">
+                  <div class="card__w-content pr-16 pl-16">
                     <div class="card__w-item">
                       <div class="card__w-input ml-0">
                         <div
@@ -217,7 +217,7 @@
                                 class="multiselect-custom dropdown-reason"
                                 v-model="product_sku[index]"
                                 :options="product_option"
-                                placeholder="Chọn sản phẩm"
+                                placeholder="Chọn SKU"
                                 @select="handleSelectProd($event, index)"
                                 @remove="handleRemove(index)"
                                 :custom-label="customLabelProd"
@@ -604,7 +604,7 @@ export default {
           (this.package_prods[i].quantity == '' &&
             this.package_prods[i].product_id > 0)
         ) {
-          this.package_prods[i].err = 'Vui lòng chọn SKU hoặc Tên sản phẩm'
+          this.package_prods[i].err = 'Vui lòng chọn SKU'
           invalidProd = false
           continue
         }
