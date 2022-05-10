@@ -28,52 +28,56 @@
               <img class="site-menu-icon default" :src="menu.icon" />
               <img class="site-menu-icon active" :src="menu.iconActive" />
               <span class="site-menu-title">{{ menu.title }}</span>
+              <span v-if="menu.tooltip" class="tooltip">{{
+                menu.tooltip
+              }}</span>
             </div>
-
-            <div class="open-right">
-              <div
-                class="site-menu-sub"
-                :class="{
-                  'has-sub': menu.isOpen,
-                }"
-                v-if="menu.sub"
-              >
+            <transition name="fade">
+              <div class="open-right">
                 <div
-                  class="site-menu-sub-item"
-                  v-for="(sub, j) in menu.sub"
-                  :key="j"
+                  class="site-menu-sub"
+                  :class="{
+                    'has-sub': menu.isOpen,
+                  }"
+                  v-if="menu.sub"
                 >
-                  <router-link
-                    :to="sub.route"
-                    class="animsition-link"
-                    @click.native="closeItem(menu)"
+                  <div
+                    class="site-menu-sub-item"
+                    v-for="(sub, j) in menu.sub"
+                    :key="j"
                   >
-                    <span
-                      :class="{
-                        active:
-                          isActive(sub.route) ||
-                          isContainAlias(sub.alias) ||
-                          childrenNameRoute(sub.title),
-                      }"
-                      class="site-menu-sub-title"
+                    <router-link
+                      :to="sub.route"
+                      class="animsition-link"
+                      @click.native="closeItem(menu)"
                     >
-                      <img
-                        class="default"
-                        src="@assets/img/Arrow - Right Circle.svg"
-                        alt=""
-                      />
-                      <img
-                        class="hover"
-                        src="@assets/img/Arrow - Right CircleHover.svg"
-                        alt=""
-                      />
+                      <span
+                        :class="{
+                          active:
+                            isActive(sub.route) ||
+                            isContainAlias(sub.alias) ||
+                            childrenNameRoute(sub.title),
+                        }"
+                        class="site-menu-sub-title"
+                      >
+                        <img
+                          class="default"
+                          src="@assets/img/Arrow - Right Circle.svg"
+                          alt=""
+                        />
+                        <img
+                          class="hover"
+                          src="@assets/img/Arrow - Right CircleHover.svg"
+                          alt=""
+                        />
 
-                      {{ sub.title }}</span
-                    >
-                  </router-link>
+                        {{ sub.title }}</span
+                      >
+                    </router-link>
+                  </div>
                 </div>
               </div>
-            </div>
+            </transition>
           </router-link>
         </li>
       </ul>
@@ -155,6 +159,7 @@ export default {
           iconActive: require('@assets/img/HomeActive.png'),
           route: '/',
           class: '',
+          tooltip: 'Trang chủ',
         },
         {
           title: 'Đơn hàng',
@@ -163,6 +168,7 @@ export default {
           route: { name: 'list-packages' },
           class: '',
           isOpen: false,
+          tooltip: 'Đơn hàng',
           alias: ['/packages', '/packages/:id', '/packages/create'],
         },
         {
@@ -172,6 +178,7 @@ export default {
           route: { name: 'bill' },
           class: '',
           isOpen: false,
+          tooltip: 'Hóa đơn',
           // alias: ['/bill/wallet'],
         },
         {
@@ -180,14 +187,8 @@ export default {
           iconActive: require('@assets/img/tracking_active_tab.svg'),
           route: { name: 'tracking' },
           class: '',
+          tooltip: 'Tracking',
         },
-        // {
-        //   title: 'Khiếu nại',
-        //   icon: require('@assets/img/Claim.png'),
-        //   iconActive: require('@assets/img/ClaimActive.png'),
-        //   route: { name: 'claims' },
-        //   class: '',
-        // },
         {
           title: 'Cài đặt',
           icon: require('@assets/img/Setting.png'),
@@ -195,6 +196,7 @@ export default {
           route: { name: 'setting' },
           class: '',
           isOpen: false,
+          tooltip: '',
           sub: [
             {
               route: '/setting/account',
