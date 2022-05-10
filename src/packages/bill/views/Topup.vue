@@ -115,8 +115,8 @@
                     >Tỷ giá chuyển đổi: 1 USD = {{ currencyRate }} VND</div
                   >
                   <div class="rate_exchange_updated"
-                    >Cập nhật lúc
-                    {{ updatedAt | datetime('dd/MM/yyyy HH:mm:ss') }}</div
+                    >Ngày cập nhật:
+                    {{ updatedAt | datetime('dd/MM/yyyy') }}</div
                   >
                 </div>
               </div>
@@ -304,7 +304,7 @@ export default {
       }
 
       this.USDTOVND = exchange.usdtovnd
-      this.updatedAt = exchange.updated_at
+      this.updatedAt = new Date()
     },
     swapHandle() {
       let temp = this.VN_FLAG
