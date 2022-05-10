@@ -203,7 +203,7 @@
                       </a>
                     </div>
                   </div>
-                  <div class="card__w-content pr-8">
+                  <div class="card__w-content pr-8 pl-13">
                     <div class="card__w-item">
                       <div class="card__w-input ml-0">
                         <div
@@ -216,7 +216,7 @@
                               <multiselect
                                 class="multiselect-custom dropdown-reason"
                                 v-model="product_sku[index]"
-                                :options="listProducts"
+                                :options="product_option"
                                 placeholder="Chọn sản phẩm"
                                 @select="handleSelectProd($event, index)"
                                 @remove="handleRemove(index)"
@@ -474,6 +474,7 @@ import {
   CREATE_PACKAGE,
 } from '../store'
 import { LIST_PRODUCT } from '../../setting/store'
+import { cloneDeep } from '@core/utils'
 export default {
   name: 'CreatePackage',
   data() {
@@ -516,6 +517,7 @@ export default {
           name: 'Tên sản phẩm',
         },
       ],
+      product_option: [],
     }
   },
   computed: {
@@ -567,6 +569,8 @@ export default {
         this.$toast.open({ type: 'danger', message: result.message })
         return
       }
+
+      this.product_option = cloneDeep(this.listProducts)
     },
     customLabelProd(item) {
       return item.sku
@@ -582,20 +586,6 @@ export default {
       this.service = value
     },
 
-    handleSelectProd(value, index) {
-      this.package_prods[index].product_id = value.id
-      this.package_prods[index].sku = value.sku
-      this.package_prods[index].name = value.name
-
-      this.product_sku[index] = value
-    },
-
-    handleRemove(index) {
-      this.package_prods[index].product_id = 0
-      this.package_prods[index].sku = 'Chọn sản phẩm'
-      this.package_prods[index].quantity = ''
-      this.package_prods[index].name = 'Tên sản phẩm'
-    },
     async handleCreate() {
       const validate = await this.$validator.validateAll()
 
@@ -716,8 +706,49 @@ export default {
     },
 
     handleRemoveProduct(index) {
+      let i = this.listProducts.findIndex(
+        (ele) => ele.id == this.package_prods[index].product_id
+      )
+      if (i >= 0) {
+        this.product_option.push(this.listProducts[i])
+      }
+
       this.package_prods.splice(index, 1)
       this.product_sku.splice(index, 1)
+    },
+
+    handleRemove(index) {
+      let i = this.listProducts.findIndex(
+        (ele) => ele.id == this.package_prods[index].product_id
+      )
+      if (i >= 0) {
+        this.product_option.push(this.listProducts[i])
+      }
+
+      this.package_prods[index].product_id = 0
+      this.package_prods[index].sku = 'Chọn sản phẩm'
+      this.package_prods[index].quantity = ''
+      this.package_prods[index].name = 'Tên sản phẩm'
+    },
+
+    handleSelectProd(value, index) {
+      let i = this.listProducts.findIndex(
+        (ele) => ele.id == this.package_prods[index].product_id
+      )
+      if (i >= 0) {
+        this.product_option.push(this.listProducts[i])
+      }
+
+      i = this.product_option.findIndex((ele) => ele.id == value.id)
+      if (i >= 0) {
+        this.product_option.splice(i, 1)
+      }
+
+      this.package_prods[index].product_id = value.id
+      this.package_prods[index].sku = value.sku
+      this.package_prods[index].name = value.name
+
+      this.product_sku[index] = value
     },
   },
 }
