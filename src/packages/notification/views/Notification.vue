@@ -26,7 +26,7 @@
           </div>
         </div>
       </div>
-      <div class="page-footer" v-if="count > 0">
+      <div class="page-footer mb-80" v-if="count > 0">
         <p-pagination
           :total="count"
           :perPage.sync="filter.limit"
