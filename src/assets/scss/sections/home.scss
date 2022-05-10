@@ -184,12 +184,7 @@
 //  }
 //}
 
-//body .crisp-client .cc-kv6t[data-full-view='true'] .cc-1xry {
-//  .cc-unoo {
-//    bottom: 60px !important;
-//    margin-bottom: 75px !important;
-//  }
-//}
+
 .crisp-client .cc-kv6t .cc-1xry {
   .cc-unoo {
     left: unset !important;
@@ -198,6 +193,10 @@
     left: unset !important;
   }
 }
+.crisp-client .cc-kv6t .cc-1xry .cc-unoo{
+  bottom: 100px!important;
+}
+
 //.crisp-client .cc-kv6t[data-position-reverse='true'] .cc-1xry .cc-ge4v,
 //.crisp-client .cc-kv6t[data-position-reverse='true'] .cc-1xry .cc-unoo {
 //  left: unset !important;
