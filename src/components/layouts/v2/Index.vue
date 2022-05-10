@@ -110,7 +110,7 @@ export default {
       )
       Srisp.style.setProperty('left', 'unset', 'important')
       if (to.name == 'package-detail' && Srisp) {
-        Srisp.style.setProperty('margin-bottom', '75px', 'important')
+        Srisp.style.setProperty('margin-bottom', '110px', 'important')
       } else {
         Srisp.style.setProperty('margin-bottom', 'unset', 'important')
       }
