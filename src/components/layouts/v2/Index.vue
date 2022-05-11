@@ -109,7 +109,10 @@ export default {
         '.crisp-client .cc-kv6t .cc-1xry .cc-unoo'
       )
       Srisp.style.setProperty('left', 'unset', 'important')
-      if (to.name == 'package-detail' && Srisp) {
+      if (
+        to.name == 'package-detail' ||
+        (to.name == 'package-create' && Srisp)
+      ) {
         Srisp.style.setProperty('margin-bottom', '110px', 'important')
       } else {
         Srisp.style.setProperty('margin-bottom', 'unset', 'important')
