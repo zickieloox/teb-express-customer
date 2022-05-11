@@ -506,6 +506,7 @@
       :visible.sync="isVisibleModalSearch"
       :loadingView="isFetching"
       :loadingExport="isVisibleExport"
+      :filterPage="filter"
       @export="handleExport"
       @fetch="searchAdvanced"
     >
