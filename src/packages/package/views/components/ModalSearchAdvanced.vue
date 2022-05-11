@@ -125,7 +125,7 @@
                 :id="'status' + i"
                 name="status"
                 :value="item.value"
-                v-model="filter.status"
+                v-model="filter.status_arr"
               />
               <label :for="'status' + i">{{ item.text }}</label>
             </div>
@@ -165,7 +165,6 @@
   </div>
 </template>
 <script>
-// import { mapActions } from 'vuex'
 import { date } from '@core/utils/datetime'
 import { PACKAGE_STATUS_TAB } from '../../constants'
 export default {
@@ -188,11 +187,12 @@ export default {
   data() {
     return {
       filter: {
-        status: [],
+        status_arr: [],
         search: '',
         start_date: '',
         end_date: '',
         search_by: '',
+        page: 1,
       },
       labelDate: `Chọn ngày`,
       allSelected: false,
@@ -218,6 +218,7 @@ export default {
       this.$emit('close')
     },
     selectDate(v) {
+      this.err = false
       if (v.startDate !== null && v.endDate !== null) {
         const time = v.endDate.getTime() - v.startDate.getTime()
         const diff_days = Math.floor(time / (1000 * 3600 * 24))
@@ -236,7 +237,7 @@ export default {
     },
     handleView() {
       if (this.err) return
-      if (this.filter.status == []) {
+      if (this.filter.status_arr == []) {
         this.$toast.error('Chưa chọn trạng thái')
         return
       }
@@ -245,7 +246,7 @@ export default {
     },
     handleExport() {
       if (this.err) return
-      if (this.filter.status == []) {
+      if (this.filter.status_arr == []) {
         this.$toast.error('Chưa chọn trạng thái')
         return
       }
@@ -253,11 +254,11 @@ export default {
       this.$emit('export', this.filter)
     },
     checkAll() {
-      this.filter.status = []
+      this.filter.status_arr = []
       var checkboxes = document.getElementsByName('status')
       if (!this.allSelected) {
         for (var i = 0, n = checkboxes.length; i < n; i++) {
-          this.filter.status.push(checkboxes[i].value)
+          this.filter.status_arr.push(checkboxes[i].value)
         }
       }
     },
