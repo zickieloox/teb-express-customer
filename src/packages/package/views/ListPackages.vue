@@ -78,8 +78,6 @@
               @clear="clearSearchDate"
             ></p-datepicker>
           </div>
-        </div>
-        <div class="page-header__title">
           <button class="search-advanced ml-12" @click="visibleModalSearch">
             <inline-svg
               :src="require('../../../assets/img/search-advanced.svg')"
@@ -87,7 +85,7 @@
             </inline-svg>
             <span>Tìm nâng cao</span>
           </button>
-          <div>
+          <div class="btn-action">
             <button
               class="pull-right btn-primary btn ml-2"
               @click="handleImport"
@@ -767,7 +765,7 @@ export default {
         result = await this[EXPORT_PACKAGE]({
           search: filter.search,
           search_by: filter.search_by,
-          status: filter.status,
+          status_arr: filter.status_arr,
           start_date: filter.start_date,
           end_date: filter.end_date,
         })
