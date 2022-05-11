@@ -31,9 +31,10 @@
     }
     &-label {
         margin-bottom: 4px;
-        font-weight: 700;
+        font-weight: 600;
         font-size: 14px;
-        line-height: 160%;
+        line-height: 20px;
+        color: $color-neutral-10;
         span {
             color: red;
         }
@@ -41,31 +42,60 @@
     &-upload {
         width: 100%;
         .el-upload-dragger {
-            height: 64px;
+            height: 105px;
+            .el-icon-upload{
+                margin: 25px 0px 8px;
+            }
         }
         .el-upload__text {
-            line-height: 64px;
-            color: $color-java-blue-10;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+            color: $color-neutral-4;
             font-weight: normal;
         }
     }
     .rule {
         font-size: 12px;
-        color: $color-neutral-7;
+        color: $color-neutral-6;
+        font-style: italic;
+        font-weight: 400;
+        line-height: 16px;
     }
     .text__aria {
         &-content {
+            display: flex;
             width: 100%;
             border: 1px solid $color-neutral-4;
             box-sizing: border-box;
             border-radius: 8px;
-            min-height: 120px;
-            padding: 5px 0 0 16px;
+            min-height: 160px;
+            padding: 12px 0 0 16px;
             color: $color-neutral-9;
             &::placeholder {
                 color: $color-neutral-4
             }
         }
+    }
+    .form-control{
+        height: 40px;
+    }
+    .modal-header{
+        border-bottom: 1px solid $color-neutral-5;
+    }
+    .countText{
+        font-style: italic;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 16px;
+        color: $color-neutral-5;
+    }
+    .modal-footer{
+        border-top: 1px solid $color-neutral-5;
+    }
+    .multiselect__placeholder{
+        margin-bottom: 6px;
+        padding-top: 4px;
     }
     .ticket__error {
         font-size: 12px;

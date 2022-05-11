@@ -1,6 +1,6 @@
 <template>
   <div class="modal__add-claim">
-    <p-modal :active="visible" @close="handleClose" :title="`Khiếu nại`">
+    <p-modal :active="visible" @close="handleClose" :title="`Tạo khiếu nại`">
       <template>
         <div class="row mb-20">
           <div class="col-6">
@@ -22,7 +22,7 @@
             }}</span>
           </div>
           <div class="col-6">
-            <label class="modal__add-claim-label">Lý do:<span>*</span></label>
+            <label class="modal__add-claim-label">Lý do: <span>*</span></label>
             <multiselect
               class="multiselect-custom dropdown-reason"
               v-model="reason"
@@ -43,7 +43,7 @@
             }}</span>
           </div>
         </div>
-        <div class="row mb-20">
+        <div class="row mb-16">
           <div class="col-12">
             <label class="modal__add-claim-label"
               >Tiêu đề: <span>*</span></label
@@ -51,7 +51,7 @@
             <input
               type="text"
               class="form-control"
-              placeholder="Nhập tiêu đề"
+              placeholder="Nhập tiêu đề khiếu nại"
               v-validate="'required|max:200'"
               name="title"
               maxlength="201"
@@ -64,7 +64,7 @@
             }}</span>
           </div>
         </div>
-        <div class="row mb-20">
+        <div class="row mb-16">
           <div class="col-12 text__aria">
             <div
               class="text__aria-title d-flex justify-content-between align-items-center"
@@ -75,7 +75,7 @@
               >
             </div>
             <textarea
-              placeholder="Nhập nội dung "
+              placeholder="Nhập nội dung khiếu nại"
               class="text__aria-content"
               v-model="content"
               v-validate="'max:1000'"
@@ -93,7 +93,7 @@
             }}</span>
           </div>
         </div>
-        <div class="row mb-20">
+        <div class="row mb-16">
           <div class="modal__add-claim-upload col-12">
             <upload
               class="file-uploader"
@@ -107,14 +107,15 @@
               :on-max-size="errorMaximum"
               :max-file-size="maximumSize"
             >
+              <img class="el-icon-upload" src="~@/assets/img/upload_img.svg" />
               <div class="el-upload__text">
                 Thả tệp hoặc hình ảnh để tải lên
               </div>
             </upload>
           </div>
         </div>
-        <div class="row mb-20">
-          <div v-if="errMessage.length > 0" class="ticket__error">
+        <div class="row mb-20" v-if="errMessage.length > 0">
+          <div class="ticket__error">
             <div class="ticket__error-title">
               <img
                 src="~@/assets/img/alert.svg"
@@ -170,7 +171,7 @@
             </div>
           </div>
         </div>
-        <div class="row mb-20">
+        <div class="row mb-8">
           <div class="rule col-md-12">
             Định dạng file hợp lệ : XLSX, PNG, JPG, JPEG.Và có dung lượng dưới
             5Mb
