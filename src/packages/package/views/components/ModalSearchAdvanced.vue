@@ -182,6 +182,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    filterPage: {
+      type: Object,
+      default: () => {},
+    },
   },
 
   data() {
@@ -193,6 +197,7 @@ export default {
         end_date: '',
         search_by: '',
         page: 1,
+        limit: 25,
       },
       labelDate: `Chọn ngày`,
       allSelected: false,
@@ -267,8 +272,12 @@ export default {
     },
   },
   watch: {
-    visible: function() {
+    visible: function(val) {
       this.err = false
+      if (val) {
+        this.filter.start_date = this.filterPage.start_date
+        this.filter.end_date = this.filterPage.end_date
+      }
     },
   },
 }
