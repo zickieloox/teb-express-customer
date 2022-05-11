@@ -88,7 +88,7 @@
                             <span @click="handleExport(item.code)">
                               <inline-svg
                                 :src="
-                                  require('../../../assets/img/getbill.svg')
+                                  require('../../../assets/img/export_bill.svg')
                                 "
                               ></inline-svg>
                             </span>
@@ -103,7 +103,7 @@
           </div>
         </div>
         <div
-          class="paginate-bill d-flex justify-content-between align-items-center mt-24"
+          class="paginate-bill d-flex justify-content-between align-items-center mt-24 mb-80"
           v-if="count > 0"
         >
           <p-pagination

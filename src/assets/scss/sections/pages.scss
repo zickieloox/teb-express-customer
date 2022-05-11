@@ -193,9 +193,9 @@ $sidebar-width:120px;
         width: calc(100% - 60px);
         margin-left: 60px;
     }
-    //.site-menubar:hover ~div .pages{
-    //    padding-left: 14vw !important;
-    //  }
+    .fee{
+        width: calc(100% - 60px) !important;
+    }
 }
 
 .bulk-actions {

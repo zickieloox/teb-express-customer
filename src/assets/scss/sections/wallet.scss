@@ -355,9 +355,6 @@
             }
         }
         .input-trans {
-            width: 100%;
-            display: inline-block;
-            margin-bottom: 12px;
             p {
                 margin-bottom: 0.8rem;
             }
@@ -388,6 +385,22 @@
         }
         .form-control {
             position: unset !important;
+        }
+        .transaction-content{
+            .amount .input span {
+                right: 32px !important;
+                position: absolute;
+                top: 24px;
+                transform: translateY(-50%);
+                font-size: 14px;
+                line-height: 22px;
+                color: #CFD0D0;
+            }
+            .lb-trans{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
         }
         width: 805px;
         .title {
@@ -426,52 +439,6 @@
                     color: $color-neutral-10;
                 }
             }
-            .money {
-                .title {
-                    font-size: 12px;
-                    line-height: 16px;
-                    color: $color-neutral-7;
-                    margin-bottom: 8px;
-                }
-                .input {
-                    position: relative;
-                    width: 100%;
-                    margin-right: 8px;
-                    input {
-                        border: 1px solid $color-neutral-4;
-                        box-sizing: border-box;
-                        border-radius: 8px;
-                        padding: 13px 16px 13px 50px;
-                        height: 48px;
-                        font-weight: 500;
-                        font-size: 18px;
-                        line-height: 28px;
-                        color: #111212;
-                        width: 100%;
-                        letter-spacing: 0.2px;
-                        &:focus {
-                            border-color: #80bdff;
-                        }
-                        &::placeholder {
-                            font-weight: normal;
-                            color: $color-neutral-4;
-                        }
-                    }
-                    span {
-                        position: absolute;
-                        right: 16px;
-                        top: 24px;
-                        transform: translateY(-50%);
-                        font-size: 14px;
-                        line-height: 22px;
-                        color: $color-neutral-4;
-                    }
-                }
-                button {
-                    height: 48px;
-                    width: 131px;
-                }
-            }
             .invalid-error {
                 margin-top: 0px;
                 margin-left: 10px;
@@ -484,6 +451,52 @@
                 img {
                     margin-right: 5px;
                 }
+            }
+        }
+        .money {
+            .title {
+                font-size: 12px;
+                line-height: 16px;
+                color: $color-neutral-7;
+                margin-bottom: 8px;
+            }
+            .input {
+                position: relative;
+                width: 100%;
+                margin-right: 8px;
+                input {
+                    border: 1px solid $color-neutral-4;
+                    box-sizing: border-box;
+                    border-radius: 8px;
+                    padding: 13px 16px 13px 50px;
+                    height: 48px;
+                    font-weight: 500;
+                    font-size: 18px;
+                    line-height: 28px;
+                    color: #111212;
+                    width: 100%;
+                    letter-spacing: 0.2px;
+                    &:focus {
+                        border-color: #80bdff;
+                    }
+                    &::placeholder {
+                        font-weight: normal;
+                        color: $color-neutral-4;
+                    }
+                }
+                span {
+                    position: absolute;
+                    right: 16px;
+                    top: 24px;
+                    transform: translateY(-50%);
+                    font-size: 14px;
+                    line-height: 22px;
+                    color: $color-neutral-4;
+                }
+            }
+            button {
+                height: 48px;
+                width: 131px;
             }
         }
     }
@@ -561,11 +574,11 @@
     .btn-exchange {
         display: flex;
         justify-content: space-between;
-        .info_exchange {
-            font-size: 12px;
-            color: $color-neutral-7;
-            font-style: italic;
-            text-align: right;
-        }
+    }
+    .info_exchange {
+        font-size: 12px;
+        color: $color-neutral-7;
+        font-style: italic;
+        text-align: right;
     }
 }

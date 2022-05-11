@@ -186,12 +186,20 @@
                 </div>
               </div>
               <div class="card__w">
-                <div class="card__w-header">
+                <div
+                  class="card__w-header d-flex justify-content-between align-items-center"
+                >
                   Sản phẩm
+                  <div class="add-product">
+                    <a @click="handleAddProduct" class="btn btn-add">
+                      <img src="~@assets/img/Add 20px.png" />
+                    </a>
+                  </div>
                 </div>
-                <div class="card__w-content">
+
+                <div class="card__w-content pr-13 pl-13">
                   <div class="card__w-item">
-                    <div class="card__w-input">
+                    <div class="card__w-input ml-0">
                       <div
                         class="d-flex product-item"
                         v-for="(prod, index) in package_prods"
@@ -202,10 +210,10 @@
                             <multiselect
                               class="multiselect-custom dropdown-reason"
                               v-model="product_sku[index]"
-                              :options="listProducts"
-                              placeholder="Chọn sản phẩm"
+                              :options="product_option"
+                              placeholder="Chọn SKU"
                               @select="handleSelectProd($event, index)"
-                              @remove="handleRemoveProd(index)"
+                              @remove="handleRemoveProd($event, index)"
                               :custom-label="customLabelProd"
                             ></multiselect>
                           </div>
@@ -229,13 +237,8 @@
                         />
                         <div
                           class="add-product"
-                          v-if="index == package_prods.length - 1"
+                          v-if="package_prods.length > 0"
                         >
-                          <a @click="handleAddProduct" class="btn btn-add">
-                            <img src="~@assets/img/Add 20px.png" />
-                          </a>
-                        </div>
-                        <div class="add-product" v-else>
                           <a
                             @click="handleRemoveProduct(index)"
                             class="btn btn-remove"
@@ -259,8 +262,8 @@
                       <multiselect
                         class="multiselect-custom dropdown-reason"
                         v-model="item"
-                        :options="products"
-                        placeholder="Chọn một "
+                        :options="product_option"
+                        placeholder="Chọn SKU"
                         @select="handleSelect"
                         :custom-label="customLabel"
                         @remove="handleRemove"
@@ -455,6 +458,7 @@
 import { mapActions, mapState, mapGetters } from 'vuex'
 import { GET_SERVICE, UPDATE_PACKAGE } from '../../store'
 import { LIST_PRODUCT } from '../../../setting/store'
+import { cloneDeep } from '@core/utils'
 
 export default {
   name: 'ModalEditOrder',
@@ -507,6 +511,8 @@ export default {
       isUpdate: false,
       package_prods: [],
       product_sku: [],
+      selected_prod: [],
+      product_option: [],
     }
   },
   created() {
@@ -522,6 +528,7 @@ export default {
         this.$toast.open({ type: 'danger', message: result.message })
         return
       }
+      this.product_option = cloneDeep(this.listProducts)
       this.fullname = this.current.recipient
       this.phone = this.current.phone_number
       this.city = this.current.city
@@ -557,12 +564,17 @@ export default {
           })
 
           this.product_sku.push(prod)
+
+          let index = this.product_option.findIndex((ele) => ele.id == prod.id)
+          if (index >= 0) {
+            this.product_option.splice(index, 1)
+          }
         }
       }
 
       this.package_prods.push({
         product_id: 0,
-        sku: 'Chọn sản phẩm',
+        sku: 'Chọn SKU',
         quantity: '',
         name: 'Tên sản phẩm',
         err: '',
@@ -570,7 +582,7 @@ export default {
 
       this.product_sku.push({
         product_id: 0,
-        sku: 'Chọn sản phẩm',
+        sku: 'Chọn SKU',
         quantity: '',
         name: 'Tên sản phẩm',
       })
@@ -582,18 +594,32 @@ export default {
     },
 
     handleSelectProd(value, index) {
+      let i = this.listProducts.findIndex(
+        (ele) => ele.id == this.package_prods[index].product_id
+      )
+      if (i >= 0) {
+        this.product_option.push(this.listProducts[i])
+      }
+
+      i = this.product_option.findIndex((ele) => ele.id == value.id)
+      if (i >= 0) {
+        this.product_option.splice(i, 1)
+      }
       this.package_prods[index].product_id = value.id
       this.package_prods[index].sku = value.sku
       this.package_prods[index].name = value.name
-
       this.product_sku[index] = value
-
-      console.log(this.product_sku)
     },
 
-    handleRemoveProd(index) {
+    handleRemoveProd(value, index) {
+      let i = this.listProducts.findIndex(
+        (ele) => ele.id == this.package_prods[index].product_id
+      )
+      if (i >= 0) {
+        this.product_option.push(this.listProducts[i])
+      }
       this.package_prods[index].product_id = 0
-      this.package_prods[index].sku = 'Chọn sản phẩm'
+      this.package_prods[index].sku = 'Chọn SKU'
       this.package_prods[index].quantity = ''
       this.package_prods[index].name = 'Tên sản phẩm'
     },
@@ -675,7 +701,8 @@ export default {
           (this.package_prods[i].quantity == '' &&
             this.package_prods[i].product_id > 0)
         ) {
-          this.package_prods[i].err = 'Vui lòng chọn SKU hoặc Tên sản phẩm'
+          this.package_prods[i].err =
+            'Vui lòng chọn SKU và nhập số lượng sản phẩm'
           invalidProd = false
           continue
         }
@@ -747,7 +774,7 @@ export default {
     handleAddProduct() {
       this.package_prods.push({
         product_id: 0,
-        sku: 'Chọn sản phẩm',
+        sku: 'Chọn SKU',
         quantity: '',
         name: 'Tên sản phẩm',
         err: '',
@@ -755,13 +782,19 @@ export default {
 
       this.product_sku.push({
         product_id: 0,
-        sku: 'Chọn sản phẩm',
+        sku: 'Chọn SKU',
         quantity: '',
         name: 'Tên sản phẩm',
       })
     },
 
     handleRemoveProduct(index) {
+      let i = this.listProducts.findIndex(
+        (ele) => ele.id == this.package_prods[index].product_id
+      )
+      if (i >= 0) {
+        this.product_option.push(this.listProducts[i])
+      }
       this.package_prods.splice(index, 1)
       this.product_sku.splice(index, 1)
     },

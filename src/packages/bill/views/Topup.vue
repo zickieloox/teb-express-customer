@@ -115,8 +115,8 @@
                     >Tỷ giá chuyển đổi: 1 USD = {{ currencyRate }} VND</div
                   >
                   <div class="rate_exchange_updated"
-                    >Cập nhật lúc
-                    {{ updatedAt | datetime('dd/MM/yyyy HH:mm:ss') }}</div
+                    >Ngày cập nhật:
+                    {{ updatedAt | datetime('dd/MM/yyyy') }}</div
                   >
                 </div>
               </div>
@@ -130,10 +130,17 @@
               <p
                 ><span
                   >Vui lòng chuyển tiền tới địa chỉ:
-                  <strong v-if="isPayoneer">trungpq.ftu@gmail.com</strong>
-                  <strong v-if="isPingPong">tungpk@lionnix.com</strong>
-                </span></p
-              >
+                  <strong v-if="isPayoneer"
+                    >trungpq.ftu@gmail.com<copy
+                      :value="`trungpq.ftu@gmail.com`"
+                    ></copy
+                  ></strong>
+                  <strong v-if="isPingPong"
+                    >tungpk@lionnix.com<copy
+                      :value="`tungpk@lionnix.com`"
+                    ></copy
+                  ></strong> </span
+              ></p>
               <p>
                 Copy <strong>Transaction ID</strong> rồi nhập vào ô phía dưới.
               </p>
@@ -141,18 +148,39 @@
               <br />
             </div>
             <div class="form-body">
-              <p class="mb-8">Transaction ID:</p>
-              <div class="input-trans">
-                <p>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="transactionID"
-                    placeholder="Nhập Transaction ID"
-                  />
-                </p>
+              <div
+                class="transaction-content"
+                style="margin: 0;display: block;"
+              >
+                <div class="row mb-10">
+                  <div class="col-2 lb-trans">Transaction ID:</div>
+                  <div class="input-trans col-8">
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="transactionID"
+                      placeholder="Nhập Transaction ID"
+                    />
+                  </div>
+                </div>
+                <div class="amount row">
+                  <div class="col-2 lb-trans">Nhập số tiền:</div>
+                  <div class="input col-8">
+                    <input
+                      id="money"
+                      @input="onChangeAmount"
+                      placeholder="Nhập số tiền"
+                      :value="amount"
+                      class="form-control"
+                    />
+                    <span>{{ US_FLAG.name }}</span>
+                  </div>
+                </div>
               </div>
-              <div class="accept d-flex">
+              <div class="invalid-error" v-if="error == true">
+                {{ errorText }}
+              </div>
+              <div class="accept d-flex mt-24">
                 <p-button
                   type="primary"
                   @click="handlerCreateTransaction"
@@ -276,7 +304,7 @@ export default {
       }
 
       this.USDTOVND = exchange.usdtovnd
-      this.updatedAt = exchange.updated_at
+      this.updatedAt = new Date()
     },
     swapHandle() {
       let temp = this.VN_FLAG
@@ -365,15 +393,37 @@ export default {
 
     setMethod(type) {
       this.method = type
+      this.amount = ''
+      this.error = false
     },
 
     async handlerCreateTransaction() {
+      let amount = +this.amount.replaceAll(',', '')
       if (this.loading) return
+      this.checkValidAmount()
+      if (this.error) return
+      if (this.toUSD) {
+        const rate = await this[FETCH_RATE_EXCHANGE]()
+        if (!rate || !rate.success) {
+          this.$toast.error('Something went wrong', { duration: 4000 })
+          return
+        }
+
+        this.USDTOVND = rate.usdtovnd
+        amount = amount / +this.USDTOVND
+      }
+
+      if (amount < 1) {
+        this.errorText = 'Số tiền nhập tối thiểu 1$!'
+        this.error = true
+        return
+      }
 
       this.loading = true
       let payload = {
         type: this.method,
         transaction_id: this.transactionID,
+        amount: Math.trunc(amount * 100) / 100,
       }
 
       const result = await this[CREATE_TRANSACTION](payload)
@@ -386,6 +436,10 @@ export default {
 
       this.$toast.success('Yêu cầu của bạn đang được xử lý', { duration: 3000 })
       this.$set(this, 'transactionID', '')
+      this.error = false
+      this.errorText = ''
+      this.moneyText = ''
+      this.amount = ''
     },
   },
 }

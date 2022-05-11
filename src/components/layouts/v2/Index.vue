@@ -102,6 +102,20 @@ export default {
       this.isSidebarOpen = !this.isSidebarOpen
     },
   },
+  watch: {
+    // eslint-disable-next-line no-unused-vars
+    $route(to, from) {
+      var Srisp = document.querySelector(
+        '.crisp-client .cc-kv6t .cc-1xry .cc-unoo'
+      )
+      Srisp.style.setProperty('left', 'unset', 'important')
+      if (to.name == 'package-detail' && Srisp) {
+        Srisp.style.setProperty('margin-bottom', '110px', 'important')
+      } else {
+        Srisp.style.setProperty('margin-bottom', 'unset', 'important')
+      }
+    },
+  },
 }
 </script>
 
