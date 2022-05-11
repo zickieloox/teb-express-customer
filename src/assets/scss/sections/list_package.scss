@@ -34,7 +34,7 @@
     .page-header__title {
         width: 50%;
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end;
         .btn-excel {
             border: none;
             background-color: inherit;
@@ -63,9 +63,12 @@
         }
     }
     .page-header__input {
-        width: 50%;
+        width: 80%;
         .input-group {
             // width: 510px;
+        }
+        >.input-group {
+            width: 400px;
         }
     }
     .bulk-actions {
@@ -183,7 +186,7 @@
     }
     .date-search {
         margin-left: 8px;
-        width: 30%;
+        width: 20%;
     }
     #date-search {
         max-width: 300px;

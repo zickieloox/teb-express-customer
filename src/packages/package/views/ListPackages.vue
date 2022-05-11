@@ -78,8 +78,6 @@
               @clear="clearSearchDate"
             ></p-datepicker>
           </div>
-        </div>
-        <div class="page-header__title">
           <button class="search-advanced ml-12" @click="visibleModalSearch">
             <inline-svg
               :src="require('../../../assets/img/search-advanced.svg')"
