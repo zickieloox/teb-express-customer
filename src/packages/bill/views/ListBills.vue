@@ -255,15 +255,9 @@ export default {
 }
 
 .list__bills {
-  // tr {
-  //   &:hover {
-  //     .download-bill {
-  //       opacity: 1;
-  //     }
-  //   }
-  // }
   .p-tooltip::after {
     width: 100px;
+    text-align: center;
   }
 }
 </style>
