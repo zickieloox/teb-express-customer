@@ -114,8 +114,11 @@
             </upload>
           </div>
         </div>
-        <div class="row mb-20" v-if="errMessage.length > 0">
-          <div class="ticket__error">
+        <div
+          class="row mb-20"
+          v-if="errMessage.length > 0 || this.validateSize || files.length"
+        >
+          <div class="ticket__error" v-if="errMessage.length > 0">
             <div class="ticket__error-title">
               <img
                 src="~@/assets/img/alert.svg"
@@ -151,7 +154,7 @@
             </ul>
           </div>
 
-          <div class="col-12" v-if="files != null">
+          <div class="col-12" v-if="files.length">
             <div
               class="el-before-upload__filename d-flex  justify-content-between"
               v-for="(item, i) in files"
