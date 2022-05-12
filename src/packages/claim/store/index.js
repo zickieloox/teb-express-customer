@@ -122,7 +122,7 @@ export const actions = {
 
     response = await api.createClaim(payload)
     if (response && response.ticket) {
-      return { error: false }
+      return { error: false, id: response.ticket.id }
     }
     return { error: true, message: response.errorMessage || '' }
   },

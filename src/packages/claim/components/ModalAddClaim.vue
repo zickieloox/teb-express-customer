@@ -430,12 +430,13 @@ export default {
       }
       this.$toast.open({
         type: 'success',
-        message: 'Tạo thành công',
+        message: 'Tạo khiếu nại thành công',
         duration: 3000,
       })
       this.isDisable = false
       this.handleClose()
       this.$emit('create', true)
+      this.$router.push({ name: 'claim-detail', params: { id: result.id } })
     },
     countText(val) {
       var len = val.length
