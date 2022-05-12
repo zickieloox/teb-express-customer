@@ -279,6 +279,10 @@ export default {
         this.filter.end_date = this.filterPage.end_date
       }
     },
+    'filter.status_arr'() {
+      this.allSelected =
+        this.filter.status_arr.length == this.statusTab.length ? true : false
+    },
   },
 }
 </script>
