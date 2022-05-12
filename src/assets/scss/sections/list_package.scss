@@ -1,6 +1,7 @@
 .list-packages {
     .action-header {
         display: flex;
+        position: relative
     }
     .page-header {
         padding: 8px 24px 25px 24px;
@@ -31,10 +32,13 @@
             opacity: 1;
         }
     }
-    .page-header__title {
-        width: 50%;
-        display: flex;
-        justify-content: space-between;
+    .page-header__input {
+        .input-group {
+            // width: 510px;
+        }
+        >.input-group {
+            width: 400px;
+        }
         .btn-excel {
             border: none;
             background-color: inherit;
@@ -51,21 +55,19 @@
                 margin-right: 7px;
             }
         }
-        .btn-import {
-            color: #fff;
-            background-color: $color-java-blue-6;
-        }
-        .btn-export {
-            &:disabled {
-                cursor: not-allowed;
+        .btn-action {
+            position: absolute;
+            right: 0;
+            .btn-import {
+                color: #fff;
+                background-color: $color-java-blue-6;
             }
-            color: $color-java-blue-6;
-        }
-    }
-    .page-header__input {
-        width: 50%;
-        .input-group {
-            // width: 510px;
+            .btn-export {
+                &:disabled {
+                    cursor: not-allowed;
+                }
+                color: $color-java-blue-6;
+            }
         }
     }
     .bulk-actions {
@@ -183,7 +185,8 @@
     }
     .date-search {
         margin-left: 8px;
-        width: 30%;
+        width: 20%;
+        min-width: max-content;
     }
     #date-search {
         max-width: 300px;
@@ -205,9 +208,6 @@
             .label-date-picker {
                 color: $color-neutral-5;
             }
-        }
-        .reportrange-text {
-            min-width: max-content;
         }
     }
     #nav_container {
@@ -345,6 +345,7 @@
         }
     }
     .search-advanced {
+        width: 170px;
         background: $color-neutral-2;
         border-radius: 8px;
         outline: none;
