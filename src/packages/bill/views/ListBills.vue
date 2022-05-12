@@ -243,25 +243,25 @@ export default {
 </script>
 <style lang="scss" scoped>
 .download-bill {
-  &:hover {
-    span {
-      background: #ddf2f2;
-    }
-  }
+  // &:hover {
+  //   span {
+  //     background: #ddf2f2;
+  //   }
+  // }
   span {
     padding: 8px;
-    border-radius: 50%;
+    // border-radius: 50%;
   }
 }
 
 .list__bills {
-  tr {
-    &:hover {
-      .download-bill {
-        opacity: 1;
-      }
-    }
-  }
+  // tr {
+  //   &:hover {
+  //     .download-bill {
+  //       opacity: 1;
+  //     }
+  //   }
+  // }
   .p-tooltip::after {
     width: 100px;
   }
