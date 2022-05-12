@@ -74,11 +74,11 @@
               <div class="item">
                 <input
                   type="radio"
-                  id="zip_code"
-                  value="zip_code"
+                  id="zipcode"
+                  value="zipcode"
                   v-model="filter.search_by"
                 />
-                <label for="zip_code">Mã bưu điện</label>
+                <label for="zipcode">Mã bưu điện</label>
               </div>
             </div>
             <div class="col-4">
@@ -105,16 +105,16 @@
         </div>
         <div class="status">
           <div class="title">Trạng thái</div>
-          <div class="item item-all checkbox-custom">
-            <input
-              type="checkbox"
-              v-model="allSelected"
-              @click="checkAll"
-              id="all"
-            />
-            <label for="all">All</label>
-          </div>
           <div class="row">
+            <div class="item checkbox-custom">
+              <input
+                type="checkbox"
+                v-model="allSelected"
+                @click="checkAll"
+                id="all"
+              />
+              <label for="all">All</label>
+            </div>
             <div
               v-for="(item, i) in statusTab"
               :key="i"
@@ -125,7 +125,7 @@
                 :id="'status' + i"
                 name="status"
                 :value="item.value"
-                v-model="filter.status"
+                v-model="filter.status_arr"
               />
               <label :for="'status' + i">{{ item.text }}</label>
             </div>
@@ -142,12 +142,22 @@
         </div>
         <div class="d-flex">
           <div>
-            <p-button class="btn-lb-secondary" type="default" @click="submit"
+            <p-button
+              class="btn-lb-secondary"
+              type="default"
+              @click="handleView"
+              :loading="loadingView"
               >Hiển thị</p-button
             >
           </div>
           <div class="ml-7">
-            <p-button type="primary" @click="submit"> Tải excel </p-button>
+            <p-button
+              type="primary"
+              @click="handleExport"
+              :loading="loadingExport"
+            >
+              Tải excel
+            </p-button>
           </div>
         </div>
       </template>
@@ -155,7 +165,6 @@
   </div>
 </template>
 <script>
-// import { mapActions } from 'vuex'
 import { date } from '@core/utils/datetime'
 import { PACKAGE_STATUS_TAB } from '../../constants'
 export default {
@@ -165,25 +174,43 @@ export default {
       type: Boolean,
       default: false,
     },
+    loadingView: {
+      type: Boolean,
+      default: false,
+    },
+    loadingExport: {
+      type: Boolean,
+      default: false,
+    },
+    filterPage: {
+      type: Object,
+      default: () => {},
+    },
   },
 
   data() {
     return {
       filter: {
-        status: [],
+        status_arr: [],
         search: '',
         start_date: '',
         end_date: '',
         search_by: '',
+        page: 1,
+        limit: 25,
       },
       labelDate: `Chọn ngày`,
       allSelected: false,
+      err: false,
     }
   },
   computed: {
     statusTab() {
       return PACKAGE_STATUS_TAB.filter(
-        (status) => status.text != 'All' && status.text != 'Alert'
+        (status) =>
+          status.text != 'All' &&
+          status.text != 'Alert' &&
+          status.text != 'Archived'
       )
     },
   },
@@ -196,6 +223,16 @@ export default {
       this.$emit('close')
     },
     selectDate(v) {
+      this.err = false
+      if (v.startDate !== null && v.endDate !== null) {
+        const time = v.endDate.getTime() - v.startDate.getTime()
+        const diff_days = Math.floor(time / (1000 * 3600 * 24))
+        if (diff_days > 29) {
+          this.$toast.error('Giới hạn tìm kiếm chỉ trong vòng 30 ngày')
+          this.err = true
+          return
+        }
+      }
       this.filter.start_date = date(v.startDate, 'yyyy-MM-dd')
       this.filter.end_date = date(v.endDate, 'yyyy-MM-dd')
     },
@@ -203,20 +240,48 @@ export default {
       this.filter.end_date = ''
       this.filter.start_date = ''
     },
-    submit() {
-      console.log(this.filter)
+    handleView() {
+      if (this.err) return
+      if (this.filter.status_arr == []) {
+        this.$toast.error('Chưa chọn trạng thái')
+        return
+      }
+      this.filter.search = this.filter.search.trim()
+      this.$emit('fetch', this.filter)
+    },
+    handleExport() {
+      if (this.err) return
+      if (this.filter.status_arr == []) {
+        this.$toast.error('Chưa chọn trạng thái')
+        return
+      }
+      this.filter.search = this.filter.search.trim()
+      this.$emit('export', this.filter)
     },
     checkAll() {
-      this.filter.status = []
+      this.filter.status_arr = []
       var checkboxes = document.getElementsByName('status')
       if (!this.allSelected) {
         for (var i = 0, n = checkboxes.length; i < n; i++) {
-          this.filter.status.push(checkboxes[i].value)
+          this.filter.status_arr.push(checkboxes[i].value)
         }
       }
     },
     handleDeleteSearch() {
       this.filter.search = ''
+    },
+  },
+  watch: {
+    visible: function(val) {
+      this.err = false
+      if (val) {
+        this.filter.start_date = this.filterPage.start_date
+        this.filter.end_date = this.filterPage.end_date
+      }
+    },
+    'filter.status_arr'() {
+      this.allSelected =
+        this.filter.status_arr.length == this.statusTab.length ? true : false
     },
   },
 }

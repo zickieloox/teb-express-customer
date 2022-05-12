@@ -103,7 +103,8 @@ export const actions = {
       api.countListPackages(payload),
     ])
     if (!list.packages || !count) {
-      count = { count: 0 }
+      list.packages = []
+      count = { count: 0, status_count: [] }
       result = {
         success: false,
         message: list.errorMessage || '',

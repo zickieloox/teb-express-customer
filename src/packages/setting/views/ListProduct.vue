@@ -75,7 +75,7 @@
         </div>
       </div>
       <div
-        class="d-flex justify-content-between align-items-center mb-16 paginate"
+        class="d-flex justify-content-between align-items-center mb-80 paginate"
         v-if="count > 0"
       >
         <p-pagination
