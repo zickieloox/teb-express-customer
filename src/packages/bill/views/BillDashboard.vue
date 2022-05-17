@@ -46,6 +46,12 @@
               :class="{ deactive: !isTransaction, active: isTransaction }"
               >Lịch sử giao dịch</a
             >
+            <a
+              href="javascript:void(0)"
+              @click="setPage('holding')"
+              :class="{ deactive: !isHolding, active: isHolding }"
+              >Đơn chờ xử lý</a
+            >
           </div>
           <wallet v-if="isTopup"></wallet>
           <list-bills v-if="isBill"></list-bills>
@@ -85,6 +91,9 @@ export default {
     },
     isTransaction() {
       return this.page === 'transaction'
+    },
+    isHolding() {
+      return this.page === 'holding'
     },
   },
   data() {
