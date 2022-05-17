@@ -104,7 +104,7 @@ export const actions = {
     ])
     if (!list.packages || !count) {
       list.packages = []
-      count = { count: 0 }
+      count = { count: 0, status_count: [] }
       result = {
         success: false,
         message: list.errorMessage || '',

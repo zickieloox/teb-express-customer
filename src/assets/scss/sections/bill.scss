@@ -164,12 +164,15 @@
         &:hover {
             svg {
                 path {
-                    fill: rgba(0, 151, 140, 1);
+                    stroke: #00B7B0 !important;
                 }
             }
         }
         svg {
             margin-bottom: 2px;
+            path {
+                stroke:#313232;
+            }
         }
     }
     .item_name {

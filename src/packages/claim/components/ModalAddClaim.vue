@@ -1,6 +1,6 @@
 <template>
   <div class="modal__add-claim">
-    <p-modal :active="visible" @close="handleClose" :title="`Khiếu nại`">
+    <p-modal :active="visible" @close="handleClose" :title="`Tạo khiếu nại`">
       <template>
         <div class="row mb-20">
           <div class="col-6">
@@ -22,7 +22,7 @@
             }}</span>
           </div>
           <div class="col-6">
-            <label class="modal__add-claim-label">Lý do:<span>*</span></label>
+            <label class="modal__add-claim-label">Lý do: <span>*</span></label>
             <multiselect
               class="multiselect-custom dropdown-reason"
               v-model="reason"
@@ -43,7 +43,7 @@
             }}</span>
           </div>
         </div>
-        <div class="row mb-20">
+        <div class="row mb-16">
           <div class="col-12">
             <label class="modal__add-claim-label"
               >Tiêu đề: <span>*</span></label
@@ -51,7 +51,7 @@
             <input
               type="text"
               class="form-control"
-              placeholder="Nhập tiêu đề"
+              placeholder="Nhập tiêu đề khiếu nại"
               v-validate="'required|max:200'"
               name="title"
               maxlength="201"
@@ -64,7 +64,7 @@
             }}</span>
           </div>
         </div>
-        <div class="row mb-20">
+        <div class="row mb-16">
           <div class="col-12 text__aria">
             <div
               class="text__aria-title d-flex justify-content-between align-items-center"
@@ -75,7 +75,7 @@
               >
             </div>
             <textarea
-              placeholder="Nhập nội dung "
+              placeholder="Nhập nội dung khiếu nại"
               class="text__aria-content"
               v-model="content"
               v-validate="'max:1000'"
@@ -93,8 +93,11 @@
             }}</span>
           </div>
         </div>
-        <div class="row mb-20">
-          <div class="modal__add-claim-upload col-12">
+        <div class="row mb-16">
+          <div
+            class="modal__add-claim-upload col-12"
+            :class="{ disable: isUploading }"
+          >
             <upload
               class="file-uploader"
               :action="uploadFileEndpoint"
@@ -106,15 +109,26 @@
               :auto-upload="false"
               :on-max-size="errorMaximum"
               :max-file-size="maximumSize"
+              :disabled="isUploading"
             >
+              <i class="upload-icon"></i>
               <div class="el-upload__text">
                 Thả tệp hoặc hình ảnh để tải lên
               </div>
             </upload>
           </div>
         </div>
-        <div class="row mb-20">
-          <div v-if="errMessage.length > 0" class="ticket__error">
+        <div class="row mb-16">
+          <div class="rule col-md-12">
+            Định dạng file hợp lệ : XLSX, PNG, JPG, JPEG.Và có dung lượng dưới
+            5Mb
+          </div>
+        </div>
+        <div
+          class="row"
+          v-if="errMessage.length > 0 || this.validateSize || files.length"
+        >
+          <div class="ticket__error" v-if="errMessage.length > 0">
             <div class="ticket__error-title">
               <img
                 src="~@/assets/img/alert.svg"
@@ -150,30 +164,45 @@
             </ul>
           </div>
 
-          <div class="col-12" v-if="files != null">
+          <div class="col-12" v-if="files.length">
             <div
-              class="el-before-upload__filename d-flex  justify-content-between"
+              class="item-preview"
               v-for="(item, i) in files"
               :key="i"
+              :title="item.name"
             >
-              <div style="margin-top: 5px" class="filename">{{
-                item.name
-              }}</div>
-              <div :class="{ isUpload: isUploading }" class="remove-file">
-                <img
-                  src="~@/assets/img/x-sm.svg"
-                  alt="remove"
+              <img :src="item.src" v-if="item.src" />
+              <inline-svg
+                v-else
+                :src="require('@assets/img/excel_preview.svg')"
+              ></inline-svg>
+              <div :class="{ isUpload: isUploading }" class="remove-file-icon">
+                <svg
                   class="icon-remove"
                   @click.prevent="actionDeletefile(item.url)"
-                />
+                  width="12"
+                  height="12"
+                  viewBox="0 0 12 12"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9 3L3 9"
+                    stroke="#111212"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M3 3L9 9"
+                    stroke="#111212"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="row mb-20">
-          <div class="rule col-md-12">
-            Định dạng file hợp lệ : XLSX, PNG, JPG, JPEG.Và có dung lượng dưới
-            5Mb
           </div>
         </div>
       </template>
@@ -279,6 +308,7 @@ export default {
       TicketNote: 0,
       code: '',
       files: [],
+      imageTypes: ['image/png', 'image/jpeg', 'image/jpg'],
       allowedTypes: [
         'image/png',
         'image/jpeg',
@@ -377,6 +407,7 @@ export default {
           url: data.urls,
           uid: file.uid,
           name: file.name,
+          src: this.imageTypes.includes(file.raw.type) ? file.url : null,
         })
         if (this.files.length == this.number) {
           this.isUploading = false
@@ -426,12 +457,13 @@ export default {
       }
       this.$toast.open({
         type: 'success',
-        message: 'Tạo thành công',
+        message: 'Tạo khiếu nại thành công',
         duration: 3000,
       })
       this.isDisable = false
       this.handleClose()
       this.$emit('create', true)
+      this.$router.push({ name: 'claim-detail', params: { id: result.id } })
     },
     countText(val) {
       var len = val.length

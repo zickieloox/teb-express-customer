@@ -355,9 +355,6 @@
             }
         }
         .input-trans {
-            width: 100%;
-            display: inline-block;
-            margin-bottom: 12px;
             p {
                 margin-bottom: 0.8rem;
             }
@@ -388,6 +385,22 @@
         }
         .form-control {
             position: unset !important;
+        }
+        .transaction-content{
+            .amount .input span {
+                right: 32px !important;
+                position: absolute;
+                top: 24px;
+                transform: translateY(-50%);
+                font-size: 14px;
+                line-height: 22px;
+                color: #CFD0D0;
+            }
+            .lb-trans{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
         }
         width: 805px;
         .title {

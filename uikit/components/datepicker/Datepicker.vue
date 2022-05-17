@@ -178,6 +178,9 @@ export default {
       dateRange: {},
     }
   },
+  mounted() {
+    this.dateRange = this.value
+  },
   computed: {
     textValue() {
       let text = ''

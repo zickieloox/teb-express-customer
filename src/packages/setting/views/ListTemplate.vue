@@ -79,7 +79,7 @@
             </div>
           </div>
           <div
-            class="d-flex justify-content-between align-items-center"
+            class="d-flex justify-content-between align-items-center mb-60"
             v-if="count > 0"
           >
             <p-pagination
