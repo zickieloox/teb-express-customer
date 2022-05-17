@@ -4,7 +4,7 @@
       <div class="page-header">
         <div class="container">
           <div class="row info-money">
-            <div class="col-7">
+            <div class="col-6">
               <div class="box balance">
                 <img src="@assets/img/walletLg.svg" alt="wallet" />
                 <div class=" ml-24">
@@ -13,12 +13,21 @@
                 </div>
               </div>
             </div>
-            <div class="col-5">
+            <div class="col-3">
               <div class="box process-money">
-                <img src="@assets/img/time.svg" alt="process-money" />
+                <img src="@assets/img/debit.svg" alt="process-money" />
                 <div class=" ml-24">
                   <p class="title">Tiền chưa thanh toán</p>
                   <p class="money">{{ debit | formatPrice }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="box holding-money">
+                <img src="@assets/img/time.svg" alt="process-money" />
+                <div class=" ml-24">
+                  <p class="title">Tiền chờ xử lý</p>
+                  <p class="money">{{ user.holding_money | formatPrice }}</p>
                 </div>
               </div>
             </div>
@@ -46,10 +55,17 @@
               :class="{ deactive: !isTransaction, active: isTransaction }"
               >Lịch sử giao dịch</a
             >
+            <a
+              href="javascript:void(0)"
+              @click="setPage('holding')"
+              :class="{ deactive: !isHolding, active: isHolding }"
+              >Đơn chờ xử lý</a
+            >
           </div>
           <wallet v-if="isTopup"></wallet>
           <list-bills v-if="isBill"></list-bills>
           <transaction v-if="isTransaction"></transaction>
+          <listHoldings v-if="isHolding"></listHoldings>
         </div>
       </div>
     </div>
@@ -62,11 +78,12 @@ import { GET_USER } from '../../shared/store'
 import Wallet from './Topup.vue'
 import ListBills from './ListBills.vue'
 import Transaction from './Transaction.vue'
+import ListHoldings from './ListHoldings.vue'
 
 export default {
   name: 'BillDashboard',
   props: ['topup'],
-  components: { Wallet, ListBills, Transaction },
+  components: { Wallet, ListBills, Transaction, ListHoldings },
   computed: {
     ...mapState('shared', {
       user: (state) => state.user,
@@ -85,6 +102,9 @@ export default {
     },
     isTransaction() {
       return this.page === 'transaction'
+    },
+    isHolding() {
+      return this.page === 'holding'
     },
   },
   data() {
