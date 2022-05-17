@@ -22,6 +22,9 @@ export const VALIDATE_ADDRESS = 'validateAddress'
 
 export const SET_LOADING = 'setLoading'
 
+export const FETCH_PACKAGES_HOLDING = 'fetchPackagesHolding'
+export const COUNT_PACKAGES_HOLDING = 'countPackagesHolding'
+
 /**
  * State
  */
@@ -39,6 +42,9 @@ export const state = {
   products: [],
   service: [],
   isLoading: false,
+  package_holding: [],
+  count_package_holding: 0,
+  day: 0,
 }
 /**
  * Getters
@@ -73,6 +79,13 @@ export const mutations = {
   },
   [SET_LOADING]: (state, payload) => {
     state.isLoading = payload
+  },
+  [FETCH_PACKAGES_HOLDING]: (state, payload) => {
+    state.package_holding = payload.package_holding
+    state.day = payload.day
+  },
+  [COUNT_PACKAGES_HOLDING]: (state, payload) => {
+    state.count_package_holding = payload.count
   },
 }
 
@@ -244,5 +257,25 @@ export const actions = {
 
   [SET_LOADING]({ commit }, payload) {
     commit(SET_LOADING, payload)
+  },
+
+  async fetchPackagesHolding({ commit }, payload) {
+    let result = { success: true }
+    let [list, count] = await Promise.all([
+      api.fetchPackagesHolding(payload),
+      api.countPackagesHolding(payload),
+    ])
+    if (!list.package_holding || !count) {
+      list.package_holding = []
+      count = 0
+      result = {
+        success: false,
+        message: list.errorMessage || '',
+      }
+    }
+
+    commit(FETCH_PACKAGES_HOLDING, list)
+    commit(COUNT_PACKAGES_HOLDING, count)
+    return result
   },
 }

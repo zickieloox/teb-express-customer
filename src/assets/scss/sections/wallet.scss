@@ -29,7 +29,7 @@
     .info-money {
         align-items: stretch;
         .box {
-            padding: 2.6rem;
+            padding: 24px 0 24px 28px;
             border-radius: 12px;
             height: 100%;
             background: #DDF2F2;
@@ -37,7 +37,7 @@
                 float: left;
             }
             p {
-                padding-left: 5.2rem;
+                padding-left: 44px;
                 margin-bottom: 0;
                 font-weight: 500;
                 font-size: 12px;
@@ -48,17 +48,31 @@
                 color: #00978C;
             }
             .money {
-                font-size: 18px;
+                font-size: 24px;
                 line-height: 28px;
-                letter-spacing: 0.2px;
                 color: #313232;
                 font-weight: bold;
+                margin-top: 4px;
             }
         }
         .box.process-money {
             background: #FFF7E6;
             .title {
                 color: #FA8C16;
+            }
+            .money {
+                font-weight: 500;
+                font-size: 18px;
+            }
+        }
+        .box.holding-money {
+            background: #F0F2FF;
+            .title {
+                color: #3F51B5;
+            }
+            .money {
+                font-weight: 500;
+                font-size: 18px;
             }
         }
     }
@@ -386,7 +400,7 @@
         .form-control {
             position: unset !important;
         }
-        .transaction-content{
+        .transaction-content {
             .amount .input span {
                 right: 32px !important;
                 position: absolute;
@@ -396,7 +410,7 @@
                 line-height: 22px;
                 color: #CFD0D0;
             }
-            .lb-trans{
+            .lb-trans {
                 display: flex;
                 justify-content: center;
                 align-items: center;
