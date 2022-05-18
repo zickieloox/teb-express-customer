@@ -39,7 +39,7 @@
                 <table class="table table-hover">
                   <thead>
                     <tr class="table-header">
-                      <th style="width: 40%">MÃ ĐƠN HÀNG</th>
+                      <th style="width: 40%">LIONBAY TRACKING</th>
                       <th style="width: 25%">NGÀY CHỜ XỬ LÝ </th>
                       <th>NGÀY XỬ LÝ DỰ KIẾN </th>
                       <th style="text-align: right">TỔNG TIỀN</th>
@@ -48,7 +48,19 @@
 
                   <tbody>
                     <tr v-for="(item, i) in packages" :key="i">
-                      <td>{{ item.order_number }}</td>
+                      <td>
+                        <router-link
+                          class="text-no-underline"
+                          :to="{
+                            name: 'package-detail',
+                            params: {
+                              id: item.package_id,
+                            },
+                          }"
+                        >
+                          {{ item.code }}
+                        </router-link></td
+                      >
                       <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
                       <td>{{
                         dateProcess(item.created_at) | date('dd/MM/yyyy')
