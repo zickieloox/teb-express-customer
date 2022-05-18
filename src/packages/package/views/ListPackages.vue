@@ -684,6 +684,7 @@ export default {
     truncate,
     async init() {
       this.isFetching = true
+      this.handleUpdateRouteQuery()
       this.action.selected = []
       const result = await this.fetchListPackages(this.filter)
       this.isFetching = false
