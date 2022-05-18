@@ -68,4 +68,10 @@ export default {
   validateAddress(payload) {
     return http.post(`/packages/validate-address`, payload)
   },
+  fetchPackagesHolding(payload) {
+    return http.get(`/packages/holding?${buildQueryString(payload)}`)
+  },
+  countPackagesHolding(payload) {
+    return http.get(`/packages/holding/count?${buildQueryString(payload)}`)
+  },
 }

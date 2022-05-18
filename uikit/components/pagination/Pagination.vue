@@ -298,6 +298,7 @@ export default {
       const value = e.target.value
       this.selectpage = false
       this.$emit('update:perPage', value)
+      this.$emit('update:current', 1)
       window.scrollTo(0, 0)
       this.$router
         .push({ query: { limit: value, page: this.current } })
