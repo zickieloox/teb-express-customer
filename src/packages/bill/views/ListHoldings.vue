@@ -6,7 +6,7 @@
           <div class="page-header_action d-flex ">
             <div class="page-header_input ">
               <p-input
-                placeholder="Tìm theo mã đơn hàng"
+                placeholder="Tìm theo mã Lionbay tracking"
                 prefixIcon="search"
                 class="mb-2"
                 type="search"
