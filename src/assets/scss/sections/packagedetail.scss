@@ -1,6 +1,4 @@
 .package-detail {
-  height: 100%;
-  padding-bottom: 120px;
   .page-header {
     background: white;
     padding: 25px 24px;
@@ -15,11 +13,41 @@
   .card {
     border: none;
     .card-block {
+      border-radius: 4px;
       box-shadow: none;
-      padding-bottom: 20px;
+    }
+    .card-header{
+      padding: 8px 16px;
+      border-radius: unset;
+      .card-title {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 28px;
+        letter-spacing: 0.2px;
+        color: $color-neutral-10;
+      }
     }
     .card-body {
-      background: #f9fafb;
+      background: #F4F4F4;
+      padding: 24px 24px 16px 24px;
+    }
+    .card-content{
+      line-height: 20px;
+      min-height: 248px;
+      .row {
+        div:last-child{
+          font-weight: 400;
+          color: $color-neutral-9;
+        }
+        div:first-child{
+          font-weight: 400;
+          color: $color-neutral-7;
+        }
+      }
+    }
+    #item_info{
+      min-height: 293px;
     }
   }
 
@@ -27,7 +55,25 @@
     font-weight: 700;
   }
 
-
+  .empty-info{
+    text-align: center;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: $color-neutral-5;
+    svg{
+      margin-bottom: 16px;
+    }
+  }
+  .middle-item{
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+  }
+  .log-content{
+    min-height: 564px !important;
+  }
 
   .product-quantity {
     text-align: center;
@@ -61,11 +107,20 @@
     .page-header__info {
       display: grid;
       grid-column-gap: 47px;
-      grid-template-columns: auto auto auto auto auto;
-
+      grid-template-columns: auto auto auto auto auto auto;
+      .info-package{
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 16px;
+        color: $color-neutral-7;
+        margin-bottom: 8px;
+      }
       .content-title {
-        height: 28px;
-        line-height: 33px;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 20px;
+        letter-spacing: 0.2px;
+        color: $color-neutral-10;
       }
       .content-title.tracking {
         a {
@@ -106,9 +161,8 @@
     z-index: 3;
     bottom: 0;
     right: 0;
-    box-shadow: 0px -2px 4px rgba(40, 41, 61, 0.04),
-      0px -6px 10px rgba(96, 97, 112, 0.08);
-    padding: 1.7vw;
+    box-shadow: 0px -2px 4px rgba(40, 41, 61, 0.04), 0px -6px 10px rgba(96, 97, 112, 0.08);
+    padding: 16px 24px;
     display: flex;
     justify-content: space-between;
   }
@@ -120,13 +174,18 @@
 
     .title {
       color: $color-neutral-7;
+      font-weight: 400;
       font-size: 12px;
+      line-height: 16px;
+      margin-bottom: 4px;
     }
   }
   .fee__number {
     color: $color-neutral-9;
-    font-size: 18px;
     font-weight: 500;
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: 0.2px;
     display: inline-flex;
   }
 
@@ -138,7 +197,6 @@
     line-height: 22px;
     color: #313232;
     align-items: baseline;
-    margin-bottom: 8px;
     min-width: 200px;
     position: relative;
   }
@@ -152,13 +210,16 @@
   }
   .fee__right div:nth-child(1) {
     color: $color-neutral-7;
+    font-weight: 400;
     font-size: 12px;
+    line-height: 16px;
+    margin-bottom: 4px;
   }
   .fee__right div:nth-child(2) {
     font-style: normal;
-    font-weight: bold;
-    font-size: 28px;
-    line-height: 34px;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
     color: #111212;
   }
   .more-extra-fee {
@@ -198,9 +259,11 @@
     margin-bottom: 8px;
   }
   .package-code {
-    font-weight: bold;
-    font-size: 20px;
-    line-height: 28px;
+    margin-top: -2px;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 24px;
+    color: $color-neutral-10;
   }
 
   .card-tickets {

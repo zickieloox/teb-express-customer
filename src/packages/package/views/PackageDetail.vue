@@ -4,10 +4,11 @@
       <div class="page-header">
         <div class="page-header__subtitle">
           <div class="page-header__info">
-            <div class="info-package">LionBay tracking</div>
+            <div class="info-package">Mã vận đơn:</div>
             <div class="info-package">Dịch vụ </div>
             <div class="info-package">Last mile tracking </div>
             <div class="info-package">Ngày tạo </div>
+            <div class="info-package">Ngày xử lý dự kiến: </div>
             <div class="info-package">Trạng thái</div>
             <div class="package-code"
               >{{ current.code_package || 'N/A' }}
@@ -18,7 +19,7 @@
               >
                 <img
                   src="@/assets/img/Vector-barcode.png"
-                  style="margin-top: 6px; position: absolute"
+                  style="margin-top: 4px; position: absolute"
                 />
               </span>
             </div>
@@ -37,7 +38,14 @@
               <a v-else>N/A</a>
             </div>
             <div class="content-title">
-              {{ current.created_at | datetime('dd/MM/yyyy HH:mm:ss') }}
+              {{ current.created_at | datetime('dd/MM/yyyy - HH:mm:ss') }}
+            </div>
+            <div class="content-title">
+              <template v-if="current.estimate_date_process">{{
+                current.estimate_date_process
+                  | datetime('dd/MM/yyyy - HH:mm:ss')
+              }}</template>
+              <template v-else>N/A</template>
             </div>
             <div class="content-title">
               <span v-status:status="current.status_string"></span>
@@ -81,50 +89,96 @@
       <div class="page-content">
         <div class="card">
           <div class="card-body">
-            <div class="row align-items-stretch mb-24">
+            <div class="row">
               <div class="col-4 p-0">
-                <div class="card-block h-100">
+                <div class="card-block">
                   <div class="card-header">
                     <div class="card-title">Người nhận</div>
                   </div>
                   <div class="card-content">
                     <div class="row">
-                      <div class="col-4 mb-8">Họ và tên:</div>
-                      <div class="col-8">{{ current.recipient }}</div>
+                      <div class="col-3 mb-8">Họ và tên:</div>
+                      <div class="col-9">{{ current.recipient }}</div>
                     </div>
                     <div class="row">
-                      <div class="col-4 mb-8">Điện thoại:</div>
-                      <div class="col-8">{{ current.phone_number }}</div>
+                      <div class="col-3 mb-8">Điện thoại:</div>
+                      <div class="col-9">{{ current.phone_number }}</div>
                     </div>
                     <div class="row">
-                      <div class="col-4 mb-8">Địa chỉ:</div>
-                      <div class="col-8">{{ current.address_1 }}</div>
+                      <div class="col-3 mb-8">Địa chỉ:</div>
+                      <div class="col-9">{{ current.address_1 }}</div>
                     </div>
                     <div class="row">
-                      <div class="col-4 mb-8">Địa chỉ phụ:</div>
-                      <div class="col-8">{{ current.address_2 }}</div>
+                      <div class="col-3 mb-8">Địa chỉ phụ:</div>
+                      <div class="col-9">{{ current.address_2 }}</div>
                     </div>
                     <div class="row">
-                      <div class="col-4 mb-8">Thành phố:</div>
-                      <div class="col-8">{{ current.city }}</div>
+                      <div class="col-3 mb-8">Thành phố:</div>
+                      <div class="col-9">{{ current.city }}</div>
                     </div>
                     <div class="row">
-                      <div class="col-4 mb-8">Mã vùng:</div>
-                      <div class="col-8">{{ current.state_code }}</div>
+                      <div class="col-3 mb-8">Mã vùng:</div>
+                      <div class="col-9">{{ current.state_code }}</div>
                     </div>
                     <div class="row">
-                      <div class="col-4 mb-8">Mã bưu điện:</div>
-                      <div class="col-8">{{ current.zipcode }}</div>
+                      <div class="col-3 mb-8">Mã bưu điện:</div>
+                      <div class="col-9">{{ current.zipcode }}</div>
                     </div>
                     <div class="row">
-                      <div class="col-4">Mã quốc gia:</div>
-                      <div class="col-8">{{ current.country_code }}</div>
+                      <div class="col-3">Mã quốc gia:</div>
+                      <div class="col-9">{{ current.country_code }}</div>
                     </div>
+                  </div>
+                </div>
+                <div class="card-block card-tickets" style="margin-bottom:0">
+                  <div class="card-header">
+                    <div class="card-title">Trợ giúp & khiếu nại</div>
+                  </div>
+                  <div
+                    class="card-content"
+                    :class="{ 'middle-item': !claims.length }"
+                  >
+                    <template v-if="claims.length">
+                      <div
+                        class="tickets d-flex justify-content-between"
+                        v-for="item in claims"
+                        :key="item.id"
+                      >
+                        <router-link
+                          :to="{
+                            name: 'claim-detail',
+                            params: { id: item.id },
+                          }"
+                          >{{ item.title }}</router-link
+                        >
+                        <time>{{
+                          item.created_at | datetime('dd/MM/yyyy')
+                        }}</time>
+                      </div>
+                      <div class="more-ticket" v-if="hasMoreTicket">
+                        <router-link
+                          class="text-no-underline"
+                          :to="{
+                            name: 'claims',
+                            query: { search: current.code_package },
+                          }"
+                          >Xem Thêm</router-link
+                        >
+                      </div>
+                    </template>
+                    <template v-else>
+                      <div class="empty-info">
+                        <inline-svg
+                          :src="require('@assets/img/emty_info_icon.svg')"
+                        ></inline-svg>
+                        <div>Tuyệt vời. Đơn hàng không có khiếu nại.</div>
+                      </div>
+                    </template>
                   </div>
                 </div>
               </div>
               <div class="col-4 p-0">
-                <div class="card-block ">
+                <div class="card-block" id="item_info">
                   <div class="card-header">
                     <div class="card-title">Thông tin hàng hóa</div>
                   </div>
@@ -176,110 +230,119 @@
                   </div>
                 </div>
 
-                <div class="card-block ">
+                <div class="card-block" style="margin-bottom:0">
                   <div class="card-header">
                     <div class="card-title">Thông tin sản phẩm</div>
                   </div>
-                  <div class="card-content">
-                    <div class="row product-title">
-                      <div class="col-5 mb-8">SKU</div>
-                      <div class="col-5">Tên sản phẩm</div>
-                      <div class="col-2 mb-8">Số lượng</div>
-                    </div>
-                    <div
-                      class="row product-item"
-                      v-for="(prod, index) in current.package_products"
-                      :key="index"
-                    >
-                      <div class="col-5 mb-8">
-                        <router-link
-                          :to="{
-                            name: 'list-product',
-                            query: { search: prod.sku },
+                  <div
+                    class="card-content"
+                    :class="{ 'middle-item': !current.package_products.length }"
+                  >
+                    <template v-if="current.package_products.length">
+                      <div class="row product-title">
+                        <div class="col-5 mb-8">SKU</div>
+                        <div class="col-5">Tên sản phẩm</div>
+                        <div class="col-2 mb-8">Số lượng</div>
+                      </div>
+                      <div
+                        class="row product-item"
+                        v-for="(prod, index) in current.package_products"
+                        :key="index"
+                      >
+                        <div class="col-5 mb-8">
+                          <router-link
+                            :to="{
+                              name: 'list-product',
+                              query: { search: prod.sku },
+                            }"
+                          >
+                            {{ prod.sku }}
+                          </router-link>
+                        </div>
+                        <div class="col-5">{{ prod.name }}</div>
+                        <div class="col-2 mb-8 product-quantity">{{
+                          prod.quantity
+                        }}</div>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <div class="empty-info">
+                        <inline-svg
+                          :src="require('@assets/img/emty_info_icon.svg')"
+                        ></inline-svg>
+                        <div>Chưa có thông tin sản phẩm.</div>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4 p-0" id="package-log">
+                <div v-if="!displayDeliverDetail" class="col-12 p-0">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="card-block">
+                        <div class="card-header new">
+                          <div class="card-title">Hành trình đơn</div>
+                          <div class="card-action"
+                            ><a @click.prevent="changeDisplayDeliverDetail()"
+                              >Lịch sử đơn</a
+                            ></div
+                          >
+                        </div>
+                        <div
+                          class="card-content deliver-log log-content"
+                          :class="{
+                            'middle-item': !package_detail.deliver_logs,
                           }"
                         >
-                          {{ prod.sku }}
-                        </router-link>
+                          <DeliveryLog
+                            :logs="package_detail.deliver_logs"
+                            v-if="package_detail.deliver_logs"
+                          />
+                          <template v-else>
+                            <div class="empty-info">
+                              <inline-svg
+                                :src="require('@assets/img/emty_info_icon.svg')"
+                              ></inline-svg>
+                              <div>Chưa có thông tin hành trình đơn.</div>
+                            </div>
+                          </template>
+                        </div>
                       </div>
-                      <div class="col-5">{{ prod.name }}</div>
-                      <div class="col-2 mb-8 product-quantity">{{
-                        prod.quantity
-                      }}</div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-4 p-0">
-                <div class="card-block h-100 card-tickets">
-                  <div class="card-header">
-                    <div class="card-title">Trợ giúp & khiếu nại</div>
-                  </div>
-                  <div class="card-content">
-                    <div
-                      class="tickets d-flex justify-content-between"
-                      v-for="item in claims"
-                      :key="item.id"
-                    >
-                      <router-link
-                        :to="{ name: 'claim-detail', params: { id: item.id } }"
-                        >{{ item.title }}</router-link
-                      >
-                      <time>{{
-                        item.created_at | datetime('dd/MM/yyyy')
-                      }}</time>
-                    </div>
-                    <div class="more-ticket" v-if="hasMoreTicket">
-                      <router-link
-                        class="text-no-underline"
-                        :to="{
-                          name: 'claims',
-                          query: { search: current.code_package },
-                        }"
-                        >Xem Thêm</router-link
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div id="package-log" class="row">
-              <div v-if="!displayDeliverDetail" class="col-12 p-0">
-                <div class="row">
-                  <div class="col-12 p-0">
-                    <div class="card-block">
-                      <div class="card-header new">
-                        <div class="card-title">Hành trình đơn</div>
-                        <div class="card-action"
-                          ><a
-                            @click="changeDisplayDeliverDetail()"
-                            href="#package-log"
-                            >Lịch sử đơn</a
-                          ></div
+                <div v-if="displayDeliverDetail" class="col-12 p-0">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="card-block">
+                        <div class="card-header new">
+                          <div class="card-title">Lịch sử đơn</div>
+                          <div class="card-action"
+                            ><a @click.prevent="changeDisplayDeliverDetail()"
+                              >Hành trình đơn</a
+                            ></div
+                          >
+                        </div>
+                        <div
+                          class="card-content log-content"
+                          :class="{
+                            'middle-item': !package_detail.audit_logs.length,
+                          }"
                         >
-                      </div>
-                      <div class="card-content deliver-log">
-                        <DeliveryLog :logs="package_detail.deliver_logs" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div v-if="displayDeliverDetail" class="col-12 p-0">
-                <div class="row">
-                  <div class="col-12 p-0">
-                    <div class="card-block">
-                      <div class="card-header new">
-                        <div class="card-title">Lịch sử đơn</div>
-                        <div class="card-action"
-                          ><a
-                            @click="changeDisplayDeliverDetail()"
-                            href="#package-log"
-                            >Hành trình đơn</a
-                          ></div
-                        >
-                      </div>
-                      <div class="card-content">
-                        <AuditLog :logs="package_detail.audit_logs" />
+                          <AuditLog
+                            :logs="package_detail.audit_logs"
+                            v-if="package_detail.audit_logs.length"
+                          />
+                          <template v-else>
+                            <div class="empty-info">
+                              <inline-svg
+                                :src="require('@assets/img/emty_info_icon.svg')"
+                              ></inline-svg>
+                              <div>Chưa có thông tin lịch sử đơn.</div>
+                            </div>
+                          </template>
+                        </div>
                       </div>
                     </div>
                   </div>
