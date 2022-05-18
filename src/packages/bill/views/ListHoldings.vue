@@ -3,8 +3,8 @@
     <div class="page-content">
       <div class="page-body-bill">
         <div class="list__bills">
-          <div class="page-header_action d-flex ">
-            <div class="page-header_input ">
+          <div class="page-header_action d-flex">
+            <div class="page-header_input">
               <p-input
                 placeholder="Tìm theo mã Lionbay tracking"
                 prefixIcon="search"
@@ -77,7 +77,14 @@
           </div>
         </div>
         <div
-          class="paginate-bill d-flex justify-content-between align-items-center mt-24 mb-80"
+          class="
+            paginate-bill
+            d-flex
+            justify-content-between
+            align-items-center
+            mt-24
+            mb-80
+          "
           v-if="count > 0"
         >
           <p-pagination
