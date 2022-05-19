@@ -17,7 +17,7 @@
           :class="{ 'first-data': j === 0 }"
         >
           <div class="time"> {{ it.ship_time | datetime('HH:mm:ss') }}</div>
-          <div>
+          <div class="right-content">
             <div class="des"> {{ it.description }}</div>
             <span class="location" v-if="it.location">
               ___{{ it.location }}</span

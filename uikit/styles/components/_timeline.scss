@@ -177,14 +177,18 @@
 }
 
 .item__right__data {
-    display: flex;
+    display: table-row;
     color: #626363;
     margin-bottom: 16px;
     .time {
+        display: table-cell;
         width: 84px;
         color: #313232;
         text-align: right;
-        margin-right: 16px;
+    }
+    .right-content{
+        display: table-cell;
+        padding-left: 16px;
     }
     .des {
         color: #313232;
