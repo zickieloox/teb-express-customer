@@ -290,7 +290,7 @@
                           >
                         </div>
                         <div
-                          class="card-content deliver-log log-content"
+                          class="card-content log-content"
                           :class="{
                             'middle-item': !package_detail.deliver_logs,
                           }"
