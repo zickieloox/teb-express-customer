@@ -67,7 +67,7 @@ export const getters = {
           }
           break
         case 12:
-          message = `<b>${ordername}</b>: ${name} đã thay đổi chi tiết hàng hóa từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
+          message = `<b>${ordername}</b>: ${name} đã thay đổi chi tiết sản phẩm từ <b>${item.old_value}</b> sang <b>${item.value}</b>`
           break
         case 13:
           message = `<b>${ordername}</b>: ${name} đã thay đổi địa chỉ phụ người nhận từ <b>${item.old_value}</b> sang <b>${item.value}</b>`

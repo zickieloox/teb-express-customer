@@ -3,7 +3,7 @@
     <div class="page-header d-flex">
       <div class="col-6">
         <p-input
-          placeholder="Tìm kiếm theo tên hàng hóa hoặc sku"
+          placeholder="Tìm kiếm theo tên sản phẩm hoặc sku"
           prefixIcon="search"
           class="mb-2"
           type="search"

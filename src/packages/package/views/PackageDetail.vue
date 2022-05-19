@@ -180,11 +180,11 @@
               <div class="col-4 p-0">
                 <div class="card-block" id="item_info">
                   <div class="card-header">
-                    <div class="card-title">Thông tin hàng hóa</div>
+                    <div class="card-title">Thông tin sản phẩm</div>
                   </div>
                   <div class="card-content">
                     <div class="row">
-                      <div class="col-4 mb-8">Chi tiết hàng hóa:</div>
+                      <div class="col-4 mb-8">Chi tiết sản phẩm:</div>
                       <div class="col-8">{{ current.detail }}</div>
                     </div>
                     <div class="row">
