@@ -106,7 +106,7 @@ export default {
     // eslint-disable-next-line no-unused-vars
     $route(to, from) {
       var Srisp = document.querySelector(
-        '.crisp-client .cc-kv6t .cc-1xry .cc-unoo'
+        '.crisp-client .cc-52lo .cc-kegp .cc-1oun'
       )
       Srisp.style.setProperty('left', 'unset', 'important')
       if (
