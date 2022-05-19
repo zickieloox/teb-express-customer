@@ -138,7 +138,7 @@ export const CHANGE_PACKAGE_TYPE = [
   'Kích thước (DxRxC) cm',
   'Yêu cầu khi giao',
   'Dịch vụ',
-  'Chi tiết hàng hóa',
+  'Chi tiết sản phẩm',
   'Địa chỉ phụ người nhận',
   'Covid',
   'Quá cỡ',
