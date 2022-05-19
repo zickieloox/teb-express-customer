@@ -145,8 +145,8 @@
         position: absolute;
         width: 16px;
         height: 16px;
-        top: 4px;
-        left: -26px;
+        top: 2px;
+        left: -24px;
         background-color: #B4EBF6;
         border: 2px solid #ffffff;
         border-radius: 50%;
@@ -179,17 +179,19 @@
 .item__right__data {
     display: flex;
     color: #626363;
-    margin: 6px 0 6px 30px;
+    margin-bottom: 16px;
     .time {
-        width: 80px;
+        width: 84px;
+        color: #313232;
+        text-align: right;
+        margin-right: 16px;
     }
     .des {
         color: #313232;
-        margin-left: 24px;
     }
     .location {
+        display: block;
         text-transform: uppercase;
-        margin-left: 12px;
     }
     .icon {
         margin-bottom: 4px;
@@ -202,7 +204,7 @@
 }
 
 .deliver-log {
-    padding: 24px 48px !important;
+    padding:8px 0 0 24px;
 }
 
 .timeline-item-new.first-item {
@@ -213,15 +215,16 @@
     }
     .item__right {
         position: relative;
+        margin-bottom: 24px;
         &::after {
             content: '';
             background-image: url('~@/assets/img/check-tracking.svg');
             position: absolute;
             width: 24px;
             height: 24px;
-            top: 1px;
+            top: -1px;
             background-color: transparent;
-            left: -28px;
+            left: -24px;
             border: none;
             border-radius: 50%;
             z-index: 2;

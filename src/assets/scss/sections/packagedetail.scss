@@ -30,7 +30,7 @@
     }
     .card-body {
       background: #F4F4F4;
-      padding: 24px 24px 16px 24px;
+      padding: 24px 24px 84px 24px;
     }
     .card-content{
       line-height: 20px;
@@ -73,6 +73,10 @@
   }
   .log-content{
     min-height: 564px !important;
+    overflow-y: auto;
+    table{
+      margin: 0;
+    }
   }
 
   .product-quantity {
