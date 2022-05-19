@@ -5,16 +5,16 @@
         <div class="row mb-18">
           <div class="col-12">
             <label class="modal__add-claim-label"
-              >Tên hàng hóa: <span>*</span></label
+              >Tên sản phẩm: <span>*</span></label
             >
             <input
               type="text"
               class="form-control"
-              placeholder="Nhập tên hàng hóa"
+              placeholder="Nhập tên sản phẩm"
               v-validate="'required'"
               name="name"
               v-model="productEdit.name"
-              data-vv-as="Tên hàng hóa"
+              data-vv-as="Tên sản phẩm"
               :class="{ 'error-color': errors.has('name') }"
             />
             <span class="err-span" v-if="errors.has('name')">{{
@@ -44,12 +44,24 @@
 
         <div class="row mb-18">
           <div class="col-12">
-            <label class="modal__add-claim-label">Loại hàng hóa:</label>
+            <label class="modal__add-claim-label">Loại sản phẩm:</label>
             <input
               type="text"
               class="form-control"
-              placeholder="Nhập loại hàng hóa"
+              placeholder="Nhập loại sản phẩm"
               v-model="productEdit.detail"
+            />
+          </div>
+        </div>
+
+        <div class="row mb-18">
+          <div class="col-12">
+            <label class="modal__add-claim-label">Chất liệu sản phẩm:</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Nhập chất liệu sản phẩm"
+              v-model="productEdit.material"
             />
           </div>
         </div>
@@ -149,6 +161,7 @@ export default {
         name: '',
         sku: '',
         detail: '',
+        material: '',
         weight: '',
         length: '',
         width: '',
@@ -170,6 +183,9 @@ export default {
 
       if (this.productEdit.detail) {
         data.detail = this.productEdit.detail.trim()
+      }
+      if (this.productEdit.material) {
+        data.material = this.productEdit.material.trim()
       }
       if (this.productEdit.weight) {
         data.weight = +this.productEdit.weight
@@ -211,10 +227,6 @@ export default {
 .modal__add-claim {
   .size {
     position: relative;
-  }
-  .card__w-unit {
-    top: 38px;
-    right: 20px;
   }
 }
 </style>
