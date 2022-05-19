@@ -204,7 +204,7 @@ export default {
             },
             {
               route: '/setting/product',
-              title: 'Danh sách hàng hóa',
+              title: 'Danh sách sản phẩm',
             },
             {
               route: '/setting/templates',
