@@ -46,7 +46,7 @@ export const LIST_DEFAULT_FIELD = [
   },
   {
     key: 9,
-    name: 'Chi tiết hàng hóa',
+    name: 'Chi tiết sản phẩm',
     require: true,
   },
   {

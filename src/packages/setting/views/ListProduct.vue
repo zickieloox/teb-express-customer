@@ -3,7 +3,7 @@
     <div class="page-header d-flex">
       <div class="col-6">
         <p-input
-          placeholder="Tìm kiếm theo tên hàng hóa hoặc sku"
+          placeholder="Tìm kiếm theo tên sản phẩm hoặc sku"
           prefixIcon="search"
           class="mb-2"
           type="search"
@@ -17,7 +17,7 @@
           <inline-svg
             :src="require('../../../assets/img/Plus 16px.svg')"
           ></inline-svg>
-          Thêm hàng hóa
+          Thêm sản phẩm
         </p-button>
       </div>
     </div>
@@ -30,9 +30,10 @@
               <table class="table table-hover">
                 <thead>
                   <tr class="list__product-title">
-                    <th>TÊN HÀNG HÓA</th>
+                    <th>TÊN SẢN PHẨM</th>
                     <th>SKU</th>
-                    <th>LOẠI HÀNG HÓA</th>
+                    <th>LOẠI SẢN PHẨM</th>
+                    <th>CHẤT LIỆU SẢN PHẨM</th>
                     <th class="text-center">TRỌNG LƯỢNG (GRAM)</th>
                     <th class="text-center">KÍCH THƯỚC (CM)</th>
                     <th width="100"></th>
@@ -46,6 +47,7 @@
                       {{ item.sku }}
                     </td>
                     <td>{{ item.detail }}</td>
+                    <td>{{ item.material }}</td>
                     <td class="text-center">{{ item.weight }}</td>
                     <td class="text-center">{{ size(item) }}</td>
                     <td>
@@ -98,7 +100,7 @@
       v-if="visibleModalDelete"
       :actionConfirm="'Xóa'"
       :description="description"
-      :title="'Xóa hàng hóa'"
+      :title="'Xóa sản phẩm'"
       @action="handleDelete(item)"
     >
     </modal-confirm>
@@ -175,10 +177,10 @@ export default {
 
     handleModal(item) {
       if (item) {
-        this.title = 'Cập nhật hàng hóa'
+        this.title = 'Cập nhật sản phẩm'
         this.product = item
       } else {
-        this.title = 'Thêm mới hàng hóa'
+        this.title = 'Thêm mới sản phẩm'
         this.product = {}
       }
       this.visibleModal = true

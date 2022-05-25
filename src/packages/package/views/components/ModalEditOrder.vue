@@ -254,10 +254,10 @@
             </div>
             <div class="col-lg-6 col-xl-6 item-gutters">
               <div class="card__w">
-                <div class="card__w-header"> Thông tin hàng hóa </div>
+                <div class="card__w-header"> Thông tin sản phẩm </div>
                 <div class="card__w-content">
                   <div class="card__w-item" v-if="false">
-                    <label class="card__w-label"> Danh sách hàng hóa: </label>
+                    <label class="card__w-label"> Danh sách sản phẩm: </label>
                     <div class="card__w-input">
                       <multiselect
                         class="multiselect-custom dropdown-reason"
@@ -295,18 +295,18 @@
                   </div>
                   <div class="card__w-item">
                     <label class="card__w-label">
-                      Chi tiết hàng hóa : <span>*</span>
+                      Chi tiết sản phẩm : <span>*</span>
                     </label>
                     <div class="card__w-input">
                       <input
-                        placeholder="Nhập chi tiết hàng hóa"
+                        placeholder="Nhập chi tiết sản phẩm"
                         type="text"
                         v-model="detail"
                         :input="detail"
                         class="form-control"
                         v-validate="'required'"
                         name="detail"
-                        data-vv-as="Chi tiết hàng hóa"
+                        data-vv-as="Chi tiết sản phẩm"
                         :class="{ 'error-color': errors.has('detail') }"
                       />
                       <span class="err-span" v-if="errors.has('detail')">{{

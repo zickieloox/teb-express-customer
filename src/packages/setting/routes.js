@@ -48,7 +48,7 @@ export const routes = [
     path: '/setting/product',
     name: 'list-product',
     meta: {
-      title: 'Danh sách hàng hóa',
+      title: 'Danh sách sản phẩm',
     },
     component: () =>
       import(/* webpackChunkName: "settings" */ './views/ListProduct.vue'),
