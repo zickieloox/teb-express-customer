@@ -3,12 +3,17 @@
     <div v-if="!isEmpty" class="page-content">
       <div class="page-header">
         <div class="page-header__subtitle">
-          <div class="page-header__info">
+          <div
+            class="page-header__info"
+            :class="{ 'grip-5-col': !current.estimate_date_process }"
+          >
             <div class="info-package">Mã vận đơn:</div>
             <div class="info-package">Dịch vụ </div>
             <div class="info-package">Last mile tracking </div>
             <div class="info-package">Ngày tạo </div>
-            <div class="info-package">Ngày xử lý dự kiến: </div>
+            <div class="info-package" v-if="current.estimate_date_process"
+              >Ngày xử lý dự kiến:
+            </div>
             <div class="info-package">Trạng thái</div>
             <div class="package-code"
               >{{ current.code_package || 'N/A' }}
@@ -40,12 +45,11 @@
             <div class="content-title">
               {{ current.created_at | datetime('dd/MM/yyyy - HH:mm:ss') }}
             </div>
-            <div class="content-title">
-              <template v-if="current.estimate_date_process">{{
+            <div class="content-title" v-if="current.estimate_date_process">
+              {{
                 current.estimate_date_process
                   | datetime('dd/MM/yyyy - HH:mm:ss')
-              }}</template>
-              <template v-else>N/A</template>
+              }}
             </div>
             <div class="content-title">
               <span v-status:status="current.status_string"></span>

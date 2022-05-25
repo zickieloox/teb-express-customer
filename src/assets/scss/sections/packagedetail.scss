@@ -214,6 +214,9 @@
       display: grid;
       grid-column-gap: 47px;
       grid-template-columns: auto auto auto auto auto auto;
+      &.grip-5-col{
+        grid-template-columns: auto auto auto auto auto !important;
+      }
       .info-package{
         font-weight: 400;
         font-size: 12px;
