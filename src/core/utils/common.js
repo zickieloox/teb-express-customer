@@ -134,3 +134,22 @@ export const isEqual = (v1, v2) => {
 export const isEmpty = (val) => {
   return _isEmpty(val)
 }
+
+/**
+ * Tính phí cao điểm
+ * @param weight
+ */
+
+export const caculateFee = (weight) => {
+  const rate = process.env.VUE_APP_RATE_EXCHANGE
+
+  if (+rate == 0) {
+    return 0
+  }
+  var fee = (+rate * weight) / 1000
+  fee = Math.round((fee + Number.EPSILON) * 100) / 100
+  if (fee < 0.1) {
+    fee = 0.1
+  }
+  return +fee
+}

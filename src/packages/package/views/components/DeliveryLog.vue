@@ -17,8 +17,12 @@
           :class="{ 'first-data': j === 0 }"
         >
           <div class="time"> {{ it.ship_time | datetime('HH:mm:ss') }}</div>
-          <div class="des"> {{ it.description }}</div>
-          <span class="location" v-if="it.location"> ___{{ it.location }}</span>
+          <div class="right-content">
+            <div class="des"> {{ it.description }}</div>
+            <span class="location" v-if="it.location">
+              ___{{ it.location }}</span
+            >
+          </div>
         </div>
       </div>
     </div>
@@ -43,7 +47,7 @@ export default {
       const logs = this.logs || []
 
       for (const log of logs) {
-        const date = datetime(log.ship_time, 'dd-MM-yyyy')
+        const date = datetime(log.ship_time, 'dd/MM/yyyy')
 
         if (!timelines[date]) {
           timelines[date] = []

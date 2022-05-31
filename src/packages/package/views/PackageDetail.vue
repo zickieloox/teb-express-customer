@@ -3,12 +3,17 @@
     <div v-if="!isEmpty" class="page-content">
       <div class="page-header">
         <div class="page-header__subtitle">
-          <div class="page-header__info">
+          <div
+            class="page-header__info"
+            :class="{ 'grip-5-col': !current.estimate_date_process }"
+          >
             <div class="info-package">Mã vận đơn:</div>
             <div class="info-package">Dịch vụ </div>
             <div class="info-package">Last mile tracking </div>
             <div class="info-package">Ngày tạo </div>
-            <div class="info-package">Ngày xử lý dự kiến: </div>
+            <div class="info-package" v-if="current.estimate_date_process"
+              >Ngày xử lý dự kiến:
+            </div>
             <div class="info-package">Trạng thái</div>
             <div class="package-code"
               >{{ current.code_package || 'N/A' }}
@@ -40,12 +45,11 @@
             <div class="content-title">
               {{ current.created_at | datetime('dd/MM/yyyy - HH:mm:ss') }}
             </div>
-            <div class="content-title">
-              <template v-if="current.estimate_date_process">{{
+            <div class="content-title" v-if="current.estimate_date_process">
+              {{
                 current.estimate_date_process
                   | datetime('dd/MM/yyyy - HH:mm:ss')
-              }}</template>
-              <template v-else>N/A</template>
+              }}
             </div>
             <div class="content-title">
               <span v-status:status="current.status_string"></span>
@@ -180,11 +184,11 @@
               <div class="col-4 p-0">
                 <div class="card-block" id="item_info">
                   <div class="card-header">
-                    <div class="card-title">Thông tin hàng hóa</div>
+                    <div class="card-title">Thông tin sản phẩm</div>
                   </div>
                   <div class="card-content">
                     <div class="row">
-                      <div class="col-4 mb-8">Chi tiết hàng hóa:</div>
+                      <div class="col-4 mb-8">Chi tiết sản phẩm:</div>
                       <div class="col-8">{{ current.detail }}</div>
                     </div>
                     <div class="row">
@@ -290,7 +294,7 @@
                           >
                         </div>
                         <div
-                          class="card-content deliver-log log-content"
+                          class="card-content log-content"
                           :class="{
                             'middle-item': !package_detail.deliver_logs,
                           }"
@@ -359,7 +363,10 @@
                 }}</div>
                 <div class="fee__number"
                   >{{ sumExtraFee | formatPrice }}
-                  <div class="more-extra-fee" v-if="extraFee.length">
+                  <div
+                    class="more-extra-fee"
+                    v-if="extraFee.length || current.status_string == 'pending'"
+                  >
                     <img
                       @mouseover="showPopupMoreExtraFee"
                       @mouseleave="hiddenPopupMoreExtraFee"
@@ -462,10 +469,11 @@ import {
   CANCEL_PACKAGES,
   PENDING_PICKUP_PACKAGES,
 } from '../store/index'
+import { PACKAGE_STATUS_CREATED_TEXT } from '../constants'
 import ModalEditOrder from './components/ModalEditOrder'
 import NotFound from '@/components/shared/NotFound'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
-import { cloneDeep } from '@core/utils'
+import { cloneDeep, caculateFee } from '@core/utils'
 import api from '../api'
 import mixinPackageDetail from '../mixins/package_detail'
 import AuditLog from './components/AuditLog'
@@ -530,6 +538,10 @@ export default {
       return this.package_detail.package || {}
     },
     sumExtraFee() {
+      if (this.current.status_string == PACKAGE_STATUS_CREATED_TEXT) {
+        return caculateFee(this.current.weight)
+      }
+
       if (
         !this.package_detail.extra_fee ||
         this.package_detail.extra_fee.length <= 0
@@ -551,15 +563,24 @@ export default {
     mapExtraFee() {
       let arr = cloneDeep(this.extraFee),
         result = []
-
-      for (const ele of arr) {
-        let index = result.findIndex(
-          (x) => x.extra_fee_types.name == ele.extra_fee_types.name
-        )
-        if (index == -1) {
-          result.push(ele)
-        } else result[index].amount += ele.amount
+      if (this.current.status_string == PACKAGE_STATUS_CREATED_TEXT) {
+        result = [
+          {
+            extra_fee_types: { name: 'Phụ phí cao điểm' },
+            amount: caculateFee(this.current.weight),
+          },
+        ]
+      } else {
+        for (const ele of arr) {
+          let index = result.findIndex(
+            (x) => x.extra_fee_types.name == ele.extra_fee_types.name
+          )
+          if (index == -1) {
+            result.push(ele)
+          } else result[index].amount += ele.amount
+        }
       }
+
       return result
     },
     packageID() {
