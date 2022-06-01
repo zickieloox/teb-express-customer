@@ -417,7 +417,7 @@
                         </span>
                       </td>
                       <td style="text-align: right">{{
-                        item.shipping_fee | formatPrice
+                        convertPrice(item) | formatPrice
                       }}</td>
                     </tr>
                   </tbody>
@@ -554,6 +554,7 @@ import mixinTable from '@core/mixins/table'
 import { date } from '@core/utils/datetime'
 import { truncate } from '@core/utils/string'
 import { printImage } from '@core/utils/print'
+import { caculateFee } from '@core/utils'
 import api from '../api'
 
 import JSZip from 'jszip'
@@ -696,6 +697,13 @@ export default {
     },
     async searchAdvanced(filter) {
       this.filter = { ...filter }
+    },
+    convertPrice(item) {
+      if (item.status_string == PACKAGE_STATUS_CREATED_TEXT) {
+        return caculateFee(item.weight) + item.shipping_fee
+      } else {
+        return item.shipping_fee
+      }
     },
     selectDate(v) {
       this.filter.start_date = date(v.startDate, 'yyyy-MM-dd')

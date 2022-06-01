@@ -466,10 +466,11 @@ import {
   CANCEL_PACKAGES,
   PENDING_PICKUP_PACKAGES,
 } from '../store/index'
+import { PACKAGE_STATUS_CREATED_TEXT } from '../constants'
 import ModalEditOrder from './components/ModalEditOrder'
 import NotFound from '@/components/shared/NotFound'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
-import { cloneDeep } from '@core/utils'
+import { cloneDeep, caculateFee } from '@core/utils'
 import api from '../api'
 import mixinPackageDetail from '../mixins/package_detail'
 import AuditLog from './components/AuditLog'
@@ -541,6 +542,10 @@ export default {
         return 0
       }
 
+      if (this.current.status_string == PACKAGE_STATUS_CREATED_TEXT) {
+        return caculateFee(this.current.weight)
+      }
+
       return this.package_detail.extra_fee.reduce(
         (total, { amount }) => total + amount,
         0
@@ -555,15 +560,24 @@ export default {
     mapExtraFee() {
       let arr = cloneDeep(this.extraFee),
         result = []
-
-      for (const ele of arr) {
-        let index = result.findIndex(
-          (x) => x.extra_fee_types.name == ele.extra_fee_types.name
-        )
-        if (index == -1) {
-          result.push(ele)
-        } else result[index].amount += ele.amount
+      if (this.current.status_string == PACKAGE_STATUS_CREATED_TEXT) {
+        result = [
+          {
+            extra_fee_types: { name: 'Phụ phí cao điểm' },
+            amount: caculateFee(this.current.weight),
+          },
+        ]
+      } else {
+        for (const ele of arr) {
+          let index = result.findIndex(
+            (x) => x.extra_fee_types.name == ele.extra_fee_types.name
+          )
+          if (index == -1) {
+            result.push(ele)
+          } else result[index].amount += ele.amount
+        }
       }
+
       return result
     },
     packageID() {
