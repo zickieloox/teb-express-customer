@@ -1,3 +1,4 @@
+import { caculateFee } from '@core/utils'
 export default {
   computed: {
     totalSelected() {
@@ -52,7 +53,11 @@ export default {
     },
     selectionCountTotal() {
       return this.action.selected
-        .map((it) => it.shipping_fee)
+        .map((it) =>
+          it.status_string == 'pending'
+            ? it.shipping_fee + caculateFee(it.weight)
+            : it.shipping_fee
+        )
         .reduce((accumulator, item) => accumulator + item)
     },
     isChecked() {
