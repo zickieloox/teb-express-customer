@@ -363,7 +363,10 @@
                 }}</div>
                 <div class="fee__number"
                   >{{ sumExtraFee | formatPrice }}
-                  <div class="more-extra-fee" v-if="extraFee.length">
+                  <div
+                    class="more-extra-fee"
+                    v-if="extraFee.length || current.status_string == 'pending'"
+                  >
                     <img
                       @mouseover="showPopupMoreExtraFee"
                       @mouseleave="hiddenPopupMoreExtraFee"
@@ -535,15 +538,15 @@ export default {
       return this.package_detail.package || {}
     },
     sumExtraFee() {
+      if (this.current.status_string == PACKAGE_STATUS_CREATED_TEXT) {
+        return caculateFee(this.current.weight)
+      }
+
       if (
         !this.package_detail.extra_fee ||
         this.package_detail.extra_fee.length <= 0
       ) {
         return 0
-      }
-
-      if (this.current.status_string == PACKAGE_STATUS_CREATED_TEXT) {
-        return caculateFee(this.current.weight)
       }
 
       return this.package_detail.extra_fee.reduce(
