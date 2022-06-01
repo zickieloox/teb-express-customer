@@ -554,7 +554,6 @@ import mixinTable from '@core/mixins/table'
 import { date } from '@core/utils/datetime'
 import { truncate } from '@core/utils/string'
 import { printImage } from '@core/utils/print'
-import { caculateFee } from '@core/utils'
 import api from '../api'
 
 import JSZip from 'jszip'
@@ -700,7 +699,7 @@ export default {
     },
     convertPrice(item) {
       if (item.status_string == PACKAGE_STATUS_CREATED_TEXT) {
-        return caculateFee(item.weight) + item.shipping_fee
+        return this.caculateFee(item.weight) + item.shipping_fee
       } else {
         return item.shipping_fee
       }
