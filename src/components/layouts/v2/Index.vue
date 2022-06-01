@@ -32,7 +32,7 @@ import '@assets/fonts/material-design/material-design.min.css'
 import '@assets/fonts/web-icons/web-icons.min.css'
 import PHeader from './Header'
 import PSidebar from './Sidebar'
-import { GET_USER } from '../../../packages/shared/store'
+import { GET_USER, GET_CONFIGS } from '../../../packages/shared/store'
 import firebase from '../../../core/services/firebase'
 import crisp from '../../../core/services/crisp'
 
@@ -61,7 +61,7 @@ export default {
     firebase.setup()
   },
   methods: {
-    ...mapActions('shared', [GET_USER]),
+    ...mapActions('shared', [GET_USER, GET_CONFIGS]),
     async init() {
       await this.getUser()
       this.checkDebtUser()
@@ -69,6 +69,16 @@ export default {
       if (this.user) {
         crisp.init(this.user.id)
         crisp.setup(this.user)
+      }
+
+      const result = await this[GET_CONFIGS]()
+
+      if (!result.success) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 4000,
+        })
       }
     },
     checkDebtUser() {

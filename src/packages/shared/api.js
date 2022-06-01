@@ -20,4 +20,7 @@ export default {
   fetchWarehouses(payload) {
     return http.get(`/packages/warehouses?${buildQueryString(payload)}`)
   },
+  getConfigs() {
+    return http.get(`/configs`)
+  },
 }

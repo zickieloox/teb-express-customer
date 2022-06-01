@@ -1,4 +1,4 @@
-import { caculateFee } from '@core/utils'
+import { roundNumberToTwoDecimalPlaces } from '@core/utils'
 export default {
   computed: {
     totalSelected() {
@@ -55,7 +55,7 @@ export default {
       return this.action.selected
         .map((it) =>
           it.status_string == 'pending'
-            ? it.shipping_fee + caculateFee(it.weight)
+            ? it.shipping_fee + this.caculateFee(it.weight)
             : it.shipping_fee
         )
         .reduce((accumulator, item) => accumulator + item)
@@ -156,6 +156,25 @@ export default {
         selected = this.items
       }
       this.$set(this.action, 'selected', selected)
+    },
+
+    /**
+     * Tính phí cao điểm
+     * @param weight
+     */
+
+    caculateFee(weight) {
+      const rate = this.$store.state.shared.configs.extra_fee
+      const min = +rate * 0.1
+      if (+rate == 0) {
+        return 0
+      }
+      var fee = (+rate * weight) / 1000
+
+      if (fee < min) {
+        fee = min
+      }
+      return roundNumberToTwoDecimalPlaces(+fee, 2)
     },
   },
   watch: {

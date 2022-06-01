@@ -473,7 +473,8 @@ import { PACKAGE_STATUS_CREATED_TEXT } from '../constants'
 import ModalEditOrder from './components/ModalEditOrder'
 import NotFound from '@/components/shared/NotFound'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
-import { cloneDeep, caculateFee } from '@core/utils'
+import { cloneDeep } from '@core/utils'
+import mixinTable from '@core/mixins/table'
 import api from '../api'
 import mixinPackageDetail from '../mixins/package_detail'
 import AuditLog from './components/AuditLog'
@@ -482,7 +483,7 @@ import { FETCH_TICKETS, COUNT_TICKET } from '../../claim/store'
 
 export default {
   name: 'PackageDetail',
-  mixins: [mixinPackageDetail],
+  mixins: [mixinPackageDetail, mixinTable],
   components: { ModalEditOrder, ModalConfirm, NotFound, AuditLog, DeliveryLog },
   data() {
     return {
@@ -539,7 +540,7 @@ export default {
     },
     sumExtraFee() {
       if (this.current.status_string == PACKAGE_STATUS_CREATED_TEXT) {
-        return caculateFee(this.current.weight)
+        return this.caculateFee(this.current.weight)
       }
 
       if (
@@ -567,7 +568,7 @@ export default {
         result = [
           {
             extra_fee_types: { name: 'Phụ phí cao điểm' },
-            amount: caculateFee(this.current.weight),
+            amount: this.caculateFee(this.current.weight),
           },
         ]
       } else {
