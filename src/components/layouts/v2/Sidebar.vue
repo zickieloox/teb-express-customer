@@ -170,6 +170,12 @@ export default {
           isOpen: false,
           tooltip: 'Đơn hàng',
           alias: ['/packages', '/packages/:id', '/packages/create'],
+          sub: [
+            {
+              route: '/packages',
+              title: 'Đơn hàng',
+            },
+          ],
         },
         {
           title: 'Hóa đơn',
