@@ -549,7 +549,7 @@ export default {
       this.action.selected = []
       const result = await this.fetchPackagesReturn(this.filter)
       this.isFetching = false
-      if (!result.success) {
+      if (!result.success && result.message) {
         this.$toast.open({ message: result.message, type: 'error' })
         return
       }
