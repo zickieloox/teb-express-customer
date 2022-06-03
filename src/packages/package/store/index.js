@@ -25,6 +25,9 @@ export const SET_LOADING = 'setLoading'
 export const FETCH_PACKAGES_HOLDING = 'fetchPackagesHolding'
 export const COUNT_PACKAGES_HOLDING = 'countPackagesHolding'
 
+export const FETCH_PACKAGES_RETURN = 'fetchPackagesReturn'
+export const COUNT_PACKAGES_RETURN = 'countPackagesReturn'
+
 /**
  * State
  */
@@ -44,6 +47,8 @@ export const state = {
   isLoading: false,
   package_holding: [],
   count_package_holding: 0,
+  package_returns: [],
+  count_package_return: 0,
   day: 0,
 }
 /**
@@ -86,6 +91,12 @@ export const mutations = {
   },
   [COUNT_PACKAGES_HOLDING]: (state, payload) => {
     state.count_package_holding = payload.count
+  },
+  [FETCH_PACKAGES_RETURN]: (state, payload) => {
+    state.package_returns = payload.packages
+  },
+  [COUNT_PACKAGES_RETURN]: (state, payload) => {
+    state.count_package_return = payload.count
   },
 }
 
@@ -276,6 +287,25 @@ export const actions = {
 
     commit(FETCH_PACKAGES_HOLDING, list)
     commit(COUNT_PACKAGES_HOLDING, count)
+    return result
+  },
+
+  async fetchPackagesReturn({ commit }, payload) {
+    let result = { success: true }
+    let [list, count] = await Promise.all([
+      api.fetchPackagesReturn(payload),
+      api.countPackagesReturn(payload),
+    ])
+    if (!list.packages || !count) {
+      list.packages = []
+      count = 0
+      result = {
+        success: false,
+        message: list.errorMessage || '',
+      }
+    }
+    commit(FETCH_PACKAGES_RETURN, list)
+    commit(COUNT_PACKAGES_RETURN, count)
     return result
   },
 }
