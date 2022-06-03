@@ -14,9 +14,6 @@ $menubar-height:510px;
         padding-left: 15px;
         top: 0;
         cursor: default;
-        @media (max-width: 1366px) {
-            top: -80%;
-        }
     }
     &-sub {
         max-width: none;
@@ -41,10 +38,6 @@ $menubar-height:510px;
             border-top: 5px solid transparent;
             border-right: 5px solid #0F1750;
             border-bottom: 5px solid transparent;
-            @media (max-width: 1366px) {
-                top: unset;
-                bottom: 30px;
-            }
         }
         &-item {
             text-align: left;
