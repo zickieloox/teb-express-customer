@@ -47,7 +47,7 @@ export const state = {
   isLoading: false,
   package_holding: [],
   count_package_holding: 0,
-  package_return: [],
+  package_returns: [],
   count_package_return: 0,
   day: 0,
 }
@@ -93,7 +93,7 @@ export const mutations = {
     state.count_package_holding = payload.count
   },
   [FETCH_PACKAGES_RETURN]: (state, payload) => {
-    state.package_return = payload.packages
+    state.package_returns = payload.packages
   },
   [COUNT_PACKAGES_RETURN]: (state, payload) => {
     state.count_package_return = payload.count
@@ -304,9 +304,8 @@ export const actions = {
         message: list.errorMessage || '',
       }
     }
-
-    commit(FETCH_PACKAGES_HOLDING, list)
-    commit(COUNT_PACKAGES_HOLDING, count)
+    commit(FETCH_PACKAGES_RETURN, list)
+    commit(COUNT_PACKAGES_RETURN, count)
     return result
   },
 }
