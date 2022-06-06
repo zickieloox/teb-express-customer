@@ -24,7 +24,7 @@
                       >(Tối đa: {{ maxDebitAmoung | formatPrice }})</span
                     ></p
                   >
-                  <p v-if="debitDayLeft"
+                  <p v-if="debitDayLeft != null"
                     >Thời gian công nợ còn lại: {{ debitDayLeft }} ngày</p
                   >
                 </div>
