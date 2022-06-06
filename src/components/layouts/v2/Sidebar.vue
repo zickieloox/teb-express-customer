@@ -168,22 +168,23 @@ export default {
           route: { name: 'list-packages' },
           class: '',
           isOpen: false,
+          tooltip: 'Đơn hàng',
           alias: [
             '/packages',
             '/packages/:id',
             '/packages/create',
             '/packages-return',
           ],
-          sub: [
-            {
-              route: '/packages',
-              title: 'Đơn hàng',
-            },
-            {
-              route: '/packages-return',
-              title: 'Hàng trả về',
-            },
-          ],
+          // sub: [
+          //   {
+          //     route: '/packages',
+          //     title: 'Đơn hàng',
+          //   },
+          //   {
+          //     route: '/packages-return',
+          //     title: 'Hàng trả về',
+          //   },
+          // ],
         },
         {
           title: 'Hóa đơn',
