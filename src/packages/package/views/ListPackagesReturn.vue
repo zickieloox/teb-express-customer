@@ -134,7 +134,7 @@
                             :to="{
                               name: 'package-detail',
                               params: {
-                                id: item.id,
+                                id: item.package_id,
                               },
                             }"
                           >
@@ -769,7 +769,7 @@ export default {
     },
     async handleActionWayBill() {
       let ids
-      ids = this.selected.map((item) => item.id)
+      ids = this.selected.map((item) => item.package_id)
 
       let params = {
         ids: ids,
