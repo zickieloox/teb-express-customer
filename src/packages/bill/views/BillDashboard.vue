@@ -25,7 +25,7 @@
                     ></p
                   >
                   <p v-if="debitDayLeft != null"
-                    >Thời gian công nợ còn lại: {{ debitDayLeft }} ngày</p
+                    >Thời gian công nợ còn lại: {{ debitDayLeft }}</p
                   >
                 </div>
               </div>
@@ -116,10 +116,17 @@ export default {
 
       let now = new Date().getTime()
       let target = new Date(this.user.user_info.debt_time).getTime()
-      let daysLeft = Math.floor(
+      let daysLeft =
         this.user.user_info.debt_max_day - (now - target) / (24 * 3600 * 1000)
-      )
-      return daysLeft > 0 ? daysLeft : 0
+      let text = '0 ngày'
+      if (daysLeft >= 1) {
+        text = `${Math.floor(daysLeft)} ngày`
+      } else if (daysLeft * 24 >= 1) {
+        text = `${Math.floor(daysLeft * 24)} giờ`
+      } else if (daysLeft * 24 * 60 >= 1) {
+        text = `${Math.floor(daysLeft * 24 * 60)} phút`
+      }
+      return text
     },
     isTopup() {
       return this.page === 'topup'
