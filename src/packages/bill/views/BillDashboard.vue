@@ -106,7 +106,11 @@ export default {
       return this.user.user_info ? this.user.user_info.debt_max_amount : null
     },
     debitDayLeft() {
-      if (!this.user.user_info || !this.user.user_info.debt_time) {
+      if (
+        !this.user.user_info ||
+        !this.user.user_info.debt_time ||
+        !this.user.user_info.debt_max_day
+      ) {
         return null
       }
 
