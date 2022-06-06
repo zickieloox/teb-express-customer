@@ -68,13 +68,6 @@
               @clear="clearSearchDate"
             ></p-datepicker>
           </div>
-          <button class="search-advanced ml-12" @click="visibleModalSearch">
-            <inline-svg
-              :src="require('../../../assets/img/search-advanced.svg')"
-            >
-            </inline-svg>
-            <span>Tìm nâng cao</span>
-          </button>
         </div>
       </div>
     </div>
@@ -387,16 +380,6 @@
       :loading="actions.returnPackage.loading"
       @action="pendingPickupPackagesAction"
     ></modal-confirm>
-
-    <ModalSearchAdvanced
-      :visible.sync="isVisibleModalSearch"
-      :loadingView="isFetching"
-      :loadingExport="isVisibleExport"
-      :filterPage="filter"
-      @export="handleExport"
-      @fetch="searchAdvanced"
-    >
-    </ModalSearchAdvanced>
   </div>
 </template>
 <script>
@@ -439,7 +422,6 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { SET_LOADING } from '../store'
 import Copy from '../../bill/components/Copy.vue'
-import ModalSearchAdvanced from './components/ModalSearchAdvanced'
 
 export default {
   name: 'ListPackagesReturn',
@@ -449,7 +431,6 @@ export default {
     ModalExport,
     ModalConfirm,
     Copy,
-    ModalSearchAdvanced,
   },
   mounted() {},
   data() {
@@ -514,7 +495,6 @@ export default {
       confirmAddress: '',
       loadingValidate: false,
       scrollPosition: null,
-      isVisibleModalSearch: false,
     }
   },
   created() {
@@ -553,12 +533,7 @@ export default {
         this.$toast.open({ message: result.message, type: 'error' })
         return
       }
-      this.isVisibleModalSearch = false
     },
-    async searchAdvanced(filter) {
-      this.filter = { ...filter }
-    },
-
     selectDate(v) {
       this.filter.start_date = date(v.startDate, 'yyyy-MM-dd')
       this.filter.end_date = date(v.endDate, 'yyyy-MM-dd')
@@ -572,17 +547,6 @@ export default {
       this.filter.page = 1
       this.searchCode = e
       this.$set(this.filter, 'code', this.searchCode)
-    },
-    handleClosePreview() {
-      this.filter = {
-        limit: 20,
-        status: '',
-        search: '',
-        start_date: '',
-        end_date: '',
-        code: '',
-      }
-      this.init()
     },
     clearSearchDate() {
       this.filter.end_date = ''
@@ -617,7 +581,6 @@ export default {
         })
         return
       }
-      this.isVisibleModalSearch = false
 
       this.downloadFile(
         result.url,
@@ -909,9 +872,6 @@ export default {
         case PACKAGE_ALERT_TYPE_HUB_RETURN:
           return 'Hàng bị trả lại'
       }
-    },
-    visibleModalSearch() {
-      this.isVisibleModalSearch = true
     },
   },
   watch: {
