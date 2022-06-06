@@ -116,9 +116,10 @@ export default {
 
       let now = new Date().getTime()
       let target = new Date(this.user.user_info.debt_time).getTime()
-      return Math.floor(
+      let daysLeft = Math.floor(
         this.user.user_info.debt_max_day - (now - target) / (24 * 3600 * 1000)
       )
+      return daysLeft > 0 ? daysLeft : 0
     },
     isTopup() {
       return this.page === 'topup'
