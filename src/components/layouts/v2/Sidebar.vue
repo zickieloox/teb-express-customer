@@ -168,7 +168,12 @@ export default {
           route: { name: 'list-packages' },
           class: '',
           isOpen: false,
-          alias: ['/packages', '/packages/:id', '/packages/create'],
+          alias: [
+            '/packages',
+            '/packages/:id',
+            '/packages/create',
+            '/packages-return',
+          ],
           sub: [
             {
               route: '/packages',
