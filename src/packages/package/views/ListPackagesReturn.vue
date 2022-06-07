@@ -1,21 +1,11 @@
 <template>
   <div class="list-packages pages">
-    <div
-      class="page-header"
-      :class="{ 'on-scroll': scrollPosition > 90 && totalSelected > 0 }"
-    >
+    <div class="page-header">
       <div
         class="bulk-actions d-flex align-items-center"
         v-if="totalSelected > 0"
       >
         <div class="bulk-actions__main-bar">
-          <p-button
-            :disabled="createOrder(filter.status)"
-            class="bulk-actions__selection-status"
-            @click="handleWayBill"
-            type="primary"
-            >Tạo tracking</p-button
-          >
           <p-button
             v-if="isReturnTab()"
             class="bulk-actions__selection-status"
@@ -78,50 +68,13 @@
               @clear="clearSearchDate"
             ></p-datepicker>
           </div>
-          <button class="search-advanced ml-12" @click="visibleModalSearch">
-            <inline-svg
-              :src="require('../../../assets/img/search-advanced.svg')"
-            >
-            </inline-svg>
-            <span>Tìm nâng cao</span>
-          </button>
-          <div class="btn-action">
-            <button
-              class="pull-right btn-primary btn ml-2"
-              @click="handleImport"
-            >
-              <inline-svg :src="require('../../../assets/img/uploadex.svg')">
-              </inline-svg>
-              <span>Nhập Excel</span>
-            </button>
-            <router-link
-              :to="{ name: 'package-create' }"
-              class="pull-right btn-lb-secondary btn"
-              @click="handleImport"
-            >
-              <inline-svg
-                :src="require('../../../assets/img/addactive.svg')"
-              ></inline-svg>
-              <span>Tạo đơn</span>
-            </router-link>
-          </div>
         </div>
       </div>
     </div>
-    <div
-      v-if="scrollPosition > 100 && totalSelected > 0"
-      class="page-header-temp"
-    ></div>
     <div class="page-content">
       <div class="page-content">
         <div class="card">
           <div class="card-body">
-            <package-status-tab
-              :has-all="false"
-              :status="statusTab"
-              v-model="filter.status"
-              :count-status="count_status"
-            />
             <VclTable class="mt-20" v-if="isFetching"></VclTable>
             <template v-else-if="packages.length">
               <div class="table-responsive">
@@ -145,10 +98,7 @@
                         <th>order no.</th>
                         <th>Lionbay tracking</th>
                         <th>last mile tracking</th>
-                        <th>service</th>
-                        <th>created date </th>
-                        <th width="150">status</th>
-                        <th style="text-align: right">Total fee</th>
+                        <th>Lý do</th>
                       </template>
                     </tr>
                   </thead>
@@ -177,72 +127,48 @@
                             :to="{
                               name: 'package-detail',
                               params: {
-                                id: item.id,
+                                id: item.package_id,
                               },
                             }"
                           >
                             {{ item.order_number }}
                           </router-link>
-                          <span
-                            v-if="!item.validate_address"
-                            @click="handleValidateAddress(item)"
-                            class="
-                              list-warning
-                              badge badge-round badge-warning-order
-                            "
-                            style="white-space: pre"
-                          >
-                            <p-tooltip
-                              class="item_name"
-                              :label="
-                                `Địa chỉ không hợp lệ \n Kích vào đây để xác nhận rằng địa chỉ hiện tại chắc chắn hợp lệ`
-                              "
-                              position="top"
-                              type="dark"
-                            >
-                              <inline-svg
-                                :src="
-                                  require('../../../assets/img/location-warning.svg')
-                                "
-                              ></inline-svg>
-                            </p-tooltip>
-                          </span>
                         </div>
                       </td>
                       <td class="action">
                         <span class="code">
                           <p-tooltip
-                            :label="item.code"
-                            v-if="item.code"
+                            :label="item.package_code"
+                            v-if="item.package_code"
                             size="large"
                             position="top"
                             type="dark"
-                            :active="item.code.length > 18"
+                            :active="item.package_code.length > 18"
                           >
                             <router-link
                               class="text-no-underline"
                               :to="{
                                 name: 'package-detail',
                                 params: {
-                                  id: item.id,
+                                  id: item.package_id,
                                 },
                               }"
                             >
-                              {{ truncate(item.code, 18) }}
+                              {{ truncate(item.package_code, 18) }}
                             </router-link>
                           </p-tooltip>
                           <span v-else class="no-pkg-code">N/A</span>
                         </span>
 
                         <span class="link">
-                          <span class="svg" v-if="item.code">
+                          <span class="svg" v-if="item.package_code">
                             <p-tooltip
                               class="item_name"
                               :label="` Copy `"
                               position="top"
                               type="dark"
                             >
-                              <copy :value="item.code">
+                              <copy :value="item.package_code">
                                 <svg
                                   width="32"
                                   height="32"
@@ -303,7 +229,7 @@
                             </p-tooltip>
                           </span>
 
-                          <span class="svg" v-if="item.code">
+                          <span class="svg" v-if="item.package_code">
                             <p-tooltip
                               class="item_name"
                               :label="` Track `"
@@ -313,7 +239,7 @@
                               <a
                                 target="_blank"
                                 :href="
-                                  `https://t.17track.net/en#nums=${item.code}`
+                                  `https://t.17track.net/en#nums=${item.package_code}`
                                 "
                               >
                                 <svg
@@ -390,35 +316,13 @@
                         </a>
                       </td>
                       <td v-else><span class="no-track-code">N/A</span> </td>
-                      <td>
-                        {{ item.service_name || 'N/A' }}
-                      </td>
-                      <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
-                      <td>
-                        <span v-status="item.status_string"></span>
-                        <span
-                          v-if="item.alert > 0"
-                          class="
-                            pull-right
-                            list-warning
-                            badge badge-round badge-warning-order
-                          "
-                        >
-                          <p-tooltip
-                            class="item_name"
-                            :label="description(item.alert)"
-                            position="top"
-                            type="dark"
-                          >
-                            <inline-svg
-                              :src="require('../../../assets/img/warning.svg')"
-                            ></inline-svg>
-                          </p-tooltip>
-                        </span>
-                      </td>
-                      <td style="text-align: right">{{
-                        convertPrice(item) | formatPrice
-                      }}</td>
+                      <td
+                        v-if="
+                          item.description == 'Return' || item.description == ''
+                        "
+                        >N/A</td
+                      >
+                      <td v-else>{{ item.description }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -440,23 +344,6 @@
         </div>
       </div>
     </div>
-    <modal-import
-      :visible.sync="isVisibleImport"
-      :uploading="isUploading"
-      accept=".csv"
-      title="Nhập Excel"
-      @selected="handleImportPackage"
-      v-if="isVisibleImport"
-    >
-    </modal-import>
-    <modal-import-preview-package
-      :visible.sync="isVisiblePreview"
-      :import-errors="resultImport.errors"
-      :import-sucess="resultImport.import_sucess"
-      :total="resultImport.total"
-      v-if="isVisiblePreview"
-      @close="handleClosePreview"
-    ></modal-import-preview-package>
     <modal-export :visible="isVisibleExport"> </modal-export>
     <modal-confirm
       :visible.sync="isVisibleConfirmWayBill"
@@ -493,37 +380,14 @@
       :loading="actions.returnPackage.loading"
       @action="pendingPickupPackagesAction"
     ></modal-confirm>
-
-    <ModalConfirmAddress
-      :visible.sync="visibleConfirmValidate"
-      :address="confirmAddress"
-      :loading="loadingValidate"
-      @action="validateAddressPackage"
-    >
-    </ModalConfirmAddress>
-
-    <ModalSearchAdvanced
-      :visible.sync="isVisibleModalSearch"
-      :loadingView="isFetching"
-      :loadingExport="isVisibleExport"
-      :filterPage="filter"
-      @export="handleExport"
-      @fetch="searchAdvanced"
-    >
-    </ModalSearchAdvanced>
   </div>
 </template>
 <script>
 import ModalExport from './components/ModalExport'
-import PackageStatusTab from './components/PackageStatusTab'
-import ModalImportPreviewPackage from './components/ModalImportPreviewPackage'
-import ModalImport from '@components/shared/modal/ModalImport'
 import { mapState, mapActions } from 'vuex'
 import mixinDownload from '@/packages/shared/mixins/download'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import mixinChaining from '@/packages/shared/mixins/chaining'
-import ModalConfirmAddress from './components/ModalConfirmAddress'
-import { formatPrice } from '@core/utils/formatter'
 
 import {
   PACKAGE_STATUS_TAB,
@@ -540,13 +404,11 @@ import {
   PACKAGE_ALERT_TYPE_HUB_RETURN,
 } from '../constants'
 import {
-  FETCH_LIST_PACKAGES,
-  IMPORT_PACKAGE,
+  FETCH_PACKAGES_RETURN,
   EXPORT_PACKAGE,
   PROCESS_PACKAGE,
   CANCEL_PACKAGES,
   PENDING_PICKUP_PACKAGES,
-  VALIDATE_ADDRESS,
 } from '@/packages/package/store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
@@ -560,25 +422,17 @@ import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 import { SET_LOADING } from '../store'
 import Copy from '../../bill/components/Copy.vue'
-import ModalSearchAdvanced from './components/ModalSearchAdvanced'
 
 export default {
-  name: 'ListPackages',
+  name: 'ListPackagesReturn',
   mixins: [mixinRoute, mixinTable, mixinDownload, mixinChaining],
   components: {
-    ModalImport,
-    ModalImportPreviewPackage,
     EmptySearchResult,
-    PackageStatusTab,
     ModalExport,
     ModalConfirm,
     Copy,
-    ModalConfirmAddress,
-    ModalSearchAdvanced,
   },
-  mounted() {
-    window.addEventListener('scroll', this.updateScroll)
-  },
+  mounted() {},
   data() {
     return {
       filter: {
@@ -593,7 +447,6 @@ export default {
       isUploading: false,
       isVisibleExport: false,
       isVisiblePreview: false,
-      isVisibleImport: false,
       importData: {
         file: null,
       },
@@ -642,26 +495,16 @@ export default {
       confirmAddress: '',
       loadingValidate: false,
       scrollPosition: null,
-      isVisibleModalSearch: false,
     }
   },
   created() {
     this.filter = this.getRouteQuery()
     this.searchCode = this.filter.code
-    window.addEventListener('resize', this.checkScreen)
-    this.checkScreen()
   },
   computed: {
     ...mapState('package', {
-      packages: (state) => state.packages,
-      count: (state) => state.countPackages,
-      count_status: (state) => state.count_status,
-      hiddenClass() {
-        return this.action.selected.length > 0 || this.isAllChecked
-      },
-      isFilterInitTab() {
-        return this.filter.status_string === PACKAGE_STATUS_CREATED_TEXT
-      },
+      packages: (state) => state.package_returns,
+      count: (state) => state.count_package_return,
       items() {
         return this.packages
       },
@@ -672,13 +515,11 @@ export default {
   },
   methods: {
     ...mapActions('package', [
-      FETCH_LIST_PACKAGES,
-      IMPORT_PACKAGE,
+      FETCH_PACKAGES_RETURN,
       EXPORT_PACKAGE,
       PROCESS_PACKAGE,
       CANCEL_PACKAGES,
       PENDING_PICKUP_PACKAGES,
-      VALIDATE_ADDRESS,
       SET_LOADING,
     ]),
     truncate,
@@ -686,22 +527,11 @@ export default {
       this.isFetching = true
       this.handleUpdateRouteQuery()
       this.action.selected = []
-      const result = await this.fetchListPackages(this.filter)
+      const result = await this.fetchPackagesReturn(this.filter)
       this.isFetching = false
-      if (!result.success) {
+      if (!result.success && result.message) {
         this.$toast.open({ message: result.message, type: 'error' })
         return
-      }
-      this.isVisibleModalSearch = false
-    },
-    async searchAdvanced(filter) {
-      this.filter = { ...filter }
-    },
-    convertPrice(item) {
-      if (item.status_string == PACKAGE_STATUS_CREATED_TEXT) {
-        return this.caculateFee(item.weight) + item.shipping_fee
-      } else {
-        return item.shipping_fee
       }
     },
     selectDate(v) {
@@ -718,51 +548,12 @@ export default {
       this.searchCode = e
       this.$set(this.filter, 'code', this.searchCode)
     },
-    handleClosePreview() {
-      this.filter = {
-        limit: 20,
-        status: '',
-        search: '',
-        start_date: '',
-        end_date: '',
-        code: '',
-      }
-      this.init()
-    },
-    handleImport() {
-      this.isVisibleImport = true
-    },
-    updateScroll() {
-      this.scrollPosition = window.scrollY
-    },
-    destroy() {
-      window.removeEventListener('scroll', this.updateScroll)
-    },
     clearSearchDate() {
       this.filter.end_date = ''
       this.filter.start_date = ''
       this.filter.page = 1
     },
-    async handleImportPackage(file, template) {
-      this.importData.file = file
-      this.isUploading = true
-      this.resultImport = await this[IMPORT_PACKAGE]({
-        file: this.importData.file.raw,
-        template_id: template.id,
-      })
-      this.isUploading = false
-      this.isVisibleImport = false
 
-      if (this.resultImport && this.resultImport.success) {
-        this.isVisiblePreview = true
-        return
-      }
-
-      this.$toast.open({
-        type: 'error',
-        message: this.resultImport.message || 'File không đúng định dạng',
-      })
-    },
     async handleExport(filter) {
       this.isVisibleExport = true
       let result
@@ -790,7 +581,6 @@ export default {
         })
         return
       }
-      this.isVisibleModalSearch = false
 
       this.downloadFile(
         result.url,
@@ -801,14 +591,6 @@ export default {
     },
     isReturnTab() {
       return this.filter.status === PACKAGE_STATUS_PENDING_PICKUP_TEXT
-    },
-    checkScreen() {
-      this.windowWidth = window.innerWidth
-      if (this.windowWidth <= 1440) {
-        this.isSmScreen = true
-        return
-      }
-      this.isSmScreen = false
     },
     createOrder(value) {
       switch (value) {
@@ -948,33 +730,9 @@ export default {
         duration: 3000,
       })
     },
-    handleWayBill() {
-      let selectedInvalid = this.selected.filter(
-        (ele) => ele.status_string !== PACKAGE_STATUS_CREATED_TEXT
-      )
-      if (selectedInvalid.length > 0) {
-        let codeSelectedInvalid = selectedInvalid.map((ele) => ele.order_number)
-        if (codeSelectedInvalid.length > 3) {
-          codeSelectedInvalid = [...codeSelectedInvalid.slice(0, 3), '...']
-        }
-        return this.$toast.open({
-          type: 'error',
-          message: `Đơn hàng ${codeSelectedInvalid.join(
-            ', '
-          )} không thể tạo tracking.`,
-          duration: 5000,
-        })
-      }
-      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là <b> ${
-        this.selected.length
-      } </b>. Tổng tiền là <b> ${formatPrice(
-        this.selectionCountTotal
-      )} </b> bạn có chắc chắn muốn tạo tracking?`
-      this.isVisibleConfirmWayBill = true
-    },
     async handleActionWayBill() {
       let ids
-      ids = this.selected.map((item) => item.id)
+      ids = this.selected.map((item) => item.package_id)
 
       let params = {
         ids: ids,
@@ -1023,34 +781,6 @@ export default {
       } catch (error) {
         this.$toast.error('File error !!!')
       }
-    },
-
-    handleValidateAddress(item) {
-      this.confirmAddress = item.address_1 ? item.address_1 : item.address_2
-      this.idSelected = item.id
-      this.visibleConfirmValidate = true
-    },
-    async validateAddressPackage() {
-      this.loadingValidate = true
-      const payload = {
-        ids: [this.idSelected],
-      }
-      const result = await this[VALIDATE_ADDRESS](payload)
-      if (!result || !result.success) {
-        this.visibleConfirmValidate = false
-        this.loadingValidate = false
-        return this.$toast.open({
-          type: 'error',
-          message: result.message,
-          duration: 3000,
-        })
-      }
-      setTimeout(() => {
-        this.visibleConfirmValidate = false
-        this.confirmAddress = ''
-        this.loadingValidate = false
-        this.init()
-      }, 1000)
     },
 
     async handlerDownloadLables() {
@@ -1142,9 +872,6 @@ export default {
         case PACKAGE_ALERT_TYPE_HUB_RETURN:
           return 'Hàng bị trả lại'
       }
-    },
-    visibleModalSearch() {
-      this.isVisibleModalSearch = true
     },
   },
   watch: {

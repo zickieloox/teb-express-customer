@@ -14,6 +14,7 @@ export const GET_COUNT = 'getCount'
 export const GET_NOTIFICATION = 'getNotification'
 export const FETCH_WAREHOUSES = 'fetchWarehouses'
 export const GET_WAREHOUSES = 'getWarehouses'
+export const GET_CONFIGS = 'getConfigs'
 import addresses from '../../../assets/json/address.json'
 import union from 'lodash/union'
 import { NotificationRead } from '../constants'
@@ -26,11 +27,15 @@ export const state = {
   countNoti: 0,
   countNotiAll: 0,
   warehouses: [],
+  configs: {},
 }
 
 export const getters = {
   [GET_COUNT](state) {
     return state.countNoti
+  },
+  [GET_CONFIGS](state) {
+    return state.configs
   },
   [GET_WAREHOUSES](state) {
     return state.warehouses
@@ -51,6 +56,9 @@ export const getters = {
 export const mutations = {
   [GET_USER]: (state, payload) => {
     state.user = payload
+  },
+  [GET_CONFIGS]: (state, payload) => {
+    state.configs = payload
   },
   [CHECKDEBT]: (state, payload) => {
     state.isDebt = payload
@@ -206,6 +214,25 @@ export const actions = {
     }
 
     commit(FETCH_WAREHOUSES, response.warehouses)
+    return result
+  },
+
+  /**
+   *
+   * @param commit
+   * @param payload
+   * @return {Promise<{success: boolean}>}
+   */
+  async getConfigs({ commit }) {
+    let result = { success: true }
+    let response = await api.getConfigs()
+
+    if ((response && response.errorMessage) || !response.config) {
+      result = { success: false, message: response.errorMessage }
+      response.config = {}
+    }
+
+    commit(GET_CONFIGS, response.config)
     return result
   },
 }
