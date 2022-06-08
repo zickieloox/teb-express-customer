@@ -363,7 +363,10 @@
                 }}</div>
                 <div class="fee__number"
                   >{{ sumExtraFee | formatPrice }}
-                  <div class="more-extra-fee" v-if="extraFee.length">
+                  <div
+                    class="more-extra-fee"
+                    v-if="extraFee.length || current.status_string == 'pending'"
+                  >
                     <img
                       @mouseover="showPopupMoreExtraFee"
                       @mouseleave="hiddenPopupMoreExtraFee"
@@ -466,10 +469,12 @@ import {
   CANCEL_PACKAGES,
   PENDING_PICKUP_PACKAGES,
 } from '../store/index'
+import { PACKAGE_STATUS_CREATED_TEXT } from '../constants'
 import ModalEditOrder from './components/ModalEditOrder'
 import NotFound from '@/components/shared/NotFound'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import { cloneDeep } from '@core/utils'
+import mixinTable from '@core/mixins/table'
 import api from '../api'
 import mixinPackageDetail from '../mixins/package_detail'
 import AuditLog from './components/AuditLog'
@@ -478,7 +483,7 @@ import { FETCH_TICKETS, COUNT_TICKET } from '../../claim/store'
 
 export default {
   name: 'PackageDetail',
-  mixins: [mixinPackageDetail],
+  mixins: [mixinPackageDetail, mixinTable],
   components: { ModalEditOrder, ModalConfirm, NotFound, AuditLog, DeliveryLog },
   data() {
     return {
@@ -534,6 +539,10 @@ export default {
       return this.package_detail.package || {}
     },
     sumExtraFee() {
+      if (this.current.status_string == PACKAGE_STATUS_CREATED_TEXT) {
+        return this.caculateFee(this.current.weight)
+      }
+
       if (
         !this.package_detail.extra_fee ||
         this.package_detail.extra_fee.length <= 0
@@ -555,15 +564,24 @@ export default {
     mapExtraFee() {
       let arr = cloneDeep(this.extraFee),
         result = []
-
-      for (const ele of arr) {
-        let index = result.findIndex(
-          (x) => x.extra_fee_types.name == ele.extra_fee_types.name
-        )
-        if (index == -1) {
-          result.push(ele)
-        } else result[index].amount += ele.amount
+      if (this.current.status_string == PACKAGE_STATUS_CREATED_TEXT) {
+        result = [
+          {
+            extra_fee_types: { name: 'Phụ phí cao điểm' },
+            amount: this.caculateFee(this.current.weight),
+          },
+        ]
+      } else {
+        for (const ele of arr) {
+          let index = result.findIndex(
+            (x) => x.extra_fee_types.name == ele.extra_fee_types.name
+          )
+          if (index == -1) {
+            result.push(ele)
+          } else result[index].amount += ele.amount
+        }
       }
+
       return result
     },
     packageID() {

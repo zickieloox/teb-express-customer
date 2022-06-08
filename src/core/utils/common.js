@@ -134,3 +134,7 @@ export const isEqual = (v1, v2) => {
 export const isEmpty = (val) => {
   return _isEmpty(val)
 }
+
+export const roundNumberToTwoDecimalPlaces = (v, n) => {
+  return Math.ceil(v * Math.pow(10, n)) / Math.pow(10, n)
+}

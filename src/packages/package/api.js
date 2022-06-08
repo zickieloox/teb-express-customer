@@ -74,4 +74,10 @@ export default {
   countPackagesHolding(payload) {
     return http.get(`/packages/holding/count?${buildQueryString(payload)}`)
   },
+  fetchPackagesReturn(payload) {
+    return http.get(`/packages/return?${buildQueryString(payload)}`)
+  },
+  countPackagesReturn(payload) {
+    return http.get(`/packages/return/count?${buildQueryString(payload)}`)
+  },
 }

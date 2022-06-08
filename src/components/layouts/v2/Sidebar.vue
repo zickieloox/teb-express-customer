@@ -51,7 +51,7 @@
                       class="animsition-link"
                       @click.native="closeItem(menu)"
                     >
-                      <span
+                      <div
                         :class="{
                           active:
                             isActive(sub.route) ||
@@ -71,7 +71,7 @@
                           alt=""
                         />
 
-                        {{ sub.title }}</span
+                        <span>{{ sub.title }}</span></div
                       >
                     </router-link>
                   </div>
@@ -169,7 +169,22 @@ export default {
           class: '',
           isOpen: false,
           tooltip: 'Đơn hàng',
-          alias: ['/packages', '/packages/:id', '/packages/create'],
+          alias: [
+            '/packages',
+            '/packages/:id',
+            '/packages/create',
+            '/packages-return',
+          ],
+          // sub: [
+          //   {
+          //     route: '/packages',
+          //     title: 'Đơn hàng',
+          //   },
+          //   {
+          //     route: '/packages-return',
+          //     title: 'Hàng trả về',
+          //   },
+          // ],
         },
         {
           title: 'Hóa đơn',
