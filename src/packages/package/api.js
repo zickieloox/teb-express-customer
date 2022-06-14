@@ -83,4 +83,7 @@ export default {
   packageReship({ id, ...payload }) {
     return http.put(`/packages/${id}/reship`, payload)
   },
+  fetchPackageProducts(id) {
+    return http.get(`/packages/${id}/products`)
+  },
 }

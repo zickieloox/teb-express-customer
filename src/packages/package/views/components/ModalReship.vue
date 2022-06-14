@@ -189,6 +189,49 @@
                   </div>
                 </div>
               </div>
+              <div class="card__w">
+                <div
+                  class="card__w-header d-flex justify-content-between align-items-center"
+                >
+                  Sản phẩm
+                </div>
+
+                <div class="card__w-content pr-13 pl-13">
+                  <div class="card__w-item">
+                    <div class="card__w-input ml-0">
+                      <div
+                        class="d-flex product-item"
+                        v-for="(prod, index) in products"
+                        :key="index"
+                      >
+                        <div class="row product-info">
+                          <div class="select-product col-md-7 ">
+                            <select
+                              disabled="disabled"
+                              class="form-control"
+                              style="padding: 10px 16px;"
+                            >
+                              <option value="">{{ prod.sku }}</option>
+                            </select>
+                          </div>
+                          <div class="select-product col-md-5">
+                            <div class="product-name">
+                              {{ prod.name }}
+                            </div>
+                          </div>
+                        </div>
+                        <input
+                          placeholder="Số lượng"
+                          :value="prod.quantity"
+                          class="form-control select-product product-quantity"
+                          name="quantity"
+                          disabled
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="col-lg-6 col-xl-6 item-gutters">
               <div class="card__w">
@@ -310,8 +353,8 @@
   </div>
 </template>
 <script>
-import { mapActions } from 'vuex'
-import { PACKAGE_RESHIP } from '../../store'
+import { mapActions, mapState } from 'vuex'
+import { PACKAGE_RESHIP, FETCH_PACKAGE_PRODUCTS } from '../../store'
 
 export default {
   name: 'ModalReship',
@@ -338,14 +381,24 @@ export default {
       isUpdating: false,
     }
   },
+  computed: {
+    ...mapState('package', {
+      products: (state) => state.package_products,
+    }),
+  },
+
   mounted() {
     this.init()
   },
   methods: {
-    ...mapActions('package', [PACKAGE_RESHIP]),
+    ...mapActions('package', [PACKAGE_RESHIP, FETCH_PACKAGE_PRODUCTS]),
 
     async init() {
       const current = this.current || {}
+      if (!current.id || current.id < 1) {
+        return
+      }
+
       this.fullname = current.recipient
       this.phone = current.phone_number
       this.city = current.city
@@ -354,6 +407,9 @@ export default {
       this.countrycode = current.country_code
       this.address = current.address_1
       this.address2 = current.address_2
+
+      console.log(current.id)
+      await this[FETCH_PACKAGE_PRODUCTS](current.id)
     },
 
     reset() {
