@@ -80,4 +80,7 @@ export default {
   countPackagesReturn(payload) {
     return http.get(`/packages/return/count?${buildQueryString(payload)}`)
   },
+  packageReship({ id, ...payload }) {
+    return http.put(`/packages/${id}/reship`, payload)
+  },
 }

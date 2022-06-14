@@ -28,6 +28,8 @@ export const COUNT_PACKAGES_HOLDING = 'countPackagesHolding'
 export const FETCH_PACKAGES_RETURN = 'fetchPackagesReturn'
 export const COUNT_PACKAGES_RETURN = 'countPackagesReturn'
 
+export const PACKAGE_RESHIP = 'packageReship'
+
 /**
  * State
  */
@@ -307,5 +309,18 @@ export const actions = {
     commit(FETCH_PACKAGES_RETURN, list)
     commit(COUNT_PACKAGES_RETURN, count)
     return result
+  },
+
+  // eslint-disable-next-line
+  async [PACKAGE_RESHIP]({ commit }, payload) {
+    const res = await api.packageReship(payload)
+    if (!res || res.error) {
+      return {
+        error: true,
+        message: res.errorMessage || res.error || res.message || '',
+      }
+    }
+
+    return { error: false, ...res }
   },
 }
