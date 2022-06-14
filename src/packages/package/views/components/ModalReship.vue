@@ -3,7 +3,7 @@
     <p-modal
       :active="visible"
       @close="handleClose"
-      :title="`Reship: ${current.order_number} (${current.code_package})`"
+      :title="`Reship đơn ${current.order_number} (${current.code_package})`"
     >
       <template>
         <div class="modal__edit-order-header">
