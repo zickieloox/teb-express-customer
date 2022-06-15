@@ -264,7 +264,7 @@
                     <div class="card__w-input">
                       <input
                         type="text"
-                        :value="current.weight"
+                        :value="weight"
                         class="form-control"
                         data-vv-as="Trọng lượng"
                         disabled
@@ -277,7 +277,7 @@
                     <div class="card__w-input">
                       <input
                         type="text"
-                        :value="current.length"
+                        :value="length"
                         class="form-control"
                         disabled
                       />
@@ -289,7 +289,7 @@
                     <div class="card__w-input">
                       <input
                         type="text"
-                        :value="current.width"
+                        :value="width"
                         class="form-control"
                         disabled
                       />
@@ -301,7 +301,7 @@
                     <div class="card__w-input">
                       <input
                         type="text"
-                        :value="current.height"
+                        :value="height"
                         class="form-control"
                         disabled
                       />
@@ -379,6 +379,11 @@ export default {
       address: '',
       address2: '',
       isUpdating: false,
+
+      weight: 0,
+      width: 0,
+      length: 0,
+      height: 0,
     }
   },
   computed: {
@@ -408,7 +413,27 @@ export default {
       this.address = current.address_1
       this.address2 = current.address_2
 
-      console.log(current.id)
+      this.weight = current.actual_weight
+      this.width = current.actual_width
+      this.length = current.actual_length
+      this.height = current.actual_height
+
+      if (this.weight == 0) {
+        this.weight = current.weight
+      }
+
+      if (this.width == 0) {
+        this.width = current.width
+      }
+
+      if (this.length == 0) {
+        this.length = current.length
+      }
+
+      if (this.height == 0) {
+        this.height = current.height
+      }
+
       await this[FETCH_PACKAGE_PRODUCTS](current.id)
     },
 
