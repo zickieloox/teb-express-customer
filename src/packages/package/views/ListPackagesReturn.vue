@@ -91,25 +91,25 @@
                       </td>
                       <td class="action">
                         <span class="code" v-if="item.package_code">
-                          <p-tooltip
+                          <!-- <p-tooltip
                             :label="item.package_code"
                             size="large"
                             position="top"
                             type="dark"
                             :active="item.package_code.length > 18"
+                          > -->
+                          <router-link
+                            class="text-no-underline"
+                            :to="{
+                              name: 'package-detail',
+                              params: {
+                                id: item.package_id,
+                              },
+                            }"
                           >
-                            <router-link
-                              class="text-no-underline"
-                              :to="{
-                                name: 'package-detail',
-                                params: {
-                                  id: item.package_id,
-                                },
-                              }"
-                            >
-                              {{ truncate(item.package_code, 18) }}
-                            </router-link>
-                          </p-tooltip>
+                            {{ item.package_code }}
+                          </router-link>
+                          <!-- </p-tooltip> -->
                         </span>
                         <span v-else class="no-pkg-code">N/A</span>
                         <template class="link" v-if="item.package_code">
@@ -351,8 +351,7 @@ export default {
     },
 
     handleDeleteCode() {
-      this.searchCode = ''
-      this.filter.code = ''
+      this.filter.search = ''
     },
 
     async showModalReshipHandle({ package_id }) {
