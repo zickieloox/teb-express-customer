@@ -469,7 +469,7 @@ export default {
       }
 
       this.$dialog.alert({
-        title: 'Tạo lệnh reship đơn thành công',
+        title: 'Tạo yêu cầu reship đơn thành công',
         message: `Phí reship dự kiến: $${result.total_amount}`,
         onClose: () => {
           this.handleClose()
