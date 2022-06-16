@@ -422,15 +422,12 @@ export default {
         this.weight = current.weight
       }
 
-      if (this.width == 0) {
+      if (
+        this.width * this.length * this.height <
+        current.width * current.length * current.height
+      ) {
         this.width = current.width
-      }
-
-      if (this.length == 0) {
         this.length = current.length
-      }
-
-      if (this.height == 0) {
         this.height = current.height
       }
 
