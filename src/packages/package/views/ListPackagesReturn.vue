@@ -39,7 +39,7 @@
             <template v-else-if="items.length">
               <div class="table-responsive">
                 <table
-                  class="table table-hover table-packages"
+                  class="table table-hover table-return-packages"
                   id="tbl-packages"
                 >
                   <thead>
@@ -155,7 +155,7 @@
                           </span>
                         </template>
                       </td>
-                      <td v-if="item.tracking_number">
+                      <td>
                         <a
                           class="tracking"
                           v-if="item.tracking_number"
