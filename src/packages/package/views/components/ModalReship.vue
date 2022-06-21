@@ -341,6 +341,14 @@
               >Hủy bỏ</p-button
             >
             <p-button
+              v-if="!isCheckFeeReship"
+              class="btn btn-primary"
+              :disabled="isUpdating"
+              @click="estimateCostHandle"
+              >Tính phí reship</p-button
+            >
+            <p-button
+              v-if="isCheckFeeReship"
               class="btn btn-primary"
               :disabled="isUpdating"
               @click="submitHandle"
@@ -354,7 +362,11 @@
 </template>
 <script>
 import { mapActions, mapState } from 'vuex'
-import { PACKAGE_RESHIP, FETCH_PACKAGE_PRODUCTS } from '../../store'
+import {
+  PACKAGE_RESHIP,
+  FETCH_PACKAGE_PRODUCTS,
+  PACKAGE_RESHIP_ESTIMATE_COST,
+} from '../../store'
 
 export default {
   name: 'ModalReship',
@@ -384,6 +396,8 @@ export default {
       width: 0,
       length: 0,
       height: 0,
+
+      isCheckFeeReship: false,
     }
   },
   computed: {
@@ -396,13 +410,19 @@ export default {
     this.init()
   },
   methods: {
-    ...mapActions('package', [PACKAGE_RESHIP, FETCH_PACKAGE_PRODUCTS]),
+    ...mapActions('package', [
+      PACKAGE_RESHIP,
+      FETCH_PACKAGE_PRODUCTS,
+      PACKAGE_RESHIP_ESTIMATE_COST,
+    ]),
 
     async init() {
       const current = this.current || {}
       if (!current.id || current.id < 1) {
         return
       }
+
+      this.isCheckFeeReship = false
 
       this.fullname = current.recipient
       this.phone = current.phone_number
@@ -461,6 +481,42 @@ export default {
       this.$emit('update:visible', false)
     },
 
+    async estimateCostHandle() {
+      if (this.isUpdating || !this.current.id) return
+
+      this.isUpdating = true
+
+      const params = {
+        id: this.current.id,
+        recipient: this.fullname.trim(),
+        phone_number: this.phone.trim(),
+        address_1: this.address.trim(),
+        city: this.city.trim(),
+        state_code: this.state.trim(),
+        zipcode: this.postcode.trim(),
+        country_code: this.countrycode.trim(),
+        address_2: this.address2.trim(),
+      }
+
+      const result = await this[PACKAGE_RESHIP_ESTIMATE_COST](params)
+
+      this.isUpdating = false
+
+      if (result.error) {
+        this.$toast.error(result.message, { duration: 3000 })
+        return
+      }
+
+      this.isCheckFeeReship = true
+      this.$dialog.alert({
+        title: 'Phí reship đơn hàng',
+        message: `Phí reship dự kiến: $${result.total_amount}`,
+        onClose: () => {},
+        confirmText: 'Đóng',
+        duration: 3000,
+      })
+    },
+
     async submitHandle() {
       if (this.isUpdating || !this.current.id) return
 
@@ -490,16 +546,11 @@ export default {
         return
       }
 
-      this.$dialog.alert({
-        title: 'Tạo yêu cầu reship đơn thành công',
-        message: `Phí reship dự kiến: $${result.total_amount}`,
-        onClose: () => {
-          this.handleClose()
-          this.$emit('success', true)
-        },
-        confirmText: 'Đóng',
+      this.$toast.success('Tạo yêu cầu reship đơn thành công', {
         duration: 3000,
       })
+      this.handleClose()
+      this.$emit('success', true)
     },
   },
   watch: {

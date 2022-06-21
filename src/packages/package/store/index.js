@@ -29,6 +29,7 @@ export const FETCH_PACKAGES_RETURN = 'fetchPackagesReturn'
 export const COUNT_PACKAGES_RETURN = 'countPackagesReturn'
 
 export const PACKAGE_RESHIP = 'packageReship'
+export const PACKAGE_RESHIP_ESTIMATE_COST = 'packageReshipEstimateCost'
 export const FETCH_PACKAGE_PRODUCTS = 'fetchPackageProducts'
 
 /**
@@ -340,6 +341,19 @@ export const actions = {
     }
 
     commit(FETCH_PACKAGE_PRODUCTS, res.products || [])
+    return { error: false, ...res }
+  },
+
+  // eslint-disable-next-line
+  async [PACKAGE_RESHIP_ESTIMATE_COST]({ commit }, payload) {
+    const res = await api.packageReshipEstimateCost(payload)
+    if (!res || res.error) {
+      return {
+        error: true,
+        message: res.errorMessage || res.error || res.message || '',
+      }
+    }
+
     return { error: false, ...res }
   },
 }

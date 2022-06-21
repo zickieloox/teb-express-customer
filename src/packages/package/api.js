@@ -86,4 +86,7 @@ export default {
   fetchPackageProducts(id) {
     return http.get(`/packages/${id}/products`)
   },
+  packageReshipEstimateCost({ id, ...payload }) {
+    return http.post(`/packages/${id}/reship/estimate-cost`, payload)
+  },
 }
