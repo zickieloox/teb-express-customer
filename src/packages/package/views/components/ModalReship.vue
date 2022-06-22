@@ -341,14 +341,16 @@
               >Hủy bỏ</p-button
             >
             <p-button
-              v-if="!isCheckFeeReship"
-              class="btn btn-primary"
+              class="btn btn-primary mr-2"
               :disabled="isUpdating"
               @click="estimateCostHandle"
-              >Tính phí reship</p-button
             >
+              <span v-if="feeReship"
+                >Phí reship: {{ feeReship | formatPrice }}</span
+              >
+              <span v-else>Phí reship</span>
+            </p-button>
             <p-button
-              v-if="isCheckFeeReship"
               class="btn btn-primary"
               :disabled="isUpdating"
               @click="submitHandle"
@@ -397,7 +399,7 @@ export default {
       length: 0,
       height: 0,
 
-      isCheckFeeReship: false,
+      feeReship: 0,
     }
   },
   computed: {
@@ -422,7 +424,7 @@ export default {
         return
       }
 
-      this.isCheckFeeReship = false
+      this.feeReship = 0
 
       this.fullname = current.recipient
       this.phone = current.phone_number
@@ -485,6 +487,7 @@ export default {
       if (this.isUpdating || !this.current.id) return
 
       this.isUpdating = true
+      this.feeReship = 0
 
       const params = {
         id: this.current.id,
@@ -507,14 +510,7 @@ export default {
         return
       }
 
-      this.isCheckFeeReship = true
-      this.$dialog.alert({
-        title: 'Phí reship đơn hàng',
-        message: `Phí reship dự kiến: $${result.total_amount}`,
-        onClose: () => {},
-        confirmText: 'Đóng',
-        duration: 3000,
-      })
+      this.feeReship = result.total_amount
     },
 
     async submitHandle() {
