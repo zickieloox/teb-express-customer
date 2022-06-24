@@ -328,7 +328,7 @@
       <template slot="footer">
         <div class="modal__edit-order-footer">
           <div class="total-title">
-            Phí reship:
+            Phí reship dự kiến:
             <span class="total-number">{{ feeReship | formatPrice }}</span>
             <div class="text" style="font-size: 11px"
               >Đây là phí tạm tính, có thể thay đổi theo thời điểm lệnh reship
