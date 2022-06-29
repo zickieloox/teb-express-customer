@@ -126,6 +126,14 @@ export default {
     handleClose() {
       this.$emit('update:visible', false)
       this.$emit('close')
+      this.filter = {
+        status_arr: [],
+        search: '',
+        start_date: '',
+        end_date: '',
+        search_by: '',
+      }
+      this.clearSearchDate()
     },
     selectDate(v) {
       this.err = false
