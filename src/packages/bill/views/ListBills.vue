@@ -138,7 +138,7 @@ import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import { date, dateFormat } from '@core/utils/datetime'
-import { EXPORT_BILL, FETCH_BILL_LIST } from '../store'
+import { EXPORT_BILL, FETCH_BILL_LIST, EXPORT_BILLS } from '../store'
 import { SET_LOADING } from '../../package/store'
 import mixinDownload from '@/packages/shared/mixins/download'
 import PTooltip from '../../../../uikit/components/tooltip/Tooltip'
@@ -180,7 +180,7 @@ export default {
     this.filter = this.getRouteQuery()
   },
   methods: {
-    ...mapActions('bill', [FETCH_BILL_LIST, EXPORT_BILL]),
+    ...mapActions('bill', [FETCH_BILL_LIST, EXPORT_BILL, EXPORT_BILLS]),
     ...mapActions('package', [SET_LOADING]),
 
     async init() {
@@ -217,27 +217,27 @@ export default {
       this.$set(this.filter, 'search', e.target.value.trim())
     },
     async handleExportBill(filter) {
-      this.isFetching = true
       let params = {
-        package: filter.status_arr.includes('package') ? 1 : '',
-        extra: filter.status_arr.includes('extra') ? 1 : '',
+        package: filter.status_arr.includes('package') ? 'true' : '',
+        extra: filter.status_arr.includes('extra') ? 'true' : '',
         start_date: filter.start_date,
         end_date: filter.end_date,
-        page: filter.page,
-        limit: filter.limit,
       }
-      this.filter = { ...params }
+      // this.filter = { ...params }
 
-      let result = await this[FETCH_BILL_LIST](params)
-      this.isFetching = false
+      this[SET_LOADING](true)
+      const result = await this[EXPORT_BILLS](params)
       if (!result.success) {
         this.$toast.open({
           type: 'error',
           message: result.message,
           duration: 3000,
         })
+        this[SET_LOADING](false)
         return
       }
+      this[SET_LOADING](false)
+      this.downloadBill(result.url, 'bills', result.url.split('/')[1])
       this.isVisibleModalSearch = false
     },
     handleStatus(item) {
