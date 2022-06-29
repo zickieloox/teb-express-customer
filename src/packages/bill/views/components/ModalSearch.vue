@@ -62,7 +62,7 @@
         <div class="d-flex">
           <div class="ml-7">
             <p-button type="primary" @click="handleExport">
-              Tìm kiếm
+              Xuất hóa đơn
             </p-button>
           </div>
         </div>
@@ -132,18 +132,23 @@ export default {
     selectDate(v) {
       this.err = false
       var month = new Date().getMonth() + 1
+      var year = new Date().getFullYear()
+
       if (v.startDate !== null && v.endDate !== null) {
         const time = v.endDate.getTime() - v.startDate.getTime()
         const diff_days = Math.floor(time / (1000 * 3600 * 24))
-        if (month - (v.startDate.getMonth() + 1) > 3) {
+        if (
+          month - (v.startDate.getMonth() + 1) > 3 ||
+          v.startDate.getFullYear() != year
+        ) {
           this.$toast.error(
             'Lịch sử tìm kiếm chỉ trong 3 tháng trước đến hiện tại '
           )
           this.err = true
           return
         }
-        if (diff_days > 30) {
-          this.$toast.error('Giới hạn tìm kiếm chỉ trong vòng 30 ngày')
+        if (diff_days > 14) {
+          this.$toast.error('Giới hạn tìm kiếm chỉ trong vòng 14 ngày')
           this.err = true
           return
         }
@@ -158,10 +163,16 @@ export default {
     },
     handleExport() {
       if (this.err) return
+      if (this.filter.start_date == '' || this.filter.end_date == '') {
+        this.$toast.error('Chưa chọn khoảng thời gian')
+        this.err = true
+        return
+      }
       if (this.filter.status_arr.length < 1) {
         this.$toast.error('Chưa chọn trạng thái')
         return
       }
+
       this.$emit('export', this.filter)
     },
     checkAll() {
