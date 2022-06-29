@@ -17,6 +17,7 @@
                   endDate: filter.end_date,
                 }"
                 :ranges="false"
+                :date-format="dateFormat"
                 @clear="clearSearchDate"
               ></p-datepicker>
             </div>
@@ -102,6 +103,7 @@ export default {
         end_date: '',
         search_by: '',
       },
+      disabledDates: new Date(Date.now() - 8640000),
       labelDate: `Chọn khoảng thời gian`,
       allSelected: false,
       err: false,
@@ -134,6 +136,12 @@ export default {
         search_by: '',
       }
       this.clearSearchDate()
+    },
+    dateFormat(classes, date) {
+      if (!classes.disabled) {
+        classes.disabled = date.getTime() > new Date(Date.now() - 25920000)
+      }
+      return classes
     },
     selectDate(v) {
       this.err = false
