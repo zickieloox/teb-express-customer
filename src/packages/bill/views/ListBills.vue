@@ -30,6 +30,13 @@
                   endDate: filter.end_date,
                 }"
               ></p-datepicker>
+
+              <button
+                class="btn-primary btn page-header_button ml-7"
+                @click="onOpenModal"
+              >
+                <span>Xuất hóa đơn </span>
+              </button>
             </div>
           </div>
           <div class="page-content">
@@ -115,6 +122,13 @@
         </div>
       </div>
     </div>
+
+    <ModalSearch
+      :visible.sync="isVisibleModalSearch"
+      :filterPage="filter"
+      @export="handleExportBill"
+    >
+    </ModalSearch>
   </div>
 </template>
 
@@ -129,12 +143,14 @@ import { SET_LOADING } from '../../package/store'
 import mixinDownload from '@/packages/shared/mixins/download'
 import PTooltip from '../../../../uikit/components/tooltip/Tooltip'
 import { BillCreate, BillPay, BillRefund } from '../constants'
+import ModalSearch from './components/ModalSearch'
 export default {
   name: 'ListBills',
   mixins: [mixinRoute, mixinTable, mixinDownload],
   components: {
     PTooltip,
     EmptySearchResult,
+    ModalSearch,
   },
   computed: {
     ...mapState('bill', {
@@ -156,6 +172,7 @@ export default {
       BillCreate: BillCreate,
       BillPay: BillPay,
       BillRefund: BillRefund,
+      isVisibleModalSearch: false,
     }
   },
 
@@ -199,6 +216,30 @@ export default {
       this.filter.page = 1
       this.$set(this.filter, 'search', e.target.value.trim())
     },
+    async handleExportBill(filter) {
+      this.isFetching = true
+      let params = {
+        package: filter.status_arr.includes('package') ? 1 : '',
+        extra: filter.status_arr.includes('extra') ? 1 : '',
+        start_date: filter.start_date,
+        end_date: filter.end_date,
+        page: filter.page,
+        limit: filter.limit,
+      }
+      this.filter = { ...params }
+
+      let result = await this[FETCH_BILL_LIST](params)
+      this.isFetching = false
+      if (!result.success) {
+        this.$toast.open({
+          type: 'error',
+          message: result.message,
+          duration: 3000,
+        })
+        return
+      }
+      this.isVisibleModalSearch = false
+    },
     handleStatus(item) {
       let today = dateFormat(new Date())
       let itemDay = dateFormat(item.created_at)
@@ -228,6 +269,9 @@ export default {
       }
       this[SET_LOADING](false)
       this.downloadBill(result.url, 'bills', result.url.split('/')[1])
+    },
+    onOpenModal() {
+      this.isVisibleModalSearch = true
     },
   },
 

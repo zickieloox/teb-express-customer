@@ -26,7 +26,7 @@
                   <button
                     @click="handleExport"
                     :disabled="isVisibleExport"
-                    class="btn-primary btn"
+                    class="btn-primary btn "
                     v-if="handleStatus(bill) != BillCreate && !isEmptyBill"
                   >
                     <img src="~@/assets/img/arrow-down.svg" />
