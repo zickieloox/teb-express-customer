@@ -217,7 +217,6 @@ export default {
   created() {},
 
   methods: {
-    // ...mapActions('claim', [UPLOAD_FILE_CLAIM, CREATE_CLAIM]),
     handleClose() {
       this.$emit('update:visible', false)
       this.$emit('close')
@@ -242,8 +241,12 @@ export default {
     },
     beforeAction() {
       if (this.err) return false
-      if (this.filter.status_arr == []) {
+      if (this.filter.status_arr.length == 0) {
         this.$toast.error('Chưa chọn trạng thái')
+        return false
+      }
+      if (this.filter.start_date == '' || this.filter.end_date == '') {
+        this.$toast.error('Chưa chọn khoảng thời gian')
         return false
       }
       this.filter.search = this.filter.search.trim()
