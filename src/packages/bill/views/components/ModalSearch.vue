@@ -101,8 +101,6 @@ export default {
         start_date: '',
         end_date: '',
         search_by: '',
-        page: 1,
-        limit: 25,
       },
       labelDate: `Chọn khoảng thời gian`,
       allSelected: false,
@@ -174,6 +172,14 @@ export default {
       }
 
       this.$emit('export', this.filter)
+      this.filter = {
+        status_arr: [],
+        search: '',
+        start_date: '',
+        end_date: '',
+        search_by: '',
+      }
+      this.clearSearchDate()
     },
     checkAll() {
       this.filter.status_arr = []
