@@ -240,22 +240,21 @@ export default {
       this.filter.end_date = ''
       this.filter.start_date = ''
     },
-    handleView() {
-      if (this.err) return
+    beforeAction() {
+      if (this.err) return false
       if (this.filter.status_arr == []) {
         this.$toast.error('Chưa chọn trạng thái')
-        return
+        return false
       }
       this.filter.search = this.filter.search.trim()
+      return true
+    },
+    handleView() {
+      if (!this.beforeAction()) return
       this.$emit('fetch', this.filter)
     },
     handleExport() {
-      if (this.err) return
-      if (this.filter.status_arr == []) {
-        this.$toast.error('Chưa chọn trạng thái')
-        return
-      }
-      this.filter.search = this.filter.search.trim()
+      if (!this.beforeAction()) return
       this.$emit('export', this.filter)
     },
     checkAll() {
