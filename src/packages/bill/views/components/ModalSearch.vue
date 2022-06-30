@@ -7,6 +7,7 @@
             <span> Khoảng thời gian:</span>
             <div class=" date-search  ">
               <p-datepicker
+                ref="time"
                 :format="'dd/mm/yyyy'"
                 class="p-input-group input-group"
                 @update="selectDate"
@@ -144,26 +145,28 @@ export default {
       return classes
     },
     selectDate(v) {
-      this.err = false
-      var month = new Date().getMonth() + 1
       var year = new Date().getFullYear()
+      var today = new Date().getTime()
 
       if (v.startDate !== null && v.endDate !== null) {
         const time = v.endDate.getTime() - v.startDate.getTime()
         const diff_days = Math.floor(time / (1000 * 3600 * 24))
-        if (
-          month - (v.startDate.getMonth() + 1) > 3 ||
-          v.startDate.getFullYear() != year
-        ) {
+        const range_days = Math.floor(
+          (today - v.startDate.getTime()) / (1000 * 3600 * 24)
+        )
+        if (range_days > 90 || v.startDate.getFullYear() != year) {
           this.$toast.error(
-            'Lịch sử tìm kiếm chỉ trong 3 tháng trước đến hiện tại '
+            'Lịch sử tìm kiếm chỉ trong 3 tháng trước đến hiện tại ',
+            { duration: 3000 }
           )
-          this.err = true
+          this.$refs.time.clear()
           return
         }
         if (diff_days > 14) {
-          this.$toast.error('Giới hạn tìm kiếm chỉ trong vòng 14 ngày')
-          this.err = true
+          this.$toast.error('Giới hạn tìm kiếm chỉ trong vòng 14 ngày', {
+            duration: 3000,
+          })
+          this.$refs.time.clear()
           return
         }
       }
@@ -173,17 +176,14 @@ export default {
     clearSearchDate() {
       this.filter.end_date = ''
       this.filter.start_date = ''
-      this.err = false
     },
     handleExport() {
-      if (this.err) return
       if (this.filter.start_date == '' || this.filter.end_date == '') {
-        this.$toast.error('Chưa chọn khoảng thời gian')
-        this.err = true
+        this.$toast.error('Chưa chọn khoảng thời gian', { duration: 3000 })
         return
       }
       if (this.filter.status_arr.length < 1) {
-        this.$toast.error('Chưa chọn trạng thái')
+        this.$toast.error('Chưa chọn trạng thái', { duration: 3000 })
         return
       }
 
@@ -215,12 +215,8 @@ export default {
       this.allSelected =
         this.filter.status_arr.length == this.option.length ? true : false
     },
-    visible: function(val) {
+    visible: function() {
       this.err = false
-      if (val) {
-        this.filter.start_date = this.filterPage.start_date
-        this.filter.end_date = this.filterPage.end_date
-      }
     },
   },
 }

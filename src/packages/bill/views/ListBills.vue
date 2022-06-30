@@ -234,6 +234,7 @@ export default {
           duration: 3000,
         })
         this[SET_LOADING](false)
+        this.isVisibleModalSearch = false
         return
       }
       this[SET_LOADING](false)
