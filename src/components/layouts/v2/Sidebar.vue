@@ -56,7 +56,7 @@
                             isContainAlias(sub.alias) ||
                             childrenNameRoute(sub.title),
                         }"
-                        class="site-menu-sub-title"
+                        class="site-menu-sub-title d-flex"
                       >
                         <img
                           class="default"
