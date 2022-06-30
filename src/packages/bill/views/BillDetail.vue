@@ -429,7 +429,7 @@ export default {
 .p-tooltip:after {
   height: auto;
   word-break: break-word;
-  width: 250%;
+  // width: 250%;
   text-align: center;
 }
 </style>
