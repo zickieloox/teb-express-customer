@@ -15,9 +15,7 @@ import store from './core/store'
 import '../uikit'
 import { VclTable } from 'vue-content-loading'
 import validationMessagesVi from 'vee-validate/dist/locale/vi'
-// import validationMessagesEn from 'vee-validate/dist/locale/en'
 import InlineSvg from 'vue-inline-svg'
-// import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 Vue.component('inline-svg', InlineSvg)
 
 Vue.use(VueClipboard)
@@ -179,5 +177,3 @@ new Vue({
 Object.keys(filters).forEach((key) => {
   Vue.filter(key, filters[key])
 })
-
-// Vue.use(autoAnimatePlugin).$mount('#app')
