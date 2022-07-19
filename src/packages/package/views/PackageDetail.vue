@@ -290,8 +290,8 @@
                           <div class="card-action"
                             ><a @click.prevent="changeDisplayDeliverDetail()"
                               >Lịch sử đơn</a
-                            ></div
-                          >
+                            >
+                          </div>
                         </div>
                         <div
                           class="card-content log-content"
@@ -325,8 +325,8 @@
                           <div class="card-action"
                             ><a @click.prevent="changeDisplayDeliverDetail()"
                               >Hành trình đơn</a
-                            ></div
-                          >
+                            >
+                          </div>
                         </div>
                         <div
                           class="card-content log-content"
@@ -451,6 +451,7 @@
   line-height: 22px;
   color: #313232;
 }
+
 .disable-extra-fee {
   color: #cfd0d0;
 }
@@ -671,7 +672,12 @@ export default {
       }
 
       this.init()
-      this.$toast.success('Tạo tracking thành công', { duration: 3000 })
+      let msg = 'Tạo tracking thành công'
+      if (res.promotion_label) {
+        msg =
+          'Đơn hàng đang được xử lý tạo tracking, thông tin xử lý sẽ được cập nhật sau'
+      }
+      this.$toast.success(msg, { duration: 3000 })
     },
 
     handleCancelPackage() {
