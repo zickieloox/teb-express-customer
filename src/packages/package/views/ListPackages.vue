@@ -743,6 +743,9 @@ export default {
     clearSearchDate() {
       this.filter.end_date = ''
       this.filter.start_date = ''
+      this.filter.search = ''
+      this.filter.search_by = ''
+      this.filter.status_arr = []
       this.filter.page = 1
     },
     async handleImportPackage(file, template) {
