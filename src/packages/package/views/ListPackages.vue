@@ -214,7 +214,7 @@
                         <span class="code">
                           <p-tooltip
                             :label="item.code"
-                            v-if="item.code"
+                            v-if="showPackageCode(item)"
                             size="large"
                             position="top"
                             type="dark"
@@ -236,7 +236,7 @@
                         </span>
 
                         <span class="link">
-                          <span class="svg" v-if="item.code">
+                          <span class="svg" v-if="showPackageCode(item)">
                             <p-tooltip
                               class="item_name"
                               :label="` Copy `"
@@ -304,7 +304,7 @@
                             </p-tooltip>
                           </span>
 
-                          <span class="svg" v-if="item.code">
+                          <span class="svg" v-if="showPackageCode(item)">
                             <p-tooltip
                               class="item_name"
                               :label="` Track `"
@@ -529,6 +529,7 @@ import { formatPrice } from '@core/utils/formatter'
 
 import {
   PACKAGE_STATUS_TAB,
+  PACKAGE_STATUS_ARCHIVED,
   PACKAGE_STATUS_CREATED_TEXT,
   PACKAGE_STATUS_RETURN_TEXT,
   PACKAGE_STATUS_EXPIRED_TEXT,
@@ -698,6 +699,13 @@ export default {
     },
     async searchAdvanced(filter) {
       this.filter = { ...filter }
+    },
+    showPackageCode(item) {
+      console.log(item.status)
+      if (item.status === PACKAGE_STATUS_ARCHIVED) {
+        return false
+      }
+      return item.code !== ''
     },
     convertPrice(item) {
       if (item.status_string == PACKAGE_STATUS_CREATED_TEXT) {
