@@ -701,7 +701,6 @@ export default {
       this.filter = { ...filter }
     },
     showPackageCode(item) {
-      console.log(item.status)
       if (item.status === PACKAGE_STATUS_ARCHIVED) {
         return false
       }
