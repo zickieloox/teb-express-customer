@@ -203,9 +203,10 @@
         justify-content: space-between;
         .page-header__info {
             display: grid;
-            grid-column-gap: 47px;
+            grid-column-gap: 35px;
             grid-template-columns: auto auto auto auto auto auto;
             &.grip-5-col {
+                grid-column-gap: 47px;
                 grid-template-columns: auto auto auto auto auto !important;
             }
             .info-package {
