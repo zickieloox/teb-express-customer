@@ -62,7 +62,7 @@
               @click="handleCancelPackage"
               v-if="hasCancelPackage"
             >
-              <span>Hủy đơn</span>
+              Hủy đơn
             </p-button>
             <p-button
               @click="handleModal"
