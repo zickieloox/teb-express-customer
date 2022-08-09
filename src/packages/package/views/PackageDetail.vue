@@ -358,6 +358,7 @@
               <div class="fee__left">
                 <div class="title">Phí giao hàng:</div>
                 <div class="title">Phí phát sinh:</div>
+                <div class="title">Phí hold:</div>
                 <div class="fee__number">{{
                   (current.shipping_fee || 0) | formatPrice
                 }}</div>
@@ -375,7 +376,6 @@
                     />
                   </div>
                 </div>
-
                 <div
                   v-if="isVisiblePopupMoreExtraFee"
                   class="pop-up-more-extra-fee"
@@ -383,6 +383,31 @@
                   <div v-for="(item, i) of mapExtraFee" :key="i">
                     <div>{{ item.extra_fee_types.name }}</div>
                     <div>{{ item.amount | formatPrice }}</div>
+                  </div>
+                </div>
+
+                <div class="fee__number"
+                  >{{ sumRefundfee | formatPrice }}
+                  <div class="more-extra-fee" v-if="refundFee.length">
+                    <img
+                      @mouseover="showPopupMoreRefundFee"
+                      @mouseleave="hiddenPopupMoreRefundFee"
+                      src="~@/assets/img/InfoCircleGrey.svg"
+                      alt=""
+                    />
+                  </div>
+                </div>
+
+                <div class="pop-up-more-refund-fee">
+                  <div class="">Ngày xử lý dự kiến</div>
+                  <div
+                    v-for="(item, i) of package_detail.package_refund"
+                    :key="i"
+                  >
+                    <div class="amount">{{ item.amount | formatPrice }} : </div>
+                    <div
+                      >{{ item.created_at | datetime('dd/MM/yyyy - HH:mm:ss') }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -492,6 +517,7 @@ export default {
       displayDeliverDetail: false,
       isVisibleModal: false,
       isVisiblePopupMoreExtraFee: false,
+      isVisiblePopupMoreRefundFee: false,
       isVisibleConfirmWayBill: false,
       actions: {
         wayBill: {
@@ -539,6 +565,19 @@ export default {
     current() {
       return this.package_detail.package || {}
     },
+    sumRefundfee() {
+      if (
+        !this.package_detail.package_refund ||
+        this.package_detail.package_refund.length <= 0
+      ) {
+        return 0
+      }
+
+      return this.package_detail.package_refund.reduce(
+        (total, { amount }) => total + amount,
+        0
+      )
+    },
     sumExtraFee() {
       if (this.current.status_string == PACKAGE_STATUS_CREATED_TEXT) {
         return this.caculateFee(this.current.weight)
@@ -561,6 +600,11 @@ export default {
     },
     extraFee() {
       return this.package_detail.extra_fee ? this.package_detail.extra_fee : []
+    },
+    refundFee() {
+      return this.package_detail.package_refund
+        ? this.package_detail.package_refund
+        : []
     },
     mapExtraFee() {
       let arr = cloneDeep(this.extraFee),
@@ -653,6 +697,14 @@ export default {
     hiddenPopupMoreExtraFee() {
       this.isVisiblePopupMoreExtraFee = false
     },
+
+    showPopupMoreRefundFee() {
+      this.isVisiblePopupMoreRefundFee = true
+    },
+    hiddenPopupMoreRefundFee() {
+      this.isVisiblePopupMoreRefundFee = false
+    },
+
     handleWayBill() {
       this.actions.wayBill.Description = `Bạn có chắc chắn muốn tạo tracking?`
       this.isVisibleConfirmWayBill = true
