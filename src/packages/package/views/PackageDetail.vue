@@ -410,9 +410,7 @@
                     :key="i"
                   >
                     <div class="amount">{{ item.amount | formatPrice }} : </div>
-                    <div
-                      >{{ item.created_at | datetime('dd/MM/yyyy - HH:mm:ss') }}
-                    </div>
+                    <div>{{ item.created_at | datetime('dd/MM/yyyy') }} </div>
                   </div>
                 </div>
               </div>
