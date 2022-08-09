@@ -356,6 +356,10 @@
             font-weight: 600;
         }
     }
+    .hidden_refund{
+        visibility: hidden;
+        opacity: 0;
+    }
     .pop-up-more-extra-fee>div {
         display: flex;
         justify-content: space-between;

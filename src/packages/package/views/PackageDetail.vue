@@ -358,7 +358,9 @@
               <div class="fee__left">
                 <div class="title">Phí giao hàng:</div>
                 <div class="title">Phí phát sinh:</div>
-                <div class="title">Phí hold:</div>
+                <div class="title" :class="{ hidden_refund: !refundFee.length }"
+                  >Phí hold:</div
+                >
                 <div class="fee__number">{{
                   (current.shipping_fee || 0) | formatPrice
                 }}</div>
@@ -386,9 +388,9 @@
                   </div>
                 </div>
 
-                <div class="fee__number"
+                <div v-if="refundFee.length > 0" class="fee__number"
                   >{{ sumRefundfee | formatPrice }}
-                  <div class="more-extra-fee" v-if="refundFee.length">
+                  <div class="more-extra-fee">
                     <img
                       @mouseover="showPopupMoreRefundFee"
                       @mouseleave="hiddenPopupMoreRefundFee"
@@ -398,7 +400,10 @@
                   </div>
                 </div>
 
-                <div class="pop-up-more-refund-fee">
+                <div
+                  v-if="isVisiblePopupMoreRefundFee"
+                  class="pop-up-more-refund-fee"
+                >
                   <div class="">Ngày xử lý dự kiến</div>
                   <div
                     v-for="(item, i) of package_detail.package_refund"
