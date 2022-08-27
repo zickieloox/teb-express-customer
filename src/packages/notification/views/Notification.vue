@@ -23,9 +23,11 @@
                 v-if="getIcon(item.type)"
                 :src="getIcon(item.type)"
               ></inline-svg>
-              <div class="item-text ml-7"
-                >{{ item.body }}
-                <div class="item-date mt-2">{{
+              <div class="item-text">
+                <div class="item-body">
+                  {{ item.body }}
+                </div>
+                <div class="item-date">{{
                   item.created_at | datetime('dd/MM/yyyy - HH:mm')
                 }}</div>
               </div>

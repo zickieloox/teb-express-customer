@@ -30,9 +30,24 @@
 
   .item-content {
     display: flex;
+
+    .item-text {
+      margin-left: 8px;
+      line-height: 20px;
+
+      .item-date {
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 16px;
+        color: #B0B3B9;
+        margin-top: 4px;
+      }
+    }
   }
 
   .noti__dropdown-item {
+    padding: 16px;
+
     &.unread {
       .item-content {
         svg {
