@@ -28,6 +28,7 @@ export const state = {
   countNotiAll: 0,
   warehouses: [],
   configs: {},
+  typeStatus: [],
 }
 
 export const getters = {
@@ -80,7 +81,8 @@ export const mutations = {
     state.countNoti = payload
   },
   [COUNT_NOTIFICATIONS_ALL]: (state, payload) => {
-    state.countNotiAll = payload
+    state.countNotiAll = payload.count
+    state.typeStatus = payload.status
   },
   [PUSH_NOTIFICATION]: (state, payload) => {
     state.countNoti++
@@ -200,7 +202,7 @@ export const actions = {
       }
     }
     commit(FETCH_NOTIFICATIONS_ALL, list.notifications)
-    commit(COUNT_NOTIFICATIONS_ALL, count.count)
+    commit(COUNT_NOTIFICATIONS_ALL, count)
     return result
   },
 

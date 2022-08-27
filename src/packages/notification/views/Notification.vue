@@ -1,7 +1,13 @@
 <template>
   <div class="notification__page pages">
     <div class="container">
-      <div class="page-header"> </div>
+      <div class="page-header">
+        <status-tab
+          v-model="filter.type"
+          :status="notifyTypes"
+          :count="countType"
+        />
+      </div>
       <div class="page-content">
         <div
           v-for="(item, i) in notifications"
@@ -11,12 +17,10 @@
           class="noti__dropdown-item"
         >
           <div class="item-content">
-            <!--                      <div class="item-icon ">-->
-            <!--                        <inline-svg-->
-            <!--                          :src="require('../../../../src/assets/img/icon-noti.svg')"-->
-            <!--                          class=""-->
-            <!--                        ></inline-svg>-->
-            <!--                      </div>-->
+            <inline-svg
+              v-if="getIcon(item.type)"
+              :src="getIcon(item.type)"
+            ></inline-svg>
             <div class="item-text ml-7"
               >{{ item.body }}
               <div class="item-date mt-2">{{
@@ -50,7 +54,14 @@ import {
   NotificationRead,
   NotificationUnread,
 } from '../../../packages/shared/constants'
-
+import {
+  NOTIFY_TYPE,
+  NOTIFY_TYPE_ORDER_UPDATE,
+  NOTIFY_TYPE_FINANCE_UPDATE,
+  NOTIFY_TYPE_ANNOUNCEMENT,
+  NOTIFY_TYPE_SERVICE_UPDATE,
+  NOTIFY_TYPE_PROMOTION,
+} from '../constant'
 export default {
   name: 'Notification',
   mixins: [mixinRoute, mixinTable],
@@ -58,13 +69,27 @@ export default {
     ...mapState('shared', {
       notifications: (state) => state.notificationAll,
       count: (state) => state.countNotiAll,
+      countType: (state) => {
+        const countType = state.typeStatus.map(({ count, type }) => {
+          return {
+            count: count,
+            status: type,
+          }
+        })
+        return countType
+      },
     }),
+    notifyTypes() {
+      const type = NOTIFY_TYPE.map(({ text, value }) => [text, value])
+      return Object.fromEntries(type)
+    },
   },
   data() {
     return {
       filter: {
         limit: 25,
         page: 1,
+        type: '',
       },
       NotificationUnread: NotificationUnread,
       NotificationRead: NotificationRead,
@@ -105,6 +130,22 @@ export default {
       this.handleUpdateRouteQuery()
       let limit = this.filter
       await this[FETCH_NOTIFICATIONS_ALL](limit)
+    },
+    getIcon(type) {
+      switch (type) {
+        case NOTIFY_TYPE_ORDER_UPDATE:
+          return require('../../../../src/assets/img/order_update_notify.svg')
+        case NOTIFY_TYPE_FINANCE_UPDATE:
+          return require('../../../../src/assets/img/finance_update_notify.svg')
+        case NOTIFY_TYPE_ANNOUNCEMENT:
+          return require('../../../../src/assets/img/announcement_notify.svg')
+        case NOTIFY_TYPE_SERVICE_UPDATE:
+          return require('../../../../src/assets/img/service_notify.svg')
+        case NOTIFY_TYPE_PROMOTION:
+          return require('../../../../src/assets/img/promotion_notify.svg')
+        default:
+          break
+      }
     },
   },
   created() {
