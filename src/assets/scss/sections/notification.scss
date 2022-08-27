@@ -32,6 +32,18 @@
     display: flex;
   }
 
+  .noti__dropdown-item {
+    &.unread {
+      .item-content {
+        svg {
+          path {
+            stroke: #898A8A;
+          }
+        }
+      }
+    }
+  }
+
   .page-header {
     padding: 22px 0 16px;
 
