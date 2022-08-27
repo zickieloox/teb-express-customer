@@ -9,26 +9,30 @@
         />
       </div>
       <div class="page-content">
-        <div
-          v-for="(item, i) in notifications"
-          :key="i"
-          :class="{ unread: item.readed == NotificationUnread }"
-          @click="handelReadNoti(item)"
-          class="noti__dropdown-item"
-        >
-          <div class="item-content">
-            <inline-svg
-              v-if="getIcon(item.type)"
-              :src="getIcon(item.type)"
-            ></inline-svg>
-            <div class="item-text ml-7"
-              >{{ item.body }}
-              <div class="item-date mt-2">{{
-                item.created_at | datetime('dd/MM/yyyy - HH:mm')
-              }}</div>
+        <VclTable class="mt-20" v-if="isFetching"></VclTable>
+        <template v-else-if="notifications.length">
+          <div
+            v-for="(item, i) in notifications"
+            :key="i"
+            :class="{ unread: item.readed == NotificationUnread }"
+            @click="handelReadNoti(item)"
+            class="noti__dropdown-item"
+          >
+            <div class="item-content">
+              <inline-svg
+                v-if="getIcon(item.type)"
+                :src="getIcon(item.type)"
+              ></inline-svg>
+              <div class="item-text ml-7"
+                >{{ item.body }}
+                <div class="item-date mt-2">{{
+                  item.created_at | datetime('dd/MM/yyyy - HH:mm')
+                }}</div>
+              </div>
             </div>
           </div>
-        </div>
+        </template>
+        <empty-search-result v-else></empty-search-result>
       </div>
       <div class="page-footer mb-80" v-if="count > 0">
         <p-pagination
@@ -45,6 +49,7 @@
 import { mapState, mapActions } from 'vuex'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
+import EmptySearchResult from '@components/shared/EmptySearchResult'
 import {
   FETCH_NOTIFICATIONS,
   FETCH_NOTIFICATIONS_ALL,
@@ -65,6 +70,9 @@ import {
 export default {
   name: 'Notification',
   mixins: [mixinRoute, mixinTable],
+  components: {
+    EmptySearchResult,
+  },
   computed: {
     ...mapState('shared', {
       notifications: (state) => state.notificationAll,
@@ -91,6 +99,7 @@ export default {
         page: 1,
         type: '',
       },
+      isFetching: false,
       NotificationUnread: NotificationUnread,
       NotificationRead: NotificationRead,
       filterUnread: {
@@ -129,7 +138,9 @@ export default {
     async init() {
       this.handleUpdateRouteQuery()
       let limit = this.filter
+      this.isFetching = true
       await this[FETCH_NOTIFICATIONS_ALL](limit)
+      this.isFetching = false
     },
     getIcon(type) {
       switch (type) {

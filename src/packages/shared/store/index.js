@@ -192,7 +192,7 @@ export const actions = {
     let result = { success: true }
     let [list, count] = await Promise.all([
       api.fetchNotifications(payload),
-      api.countNotifications(),
+      api.countNotifications(payload),
     ])
     if (!list.notifications || !count) {
       count = { count: 0 }
