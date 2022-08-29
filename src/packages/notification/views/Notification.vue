@@ -40,7 +40,24 @@
             </div>
           </div>
         </template>
-        <empty-search-result v-else></empty-search-result>
+        <template v-else>
+          <div class="page-content page-not-found empty-notify">
+            <div class="content">
+              <div class="content_404">
+                <div class="content_404-img">
+                  <inline-svg
+                    :src="
+                      require('../../../../src/assets/img/empty_notify.svg')
+                    "
+                  ></inline-svg>
+                  <p style="margin-top: 16px;"
+                    >Bạn chưa nhận được thông báo nào!</p
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
       </div>
       <div class="page-footer mb-80" v-if="count > 0">
         <p-pagination
@@ -57,7 +74,7 @@
 import { mapState, mapActions } from 'vuex'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
-import EmptySearchResult from '@components/shared/EmptySearchResult'
+
 import {
   FETCH_NOTIFICATIONS,
   FETCH_NOTIFICATIONS_ALL,
@@ -78,9 +95,6 @@ import {
 export default {
   name: 'Notification',
   mixins: [mixinRoute, mixinTable],
-  components: {
-    EmptySearchResult,
-  },
   computed: {
     ...mapState('shared', {
       notifications: (state) => state.notificationAll,
@@ -127,9 +141,16 @@ export default {
     ]),
     handelReadNoti(item) {
       if (item.link) {
-        // eslint-disable-next-line no-useless-escape
-        var url = item.link.replace(/(http[s]?:\/\/)?([^\/\s]+(\/)|^[\/])/, '')
-        this.$router.push({ path: `/${url}` })
+        if (!item.type) {
+          var url = item.link.replace(
+            // eslint-disable-next-line no-useless-escape
+            /(http[s]?:\/\/)?([^\/\s]+(\/)|^[\/])/,
+            ''
+          )
+          this.$router.push({ path: `/${url}` })
+        } else {
+          window.open(item.link, '_blank')
+        }
       }
       this.callRead(item)
     },

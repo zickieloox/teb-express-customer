@@ -11,8 +11,8 @@
               :src="require('../../../../src/assets/img/arrow_left.svg')"
             ></inline-svg>
           </router-link>
-          {{ handleTitle }}</div
-        >
+          {{ handleTitle }}
+        </div>
       </div>
 
       <!--      Start Notifications  -->
@@ -72,7 +72,7 @@
                       <!--                        ></inline-svg>-->
                       <!--                      </div>-->
                       <div class="item-text ml-7"
-                        >{{ item.body }}
+                        >{{ item.title }}
                         <div class="item-date">{{
                           item.created_at | datetime('dd/MM/yyyy - HH:mm')
                         }}</div>
@@ -121,8 +121,8 @@
                   v-if="user.user_info && user.user_info.debt_max_amount > 0"
                   >Trả sau</span
                 >
-                <span v-else>Trả trước</span></div
-              >
+                <span v-else>Trả trước</span>
+              </div>
             </div>
           </div>
           <p-dropdown-item>
@@ -133,7 +133,8 @@
               <inline-svg
                 class="navbar__header-icon"
                 :src="require('../../../../src/assets/img/lifebuoy.svg')"
-              ></inline-svg>
+              >
+              </inline-svg>
               Hỏi đáp trợ giúp
             </router-link>
           </p-dropdown-item>
@@ -153,7 +154,8 @@
               <inline-svg
                 class="navbar__header-icon"
                 :src="require('../../../../src/assets/img/Logout.svg')"
-              ></inline-svg>
+              >
+              </inline-svg>
               Đăng xuất
             </router-link>
           </p-dropdown-item>
@@ -284,11 +286,13 @@ export default {
     font-weight: 600;
     font-size: 10px;
     color: #626363;
+
     i {
       font-size: 4px;
       margin-right: 4px;
       margin-left: 4px;
     }
+
     svg {
       margin: 0 4px 1px 0;
     }
