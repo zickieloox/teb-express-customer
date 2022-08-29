@@ -19,10 +19,7 @@
             class="noti__dropdown-item"
           >
             <div class="item-content">
-              <inline-svg
-                v-if="getIcon(item.type)"
-                :src="getIcon(item.type)"
-              ></inline-svg>
+              <inline-svg :src="getIcon(item.type)"></inline-svg>
               <div class="item-text">
                 <div class="item-body">
                   {{ item.title }}
@@ -184,7 +181,7 @@ export default {
         case NOTIFY_TYPE_PROMOTION:
           return require('../../../../src/assets/img/promotion_notify.svg')
         default:
-          break
+          return require('../../../../src/assets/img/no_type_notify.svg')
       }
     },
   },
