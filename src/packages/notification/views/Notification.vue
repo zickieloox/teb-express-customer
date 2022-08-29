@@ -25,12 +25,18 @@
               ></inline-svg>
               <div class="item-text">
                 <div class="item-body">
-                  {{ item.body }}
+                  {{ item.title }}
                 </div>
                 <div class="item-date">{{
                   item.created_at | datetime('dd/MM/yyyy - HH:mm')
                 }}</div>
               </div>
+            </div>
+            <div
+              class="notify-body"
+              :class="{ 'body-icon': getIcon(item.type) }"
+            >
+              {{ item.body }}
             </div>
           </div>
         </template>
