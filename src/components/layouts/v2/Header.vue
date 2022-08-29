@@ -261,9 +261,16 @@ export default {
     },
     async handelReadNoti(item) {
       if (item.link) {
-        // eslint-disable-next-line no-useless-escape
-        var url = item.link.replace(/(http[s]?:\/\/)?([^\/\s]+(\/)|^[\/])/, '')
-        this.$router.replace({ path: `/${url}` })
+        if (!item.type) {
+          var url = item.link.replace(
+            // eslint-disable-next-line no-useless-escape
+            /(http[s]?:\/\/)?([^\/\s]+(\/)|^[\/])/,
+            ''
+          )
+          this.$router.replace({ path: `/${url}` })
+        } else {
+          window.open(item.link, '_blank')
+        }
       }
       if (item.readed == NotificationRead) return
       const arr = []
