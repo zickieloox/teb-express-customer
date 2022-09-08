@@ -18,7 +18,7 @@
       <!--      Start Notifications  -->
       <div class="navbar__header-right d-flex align-items-center">
         <div
-          class="navbar_header-map-point mr-8"
+          class="navbar_header-map-point"
           :class="{ 'mr-8': promotions.length, 'mr-30': !promotions.length }"
         >
           <button class="btn btn-map-point" @click="handleMapPoint">
