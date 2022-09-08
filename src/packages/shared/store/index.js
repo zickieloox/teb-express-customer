@@ -20,6 +20,7 @@ import union from 'lodash/union'
 import { NotificationRead } from '../constants'
 export const state = {
   user: {},
+  promotions: [],
   addresses: [],
   isDebt: false,
   notifications: [],
@@ -56,7 +57,8 @@ export const getters = {
 
 export const mutations = {
   [GET_USER]: (state, payload) => {
-    state.user = payload
+    state.user = payload.user
+    state.promotions = payload.promotions
   },
   [GET_CONFIGS]: (state, payload) => {
     state.configs = payload
@@ -129,7 +131,7 @@ export const actions = {
       response.user = {}
     }
 
-    commit(GET_USER, response.user)
+    commit(GET_USER, response)
     return result
   },
 

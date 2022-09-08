@@ -17,7 +17,10 @@
 
       <!--      Start Notifications  -->
       <div class="navbar__header-right d-flex align-items-center">
-        <div class="navbar_header-map-point mr-30">
+        <div
+          class="navbar_header-map-point mr-8"
+          :class="{ 'mr-8': promotions.length, 'mr-30': !promotions.length }"
+        >
           <button class="btn btn-map-point" @click="handleMapPoint">
             <inline-svg
               :src="
@@ -28,7 +31,15 @@
             <span>Lionbay Point</span>
           </button>
         </div>
-
+        <div class="navbar_header-map-point mr-30" v-if="promotions.length">
+          <button class="btn btn-map-point" @click="handlePromotions">
+            <inline-svg
+              :src="require('../../../../src/assets/img/promotion_icon.svg')"
+            >
+            </inline-svg>
+            <span>Promotion</span>
+          </button>
+        </div>
         <div class="navbar__header-noti">
           <p-dropdown :multiple="false" class="">
             <div class="noti__dropdown-icon" slot="trigger">
@@ -168,6 +179,11 @@
       v-if="isVisibleMapPoint"
     >
     </modal-map-point>
+    <modal-promotion
+      v-if="promotions.length"
+      :visible.sync="isVisiblePromotion"
+    >
+    </modal-promotion>
   </nav>
 </template>
 <script>
@@ -190,9 +206,14 @@ import {
 } from '../../../packages/shared/constants'
 import PDropdownItem from '../../../../uikit/components/dropdown/DropdownItem'
 import ModalMapPoint from './ModalMapPoint.vue'
-
+import ModalPromotion from '@components/shared/modal/ModalPromotion'
 export default {
-  components: { PDropdownItem, PDropdown, ModalMapPoint },
+  components: {
+    ModalPromotion,
+    PDropdownItem,
+    PDropdown,
+    ModalMapPoint,
+  },
   mixins: [mixinRoute, mixinTable],
   name: 'Header',
   props: {
@@ -207,6 +228,7 @@ export default {
   computed: {
     ...mapState('shared', {
       isDebt: (state) => state.isDebt,
+      promotions: (state) => state.promotions,
     }),
     ...mapGetters('shared', {
       count: GET_COUNT,
@@ -235,6 +257,7 @@ export default {
       },
       NotificationUnread: NotificationUnread,
       isVisibleMapPoint: false,
+      isVisiblePromotion: false,
     }
   },
   methods: {
@@ -245,6 +268,9 @@ export default {
     ]),
     handleMapPoint() {
       this.isVisibleMapPoint = true
+    },
+    handlePromotions() {
+      this.isVisiblePromotion = true
     },
     async init() {
       const result = await this[FETCH_NOTIFICATIONS](this.filter)
