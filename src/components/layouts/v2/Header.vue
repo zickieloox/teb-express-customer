@@ -19,7 +19,7 @@
       <div class="navbar__header-right d-flex align-items-center">
         <div
           class="navbar_header-map-point"
-          :class="{ 'mr-8': promotions.length, 'mr-30': !promotions.length }"
+          :class="{ 'mr-8': promotion, 'mr-30': !promotion }"
         >
           <button class="btn btn-map-point" @click="handleMapPoint">
             <inline-svg
@@ -31,7 +31,7 @@
             <span>Lionbay Point</span>
           </button>
         </div>
-        <div class="navbar_header-map-point mr-30" v-if="promotions.length">
+        <div class="navbar_header-map-point mr-30" v-if="promotion">
           <button
             class="btn btn-map-point"
             @click="handlePromotions"
@@ -183,10 +183,7 @@
       v-if="isVisibleMapPoint"
     >
     </modal-map-point>
-    <modal-promotion
-      v-if="promotions.length"
-      :visible.sync="isVisiblePromotion"
-    >
+    <modal-promotion v-if="promotion" :visible.sync="isVisiblePromotion">
     </modal-promotion>
   </nav>
 </template>
@@ -232,7 +229,7 @@ export default {
   computed: {
     ...mapState('shared', {
       isDebt: (state) => state.isDebt,
-      promotions: (state) => state.promotions,
+      promotion: (state) => state.promotion,
     }),
     ...mapGetters('shared', {
       count: GET_COUNT,

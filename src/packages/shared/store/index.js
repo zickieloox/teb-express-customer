@@ -20,7 +20,7 @@ import union from 'lodash/union'
 import { NotificationRead } from '../constants'
 export const state = {
   user: {},
-  promotions: [],
+  promotion: null,
   addresses: [],
   isDebt: false,
   notifications: [],
@@ -58,7 +58,7 @@ export const getters = {
 export const mutations = {
   [GET_USER]: (state, payload) => {
     state.user = payload.user
-    state.promotions = payload.promotions
+    state.promotion = payload.promotion
   },
   [GET_CONFIGS]: (state, payload) => {
     state.configs = payload

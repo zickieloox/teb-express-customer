@@ -4,13 +4,7 @@
       <div class="row mb-18 promotion_row">
         <div class="col-12">
           <label class="modal__add-claim-label">Tên: </label>
-          <multiselect
-            placeholder="Vui lòng chọn"
-            class="multiselect-custom"
-            v-model="promotion"
-            :options="promotions"
-            :custom-label="customLabel"
-          ></multiselect>
+          <p-input type="text" :input="name" :readonly="true" />
         </div>
       </div>
 
@@ -42,7 +36,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { cloneDeep } from '@core/utils'
+
 export default {
   name: 'ModalPromotion',
   props: {
@@ -53,34 +47,27 @@ export default {
   },
   computed: {
     ...mapState('shared', {
-      promotions: (state) => state.promotions,
+      promotion: (state) => state.promotion,
     }),
   },
   data() {
     return {
-      promotion: null,
       description: '',
+      name: '',
     }
   },
   methods: {
-    customLabel({ name }) {
-      return name
-    },
     handleClose() {
       this.$emit('update:visible', false)
     },
   },
   watch: {
     visible: {
-      handler: function(v) {
-        if (v && this.promotions.length) {
-          this.promotion = cloneDeep(this.promotions[0])
+      handler: function() {
+        if (this.promotion) {
+          this.name = this.promotion.name
+          this.description = this.promotion.description
         }
-      },
-    },
-    promotion: {
-      handler: function(v) {
-        this.description = v ? v.description : ''
       },
     },
   },
@@ -97,9 +84,11 @@ export default {
   font-size: 14px;
   line-height: 20px;
 }
+
 .promotion_row .multiselect__single {
   border: none;
 }
+
 .promotion_row textarea.form-control {
   position: relative !important;
   top: 0;
