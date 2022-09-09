@@ -32,7 +32,11 @@
           </button>
         </div>
         <div class="navbar_header-map-point mr-30" v-if="promotions.length">
-          <button class="btn btn-map-point" @click="handlePromotions">
+          <button
+            class="btn btn-map-point"
+            @click="handlePromotions"
+            style="width: 126px;"
+          >
             <inline-svg
               :src="require('../../../../src/assets/img/promotion_icon.svg')"
             >
