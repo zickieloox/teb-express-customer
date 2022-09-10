@@ -13,8 +13,8 @@
           {{ service.name }}
         </button>
       </div>
-      <div class="page-content">
-        <div class="card">
+      <div class="page-content" style="margin-bottom: 50px;">
+        <div class="card pb-20">
           <div class="card-body">
             <VclTable v-if="isLoading"></VclTable>
             <template v-else-if="prices.length">
@@ -22,16 +22,16 @@
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th width="150">Dịch vụ</th>
-                      <th width="200">Cân nặng (gram)</th>
-                      <th width="100">Giá</th>
+                      <th width="150">DỊCH VỤ</th>
+                      <th width="200">CÂN NẶNG (gram)</th>
+                      <th width="100">GIÁ ($)</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="(item, i) in prices" :key="i">
                       <td>{{ item.name }}</td>
                       <td>{{ item.weight_text }}</td>
-                      <td>${{ item.price }}</td>
+                      <td>{{ item.price }}</td>
                     </tr>
                   </tbody>
                 </table>
