@@ -23,7 +23,7 @@
                   <thead>
                     <tr>
                       <th width="150">Dịch vụ</th>
-                      <th width="200">Cân nặng (Gram)</th>
+                      <th width="200">Cân nặng (gram)</th>
                       <th width="100">Giá</th>
                     </tr>
                   </thead>
