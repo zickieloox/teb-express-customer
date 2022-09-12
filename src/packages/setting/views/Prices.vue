@@ -23,7 +23,7 @@
                   <thead>
                     <tr>
                       <th width="150">DỊCH VỤ</th>
-                      <th width="200">CÂN NẶNG (gram)</th>
+                      <th width="200">CÂN NẶNG (GRAM)</th>
                       <th width="100">GIÁ ($)</th>
                     </tr>
                   </thead>
