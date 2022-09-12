@@ -32,8 +32,6 @@
     </template>
   </p-modal>
 </template>
-<style></style>
-
 <script>
 import { mapState } from 'vuex'
 
