@@ -7,7 +7,7 @@
           <p-input type="text" :input="name" :readonly="true" />
         </div>
       </div>
-      <div class="row promotion_row mb-18">
+      <div class="row promotion_row mb-18" v-if="prices.length">
         <div class="col-12">
           <label class="modal__add-claim-label">Chỉnh sửa giá:</label>
           <div class="table-level">
@@ -36,7 +36,7 @@
           </div>
         </div>
       </div>
-      <div class="row promotion_row">
+      <div class="row promotion_row" v-if="weights.length">
         <div class="col-12">
           <label class="modal__add-claim-label">Chỉnh sửa cân nặng:</label>
           <div class="table-level">
