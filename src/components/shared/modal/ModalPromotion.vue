@@ -17,7 +17,7 @@
                   <label>Service (Name)</label>
                 </th>
                 <th>
-                  <label>Cân nặng</label>
+                  <label>Cân nặng (gram)</label>
                 </th>
                 <th>
                   <label>Giá ($)</label>
@@ -43,10 +43,10 @@
             <table class="table">
               <tr>
                 <th>
-                  <label>Mốc cân nặng</label>
+                  <label>Mốc cân nặng (gram)</label>
                 </th>
                 <th>
-                  <label>Sai số cho phép</label>
+                  <label>Sai số cho phép (gram)</label>
                 </th>
               </tr>
               <tr v-for="(item, index) in weights" :key="index">
