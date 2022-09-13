@@ -2,7 +2,7 @@
   <div class="notification__page pages">
     <div class="container">
       <div class="page-header">
-        <status-tab
+        <notification-status-tab
           v-model="filter.type"
           :status="notifyTypes"
           :count="countType"
@@ -71,7 +71,7 @@
 import { mapState, mapActions } from 'vuex'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
-
+import NotificationStatusTab from '../components/NotificationStatusTab'
 import {
   FETCH_NOTIFICATIONS,
   FETCH_NOTIFICATIONS_ALL,
@@ -89,8 +89,12 @@ import {
   NOTIFY_TYPE_SERVICE_UPDATE,
   NOTIFY_TYPE_PROMOTION,
 } from '../constant'
+
 export default {
   name: 'Notification',
+  components: {
+    NotificationStatusTab,
+  },
   mixins: [mixinRoute, mixinTable],
   computed: {
     ...mapState('shared', {
