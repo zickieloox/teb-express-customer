@@ -67,20 +67,6 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-12 mt-24">
-                  <div class="superset">
-                    <iframe
-                      style="overflow: hidden; width: 100%; height: 100vh"
-                      width="600"
-                      height="1500"
-                      seamless
-                      frameBorder="0"
-                      scrolling="yes"
-                      :src="supersetLink"
-                    >
-                    </iframe>
-                  </div>
-                </div>
               </div>
             </div>
             <!--            <div class="col-3 list-actions">-->
@@ -226,9 +212,6 @@ export default {
       }
 
       return days
-    },
-    supersetLink() {
-      return `https://superset-new.lionnix.com/login?username=view&redirect=${process.env.VUE_APP_SUPERSET_DASHBOARD}`
     },
   },
   mounted() {
@@ -384,9 +367,3 @@ export default {
   },
 }
 </script>
-<style>
-.superset {
-  margin-left: -32px;
-  margin-right: -32px;
-}
-</style>
