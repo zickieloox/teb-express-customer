@@ -417,7 +417,26 @@
                           </p-tooltip>
                         </span>
                       </td>
-                      <td style="text-align: right">{{
+                      <td
+                        v-if="item.is_package_exceed"
+                        style="text-align: right;color: #FA8C16"
+                      >
+                        <span class="pkg-exceed">
+                          Hàng quá cỡ.
+                          <router-link
+                            class="pkg-exceed text-underline"
+                            :to="{
+                              name: 'package-detail',
+                              params: {
+                                id: item.id,
+                              },
+                            }"
+                          >
+                            Chi tiết
+                          </router-link>
+                        </span>
+                      </td>
+                      <td v-else style="text-align: right">{{
                         convertPrice(item) | formatPrice
                       }}</td>
                     </tr>
