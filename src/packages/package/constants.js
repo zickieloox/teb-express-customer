@@ -63,6 +63,7 @@ export const PACKAGE_UPDATE_TYPE_ORDER_NUMBER = 25
 export const PACKAGE_UPDATE_TYPE_PRODUCT = 26
 export const PACKAGE_UPDATE_EXTRAFEE_TYPE_PEAK = 27
 export const PACKAGE_UPDATE_EXTRAFEE_TYPE_CANCEL_LABEL = 28
+export const PACKAGE_UPDATE_EXTRAFEE_TYPE_OVERSIZE = 29
 
 export const PACKAGE_STATUS_TAB = [
   {
@@ -77,10 +78,10 @@ export const PACKAGE_STATUS_TAB = [
     value: PACKAGE_STATUS_PENDING_PICKUP_TEXT,
     text: 'Pre-Transit',
   },
-  {
-    value: PACKAGE_STATUS_PROCESSING_TEXT,
-    text: 'Processing',
-  },
+  // {
+  //   value: PACKAGE_STATUS_PROCESSING_TEXT,
+  //   text: 'Processing',
+  // },
   {
     value: PACKAGE_STATUS_IN_TRANSIT_TEXT,
     text: 'In-Transit',
@@ -184,6 +185,7 @@ export const CHANGE_PACKAGE_TYPE = {
   [PACKAGE_UPDATE_TYPE_PRODUCT]: '',
   [PACKAGE_UPDATE_EXTRAFEE_TYPE_PEAK]: '',
   [PACKAGE_UPDATE_EXTRAFEE_TYPE_CANCEL_LABEL]: 'Hủy Label',
+  [PACKAGE_UPDATE_EXTRAFEE_TYPE_OVERSIZE]: 'Phí quá thể tích',
 }
 // cSpell:enable
 
