@@ -56,37 +56,49 @@
             </div>
           </div>
           <div class="page-header__action">
-            <p-button
-              href="#"
-              type="lb-default"
-              @click="handleCancelPackage"
-              v-if="hasCancelPackage"
-            >
-              Hủy đơn
-            </p-button>
-            <p-button
-              @click="handleModal"
-              class="ml-7"
-              type="lb-default"
-              v-if="hasEditPackage"
-            >
-              <span>Sửa đơn</span>
-            </p-button>
-            <p-button
-              class="ml-7"
-              @click="handleWayBill"
-              type="primary"
-              v-if="hasMakeTracking"
-            >
-              <span>Tạo tracking</span>
-            </p-button>
-            <a
-              @click="handlerReturnPackage"
-              class="btn btn-primary ml-7"
-              v-if="hasReshipPackage"
-            >
-              Chuyển lại hàng
-            </a>
+            <template v-if="isPkgExceedNotEstimate">
+              <p-button
+                class="ml-7"
+                @click="handleEstimateExceedPackage"
+                :loading="isSubmitting"
+                type="primary"
+              >
+                <span>Estimate giá</span>
+              </p-button>
+            </template>
+            <template v-else>
+              <p-button
+                href="#"
+                type="lb-default"
+                @click="handleCancelPackage"
+                v-if="hasCancelPackage"
+              >
+                Hủy đơn
+              </p-button>
+              <p-button
+                @click="handleModal"
+                class="ml-7"
+                type="lb-default"
+                v-if="hasEditPackage"
+              >
+                <span>Sửa đơn</span>
+              </p-button>
+              <p-button
+                class="ml-7"
+                @click="handleWayBill"
+                type="primary"
+                v-if="hasMakeTracking"
+              >
+                <span>Tạo tracking</span>
+              </p-button>
+              <a
+                @click="handlerReturnPackage"
+                class="btn btn-primary ml-7"
+                v-if="hasReshipPackage"
+              >
+                Chuyển lại hàng
+              </a>
+            </template>
           </div>
         </div>
       </div>
@@ -187,6 +199,12 @@
                     <div class="card-title">Chi tiết đơn hàng</div>
                   </div>
                   <div class="card-content">
+                    <div class="mb-18" v-if="current.is_package_exceed"
+                      ><span class="pkg-exceed-bg pkg-exceed"
+                        >Đơn hàng quá cỡ và sẽ được áp dụng cách tính giá
+                        riêng</span
+                      >
+                    </div>
                     <div class="row">
                       <div class="col-4 mb-8">Chi tiết sản phẩm:</div>
                       <div class="col-8">{{ current.detail }}</div>
@@ -197,7 +215,10 @@
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Trọng lượng:</div>
-                      <div class="col-8">
+                      <div
+                        class="col-8"
+                        :class="{ 'pkg-exceed': current.is_package_exceed }"
+                      >
                         {{ current.weight }} gram
                         <span v-if="isOverWeight"
                           >({{ current.actual_weight }} gram)</span
@@ -206,7 +227,10 @@
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Dài:</div>
-                      <div class="col-8">
+                      <div
+                        class="col-8"
+                        :class="{ 'pkg-exceed': current.is_package_exceed }"
+                      >
                         {{ current.length }} cm
                         <span v-if="isOverVolumes"
                           >({{ current.actual_length }} cm)</span
@@ -215,7 +239,10 @@
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Rộng:</div>
-                      <div class="col-8">
+                      <div
+                        class="col-8"
+                        :class="{ 'pkg-exceed': current.is_package_exceed }"
+                      >
                         {{ current.width }} cm
                         <span v-if="isOverVolumes">
                           ({{ current.actual_width }} cm)
@@ -224,7 +251,10 @@
                     </div>
                     <div class="row">
                       <div class="col-4 mb-8">Cao:</div>
-                      <div class="col-8">
+                      <div
+                        class="col-8"
+                        :class="{ 'pkg-exceed': current.is_package_exceed }"
+                      >
                         {{ current.height }} cm
                         <span v-if="isOverVolumes">
                           ({{ current.actual_height }} cm)
@@ -503,6 +533,7 @@ import {
   PROCESS_PACKAGE,
   CANCEL_PACKAGES,
   PENDING_PICKUP_PACKAGES,
+  ESTIMATE_PACKAGE_EXCEED,
 } from '../store/index'
 import {
   PACKAGE_STATUS_CREATED_TEXT,
@@ -558,6 +589,7 @@ export default {
           loading: false,
         },
       },
+      isSubmitting: false,
       visibleConfirmCancel: false,
       isVisibleModalLabel: false,
       visibleConfirmReturn: false,
@@ -579,9 +611,15 @@ export default {
     sumRefundFee() {
       return this.refundFee.reduce((total, { amount }) => total + amount, 0)
     },
+    isPkgExceedNotEstimate() {
+      return this.current.is_package_exceed && this.current.shipping_fee == 0
+    },
     sumExtraFee() {
       let amount = 0
-      if (this.current.status_string == PACKAGE_STATUS_CREATED_TEXT) {
+      if (
+        this.current.status_string == PACKAGE_STATUS_CREATED_TEXT &&
+        !this.isPkgExceedNotEstimate
+      ) {
         amount += this.calculateFee(this.current.weight)
       }
 
@@ -613,7 +651,10 @@ export default {
     },
     mapExtraFee() {
       const result = []
-      if (this.current.status_string == PACKAGE_STATUS_CREATED_TEXT) {
+      if (
+        this.current.status_string == PACKAGE_STATUS_CREATED_TEXT &&
+        !this.isPkgExceedNotEstimate
+      ) {
         result.push({
           extra_fee_types: { name: 'Phụ phí cao điểm' },
           amount: this.calculateFee(this.current.weight),
@@ -668,6 +709,7 @@ export default {
       PROCESS_PACKAGE,
       CANCEL_PACKAGES,
       PENDING_PICKUP_PACKAGES,
+      ESTIMATE_PACKAGE_EXCEED,
     ]),
     ...mapActions('claim', [FETCH_TICKETS, COUNT_TICKET]),
 
@@ -713,6 +755,20 @@ export default {
     handleWayBill() {
       this.actions.wayBill.Description = `Bạn có chắc chắn muốn tạo tracking?`
       this.isVisibleConfirmWayBill = true
+    },
+    async handleEstimateExceedPackage() {
+      let params = { id: this.packageID }
+      this.isSubmitting = true
+      const res = await this.estimatePackageExcced(params)
+      this.isSubmitting = false
+      if (!res || !res.success) {
+        this.$toast.error(res.message, { duration: 3000 })
+        return
+      }
+
+      this.init()
+      let msg = 'Estimate giá thành công'
+      this.$toast.success(msg, { duration: 3000 })
     },
 
     async handleActionWayBill() {
