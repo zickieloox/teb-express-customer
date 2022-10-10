@@ -56,7 +56,15 @@
             </div>
           </div>
           <div class="page-header__action">
-            <template v-if="isPkgExceedNotEstimate">
+            <template v-if="isPkgExceedNotEstimate && isCreatedStatus">
+              <p-button
+                href="#"
+                type="lb-default"
+                @click="handleCancelPackage"
+                v-if="hasCancelPackage"
+              >
+                Hủy đơn
+              </p-button>
               <p-button
                 class="ml-7"
                 @click="handleEstimateExceedPackage"
