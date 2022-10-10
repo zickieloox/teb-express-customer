@@ -634,7 +634,7 @@ export default {
         (total, { amount }) => total + amount,
         0
       )
-      return Math.abs(total)
+      return total
     },
     extraFees() {
       return (this.package_detail.extra_fee || []).filter(
