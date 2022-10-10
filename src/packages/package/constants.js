@@ -205,3 +205,5 @@ export const DELIVER_LOG_PACKAGE = {
 export const ROLE_ADMIN = 'admin'
 export const ROLE_SUPPORT = 'support'
 export const ROLE_ACCOUNTANT = 'accountant'
+
+export const EXTRA_FEE_TYPE_DISCOUNT = 15
