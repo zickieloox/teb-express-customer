@@ -396,23 +396,25 @@
               <div class="fee__left">
                 <div class="title">Phí giao hàng:</div>
                 <div class="title">Phí phát sinh:</div>
+                <div class="title">Phí khuyến mãi:</div>
                 <div class="title" :class="{ hidden_refund: !refundFee.length }"
                   >Phí hold:</div
                 >
-                <div class="fee__number">{{
-                  (current.shipping_fee || 0) | formatPrice
-                }}</div>
-                <div class="fee__number"
-                  >{{ sumExtraFee | formatPrice }}
+                <div class="fee__number">
+                  {{ (current.shipping_fee || 0) | formatPrice }}
+                </div>
+                <div class="fee__number">
+                  {{ sumExtraFee | formatPrice }}
                   <div
                     class="more-extra-fee"
-                    v-if="extraFee.length || current.status_string == 'pending'"
+                    v-if="
+                      extraFees.length || current.status_string == 'pending'
+                    "
                   >
                     <img
                       @mouseover="showPopupMoreExtraFee"
                       @mouseleave="hiddenPopupMoreExtraFee"
                       src="~@/assets/img/InfoCircleGrey.svg"
-                      alt=""
                     />
                   </div>
                 </div>
@@ -426,8 +428,12 @@
                   </div>
                 </div>
 
+                <div class="fee__number">
+                  {{ discount | formatPrice }}
+                </div>
+
                 <div v-if="refundFee.length > 0" class="fee__number"
-                  >{{ sumRefundfee | formatPrice }}
+                  >{{ sumRefundFee | formatPrice }}
                   <div class="more-extra-fee">
                     <img
                       @mouseover="showPopupMoreRefundFee"
@@ -537,11 +543,13 @@ import {
   PENDING_PICKUP_PACKAGES,
   ESTIMATE_PACKAGE_EXCEED,
 } from '../store/index'
-import { PACKAGE_STATUS_CREATED_TEXT } from '../constants'
+import {
+  PACKAGE_STATUS_CREATED_TEXT,
+  EXTRA_FEE_TYPE_DISCOUNT,
+} from '../constants'
 import ModalEditOrder from './components/ModalEditOrder'
 import NotFound from '@/components/shared/NotFound'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
-import { cloneDeep } from '@core/utils'
 import mixinTable from '@core/mixins/table'
 import api from '../api'
 import mixinPackageDetail from '../mixins/package_detail'
@@ -608,21 +616,11 @@ export default {
     current() {
       return this.package_detail.package || {}
     },
+    sumRefundFee() {
+      return this.refundFee.reduce((total, { amount }) => total + amount, 0)
+    },
     isPkgExceedNotEstimate() {
       return this.current.is_package_exceed && this.current.shipping_fee == 0
-    },
-    sumRefundfee() {
-      if (
-        !this.package_detail.package_refund ||
-        this.package_detail.package_refund.length <= 0
-      ) {
-        return 0
-      }
-
-      return this.package_detail.package_refund.reduce(
-        (total, { amount }) => total + amount,
-        0
-      )
     },
     sumExtraFee() {
       let amount = 0
@@ -633,33 +631,34 @@ export default {
         amount += this.calculateFee(this.current.weight)
       }
 
-      if (
-        !this.package_detail.extra_fee ||
-        this.package_detail.extra_fee.length <= 0
-      ) {
-        return amount
-      }
-
-      amount += this.package_detail.extra_fee.reduce(
-        (total, { amount }) => total + amount,
-        0
-      )
+      amount += this.extraFees.reduce((total, { amount }) => total + amount, 0)
       return amount
     },
     sumFee() {
-      return this.current.shipping_fee + this.sumExtraFee
+      return this.current.shipping_fee + this.sumExtraFee + this.discount
     },
-    extraFee() {
-      return this.package_detail.extra_fee ? this.package_detail.extra_fee : []
+    discount() {
+      const total = this.extraFeeDiscount.reduce(
+        (total, { amount }) => total + amount,
+        0
+      )
+      return total
+    },
+    extraFees() {
+      return (this.package_detail.extra_fee || []).filter(
+        ({ extra_fee_type_id }) => extra_fee_type_id != EXTRA_FEE_TYPE_DISCOUNT
+      )
+    },
+    extraFeeDiscount() {
+      return (this.package_detail.extra_fee || []).filter(
+        ({ extra_fee_type_id }) => extra_fee_type_id == EXTRA_FEE_TYPE_DISCOUNT
+      )
     },
     refundFee() {
-      return this.package_detail.package_refund
-        ? this.package_detail.package_refund
-        : []
+      return this.package_detail.package_refund || []
     },
     mapExtraFee() {
-      const arr = cloneDeep(this.extraFee),
-        result = []
+      const result = []
       if (
         this.current.status_string == PACKAGE_STATUS_CREATED_TEXT &&
         !this.isPkgExceedNotEstimate
@@ -670,7 +669,7 @@ export default {
         })
       }
 
-      for (const ele of arr) {
+      for (const ele of this.extraFees) {
         let index = result.findIndex(
           (x) => x.extra_fee_types.name == ele.extra_fee_types.name
         )
