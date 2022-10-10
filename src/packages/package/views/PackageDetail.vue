@@ -627,7 +627,7 @@ export default {
       return amount
     },
     sumFee() {
-      return this.current.shipping_fee + this.sumExtraFee - this.discount
+      return this.current.shipping_fee + this.sumExtraFee + this.discount
     },
     discount() {
       const total = this.extraFeeDiscount.reduce(
