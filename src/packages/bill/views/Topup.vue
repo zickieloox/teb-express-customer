@@ -364,8 +364,7 @@ export default {
     onChangeAmount(e) {
       this.amount = 0
       let value = e.target.value.trim()
-
-      if (this.toUSD) {
+      if (this.toUSD && !this.isPayoneer && !this.isPingPong) {
         value = value.replace(/[.|,]/g, '').replace(/^0+/, '')
         value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
       }
