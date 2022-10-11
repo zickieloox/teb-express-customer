@@ -56,57 +56,37 @@
             </div>
           </div>
           <div class="page-header__action">
-            <template v-if="isPkgExceedNotEstimate && isCreatedStatus">
-              <p-button
-                href="#"
-                type="lb-default"
-                @click="handleCancelPackage"
-                v-if="hasCancelPackage"
-              >
-                Hủy đơn
-              </p-button>
-              <p-button
-                @click="handleModal"
-                class="ml-7"
-                type="lb-default"
-                v-if="hasEditPackage"
-              >
-                <span>Sửa đơn</span>
-              </p-button>
-            </template>
-            <template v-else>
-              <p-button
-                href="#"
-                type="lb-default"
-                @click="handleCancelPackage"
-                v-if="hasCancelPackage"
-              >
-                Hủy đơn
-              </p-button>
-              <p-button
-                @click="handleModal"
-                class="ml-7"
-                type="lb-default"
-                v-if="hasEditPackage"
-              >
-                <span>Sửa đơn</span>
-              </p-button>
-              <p-button
-                class="ml-7"
-                @click="handleWayBill"
-                type="primary"
-                v-if="hasMakeTracking"
-              >
-                <span>Tạo tracking</span>
-              </p-button>
-              <a
-                @click="handlerReturnPackage"
-                class="btn btn-primary ml-7"
-                v-if="hasReshipPackage"
-              >
-                Chuyển lại hàng
-              </a>
-            </template>
+            <p-button
+              href="#"
+              type="lb-default"
+              @click="handleCancelPackage"
+              v-if="hasCancelPackage"
+            >
+              Hủy đơn
+            </p-button>
+            <p-button
+              @click="handleModal"
+              class="ml-7"
+              type="lb-default"
+              v-if="hasEditPackage"
+            >
+              <span>Sửa đơn</span>
+            </p-button>
+            <p-button
+              class="ml-7"
+              @click="handleWayBill"
+              type="primary"
+              v-if="hasMakeTracking"
+            >
+              <span>Tạo tracking</span>
+            </p-button>
+            <a
+              @click="handlerReturnPackage"
+              class="btn btn-primary ml-7"
+              v-if="hasReshipPackage"
+            >
+              Chuyển lại hàng
+            </a>
           </div>
         </div>
       </div>
