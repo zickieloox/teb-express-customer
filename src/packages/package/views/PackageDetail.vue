@@ -66,6 +66,14 @@
                 Hủy đơn
               </p-button>
               <p-button
+                @click="handleModal"
+                class="ml-7"
+                type="lb-default"
+                v-if="hasEditPackage"
+              >
+                <span>Sửa đơn</span>
+              </p-button>
+              <p-button
                 class="ml-7"
                 @click="handleEstimateExceedPackage"
                 :loading="isSubmitting"
