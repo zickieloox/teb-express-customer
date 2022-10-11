@@ -404,7 +404,7 @@
               <div class="fee__left">
                 <div class="title">Phí giao hàng:</div>
                 <div class="title">Phí phát sinh:</div>
-                <div class="title">Phí khuyến mãi:</div>
+                <div class="title">Khuyến mãi:</div>
                 <div class="title" :class="{ hidden_refund: !refundFee.length }"
                   >Phí hold:</div
                 >
