@@ -73,14 +73,6 @@
               >
                 <span>Sửa đơn</span>
               </p-button>
-              <p-button
-                class="ml-7"
-                @click="handleEstimateExceedPackage"
-                :loading="isSubmitting"
-                type="primary"
-              >
-                <span>Estimate giá</span>
-              </p-button>
             </template>
             <template v-else>
               <p-button
@@ -549,7 +541,6 @@ import {
   PROCESS_PACKAGE,
   CANCEL_PACKAGES,
   PENDING_PICKUP_PACKAGES,
-  ESTIMATE_PACKAGE_EXCEED,
 } from '../store/index'
 import {
   PACKAGE_STATUS_CREATED_TEXT,
@@ -725,7 +716,6 @@ export default {
       PROCESS_PACKAGE,
       CANCEL_PACKAGES,
       PENDING_PICKUP_PACKAGES,
-      ESTIMATE_PACKAGE_EXCEED,
     ]),
     ...mapActions('claim', [FETCH_TICKETS, COUNT_TICKET]),
 
@@ -772,21 +762,6 @@ export default {
       this.actions.wayBill.Description = `Bạn có chắc chắn muốn tạo tracking?`
       this.isVisibleConfirmWayBill = true
     },
-    async handleEstimateExceedPackage() {
-      let params = { id: this.packageID }
-      this.isSubmitting = true
-      const res = await this.estimatePackageExcced(params)
-      this.isSubmitting = false
-      if (!res || !res.success) {
-        this.$toast.error(res.message, { duration: 3000 })
-        return
-      }
-
-      this.init()
-      let msg = 'Estimate giá thành công'
-      this.$toast.success(msg, { duration: 3000 })
-    },
-
     async handleActionWayBill() {
       let params = { ids: [this.packageID] }
 

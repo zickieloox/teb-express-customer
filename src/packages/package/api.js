@@ -89,7 +89,4 @@ export default {
   packageReshipEstimateCost({ id, ...payload }) {
     return http.post(`/packages/${id}/reship/estimate-cost`, payload)
   },
-  estimateExceedPackage({ id }) {
-    return http.put(`/packages/estimate/${id}`)
-  },
 }
