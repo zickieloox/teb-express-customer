@@ -421,7 +421,7 @@
                         v-if="item.is_package_exceed"
                         style="text-align: right;color: #FA8C16"
                       >
-                        <span class="pkg-exceed">
+                        <span class="pkg-exceed" v-if="!item.shipping_fee">
                           Hàng quá cỡ.
                           <router-link
                             class="pkg-exceed text-underline"
@@ -435,6 +435,17 @@
                             Chi tiết
                           </router-link>
                         </span>
+                        <p-tooltip
+                          class="item_name"
+                          :label="`Hàng quá cỡ`"
+                          position="top"
+                          type="dark"
+                          v-else
+                        >
+                          <span class="pkg-exceed">
+                            {{ convertPrice(item) | formatPrice }}
+                          </span>
+                        </p-tooltip>
                       </td>
                       <td v-else style="text-align: right">{{
                         convertPrice(item) | formatPrice
