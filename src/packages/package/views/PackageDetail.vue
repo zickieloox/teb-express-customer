@@ -535,6 +535,7 @@ import mixinPackageDetail from '../mixins/package_detail'
 import AuditLog from './components/AuditLog'
 import DeliveryLog from './components/DeliveryLog'
 import { FETCH_TICKETS, COUNT_TICKET } from '../../claim/store'
+import { cloneDeep } from '../../../core/utils'
 
 export default {
   name: 'PackageDetail',
@@ -610,7 +611,7 @@ export default {
         amount += this.calculateFee(this.current.weight)
       }
 
-      amount += this.extraFees.reduce((total, { amount }) => total + amount, 0)
+      amount += this.extraFees.reduce((total, v) => total + v.amount, 0)
       return amount
     },
     sumFee() {
@@ -653,8 +654,8 @@ export default {
           (x) => x.extra_fee_types.name == ele.extra_fee_types.name
         )
 
-        if (index == -1) {
-          result.push(ele)
+        if (index === -1) {
+          result.push(cloneDeep(ele))
         } else {
           result[index].amount += ele.amount
         }
