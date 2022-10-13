@@ -422,18 +422,7 @@
                         style="text-align: right;color: #FA8C16"
                       >
                         <span class="pkg-exceed" v-if="!item.shipping_fee">
-                          Hàng quá cỡ.
-                          <router-link
-                            class="pkg-exceed text-underline"
-                            :to="{
-                              name: 'package-detail',
-                              params: {
-                                id: item.id,
-                              },
-                            }"
-                          >
-                            Chi tiết
-                          </router-link>
+                          Đang tính giá
                         </span>
                         <p-tooltip
                           class="item_name"
