@@ -648,7 +648,6 @@ export default {
           amount: this.calculateFee(this.current.weight),
         })
       }
-
       for (const ele of this.extraFees) {
         let index = result.findIndex(
           (x) => x.extra_fee_types.name == ele.extra_fee_types.name
