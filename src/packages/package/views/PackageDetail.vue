@@ -410,6 +410,14 @@
 
                 <div class="fee__number">
                   {{ discount | formatPrice }}
+                  <p-tooltip
+                    :label="'Khuyến mãi theo cân nặng'"
+                    size="large"
+                    position="top"
+                    type="dark"
+                  >
+                    <img src="~@/assets/img/InfoCircleGrey.svg" />
+                  </p-tooltip>
                 </div>
 
                 <div v-if="refundFee.length > 0" class="fee__number"
