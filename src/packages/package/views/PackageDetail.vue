@@ -647,15 +647,17 @@ export default {
     },
     mapExtraFee() {
       const result = []
-      // if (
-      //   this.current.status_string == PACKAGE_STATUS_CREATED_TEXT &&
-      //   !this.isPkgExceedNotEstimate
-      // ) {
-      //   result.push({
-      //     extra_fee_types: { name: 'Phụ phí cao điểm' },
-      //     amount: this.calculateFee(this.current.weight),
-      //   })
-      // }
+      if (
+        this.current.status_string == PACKAGE_STATUS_CREATED_TEXT &&
+        !this.isPkgExceedNotEstimate
+      ) {
+        if (this.calculateFee(this.current.weight) > 0) {
+          result.push({
+            extra_fee_types: { name: 'Phụ phí cao điểm' },
+            amount: this.calculateFee(this.current.weight),
+          })
+        }
+      }
       for (const ele of this.extraFees) {
         let index = result.findIndex(
           (x) => x.extra_fee_types.name == ele.extra_fee_types.name
