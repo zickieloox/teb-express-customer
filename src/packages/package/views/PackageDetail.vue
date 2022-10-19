@@ -389,7 +389,8 @@
                     class="more-extra-fee"
                     v-if="
                       extraFees.length ||
-                        (current.status_string == 'pending' && extraFees.length)
+                        (current.status_string == 'pending' &&
+                          mapExtraFee.length)
                     "
                   >
                     <img
