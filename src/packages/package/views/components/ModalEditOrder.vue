@@ -747,7 +747,7 @@ export default {
         zipcode: this.postcode,
         country_code: this.countrycode,
         detail: this.detail,
-        sku: this.order_number,
+        order_number: this.order_number,
         weight: +this.weight,
         width: +this.width,
         length: +this.length,
