@@ -658,7 +658,7 @@ export default {
         state_code: this.state.trim(),
         zipcode: this.postcode.trim(),
         country_code: this.countrycode.trim(),
-        sku: this.order_number.trim(),
+        order_number: this.order_number.trim(),
         detail: this.detail.trim(),
         weight: +this.weight.trim(),
         width: +this.width.trim(),
