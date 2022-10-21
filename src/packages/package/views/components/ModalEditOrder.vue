@@ -736,7 +736,7 @@ export default {
       }
 
       this.isUpdate = true
-      const { id } = this.$route.params
+      const { id } = parseInt(this.$route.params)
       const params = {
         id: id,
         recipient: this.fullname,
