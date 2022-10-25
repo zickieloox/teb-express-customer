@@ -524,7 +524,7 @@
 </style>
 <script>
 import { mapState, mapActions } from 'vuex'
-import { printImage } from '@core/utils/print'
+import { print } from '@core/utils/print'
 import {
   FETCH_PACKAGE_DETAIL,
   FETCH_LIST_SERVICE,
@@ -540,7 +540,6 @@ import ModalEditOrder from './components/ModalEditOrder'
 import NotFound from '@/components/shared/NotFound'
 import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import mixinTable from '@core/mixins/table'
-import api from '../api'
 import mixinPackageDetail from '../mixins/package_detail'
 import AuditLog from './components/AuditLog'
 import DeliveryLog from './components/DeliveryLog'
@@ -822,20 +821,8 @@ export default {
 
     async showContent() {
       document.activeElement && document.activeElement.blur()
-
-      const res = await api.fetchBarcodeFile({
-        url: this.current.label,
-        type: 'labels',
-      })
-
-      if (!res && res.error) {
-        this.$toast.error(res.errorMessage, { duration: 3000 })
-        return
-      }
-
       try {
-        let blob = (window.webkitURL || window.URL).createObjectURL(res)
-        printImage(blob)
+        print(this.current.label)
       } catch (error) {
         this.$toast.error('File error !!!')
       }

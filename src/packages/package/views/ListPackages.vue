@@ -575,7 +575,7 @@ import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import { date } from '@core/utils/datetime'
 import { truncate } from '@core/utils/string'
-import { printImage } from '@core/utils/print'
+import { print } from '@core/utils/print'
 import api from '../api'
 
 import JSZip from 'jszip'
@@ -1039,23 +1039,8 @@ export default {
 
     async showContent(item) {
       document.activeElement && document.activeElement.blur()
-
-      const res = await api.fetchBarcodeFile({
-        url: item.label,
-        type: 'labels',
-      })
-      if (!res && res.error) {
-        this.$toast.open({
-          type: 'error',
-          message: res.errorMessage,
-          duration: 3000,
-        })
-        return
-      }
-
       try {
-        let blob = (window.webkitURL || window.URL).createObjectURL(res)
-        printImage(blob)
+        print(item.label)
       } catch (error) {
         this.$toast.error('File error !!!')
       }
