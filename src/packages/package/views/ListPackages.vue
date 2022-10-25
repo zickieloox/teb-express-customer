@@ -583,6 +583,7 @@ import { saveAs } from 'file-saver'
 import { SET_LOADING } from '../store'
 import Copy from '../../bill/components/Copy.vue'
 import ModalSearchAdvanced from './components/ModalSearchAdvanced'
+import { extension } from '../../../core/utils/url'
 
 export default {
   name: 'ListPackages',
@@ -1113,7 +1114,11 @@ export default {
           })
           continue
         }
-        res['name'] = item.order_number + '_' + item.code + '.png'
+
+        let ext = extension(item.url)
+        ext = ext == 'pdf' ? ext : 'png'
+
+        res['name'] = item.order_number + '_' + item.code + '.' + ext
         files.push(res)
       }
 
