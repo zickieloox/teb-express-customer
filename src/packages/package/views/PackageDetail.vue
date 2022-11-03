@@ -30,16 +30,11 @@
             </div>
             <div class="content-title">{{ current.service_name }}</div>
             <div class="content-title tracking" v-if="current">
-              <a
-                target="_blank"
+              <track-link
                 v-if="current.tracking_number"
-                :href="linkTrackInfo"
-              >
-                {{ current.tracking_number }}
-                <inline-svg
-                  :src="require('../../../assets/img/arrow-up-right.svg')"
-                ></inline-svg>
-              </a>
+                :current="current"
+                :is-sm-screen="false"
+              />
               <a v-else>N/A</a>
             </div>
             <div class="content-title">
@@ -545,11 +540,19 @@ import AuditLog from './components/AuditLog'
 import DeliveryLog from './components/DeliveryLog'
 import { FETCH_TICKETS, COUNT_TICKET } from '../../claim/store'
 import { cloneDeep } from '../../../core/utils'
+import TrackLink from './components/Track.vue'
 
 export default {
   name: 'PackageDetail',
   mixins: [mixinPackageDetail, mixinTable],
-  components: { ModalEditOrder, ModalConfirm, NotFound, AuditLog, DeliveryLog },
+  components: {
+    ModalEditOrder,
+    ModalConfirm,
+    NotFound,
+    AuditLog,
+    DeliveryLog,
+    TrackLink,
+  },
   data() {
     return {
       isFetching: true,

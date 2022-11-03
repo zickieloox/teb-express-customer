@@ -304,7 +304,12 @@
                             </p-tooltip>
                           </span>
 
-                          <span class="svg" v-if="showPackageCode(item)">
+                          <span
+                            class="svg"
+                            v-if="
+                              showPackageCode(item) && item.country_code != 'AU'
+                            "
+                          >
                             <p-tooltip
                               class="item_name"
                               :label="` Track `"
@@ -350,45 +355,10 @@
                         </span>
                       </td>
                       <td v-if="item.tracking_number && item">
-                        <a
-                          target="_blank"
-                          class="tracking"
-                          v-if="item.tracking_number && item && isSmScreen"
-                          :href="
-                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${item.tracking_number}`
-                          "
-                        >
-                          <p-tooltip
-                            :label="item.tracking_number"
-                            v-if="item.tracking_number"
-                            size="large"
-                            position="top"
-                            type="dark"
-                            :active="item.tracking_number.length > 25"
-                          >
-                            {{ truncate(item.tracking_number, 25) }}
-                            <inline-svg
-                              :src="
-                                require('../../../assets/img/arrow-up-right.svg')
-                              "
-                            ></inline-svg>
-                          </p-tooltip>
-                        </a>
-                        <a
-                          target="_blank"
-                          class="tracking"
-                          v-if="item.tracking_number && item && !isSmScreen"
-                          :href="
-                            `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${item.tracking_number}`
-                          "
-                        >
-                          {{ item.tracking_number }}
-                          <inline-svg
-                            :src="
-                              require('../../../assets/img/arrow-up-right.svg')
-                            "
-                          ></inline-svg>
-                        </a>
+                        <track-link
+                          :current="item"
+                          :is-sm-screen="isSmScreen"
+                        />
                       </td>
                       <td v-else><span class="no-track-code">N/A</span> </td>
                       <td>
@@ -584,6 +554,7 @@ import { SET_LOADING } from '../store'
 import Copy from '../../bill/components/Copy.vue'
 import ModalSearchAdvanced from './components/ModalSearchAdvanced'
 import { extension } from '../../../core/utils/url'
+import TrackLink from './components/Track.vue'
 
 export default {
   name: 'ListPackages',
@@ -598,6 +569,7 @@ export default {
     Copy,
     ModalConfirmAddress,
     ModalSearchAdvanced,
+    TrackLink,
   },
   mounted() {
     window.addEventListener('scroll', this.updateScroll)
