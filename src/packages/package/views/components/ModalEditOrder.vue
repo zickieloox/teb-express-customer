@@ -740,7 +740,7 @@ export default {
       const params = {
         id: parseInt(id),
         recipient: this.fullname,
-        phone_number: this.phone.trim(),
+        phone: this.phone.trim(),
         address_1: this.address,
         city: this.city,
         state_code: this.state,

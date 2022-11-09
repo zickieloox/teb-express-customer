@@ -652,7 +652,7 @@ export default {
       this.isCreate = true
       const params = {
         recipient: this.fullname.trim(),
-        phone_number: this.phone.trim(),
+        phone: this.phone.trim(),
         address_1: this.address.trim(),
         city: this.city.trim(),
         state_code: this.state.trim(),
