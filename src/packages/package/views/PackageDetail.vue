@@ -657,7 +657,7 @@ export default {
       ) {
         if (this.calculateFee(this.current.weight) > 0) {
           result.push({
-            extra_fee_types: { name: 'Phụ phí cao điểm' },
+            extra_fee_types: { name: 'Peak season surcharge' },
             amount: this.calculateFee(this.current.weight),
           })
         }
