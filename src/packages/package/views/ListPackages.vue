@@ -137,7 +137,7 @@
                   :checked="isCheckedAlertOverPreTransit"
                 />
                 <label for="cb-alert">
-                  <span>Chỉ hiện thị đơn chậm</span>
+                  <span>Đơn chậm</span>
                 </label>
               </div>
             </div>
