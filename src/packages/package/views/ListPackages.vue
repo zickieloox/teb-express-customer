@@ -717,7 +717,7 @@ export default {
       this.isVisibleModalSearch = false
     },
     async searchAdvanced(filter) {
-      this.filter = { ...filter }
+      this.filter = filter
     },
     showPackageCode(item) {
       if (item.status === PACKAGE_STATUS_ARCHIVED) {
