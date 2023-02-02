@@ -185,6 +185,15 @@ export default {
           ],
         },
         {
+          title: 'Kiện hàng',
+          icon: require('@assets/img/Bill.png'),
+          iconActive: require('@assets/img/BillActive.png'),
+          route: { name: 'order-list' },
+          class: '',
+          isOpen: false,
+          tooltip: 'Kiện hàng',
+        },
+        {
           title: 'Hóa đơn',
           icon: require('@assets/img/Bill.png'),
           iconActive: require('@assets/img/BillActive.png'),
