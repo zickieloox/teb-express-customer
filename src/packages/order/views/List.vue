@@ -57,10 +57,10 @@
                 >
                   <thead>
                     <tr>
-                      <th>No.</th>
-                      <th>Number Orders</th>
-                      <th>Create Date</th>
-                      <th>Status</th>
+                      <th>NO.</th>
+                      <th>NUMBER ORDERS</th>
+                      <th>CREATED DATE</th>
+                      <th>STATUS</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -87,7 +87,10 @@
                         <Status :status="item.status" />
                       </td>
                       <td class="action">
-                        <span class="code">
+                        <span
+                          class="code"
+                          @click.prevent="exportHandle(item.id)"
+                        >
                           <p-tooltip label="Download" type="dark">
                             <inline-svg
                               :src="require('../../../assets/img/down.svg')"
@@ -117,7 +120,7 @@
         </div>
       </div>
     </div>
-    <ModalImport />
+    <ModalImport :visible.sync="isShowModalImport" @success="importSuccess" />
   </div>
 </template>
 <script>
@@ -125,16 +128,17 @@ import ModalImport from './components/ModalImport.vue'
 import StatusTab from './components/StatusTab.vue'
 import Status from './components/Status.vue'
 import { mapState, mapActions } from 'vuex'
-import { FETCH_COUNT_ORDERS, FETCH_LIST_ORDERS } from '../store'
+import { FETCH_COUNT_ORDERS, FETCH_LIST_ORDERS, EXPORT_ORDER } from '../store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import { date } from '@core/utils/datetime'
 import { MAP_ORDER_STATUS } from '../constants'
+import mixinDownload from '@/packages/shared/mixins/download'
 
 export default {
   name: 'ListOrders',
-  mixins: [mixinRoute, mixinTable],
+  mixins: [mixinRoute, mixinTable, mixinDownload],
   components: { ModalImport, StatusTab, Status, EmptySearchResult },
   mounted() {
     window.addEventListener('scroll', this.updateScroll)
@@ -149,6 +153,7 @@ export default {
         end_date: '',
       },
       isFetching: false,
+      isShowModalImport: false,
     }
   },
 
@@ -167,6 +172,7 @@ export default {
     ...mapActions('order', {
       fetchList: FETCH_LIST_ORDERS,
       fetchCount: FETCH_COUNT_ORDERS,
+      exportOrder: EXPORT_ORDER,
     }),
 
     async init() {
@@ -180,7 +186,7 @@ export default {
       const res = await this.fetchList(filter)
       this.isFetching = false
 
-      if (!res.success) {
+      if (res.error) {
         this.$toast.error(res.message)
         return
       }
@@ -194,7 +200,7 @@ export default {
       const res = await this.fetchList(filter)
       this.isFetching = false
 
-      if (!res.success) {
+      if (res.error) {
         this.$toast.error(res.message)
         return
       }
@@ -221,7 +227,22 @@ export default {
       this.filter.end_date = date(v.endDate, 'yyyy-MM-dd')
     },
 
-    async handleImport() {},
+    async handleImport() {
+      this.isShowModalImport = true
+    },
+    importSuccess() {
+      this.init()
+    },
+    async exportHandle(id) {
+      console.log(id)
+      const res = await this.exportOrder(id)
+      if (res.error) {
+        this.$toast.error(res.message)
+        return
+      }
+
+      this.downloadFile(res.path, 'packages', '', 'kien_hang_')
+    },
   },
   watch: {
     filter: {

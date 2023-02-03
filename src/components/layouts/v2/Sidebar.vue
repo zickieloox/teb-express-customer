@@ -172,6 +172,8 @@ export default {
             '/packages/:id',
             '/packages/create',
             '/packages-return',
+            '/orders',
+            '/orders/:id',
           ],
           sub: [
             {
@@ -182,16 +184,11 @@ export default {
               route: '/packages-return',
               title: 'Hàng trả về',
             },
+            {
+              route: '/orders',
+              title: 'Kiện hàng',
+            },
           ],
-        },
-        {
-          title: 'Kiện hàng',
-          icon: require('@assets/img/Bill.png'),
-          iconActive: require('@assets/img/BillActive.png'),
-          route: { name: 'order-list' },
-          class: '',
-          isOpen: false,
-          tooltip: 'Kiện hàng',
         },
         {
           title: 'Hóa đơn',

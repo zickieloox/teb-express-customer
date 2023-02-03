@@ -6,7 +6,7 @@
 import { ORDER_STATUS } from '../../constants'
 
 export default {
-  name: 'PackageStatusTab',
+  name: 'Status',
   props: {
     status: {
       type: [String, Number],
@@ -15,11 +15,11 @@ export default {
   },
   computed: {
     className() {
-      const className = ORDER_STATUS[this.status].className
+      const className = (ORDER_STATUS[this.status] || {}).className || 'unknown'
       return `badge badge-round badge-${className}`
     },
     text() {
-      return ORDER_STATUS[this.status].text
+      return (ORDER_STATUS[this.status] || {}).text
     },
   },
 }

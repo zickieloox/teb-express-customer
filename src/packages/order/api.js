@@ -6,8 +6,12 @@ export default {
     return http.post(`/orders`, payload)
   },
 
+  import(payload) {
+    return http.post(`/orders/import`, payload)
+  },
+
   fetchDetail(id) {
-    return http.get(`/packages/${id}`)
+    return http.get(`/orders/${id}`)
   },
 
   fetchList(payload) {
@@ -16,5 +20,17 @@ export default {
 
   fetchCount(payload) {
     return http.get(`/orders/count?${buildQueryString(payload)}`)
+  },
+
+  fetchListPackages({ id, ...params }) {
+    return http.get(`/orders/${id}/packages?${buildQueryString(params)}`)
+  },
+
+  fetchCountPackages({ id, ...params }) {
+    return http.get(`/orders/${id}/packages/count?${buildQueryString(params)}`)
+  },
+
+  export(id) {
+    return http.post(`/orders/${id}/export`)
   },
 }

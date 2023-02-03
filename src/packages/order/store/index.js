@@ -4,6 +4,10 @@ export const CREATE_ORDER = 'createOrder'
 export const FETCH_LIST_ORDERS = 'fetchListOrders'
 export const FETCH_COUNT_ORDERS = 'fetchCountOrders'
 export const FETCH_DETAIL_ORDER = 'fetchDetailOrder'
+export const FETCH_LIST_ORDER_PACKAGES = 'fetchListOrderPackages'
+export const FETCH_COUNT_ORDER_PACKAGES = 'fetchCountOrderPackage'
+export const IMPORT_ORDER = 'importOrders'
+export const EXPORT_ORDER = 'exportOrders'
 
 /**
  * State
@@ -12,6 +16,8 @@ export const state = {
   order: {},
   orders: [],
   count: 0,
+  countPackages: 0,
+  packages: [],
 }
 
 /**
@@ -27,6 +33,12 @@ export const mutations = {
   [FETCH_DETAIL_ORDER]: (state, payload) => {
     state.order = payload
   },
+  [FETCH_LIST_ORDER_PACKAGES]: (state, payload) => {
+    state.packages = payload
+  },
+  [FETCH_COUNT_ORDER_PACKAGES]: (state, payload) => {
+    state.countPackages = payload
+  },
 }
 
 export const actions = {
@@ -34,32 +46,74 @@ export const actions = {
     const res = await api.fetchDetail(payload)
     if (!res || res.error) {
       commit(FETCH_DETAIL_ORDER, {})
-      return { success: false, message: res.errorMessage || '' }
+      return { error: true, message: res.errorMessage || '' }
     }
 
-    commit(FETCH_DETAIL_ORDER, res)
-    return { success: true }
+    commit(FETCH_DETAIL_ORDER, res.order)
+    return { error: false }
   },
 
   async [FETCH_LIST_ORDERS]({ commit }, payload) {
     const res = await api.fetchList(payload)
     if (!res || res.error) {
       commit(FETCH_LIST_ORDERS, [])
-      return { success: false, message: res.errorMessage || '' }
+      return { error: true, message: res.errorMessage || '' }
     }
 
     commit(FETCH_LIST_ORDERS, res.orders)
-    return { success: true }
+    return { error: false }
   },
 
   async [FETCH_COUNT_ORDERS]({ commit }, payload) {
     const res = await api.fetchCount(payload)
     if (!res || res.error) {
       commit(FETCH_COUNT_ORDERS, 0)
-      return { success: false, message: res.errorMessage || '' }
+      return { error: true, message: res.errorMessage || '' }
     }
 
     commit(FETCH_COUNT_ORDERS, res.count)
-    return { success: true }
+    return { error: false }
+  },
+
+  async [FETCH_LIST_ORDER_PACKAGES]({ commit }, payload) {
+    const res = await api.fetchListPackages(payload)
+    if (!res || res.error) {
+      commit(FETCH_LIST_ORDER_PACKAGES, [])
+      return { error: true, message: res.errorMessage || '' }
+    }
+
+    commit(FETCH_LIST_ORDER_PACKAGES, res.packages)
+    return { error: false }
+  },
+
+  async [FETCH_COUNT_ORDER_PACKAGES]({ commit }, payload) {
+    const res = await api.fetchCountPackages(payload)
+    if (!res || res.error) {
+      commit(FETCH_COUNT_ORDER_PACKAGES, 0)
+      return { error: true, message: res.errorMessage || '' }
+    }
+
+    commit(FETCH_COUNT_ORDER_PACKAGES, res.count)
+    return { error: false }
+  },
+
+  // eslint-disable-next-line
+  async [IMPORT_ORDER]({ commit }, payload) {
+    const res = await api.import(payload)
+    if (!res || res.error) {
+      return { ...res, error: true, message: res.errorMessage || '' }
+    }
+
+    return { ...res, error: false }
+  },
+
+  // eslint-disable-next-line
+  async [EXPORT_ORDER]({ commit }, payload) {
+    const res = await api.export(payload)
+    if (!res || res.error) {
+      return { error: true, message: res.errorMessage || '' }
+    }
+
+    return { ...res, error: false }
   },
 }
