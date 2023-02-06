@@ -59,7 +59,7 @@
                           class="text-no-underline"
                           :to="{
                             name: 'package-detail',
-                            params: { id: item.id },
+                            params: { id: item.order_number },
                           }"
                         >
                           {{ item.id }}
