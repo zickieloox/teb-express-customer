@@ -241,7 +241,7 @@ export default {
         return
       }
 
-      this.downloadFile(res.path, 'packages', '', 'kien_hang_')
+      this.downloadFile(res.path, 'packages', '', `kien_hang_${id}_`)
     },
   },
   watch: {
