@@ -8,6 +8,7 @@ export const ORDER_STATUS_DELIVERED_TEXT = 'delivered'
 
 export const ORDER_STATUS_TAB = [
   {
+    id: 0,
     value: '',
     text: 'All',
   },

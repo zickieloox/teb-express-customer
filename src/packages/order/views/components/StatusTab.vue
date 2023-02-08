@@ -14,7 +14,7 @@
           :class="{ active: item.value === value }"
           @click.prevent="handleClick(item.value)"
         >
-          {{ item.text }} ({{ statics[item.id] || 0 }})
+          {{ item.text }} ({{ item.id === 0 ? count : statics[item.id] || 0 }})
         </a>
       </li>
     </ul>
@@ -50,6 +50,14 @@ export default {
       right: 0,
       el: 0,
     }
+  },
+  computed: {
+    count() {
+      return Object.values(this.statics).reduce(
+        (total, val) => (total += val),
+        0
+      )
+    },
   },
   methods: {
     handleClick(item) {
