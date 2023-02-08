@@ -33,4 +33,8 @@ export default {
   export(id) {
     return http.post(`/orders/${id}/export`)
   },
+
+  statics(params) {
+    return http.get(`/orders/statics?${buildQueryString(params)}`)
+  },
 }

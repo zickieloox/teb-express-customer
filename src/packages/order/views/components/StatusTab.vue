@@ -14,7 +14,7 @@
           :class="{ active: item.value === value }"
           @click.prevent="handleClick(item.value)"
         >
-          {{ item.text }}
+          {{ item.text }} ({{ statics[item.id] || 0 }})
         </a>
       </li>
     </ul>
@@ -25,15 +25,15 @@
 import { ORDER_STATUS_TAB } from '../../constants'
 
 export default {
-  name: 'PackageStatusTab',
+  name: 'StatusTab',
   props: {
     status: {
       type: Array,
       default: () => [],
     },
-    countStatus: {
-      type: Array,
-      default: () => [],
+    statics: {
+      type: Object,
+      default: () => {},
     },
     value: {
       type: [String, Array],

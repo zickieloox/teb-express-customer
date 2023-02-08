@@ -12,14 +12,17 @@ export const ORDER_STATUS_TAB = [
     text: 'All',
   },
   {
+    id: ORDER_STATUS_IN_TRANSIT,
     value: ORDER_STATUS_IN_TRANSIT_TEXT,
     text: 'In-Transit',
   },
   {
+    id: ORDER_STATUS_PROCESS,
     value: ORDER_STATUS_PROCESS_TEXT,
     text: 'Process',
   },
   {
+    id: ORDER_STATUS_DELIVERED,
     value: ORDER_STATUS_DELIVERED_TEXT,
     text: 'Delivered',
   },

@@ -47,7 +47,7 @@
       <div class="page-content">
         <div class="card">
           <div class="card-body">
-            <status-tab v-model="filter.status" />
+            <status-tab v-model="filter.status" :statics="statics" />
             <VclTable class="mt-20" v-if="isFetching"></VclTable>
             <template v-else-if="orders.length">
               <div class="table-responsive">
@@ -128,7 +128,12 @@ import ModalImport from './components/ModalImport.vue'
 import StatusTab from './components/StatusTab.vue'
 import Status from './components/Status.vue'
 import { mapState, mapActions } from 'vuex'
-import { FETCH_COUNT_ORDERS, FETCH_LIST_ORDERS, EXPORT_ORDER } from '../store'
+import {
+  FETCH_COUNT_ORDERS,
+  FETCH_LIST_ORDERS,
+  EXPORT_ORDER,
+  FETCH_ORDER_STATICS,
+} from '../store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
@@ -165,6 +170,7 @@ export default {
     ...mapState('order', {
       orders: (state) => state.orders,
       count: (state) => state.count,
+      statics: (state) => state.statics,
     }),
   },
 
@@ -173,6 +179,7 @@ export default {
       fetchList: FETCH_LIST_ORDERS,
       fetchCount: FETCH_COUNT_ORDERS,
       exportOrder: EXPORT_ORDER,
+      fetchStatics: FETCH_ORDER_STATICS,
     }),
 
     async init() {
@@ -183,6 +190,7 @@ export default {
       filter.status = MAP_ORDER_STATUS[filter.status]
 
       this.fetchCount(filter)
+      this.fetchStatics(filter)
       const res = await this.fetchList(filter)
       this.isFetching = false
 

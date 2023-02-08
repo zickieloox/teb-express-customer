@@ -8,6 +8,7 @@ export const FETCH_LIST_ORDER_PACKAGES = 'fetchListOrderPackages'
 export const FETCH_COUNT_ORDER_PACKAGES = 'fetchCountOrderPackage'
 export const IMPORT_ORDER = 'importOrders'
 export const EXPORT_ORDER = 'exportOrders'
+export const FETCH_ORDER_STATICS = 'fetchOrderStatics'
 
 /**
  * State
@@ -18,6 +19,7 @@ export const state = {
   count: 0,
   countPackages: 0,
   packages: [],
+  statics: {},
 }
 
 /**
@@ -38,6 +40,9 @@ export const mutations = {
   },
   [FETCH_COUNT_ORDER_PACKAGES]: (state, payload) => {
     state.countPackages = payload
+  },
+  [FETCH_ORDER_STATICS]: (state, payload) => {
+    state.statics = payload
   },
 }
 
@@ -114,6 +119,17 @@ export const actions = {
       return { error: true, message: res.errorMessage || '' }
     }
 
+    return { ...res, error: false }
+  },
+
+  async [FETCH_ORDER_STATICS]({ commit }, { search, start_date, end_date }) {
+    const res = await api.statics({ search, start_date, end_date })
+    if (!res || res.error) {
+      commit(FETCH_ORDER_STATICS, {})
+      return { error: true, message: res.errorMessage || '' }
+    }
+
+    commit(FETCH_ORDER_STATICS, res.statics)
     return { ...res, error: false }
   },
 }
