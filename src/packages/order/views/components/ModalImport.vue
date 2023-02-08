@@ -167,7 +167,7 @@ export default {
     handleClose() {
       if (this.isLoading) return
 
-      if (this.result && !this.result) {
+      if (this.result && !this.result.error) {
         this.$emit('success', this.result)
       }
 
