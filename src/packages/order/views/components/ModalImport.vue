@@ -202,6 +202,8 @@ export default {
     handleCloseSuccess() {
       this.$emit('success', this.result)
       this.$emit('update:visible', false)
+      this.file = null
+      this.result = null
     },
     handleChangeFile(file) {
       this.file = file
