@@ -9,6 +9,7 @@ export const FETCH_COUNT_ORDER_PACKAGES = 'fetchCountOrderPackage'
 export const IMPORT_ORDER = 'importOrders'
 export const EXPORT_ORDER = 'exportOrders'
 export const FETCH_ORDER_STATICS = 'fetchOrderStatics'
+export const DELETE_ORDER = 'deleteOrder'
 
 /**
  * State
@@ -130,6 +131,16 @@ export const actions = {
     }
 
     commit(FETCH_ORDER_STATICS, res.statics)
+    return { ...res, error: false }
+  },
+
+  // eslint-disable-next-line
+  async [DELETE_ORDER]({ commit }, id) {
+    const res = await api.delete(id)
+    if (!res || res.error) {
+      return { error: true, message: res.errorMessage || '' }
+    }
+
     return { ...res, error: false }
   },
 }

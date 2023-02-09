@@ -65,7 +65,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="item in orders" :key="item.id">
+                    <tr v-for="item in displayItems" :key="item.id">
                       <td class="order-number">
                         <div class="d-flex justify-content-between">
                           <router-link
@@ -94,6 +94,17 @@
                           <p-tooltip label="Download" type="dark">
                             <inline-svg
                               :src="require('../../../assets/img/down.svg')"
+                            ></inline-svg>
+                          </p-tooltip>
+                        </span>
+                        <span
+                          v-if="item.has_delete"
+                          class="code ml-10"
+                          @click.prevent="deleteHandle(item.id)"
+                        >
+                          <p-tooltip label="Delete" type="dark">
+                            <inline-svg
+                              :src="require('../../../assets/img/trash.svg')"
                             ></inline-svg>
                           </p-tooltip>
                         </span>
@@ -133,12 +144,13 @@ import {
   FETCH_LIST_ORDERS,
   EXPORT_ORDER,
   FETCH_ORDER_STATICS,
+  DELETE_ORDER,
 } from '../store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import { date } from '@core/utils/datetime'
-import { MAP_ORDER_STATUS } from '../constants'
+import { MAP_ORDER_STATUS, ORDER_STATUS_IN_TRANSIT } from '../constants'
 import mixinDownload from '@/packages/shared/mixins/download'
 
 export default {
@@ -172,6 +184,13 @@ export default {
       count: (state) => state.count,
       statics: (state) => state.statics,
     }),
+
+    displayItems() {
+      return this.orders.map((item) => {
+        const hasDelete = item.status == ORDER_STATUS_IN_TRANSIT
+        return { ...item, has_delete: hasDelete }
+      })
+    },
   },
 
   methods: {
@@ -180,6 +199,7 @@ export default {
       fetchCount: FETCH_COUNT_ORDERS,
       exportOrder: EXPORT_ORDER,
       fetchStatics: FETCH_ORDER_STATICS,
+      deleteOrder: DELETE_ORDER,
     }),
 
     async init() {
@@ -250,6 +270,25 @@ export default {
       }
 
       this.downloadFile(res.path, 'packages', '', `kien_hang_${id}_date`)
+    },
+    deleteHandle(id) {
+      this.$dialog.confirm({
+        title: 'Xóa kiện hàng',
+        message: `Bạn có thực sự muốn xóa kiên hàng #${id}?`,
+        type: 'danger',
+        typeCancel: 'default',
+        confirmText: 'Xóa',
+        cancelText: 'Hủy',
+        onConfirm: async () => {
+          const res = await this.deleteOrder(id)
+          if (res.error) {
+            this.$toast.error(res.message)
+            return
+          }
+
+          this.init()
+        },
+      })
     },
   },
   watch: {

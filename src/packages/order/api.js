@@ -37,4 +37,8 @@ export default {
   statics(params) {
     return http.get(`/orders/statics?${buildQueryString(params)}`)
   },
+
+  delete(id) {
+    return http.delete(`/orders/${id}`)
+  },
 }
