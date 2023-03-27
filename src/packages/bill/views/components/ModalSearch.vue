@@ -224,6 +224,10 @@ export default {
         this.$toast.error('Chưa chọn trạng thái', { duration: 3000 })
         return
       }
+      if (this.export_type == '') {
+        this.$toast.error('Chưa chọn loại hóa đơn export', { duration: 3000 })
+        return
+      }
       this.filter.export_type = this.export_type
       this.$emit('export', this.filter)
       this.filter = {
