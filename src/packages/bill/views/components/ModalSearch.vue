@@ -238,6 +238,7 @@ export default {
         search_by: '',
       }
       this.export_type = ''
+      this.select = null
       this.clearSearchDate()
     },
     checkAll() {
