@@ -222,7 +222,10 @@ export default {
         this.$toast.error('Chưa chọn khoảng thời gian', { duration: 3000 })
         return
       }
-      if (this.filter.status_arr.length < 1) {
+      if (
+        this.filter.status_arr.length < 1 &&
+        this.export_type != EXPORT_GENERAL_TYPE
+      ) {
         this.$toast.error('Chưa chọn trạng thái', { duration: 3000 })
         return
       }
