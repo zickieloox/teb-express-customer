@@ -168,6 +168,8 @@ export default {
         end_date: '',
         search_by: '',
       }
+      this.select = null
+      this.export_type = ''
       this.clearSearchDate()
     },
     handleSelectExportType(select) {
