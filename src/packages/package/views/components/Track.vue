@@ -41,7 +41,7 @@ export default {
     link() {
       const { service_name } = this.current
       if (service_name && service_name.toUpperCase().includes('FBA')) {
-        return 'https://www.ups.com/track'
+        return `https://www.ups.com/track?trackingNumber=${this.trackingNumber}`
       }
 
       if (this.current.country_code == 'AU') {
