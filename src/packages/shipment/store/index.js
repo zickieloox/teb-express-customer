@@ -3,6 +3,7 @@ import api from '../api'
 export const FETCH_LIST_SHIPMENTS = 'fetchListShipments'
 export const FETCH_COUNT_SHIPMENTS = 'fetchCountShipments'
 export const FETCH_DETAIL_SHIPMENTS = 'fetchDetailShipments'
+export const IMPORT_PACKAGE_FBA = 'importPackageFba'
 
 export const state = {
   shipment: {},
@@ -52,5 +53,26 @@ export const actions = {
 
     commit(FETCH_DETAIL_SHIPMENTS, res.shipment)
     return { error: false }
+  },
+  // eslint-disable-next-line no-unused-vars
+  async [IMPORT_PACKAGE_FBA]({ commit }, payload) {
+    const response = await api.importFbaPackage(payload)
+
+    if (
+      response &&
+      typeof response.errors !== 'undefined' &&
+      typeof response.total !== 'undefined' &&
+      (response.errors.length || response.total > 0)
+    ) {
+      return {
+        success: true,
+        ...response,
+      }
+    }
+
+    return {
+      success: false,
+      message: response.errorMessage || '',
+    }
   },
 }

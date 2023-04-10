@@ -1,5 +1,5 @@
 <template>
-  <div class="pages">
+  <div class="pages list-cus-shipment">
     <div class="page-header">
       <div class="action-header d-flex justify-content-between">
         <div class="page-header__input mr-30" style="flex: 1;">
@@ -90,19 +90,46 @@
         </div>
       </div>
     </div>
+    <modal-import-package-fba
+      :visible.sync="isVisiblePreview"
+      :import-errors="resultImport.errors"
+      :import-sucess="resultImport.import_sucess"
+      :total="resultImport.total"
+      v-if="isVisiblePreview"
+      @close="handleClosePreview"
+    >
+    </modal-import-package-fba>
+    <modal-import
+      :visible.sync="isVisibleImport"
+      :uploading="isUploading"
+      accept=".csv"
+      title="Nhập Excel"
+      @selected="handleImportPackage"
+      v-if="isVisibleImport"
+    >
+    </modal-import>
   </div>
 </template>
 <script>
 import { mapActions, mapState } from 'vuex'
-import { FETCH_LIST_SHIPMENTS, FETCH_COUNT_SHIPMENTS } from '../store'
+import {
+  FETCH_LIST_SHIPMENTS,
+  FETCH_COUNT_SHIPMENTS,
+  IMPORT_PACKAGE_FBA,
+} from '../store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
-
+import ModalImportPackageFba from '../components/ModalImportPackageFba'
+import ModalImport from '@components/shared/modal/ModalImport'
 export default {
   name: 'ShipmentList',
   mixins: [mixinRoute, mixinTable],
-  components: { EmptySearchResult },
+  components: {
+    EmptySearchResult,
+    ModalImportPackageFba,
+    ModalImport,
+  },
   computed: {
     ...mapState('shipment', {
       shipments: (state) => state.shipments,
@@ -112,6 +139,13 @@ export default {
   data() {
     return {
       isFetching: false,
+      isVisiblePreview: false,
+      isVisibleImport: false,
+      isUploading: false,
+      importData: {
+        file: null,
+      },
+      resultImport: {},
       filter: {
         keyword: '',
         status: 0,
@@ -126,6 +160,7 @@ export default {
     ...mapActions('shipment', {
       fetchListShipment: FETCH_LIST_SHIPMENTS,
       fetchCountShipment: FETCH_COUNT_SHIPMENTS,
+      importPackageFba: IMPORT_PACKAGE_FBA,
     }),
 
     async init() {
@@ -147,7 +182,37 @@ export default {
       this.filter.keyword = ''
       this.filter.page = 1
     },
-    async handleImport() {},
+    handleClosePreview() {
+      this.filter = {
+        keyword: '',
+        status: 0,
+        page: 1,
+      }
+      this.init()
+    },
+    async handleImportPackage(file, template) {
+      this.importData.file = file
+      this.isUploading = true
+      this.resultImport = await this.importPackageFba({
+        file: this.importData.file.raw,
+        template_id: template.id,
+      })
+      this.isUploading = false
+      this.isVisibleImport = false
+
+      if (this.resultImport && this.resultImport.success) {
+        this.isVisiblePreview = true
+        return
+      }
+
+      this.$toast.open({
+        type: 'error',
+        message: this.resultImport.message || 'File không đúng định dạng',
+      })
+    },
+    handleImport() {
+      this.isVisibleImport = true
+    },
   },
   watch: {
     filter: {
