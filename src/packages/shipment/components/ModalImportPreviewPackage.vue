@@ -63,7 +63,7 @@
 
 <script>
 export default {
-  name: 'ModalImportPackageFba',
+  name: 'ModalImportPreviewPackage',
   props: {
     visible: {
       type: Boolean,
