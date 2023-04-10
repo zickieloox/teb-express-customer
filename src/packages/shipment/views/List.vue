@@ -45,8 +45,8 @@
                       <th>ID</th>
                       <th>WEIGHT</th>
                       <th>PRICE</th>
+                      <th>CREATED DATE</th>
                       <th>STATUS</th>
-                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -65,9 +65,9 @@
                         </div>
                       </td>
                       <td>{{ item.weight }}</td>
-                      <td>{{ item.price }}</td>
+                      <td>{{ item.price | formatPrice }}</td>
+                      <td>{{ item.created_at | date('dd/MM/yyyy HH:ii') }}</td>
                       <td><Status :status="item.status"/></td>
-                      <td class="action"></td>
                     </tr>
                   </tbody>
                 </table>
@@ -122,6 +122,8 @@ import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import ModalImportPackageFba from '../components/ModalImportPackageFba'
 import ModalImport from '@components/shared/modal/ModalImport'
+import Status from '../components/Status.vue'
+
 export default {
   name: 'ShipmentList',
   mixins: [mixinRoute, mixinTable],
@@ -129,6 +131,7 @@ export default {
     EmptySearchResult,
     ModalImportPackageFba,
     ModalImport,
+    Status,
   },
   computed: {
     ...mapState('shipment', {
@@ -154,7 +157,7 @@ export default {
     }
   },
   created() {
-    this.init()
+    this.filter = this.getRouteQuery()
   },
   methods: {
     ...mapActions('shipment', {

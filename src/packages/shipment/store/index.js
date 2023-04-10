@@ -4,11 +4,17 @@ export const FETCH_LIST_SHIPMENTS = 'fetchListShipments'
 export const FETCH_COUNT_SHIPMENTS = 'fetchCountShipments'
 export const FETCH_DETAIL_SHIPMENTS = 'fetchDetailShipments'
 export const IMPORT_PACKAGE_FBA = 'importPackageFba'
+export const FETCH_LIST_SHIPMENT_ITEMS = 'fetchListShipmentItems'
+export const FETCH_COUNT_SHIPMENT_ITEMS = 'fetchCountShipmentItems'
+export const SET_TOTAL_AMOUNT = 'setTotalAmount'
 
 export const state = {
   shipment: {},
   shipments: [],
+  total_amount: 0,
   count: 0,
+  items: [],
+  items_count: 0,
 }
 
 export const mutations = {
@@ -20,6 +26,15 @@ export const mutations = {
   },
   [FETCH_DETAIL_SHIPMENTS]: (state, payload) => {
     state.shipment = payload || {}
+  },
+  [SET_TOTAL_AMOUNT]: (state, payload) => {
+    state.total_amount = payload || 0
+  },
+  [FETCH_LIST_SHIPMENT_ITEMS]: (state, payload) => {
+    state.items = payload || {}
+  },
+  [FETCH_COUNT_SHIPMENT_ITEMS]: (state, payload) => {
+    state.items_count = payload || 0
   },
 }
 
@@ -47,10 +62,12 @@ export const actions = {
   async [FETCH_DETAIL_SHIPMENTS]({ commit }, payload) {
     const res = await api.fetchDetailShipment(payload)
     if (!res || res.error) {
+      commit(SET_TOTAL_AMOUNT, 0)
       commit(FETCH_DETAIL_SHIPMENTS, {})
       return { error: true, message: res.errorMessage }
     }
 
+    commit(SET_TOTAL_AMOUNT, res.total_amount)
     commit(FETCH_DETAIL_SHIPMENTS, res.shipment)
     return { error: false }
   },
@@ -74,5 +91,26 @@ export const actions = {
       success: false,
       message: response.errorMessage || '',
     }
+  },
+
+  async [FETCH_LIST_SHIPMENT_ITEMS]({ commit }, payload) {
+    const res = await api.fetchListShipmentItems(payload)
+    if (!res || res.error) {
+      commit(FETCH_LIST_SHIPMENT_ITEMS, [])
+      return { error: true, message: res.errorMessage }
+    }
+
+    commit(FETCH_LIST_SHIPMENT_ITEMS, res.items)
+    return { error: false }
+  },
+  async [FETCH_COUNT_SHIPMENT_ITEMS]({ commit }, payload) {
+    const res = await api.fetchCountShipmentItems(payload)
+    if (!res || res.error) {
+      commit(FETCH_COUNT_SHIPMENT_ITEMS, 0)
+      return { error: true, message: res.errorMessage }
+    }
+
+    commit(FETCH_COUNT_SHIPMENT_ITEMS, res.count)
+    return { error: false }
   },
 }

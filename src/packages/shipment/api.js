@@ -17,4 +17,10 @@ export default {
     formData.append('template_id', payload.template_id)
     return http.post(`/packages/import/fba`, formData)
   },
+  fetchListShipmentItems({ id, ...params }) {
+    return http.get(`/shipments/${id}/items?${buildQueryString(params)}`)
+  },
+  fetchCountShipmentItems({ id, ...params }) {
+    return http.get(`/shipments/${id}/items/count?${buildQueryString(params)}`)
+  },
 }

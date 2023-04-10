@@ -9,7 +9,7 @@ export const routes = [
       import(/* webpackChunkName: "shipments" */ './views/List.vue'),
   },
   {
-    path: '/shipments',
+    path: '/shipments/:id',
     name: 'shipment-detail',
     meta: {
       title: 'Chi tiết lô hàng',
