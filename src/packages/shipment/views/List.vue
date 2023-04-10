@@ -90,7 +90,7 @@
         </div>
       </div>
     </div>
-    <modal-import-package-fba
+    <modal-import-preview-package
       :visible.sync="isVisiblePreview"
       :import-errors="resultImport.errors"
       :import-sucess="resultImport.import_sucess"
@@ -98,7 +98,7 @@
       v-if="isVisiblePreview"
       @close="handleClosePreview"
     >
-    </modal-import-package-fba>
+    </modal-import-preview-package>
     <modal-import
       :visible.sync="isVisibleImport"
       :uploading="isUploading"
@@ -120,14 +120,14 @@ import {
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
-import ModalImportPackageFba from '../components/ModalImportPackageFba'
+import ModalImportPreviewPackage from '../components/ModalImportPreviewPackage'
 import ModalImport from '@components/shared/modal/ModalImport'
 export default {
   name: 'ShipmentList',
   mixins: [mixinRoute, mixinTable],
   components: {
     EmptySearchResult,
-    ModalImportPackageFba,
+    ModalImportPreviewPackage,
     ModalImport,
   },
   computed: {
