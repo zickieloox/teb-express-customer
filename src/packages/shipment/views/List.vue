@@ -66,7 +66,9 @@
                         </div>
                       </td>
                       <td>{{ item.weight }}</td>
-                      <td><Status :status="item.status"/></td>
+                      <td>
+                        <Status :status="item.status" />
+                      </td>
                       <td>{{ item.created_at | date('dd/MM/yyyy HH:ii') }}</td>
                       <td class="text-right">{{ item.price | formatPrice }}</td>
                     </tr>
@@ -183,6 +185,9 @@ export default {
         this.$toast.error(res.message)
         return
       }
+    },
+    handleSearch(e) {
+      this.filter.keyword = e.target.value.trim()
     },
     handleClearSearch() {
       this.filter.keyword = ''
