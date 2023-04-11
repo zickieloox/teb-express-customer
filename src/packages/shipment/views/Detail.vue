@@ -99,10 +99,9 @@
                         <th>LionBay tracking</th>
                         <th>Last mile tracking</th>
                         <th>Trọng lượng</th>
-                        <th>Dài</th>
-                        <th>Rộng</th>
-                        <th>Cao</th>
-                        <th></th>
+                        <th>LxWxH (cm)</th>
+                        <th>Phí ship</th>
+                        <th>Trạng thái</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -123,9 +122,13 @@
                         <td>{{ item.code }}</td>
                         <td>{{ item.tracking_number }}</td>
                         <td>{{ item.weight }}gram</td>
-                        <td>{{ item.length }}cm</td>
-                        <td>{{ item.width }}cm</td>
-                        <td>{{ item.height }}cm</td>
+                        <td
+                          >{{ item.length }}x{{ item.width }}x{{
+                            item.height
+                          }}</td
+                        >
+                        <td>{{ item.shipping_fee | formatPrice }}</td>
+                        <td><Status v-status="item.status_string"/></td>
                         <td class="text-right">
                           <p-button
                             v-if="item.label"
@@ -349,6 +352,8 @@ export default {
 .tb-si {
   .btn {
     height: auto;
+    font-size: 12px;
+    padding: 8px 10px;
   }
 }
 
