@@ -10,13 +10,13 @@ export default {
   props: {
     status: {
       type: [String, Number],
-      default: () => 0,
+      default: '',
     },
   },
   computed: {
     className() {
       const className =
-        (MAP_SHIPMENT_STATUS[this.status] || {}).class || 'unknown'
+        (MAP_SHIPMENT_STATUS[this.status] || {}).className || 'unknown'
       return `badge badge-round badge-${className}`
     },
     text() {

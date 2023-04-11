@@ -33,6 +33,7 @@
       <div class="page-content">
         <div class="card">
           <div class="card-body">
+            <StatusTab v-model="filter.status" />
             <VclTable class="mt-20" v-if="isFetching"></VclTable>
             <template v-else-if="shipments.length">
               <div class="table-responsive">
@@ -42,11 +43,11 @@
                 >
                   <thead>
                     <tr>
-                      <th>ID</th>
+                      <th>SHIPMENT NO.</th>
                       <th>WEIGHT</th>
-                      <th>PRICE</th>
-                      <th>CREATED DATE</th>
                       <th>STATUS</th>
+                      <th>CREATED DATE</th>
+                      <th class="text-right">FEE</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -65,9 +66,9 @@
                         </div>
                       </td>
                       <td>{{ item.weight }}</td>
-                      <td>{{ item.price | formatPrice }}</td>
-                      <td>{{ item.created_at | date('dd/MM/yyyy HH:ii') }}</td>
                       <td><Status :status="item.status"/></td>
+                      <td>{{ item.created_at | date('dd/MM/yyyy HH:ii') }}</td>
+                      <td class="text-right">{{ item.price | formatPrice }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -123,6 +124,7 @@ import mixinTable from '@core/mixins/table'
 import ModalImportPreviewPackage from '../components/ModalImportPreviewPackage'
 import ModalImport from '@components/shared/modal/ModalImport'
 import Status from '../components/Status.vue'
+import StatusTab from '../components/StatusTab.vue'
 
 export default {
   name: 'ShipmentList',
@@ -132,6 +134,7 @@ export default {
     ModalImportPreviewPackage,
     ModalImport,
     Status,
+    StatusTab,
   },
   computed: {
     ...mapState('shipment', {
@@ -151,7 +154,7 @@ export default {
       resultImport: {},
       filter: {
         keyword: '',
-        status: 0,
+        status: '',
         page: 1,
       },
     }

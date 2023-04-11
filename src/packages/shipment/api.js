@@ -23,4 +23,7 @@ export default {
   fetchCountShipmentItems({ id, ...params }) {
     return http.get(`/shipments/${id}/items/count?${buildQueryString(params)}`)
   },
+  fulfillShipment(id) {
+    return http.post(`/shipments/${id}/fulfill`)
+  },
 }

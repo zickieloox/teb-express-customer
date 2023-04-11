@@ -7,6 +7,7 @@ export const IMPORT_PACKAGE_FBA = 'importPackageFba'
 export const FETCH_LIST_SHIPMENT_ITEMS = 'fetchListShipmentItems'
 export const FETCH_COUNT_SHIPMENT_ITEMS = 'fetchCountShipmentItems'
 export const SET_TOTAL_AMOUNT = 'setTotalAmount'
+export const FULFILL_SHIPMENT = 'fulfillShipment'
 
 export const state = {
   shipment: {},
@@ -111,6 +112,17 @@ export const actions = {
     }
 
     commit(FETCH_COUNT_SHIPMENT_ITEMS, res.count)
+    return { error: false }
+  },
+
+  // eslint-disable-next-line no-unused-vars
+  async [FULFILL_SHIPMENT]({ commit }, id) {
+    const res = await api.fulfillShipment(id)
+
+    if (!res || res.error) {
+      return { error: true, message: res.errorMessage }
+    }
+
     return { error: false }
   },
 }
