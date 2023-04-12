@@ -58,7 +58,7 @@
                       <th>WEIGHT</th>
                       <th>CREATED DATE</th>
                       <th>STATUS</th>
-                      <th class="text-right">FEE</th>
+                      <th class="text-right">TOTAL FEE</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -77,7 +77,7 @@
                           </router-link>
                         </div>
                       </td>
-                      <td>{{ item.weight }}</td>
+                      <td>{{ item.weight }}kg</td>
                       <td>{{ item.created_at | date('dd/MM/yyyy HH:ii') }}</td>
                       <td>
                         <Status :status="item.status" />
@@ -150,6 +150,7 @@ import ModalImport from '@components/shared/modal/ModalImport'
 import Status from '../components/Status.vue'
 import StatusTab from '../components/StatusTab.vue'
 import { date } from '@core/utils/datetime'
+import { KG_TO_GRAM } from '@core/constants'
 
 export default {
   name: 'ShipmentList',
@@ -168,8 +169,10 @@ export default {
     }),
     displayShipments() {
       return this.shipments.map((item) => {
+        const weight = (item.weight / KG_TO_GRAM).toFixed(2).replace('.00', '')
         return {
           ...item,
+          weight,
           hasCreateTracking: item.status === PACKAGE_STATUS_CREATED,
         }
       })

@@ -15,7 +15,7 @@
           </div>
           <div class="h-i">
             <span class="h-it">Khối lượng:</span>
-            <span class="h-iv">{{ shipment.weight }} gram</span>
+            <span class="h-iv">{{ shipment.weight | formatWeight }}kg</span>
           </div>
           <div class="h-i">
             <span class="h-it">Tổng giá:</span>
@@ -121,7 +121,7 @@
                         </td>
                         <td>{{ item.code }}</td>
                         <td>{{ item.tracking_number }}</td>
-                        <td>{{ item.weight }}gram</td>
+                        <td>{{ item.weight | formatWeight }}kg</td>
                         <td
                           >{{ item.length }}x{{ item.width }}x{{
                             item.height
@@ -177,6 +177,7 @@ import mixinTable from '@core/mixins/table'
 import Status from '../components/Status.vue'
 import { PACKAGE_STATUS_CREATED } from '../../package/constants'
 import { print } from '@core/utils/print'
+import { KG_TO_GRAM } from '@core/constants'
 
 export default {
   name: 'ShipmentDetail',
@@ -197,6 +198,11 @@ export default {
     },
     hasCreateTracking() {
       return this.shipment.status === PACKAGE_STATUS_CREATED
+    },
+  },
+  filters: {
+    formatWeight(val) {
+      return (val / KG_TO_GRAM).toFixed(2).replace('.00', '')
     },
   },
   data() {
