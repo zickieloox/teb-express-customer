@@ -233,11 +233,13 @@ export default {
       return this.items.length > 0 ? this.items[0] : {}
     },
     hasCreateTracking() {
-      return this.shipment && this.shipment.status === PACKAGE_STATUS_CREATED
+      return (
+        this.shipment.id > 0 && this.shipment.status === PACKAGE_STATUS_CREATED
+      )
     },
     hasCancel() {
       return (
-        this.shipment &&
+        this.shipment.id > 0 &&
         [PACKAGE_STATUS_CREATED, PACKAGE_STATUS_PENDING_PICKUP].includes(
           this.shipment.status
         )
