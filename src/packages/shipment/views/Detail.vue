@@ -15,12 +15,7 @@
           </div>
           <div class="h-i">
             <span class="h-it">Khối lượng:</span>
-            <span class="h-iv"
-              >{{ shipment.weight | formatWeight }}kg
-              <span v-if="shipment.actual_weight > shipment.weight"
-                >({{ shipment.actual_weight | formatWeight }}kg)</span
-              ></span
-            >
+            <span class="h-iv">{{ shipment.weight | formatWeight }}kg</span>
           </div>
           <div class="h-i">
             <span class="h-it">Tổng giá:</span>
@@ -39,6 +34,12 @@
             @click.prevent="createTrackingConfirmHandle"
             class="btn-sm"
             >Tạo tracking</p-button
+          >
+          <p-button
+            v-if="hasDownloadAllLabel"
+            @click.prevent="handlerDownloadLabels"
+            class="btn-sm"
+            >Tải labels</p-button
           >
           <p-button
             v-if="hasCancel"
@@ -113,6 +114,7 @@
                         <th>Trọng lượng</th>
                         <th>LxWxH (cm)</th>
                         <th>Phí ship</th>
+                        <th>Phí phát sinh</th>
                         <th>Trạng thái</th>
                       </tr>
                     </thead>
@@ -148,6 +150,7 @@
                           >
                         </td>
                         <td>{{ item.shipping_fee | formatPrice }}</td>
+                        <td>{{ item.extra_fee | formatPrice }}</td>
                         <td><Status v-status="item.status_string"/></td>
                         <td class="text-right">
                           <a
@@ -207,6 +210,10 @@ import {
 } from '../../package/constants'
 import { print } from '@core/utils/print'
 import { KG_TO_GRAM } from '@core/constants'
+import JSZip from 'jszip'
+import { extension } from '../../../core/utils/url'
+import http from '../../../core/services/http'
+import { saveAs } from 'file-saver'
 
 export default {
   name: 'ShipmentDetail',
@@ -232,6 +239,9 @@ export default {
       return [PACKAGE_STATUS_CREATED, PACKAGE_STATUS_PENDING_PICKUP].includes(
         this.shipment.status
       )
+    },
+    hasDownloadAllLabel() {
+      return this.firstItem.label != ''
     },
     displayItems() {
       return this.items.map((item) => {
@@ -319,6 +329,38 @@ export default {
         this.$toast.error('File error !!!')
       }
     },
+    async handlerDownloadLabels() {
+      const files = []
+
+      for (const item of this.items) {
+        if (item.label === '') {
+          continue
+        }
+
+        const res = await http.get(
+          `/uploads/file-export/download?type=labels&url=${item.label}`,
+          { type: 'blob' }
+        )
+        if (!res && res.error) {
+          this.$toast.error(res.errorMessage)
+          continue
+        }
+
+        let ext = extension(item.label)
+        ext = ext == 'pdf' ? ext : 'png'
+
+        res['name'] = item.order_number + '_' + item.code + '.' + ext
+        files.push(res)
+      }
+
+      var zip = new JSZip()
+      Array.from(files).forEach((file) => {
+        zip.file(file.name, file)
+      })
+      zip.generateAsync({ type: 'blob' }).then(function(content) {
+        saveAs(content, 'label.zip')
+      })
+    },
     createTrackingConfirmHandle() {
       this.$dialog.confirm({
         title: 'Xác nhận',
@@ -335,20 +377,17 @@ export default {
       this.isFetching = true
       const { id } = this
       const res = await this.fulfillShipment(id)
+      this.isFetching = false
 
       if (res.error) {
-        this.isFetching = false
         this.$toast.error(res.message)
         return
       }
 
-      setTimeout(() => {
-        this.isFetching = false
-        this.$toast.success(
-          'Đơn hàng đang được xử lý tạo tracking, thông tin xử lý sẽ được cập nhật sau'
-        )
-        this.init()
-      }, 3000)
+      this.$toast.success(
+        'Đơn hàng đang được xử lý tạo tracking, thông tin xử lý sẽ được cập nhật sau'
+      )
+      this.init()
     },
     cancelConfirmHandle() {
       this.$dialog.confirm({

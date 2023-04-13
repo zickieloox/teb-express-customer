@@ -296,20 +296,17 @@ export default {
 
       this.isFetching = true
       const res = await this.fulfillShipment(id)
+      this.isFetching = false
 
       if (res.error) {
-        this.isFetching = false
         this.$toast.error(res.message)
         return
       }
 
-      setTimeout(() => {
-        this.isFetching = false
-        this.$toast.success(
-          'Lô hàng đang được xử lý tạo tracking, thông tin xử lý sẽ được cập nhật sau'
-        )
-        this.init()
-      }, 2000)
+      this.$toast.success(
+        'Lô hàng đang được xử lý tạo tracking, thông tin xử lý sẽ được cập nhật sau'
+      )
+      this.init()
     },
 
     cancelConfirmHandle({ id }) {
