@@ -78,7 +78,9 @@
                         </div>
                       </td>
                       <td>{{ item.weight }}kg</td>
-                      <td>{{ item.created_at | date('dd/MM/yyyy HH:ii') }}</td>
+                      <td>{{
+                        item.created_at | datetime('dd/MM/yyyy HH:mm')
+                      }}</td>
                       <td>
                         <Status :status="item.status" />
                       </td>

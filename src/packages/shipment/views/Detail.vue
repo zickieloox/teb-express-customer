@@ -10,7 +10,7 @@
           <div class="h-i">
             <span class="h-it">Ngày tạo:</span>
             <span class="h-iv">{{
-              shipment.created_at | date('dd/MM/yyyy HH:ii')
+              shipment.created_at | datetime('dd/MM/yyyy HH:mm')
             }}</span>
           </div>
           <div class="h-i">
