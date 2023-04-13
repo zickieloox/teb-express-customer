@@ -233,11 +233,14 @@ export default {
       return this.items.length > 0 ? this.items[0] : {}
     },
     hasCreateTracking() {
-      return this.shipment.status === PACKAGE_STATUS_CREATED
+      return this.shipment && this.shipment.status === PACKAGE_STATUS_CREATED
     },
     hasCancel() {
-      return [PACKAGE_STATUS_CREATED, PACKAGE_STATUS_PENDING_PICKUP].includes(
-        this.shipment.status
+      return (
+        this.shipment &&
+        [PACKAGE_STATUS_CREATED, PACKAGE_STATUS_PENDING_PICKUP].includes(
+          this.shipment.status
+        )
       )
     },
     hasDownloadAllLabel() {
