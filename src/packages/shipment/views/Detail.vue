@@ -126,8 +126,8 @@
                             </router-link>
                           </div>
                         </td>
-                        <td>{{ item.code }}</td>
-                        <td>{{ item.tracking_number }}</td>
+                        <td>{{ item.code || 'N/A' }}</td>
+                        <td>{{ item.tracking_number || 'N/A' }}</td>
                         <td
                           >{{ item.weight | formatWeight }}kg
                           <span v-if="item.weight != item.actual_weight"

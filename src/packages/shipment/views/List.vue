@@ -96,7 +96,7 @@
                           v-if="item.hasCancel"
                           @click.prevent="cancelConfirmHandle(item)"
                           class="btn-sm ml-3"
-                          type="default"
+                          type="danger"
                           >Hủy</p-button
                         >
                       </td>
@@ -378,6 +378,11 @@ export default {
 
   #date-search .show-ranges {
     min-width: 712px;
+  }
+
+  .table tbody tr td {
+    padding-top: 8px;
+    padding-bottom: 8px;
   }
 }
 </style>

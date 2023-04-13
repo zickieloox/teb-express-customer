@@ -25,3 +25,8 @@ export default {
   },
 }
 </script>
+<style scoped>
+span {
+  text-transform: capitalize;
+}
+</style>
