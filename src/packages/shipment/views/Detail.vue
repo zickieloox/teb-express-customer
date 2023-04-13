@@ -15,7 +15,12 @@
           </div>
           <div class="h-i">
             <span class="h-it">Khối lượng:</span>
-            <span class="h-iv">{{ shipment.weight | formatWeight }}kg</span>
+            <span class="h-iv"
+              >{{ shipment.weight | formatWeight }}kg
+              <span v-if="shipment.actual_weight > shipment.weight"
+                >({{ shipment.actual_weight | formatWeight }}kg)</span
+              ></span
+            >
           </div>
           <div class="h-i">
             <span class="h-it">Tổng giá:</span>
@@ -112,7 +117,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="item in items" :key="item.id">
+                      <tr v-for="item in displayItems" :key="item.id">
                         <td class="order-number">
                           <div class="d-flex justify-content-between">
                             <router-link
@@ -136,12 +141,7 @@
                         >
                         <td
                           >{{ item.length }}x{{ item.width }}x{{ item.height }}
-                          <span
-                            v-if="
-                              item.length != item.actual_length ||
-                                item.width != item.actual_width ||
-                                item.height != item.actual_height
-                            "
+                          <span v-if="item.hasChangeVolume"
                             >({{ item.actual_length }}x{{
                               item.actual_width
                             }}x{{ item.actual_height }})</span
@@ -232,6 +232,25 @@ export default {
       return [PACKAGE_STATUS_CREATED, PACKAGE_STATUS_PENDING_PICKUP].includes(
         this.shipment.status
       )
+    },
+    displayItems() {
+      return this.items.map((item) => {
+        const {
+          length,
+          width,
+          height,
+          actual_length,
+          actual_width,
+          actual_height,
+        } = item
+        const hasChangeVolume =
+          length * width * height < actual_length * actual_width * actual_height
+
+        return {
+          ...item,
+          hasChangeVolume,
+        }
+      })
     },
   },
   filters: {
