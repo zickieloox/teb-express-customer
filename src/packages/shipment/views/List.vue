@@ -90,6 +90,13 @@
                           class="btn-sm"
                           >Tạo tracking</p-button
                         >
+                        <p-button
+                          v-if="item.hasCancel"
+                          @click.prevent="cancelConfirmHandle(item)"
+                          class="btn-sm ml-3"
+                          type="default"
+                          >Hủy</p-button
+                        >
                       </td>
                     </tr>
                   </tbody>
@@ -140,8 +147,12 @@ import {
   FETCH_COUNT_SHIPMENTS,
   IMPORT_PACKAGE_FBA,
   FULFILL_SHIPMENT,
+  CANCEL_SHIPMENT,
 } from '../store'
-import { PACKAGE_STATUS_CREATED } from '../../package/constants'
+import {
+  PACKAGE_STATUS_CREATED,
+  PACKAGE_STATUS_PENDING_PICKUP,
+} from '../../package/constants'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
@@ -174,6 +185,10 @@ export default {
           ...item,
           weight,
           hasCreateTracking: item.status === PACKAGE_STATUS_CREATED,
+          hasCancel: [
+            PACKAGE_STATUS_CREATED,
+            PACKAGE_STATUS_PENDING_PICKUP,
+          ].includes(item.status),
         }
       })
     },
@@ -206,6 +221,7 @@ export default {
       fetchCountShipment: FETCH_COUNT_SHIPMENTS,
       importPackageFba: IMPORT_PACKAGE_FBA,
       fulfillShipment: FULFILL_SHIPMENT,
+      cancelShipment: CANCEL_SHIPMENT,
     }),
 
     async init() {
@@ -266,7 +282,7 @@ export default {
         title: 'Xác nhận',
         message: 'Bạn có chắc chắn muốn tạo tracking?',
         confirmText: 'Tạo tracking',
-        cancelText: 'Hủy',
+        cancelText: 'Đóng',
         typeCancel: 'default',
         onConfirm: () => {
           this.createTrackingHandle(id)
@@ -288,10 +304,38 @@ export default {
       setTimeout(() => {
         this.isFetching = false
         this.$toast.success(
-          'Đơn hàng đang được xử lý tạo tracking, thông tin xử lý sẽ được cập nhật sau'
+          'Lô hàng đang được xử lý tạo tracking, thông tin xử lý sẽ được cập nhật sau'
         )
         this.init()
-      }, 3000)
+      }, 2000)
+    },
+
+    cancelConfirmHandle({ id }) {
+      this.$dialog.confirm({
+        title: 'Xác nhận',
+        message: 'Bạn có chắc chắn muốn hủy lô hàng?',
+        confirmText: 'Hủy',
+        cancelText: 'Xác nhận',
+        typeCancel: 'default',
+        onConfirm: () => {
+          this.cancelHandle(id)
+        },
+      })
+    },
+    async cancelHandle(id) {
+      if (this.isFetching) return
+
+      this.isFetching = true
+      const res = await this.cancelShipment(id)
+      this.isFetching = false
+
+      if (res.error) {
+        this.$toast.error(res.message)
+        return
+      }
+
+      this.$toast.success('Hủy lô hàng thàng công')
+      this.init()
     },
     clearSearchDate() {
       this.filter.end_date = ''

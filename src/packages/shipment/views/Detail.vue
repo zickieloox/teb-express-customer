@@ -35,6 +35,13 @@
             class="btn-sm"
             >Tạo tracking</p-button
           >
+          <p-button
+            v-if="hasCancel"
+            @click.prevent="cancelConfirmHandle"
+            class="btn-sm ml-3"
+            type="default"
+            >Hủy lô hàng</p-button
+          >
         </div>
       </div>
     </div>
@@ -121,12 +128,25 @@
                         </td>
                         <td>{{ item.code }}</td>
                         <td>{{ item.tracking_number }}</td>
-                        <td>{{ item.weight | formatWeight }}kg</td>
                         <td
-                          >{{ item.length }}x{{ item.width }}x{{
-                            item.height
-                          }}</td
+                          >{{ item.weight | formatWeight }}kg
+                          <span v-if="item.weight != item.actual_weight"
+                            >({{ item.actual_weight | formatWeight }}kg)</span
+                          ></td
                         >
+                        <td
+                          >{{ item.length }}x{{ item.width }}x{{ item.height }}
+                          <span
+                            v-if="
+                              item.length != item.actual_length ||
+                                item.width != item.actual_width ||
+                                item.height != item.actual_height
+                            "
+                            >({{ item.actual_length }}x{{
+                              item.actual_width
+                            }}x{{ item.actual_height }})</span
+                          >
+                        </td>
                         <td>{{ item.shipping_fee | formatPrice }}</td>
                         <td><Status v-status="item.status_string"/></td>
                         <td class="text-right">
@@ -170,12 +190,16 @@ import {
   FETCH_LIST_SHIPMENT_ITEMS,
   FETCH_COUNT_SHIPMENT_ITEMS,
   FULFILL_SHIPMENT,
+  CANCEL_SHIPMENT,
 } from '../store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import Status from '../components/Status.vue'
-import { PACKAGE_STATUS_CREATED } from '../../package/constants'
+import {
+  PACKAGE_STATUS_CREATED,
+  PACKAGE_STATUS_PENDING_PICKUP,
+} from '../../package/constants'
 import { print } from '@core/utils/print'
 import { KG_TO_GRAM } from '@core/constants'
 
@@ -198,6 +222,11 @@ export default {
     },
     hasCreateTracking() {
       return this.shipment.status === PACKAGE_STATUS_CREATED
+    },
+    hasCancel() {
+      return [PACKAGE_STATUS_CREATED, PACKAGE_STATUS_PENDING_PICKUP].includes(
+        this.shipment.status
+      )
     },
   },
   filters: {
@@ -226,6 +255,7 @@ export default {
       fetchListItems: FETCH_LIST_SHIPMENT_ITEMS,
       fetchCountItems: FETCH_COUNT_SHIPMENT_ITEMS,
       fulfillShipment: FULFILL_SHIPMENT,
+      cancelShipment: CANCEL_SHIPMENT,
     }),
 
     async init() {
@@ -270,7 +300,7 @@ export default {
         title: 'Xác nhận',
         message: 'Bạn có chắc chắn muốn tạo tracking?',
         confirmText: 'Tạo tracking',
-        cancelText: 'Hủy',
+        cancelText: 'Đóng',
         typeCancel: 'default',
         onConfirm: this.createTrackingHandle,
       })
@@ -295,6 +325,32 @@ export default {
         )
         this.init()
       }, 3000)
+    },
+    cancelConfirmHandle() {
+      this.$dialog.confirm({
+        title: 'Xác nhận',
+        message: 'Bạn có chắc chắn muốn hủy lô hàng?',
+        confirmText: 'Xác nhận',
+        cancelText: 'Đóng',
+        typeCancel: 'default',
+        onConfirm: this.cancelHandle,
+      })
+    },
+    async cancelHandle() {
+      if (this.isFetching) return
+
+      this.isFetching = true
+      const { id } = this
+      const res = await this.cancelShipment(id)
+      this.isFetching = false
+
+      if (res.error) {
+        this.$toast.error(res.message)
+        return
+      }
+
+      this.$toast.success('Hủy lô hàng thành công')
+      this.init()
     },
   },
   watch: {

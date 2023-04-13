@@ -26,4 +26,7 @@ export default {
   fulfillShipment(id) {
     return http.post(`/shipments/${id}/fulfill`)
   },
+  cancelShipment(id) {
+    return http.put(`/shipments/${id}/cancel`)
+  },
 }
