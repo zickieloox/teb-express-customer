@@ -150,12 +150,17 @@
                         <td>{{ item.shipping_fee | formatPrice }}</td>
                         <td><Status v-status="item.status_string"/></td>
                         <td class="text-right">
-                          <p-button
+                          <a
                             v-if="item.label"
+                            href="#"
+                            class="btn btn-primary"
                             @click.prevent="downloadLabel(item)"
-                            class="btn-sm"
-                            >Tải label</p-button
                           >
+                            <inline-svg
+                              :src="require('@assets/img/arrow-down-2.svg')"
+                            >
+                            </inline-svg>
+                          </a>
                         </td>
                       </tr>
                     </tbody>
@@ -415,7 +420,13 @@ export default {
   .btn {
     height: auto;
     font-size: 12px;
-    padding: 8px 10px;
+    padding: 4px 8px;
+    border-radius: 5px;
+
+    svg {
+      padding: 0;
+      margin: 0;
+    }
   }
 }
 
