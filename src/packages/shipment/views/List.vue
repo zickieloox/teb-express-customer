@@ -314,7 +314,7 @@ export default {
         title: 'Xác nhận',
         message: 'Bạn có chắc chắn muốn hủy lô hàng?',
         confirmText: 'Hủy',
-        cancelText: 'Xác nhận',
+        cancelText: 'Đóng',
         typeCancel: 'default',
         onConfirm: () => {
           this.cancelHandle(id)
