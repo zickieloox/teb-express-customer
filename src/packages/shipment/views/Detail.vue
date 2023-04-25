@@ -19,11 +19,9 @@
           </div>
           <div class="h-i">
             <span class="h-it">Tổng giá:</span>
-            <span class="h-iv">{{ total_amount | formatPrice }}</span>
-          </div>
-          <div class="h-i">
-            <span class="h-it">Phí phát sinh:</span>
-            <span class="h-iv">{{ extraFee | formatPrice }}</span>
+            <span class="h-iv">{{
+              (total_amount + extraFee) | formatPrice
+            }}</span>
           </div>
           <div class="h-i">
             <span class="h-it">Trạng thái:</span>
