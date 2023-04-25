@@ -22,6 +22,10 @@
             <span class="h-iv">{{ total_amount | formatPrice }}</span>
           </div>
           <div class="h-i">
+            <span class="h-it">Phí phát sinh:</span>
+            <span class="h-iv">{{ extraFee | formatPrice }}</span>
+          </div>
+          <div class="h-i">
             <span class="h-it">Trạng thái:</span>
             <span class="h-iv">
               <Status :status="shipment.status" />
@@ -247,6 +251,13 @@ export default {
       return (
         this.shipment.id > 0 && this.shipment.status === PACKAGE_STATUS_CREATED
       )
+    },
+    extraFee() {
+      return this.shipment.extra_fees
+        ? this.shipment.extra_fees.reduce((total, fee) => {
+            return total + fee.amount
+          }, 0)
+        : 0
     },
     hasCancel() {
       return (
