@@ -201,6 +201,7 @@
                           <tr v-for="(item, i) in feeRefund" :key="i">
                             <td>
                               <router-link
+                                v-if="item.package_code"
                                 class="text-no-underline"
                                 :to="{
                                   name: 'package-detail',
