@@ -199,13 +199,13 @@
               </div>
             </div>
           </div>
-          <div class="card-block" v-if="shipment.extra_fees.length">
+          <div class="card-block" v-if="extraFees.length">
             <div class="card-header">
               <div class="card-title">Chi tiết phí phát sinh</div>
             </div>
             <div class="card-content">
               <div class="ship-recipient">
-                <p v-for="item in shipment.extra_fees" :key="item.id">
+                <p v-for="item in extraFees" :key="item.id">
                   <span class="fee-col text-left">{{ item.description }}</span>
                   <span class="fee-col text-right">{{
                     item.amount | formatPrice
@@ -274,6 +274,9 @@ export default {
       return (
         this.shipment.id > 0 && this.shipment.status === PACKAGE_STATUS_CREATED
       )
+    },
+    extraFees() {
+      return this.shipment.extra_fees || []
     },
     extraFee() {
       return this.shipment.extra_fees
