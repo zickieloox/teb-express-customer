@@ -188,10 +188,6 @@ export default {
               route: '/orders',
               title: 'Kiện hàng',
             },
-            {
-              route: '/shipments',
-              title: 'Lô hàng FBA',
-            },
           ],
         },
         {
@@ -317,3 +313,8 @@ export default {
   },
 }
 </script>
+<style lang="scss">
+.site-menubar-body {
+  height: calc(100vh - 152px);
+}
+</style>

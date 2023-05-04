@@ -65,7 +65,7 @@
           >
           </p-input>
           <div class="d-flex date-search">
-            <p-datepicker
+            <Datepicker
               :format="'dd/mm/yyyy'"
               class="p-input-group input-group"
               @update="selectDate"
@@ -76,7 +76,8 @@
                 endDate: filter.end_date,
               }"
               @clear="clearSearchDate"
-            ></p-datepicker>
+              @on-type="onFilterByDateType"
+            />
           </div>
           <button class="search-advanced ml-12" @click="visibleModalSearch">
             <inline-svg
@@ -161,12 +162,13 @@
                         ></p-checkbox>
                       </th>
                       <template>
-                        <th>order no.</th>
+                        <th>Order no.</th>
                         <th>Lionbay tracking</th>
-                        <th>last mile tracking</th>
-                        <th>service</th>
-                        <th>created date </th>
-                        <th width="150">status</th>
+                        <th>Last mile tracking</th>
+                        <th>Service</th>
+                        <th>Created date</th>
+                        <th>Accepted date</th>
+                        <th width="160">status</th>
                         <th style="text-align: right">Total fee</th>
                       </template>
                     </tr>
@@ -385,6 +387,12 @@
                       </td>
                       <td>{{ item.created_at | date('dd/MM/yyyy') }}</td>
                       <td>
+                        <span v-if="item.accepted_at">
+                          {{ item.accepted_at | date('dd/MM/yyyy') }}
+                        </span>
+                        <span v-else>N/A</span>
+                      </td>
+                      <td>
                         <span v-status="item.status_string"></span>
                         <span
                           v-if="item.alert > 0"
@@ -404,6 +412,14 @@
                               :src="require('../../../assets/img/warning.svg')"
                             ></inline-svg>
                           </p-tooltip>
+                        </span>
+                        <span class="time-ago" v-if="item.delivered_at">
+                          ({{
+                            item.delivered_at
+                              | distanceTime(
+                                item.accepted_at | item.created_at
+                              )
+                          }})
                         </span>
                       </td>
                       <td
@@ -534,6 +550,7 @@ import ModalConfirm from '@components/shared/modal/ModalConfirm'
 import mixinChaining from '@/packages/shared/mixins/chaining'
 import ModalConfirmAddress from './components/ModalConfirmAddress'
 import { formatPrice } from '@core/utils/formatter'
+import Datepicker from './components/Datepicker.vue'
 
 import {
   PACKAGE_STATUS_TAB,
@@ -590,6 +607,7 @@ export default {
     ModalConfirmAddress,
     ModalSearchAdvanced,
     TrackLink,
+    Datepicker,
   },
   mounted() {
     window.addEventListener('scroll', this.updateScroll)
@@ -604,6 +622,7 @@ export default {
         end_date: '',
         code: '',
         alert: 0,
+        by_date: '',
       },
       labelDate: `Tìm theo ngày`,
       isUploading: false,
@@ -755,6 +774,7 @@ export default {
         start_date: '',
         end_date: '',
         code: '',
+        by_date: '',
       }
       this.init()
     },
@@ -771,6 +791,7 @@ export default {
       this.filter.end_date = ''
       this.filter.start_date = ''
       this.filter.search = ''
+      this.filter.by_date = ''
       this.filter.search_by = ''
       this.filter.status_arr = []
       this.filter.page = 1
@@ -1180,6 +1201,9 @@ export default {
         this.filter.alert = 0
       }
     },
+    onFilterByDateType(val) {
+      this.filter.by_date = val
+    },
   },
   watch: {
     filter: {
@@ -1226,5 +1250,10 @@ export default {
   position: relative;
   left: 52px;
   display: inline-block;
+}
+.table-packages .time-ago {
+  font-size: 12px;
+  color: #898a8a;
+  font-weight: 400;
 }
 </style>
