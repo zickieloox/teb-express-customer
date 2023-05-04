@@ -199,7 +199,11 @@
               </div>
             </div>
           </div>
-          <div class="card-block" v-if="extraFees.length">
+          <div
+            class="card-block"
+            style="margin-bottom: 60px;"
+            v-if="extraFees.length"
+          >
             <div class="card-header">
               <div class="card-title">Chi tiết phí phát sinh</div>
             </div>
