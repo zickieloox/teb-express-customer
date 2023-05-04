@@ -174,8 +174,6 @@ export default {
             '/packages-return',
             '/orders',
             '/orders/:id',
-            '/shipments',
-            '/shipments/:id',
           ],
           sub: [
             {
@@ -195,6 +193,16 @@ export default {
               title: 'Lô hàng FBA',
             },
           ],
+        },
+        {
+          title: 'Đơn FBA',
+          icon: require('@assets/img/fba.svg'),
+          iconActive: require('@assets/img/fba-active.svg'),
+          route: { name: 'shipment-list' },
+          class: '',
+          isOpen: false,
+          tooltip: 'Đơn FBA',
+          alias: ['/shipments', '/shipments/:id'],
         },
         {
           title: 'Hóa đơn',
