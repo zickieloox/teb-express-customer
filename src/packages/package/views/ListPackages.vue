@@ -413,11 +413,18 @@
                             ></inline-svg>
                           </p-tooltip>
                         </span>
-                        <span class="time-ago" v-if="item.delivered_at">
+                        <span
+                          class="time-ago"
+                          v-if="
+                            item.delivered_at &&
+                              item.accepted_at &&
+                              item.status == PACKAGE_STATUS_DELIVERED
+                          "
+                        >
                           ({{
                             item.delivered_at
                               | distanceTime(
-                                item.accepted_at | item.created_at
+                                item.accepted_at || item.created_at
                               )
                           }})
                         </span>
@@ -567,6 +574,7 @@ import {
   PACKAGE_ALERT_TYPE_WAREHOUSE_RETURN,
   PACKAGE_ALERT_TYPE_HUB_RETURN,
   PACKAGE_STATUS_ALERT_TEXT,
+  PACKAGE_STATUS_DELIVERED,
 } from '../constants'
 import {
   FETCH_LIST_PACKAGES,
@@ -678,6 +686,7 @@ export default {
       loadingValidate: false,
       scrollPosition: null,
       isVisibleModalSearch: false,
+      PACKAGE_STATUS_DELIVERED: PACKAGE_STATUS_DELIVERED,
     }
   },
   created() {
