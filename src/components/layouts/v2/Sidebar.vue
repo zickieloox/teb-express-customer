@@ -21,7 +21,7 @@
           <router-link
             :to="handelRouter(menu)"
             class="item-link"
-            @mouseover.native="openItem(menu)"
+            @mouseover.native="openItem($event, menu)"
             @mouseleave.native="closeItem(menu)"
           >
             <div class="item-link-content">
@@ -31,7 +31,7 @@
               <span v-if="!menu.sub" class="tooltip">{{ menu.tooltip }}</span>
             </div>
             <transition name="fade">
-              <div class="open-right">
+              <div class="open-right" :style="{ top: menu.sub_top }">
                 <div
                   class="site-menu-sub"
                   :class="{
@@ -296,11 +296,14 @@ export default {
       }
       return menu.route
     },
-    openItem(menu) {
+    openItem(e, menu) {
       menu.isOpen = true
+      const top = e.target.getBoundingClientRect().top || 0
+      menu.sub_top = top + 'px'
     },
     closeItem(menu) {
       menu.isOpen = false
+      menu.sub_top = ''
     },
 
     toggleSidebar() {
@@ -316,5 +319,13 @@ export default {
 <style lang="scss">
 .site-menubar-body {
   height: calc(100vh - 152px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  .site-menu .open-right {
+    position: fixed;
+    left: calc(120px - 10px);
+    padding-left: 15px;
+  }
 }
 </style>
