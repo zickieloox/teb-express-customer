@@ -31,7 +31,7 @@
               <span v-if="!menu.sub" class="tooltip">{{ menu.tooltip }}</span>
             </div>
             <transition name="fade">
-              <div class="open-right" :style="{ top: menu.sub_top }">
+              <div class="open-right">
                 <div
                   class="site-menu-sub"
                   :class="{
@@ -298,12 +298,9 @@ export default {
     },
     openItem(e, menu) {
       menu.isOpen = true
-      const top = e.target.getBoundingClientRect().top || 0
-      menu.sub_top = top + 'px'
     },
     closeItem(menu) {
       menu.isOpen = false
-      menu.sub_top = ''
     },
 
     toggleSidebar() {
@@ -318,14 +315,8 @@ export default {
 </script>
 <style lang="scss">
 .site-menubar-body {
-  height: calc(100vh - 152px);
-  overflow-y: scroll;
-  overflow-x: hidden;
-
-  .site-menu .open-right {
-    position: fixed;
-    left: calc(120px - 10px);
-    padding-left: 15px;
+  .site-menu-icon {
+    width: 30px;
   }
 }
 </style>
