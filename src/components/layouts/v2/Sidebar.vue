@@ -319,4 +319,7 @@ export default {
     width: 30px;
   }
 }
+.site-menubar-logo {
+  margin-bottom: 25px;
+}
 </style>
