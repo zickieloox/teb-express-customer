@@ -26,7 +26,7 @@ export const MAP_CLAIM_STATUS = {
   },
   [CLAIM_STATUS_PENDING]: {
     text: 'Đang xử lý',
-    className: 'pending',
+    className: 'primary',
   },
   [CLAIM_STATUS_PROCESSED]: {
     text: 'Đã xử lý',
