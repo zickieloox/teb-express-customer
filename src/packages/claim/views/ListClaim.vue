@@ -40,6 +40,7 @@
                       <th>NGÀY TẠO</th>
                       <th>NGÀY CẬP NHẬT</th>
                       <th>TRẠNG THÁI </th>
+                      <th>KẾT QUẢ</th>
                     </tr>
                   </thead>
 
@@ -95,6 +96,7 @@
                       <td width="150">
                         <span v-status="item.status" type="claim"></span>
                       </td>
+                      <td width="150">{{ item.type ? '' : '-' }}</td>
                     </tr>
                   </tbody>
                 </table>
