@@ -167,7 +167,7 @@
                   <span class="col-4 p-0">Lý do:</span>
                   <span class="col-8 p-0">{{ reason }}</span>
                 </div>
-                <div class="row m-0 mb-5">
+                <div class="row m-0 mb-8">
                   <span class="col-4 p-0">Trạng thái:</span>
                   <span
                     class="col-8 p-0"
@@ -175,12 +175,10 @@
                     type="claim"
                   ></span>
                 </div>
-                <button
-                  class="btn btn-outline-info w-100"
-                  v-if="!isClosed"
-                  @click="handleCloseTicket()"
-                  >Đóng khiếu nại</button
-                >
+                <div class="row m-0 mb-5">
+                  <span class="col-4 p-0">Kết quả:</span>
+                  <span class="col-8 p-0">{{ getTypeClaim(claim.type) }}</span>
+                </div>
               </div>
             </div>
             <div class="card-block card-attachments">
@@ -244,6 +242,8 @@ import {
   CLAIM_STATUS_TEXT,
   MAP_REASON_CATEGORY_TEXT,
   REASON_CATEGORY_OTHER_TEXT,
+  TicketTypeReship,
+  TicketTypeRefund,
 } from '../constants'
 import { truncate } from '@core/utils/string'
 import { Upload } from '@kit'
@@ -356,7 +356,6 @@ export default {
     ticketID() {
       return parseInt(this.$route.params.id)
     },
-
     displayMessages() {
       let last = null
       const results = []
@@ -492,7 +491,16 @@ export default {
       this.fileErrors = []
       this.countIsUploading += files.length || 0
     },
-
+    getTypeClaim(type) {
+      switch (type) {
+        case TicketTypeReship:
+          return 'Vận chuyển lại'
+        case TicketTypeRefund:
+          return 'Hoàn tiền'
+        default:
+          return '-'
+      }
+    },
     handleChangeFile(file) {
       const index = this.files.findIndex(({ uid }) => uid === file.uid)
       if (index !== -1) {
