@@ -57,7 +57,10 @@
                           {{ item.id }}
                           <img
                             class="ml-10"
-                            v-if="item.status_rep == claimAdminReply"
+                            v-if="
+                              item.status_rep == claimAdminReply &&
+                                item.status != statusProcessed
+                            "
                             src="@assets/img/messenger.svg"
                             alt=""
                           />
@@ -134,6 +137,7 @@ import {
   CLAIM_ADMIN_REPLY,
   TicketTypeReship,
   TicketTypeRefund,
+  CLAIM_STATUS_PROCESSED,
 } from '../constants'
 
 import { truncate } from '@core/utils/string'
@@ -173,6 +177,9 @@ export default {
       listclaim: (state) => state.claims,
       totalCount: (state) => state.totalCount,
     }),
+    statusProcessed() {
+      return CLAIM_STATUS_PROCESSED
+    },
   },
   methods: {
     ...mapActions('claim', [FETCH_CLAIMS]),
