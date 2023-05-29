@@ -1,59 +1,70 @@
 <template>
   <div>
     <img id="bg-fb" src="~@/assets/img/feedback.png" />
-    <div class="feedback-modal">
+    <p-modal
+      v-if="isRated"
+      class="thank_rate"
+      :active="visible_1"
+      @close="handleClose1"
+    >
+      <img src="~@/assets/img/thank_for_rate.png" />
+    </p-modal>
+    <div v-else class="feedback-modal">
       <p-modal
         :active="visible"
         @close="handleClose"
         :title="`Phản hồi khách hàng`"
       >
-        <div class="row mb-8">
-          <div class="col-5">
-            <label>Tiêu đề: </label>
+        <template>
+          <div class="row mb-8">
+            <div class="col-5">
+              <label>Tiêu đề: </label>
+            </div>
+            <div class="col-7">
+              {{ ticket.title }}
+            </div>
           </div>
-          <div class="col-7">
-            {{ ticket.title }}
+          <div class="row mb-8">
+            <div class="col-5">
+              <label>Nội dung: </label>
+            </div>
+            <div class="col-7">
+              {{ ticket.content }}
+            </div>
           </div>
-        </div>
-        <div class="row mb-8">
-          <div class="col-5">
-            <label>Nội dung: </label>
+          <div class="row mb-20">
+            <div class="col-5">
+              <label>Người xử lý khiếu nại: </label>
+            </div>
+            <div class="col-7">
+              Nhan CS
+            </div>
           </div>
-          <div class="col-7">
-            {{ ticket.content }}
+          <div class="star mb-20">
+            <AwesomeVueStarRating
+              :star="this.star"
+              :disabled="this.disabled"
+              :maxstars="this.maxstars"
+              :starsize="this.starsize"
+              :hasresults="this.hasresults"
+              :hasdescription="this.hasdescription"
+            />
           </div>
-        </div>
-        <div class="row mb-20">
-          <div class="col-5">
-            <label>Người xử lý khiếu nại: </label>
+          <div style="margin-bottom: -16px;">
+            <textarea
+              style="position: static"
+              rows="4"
+              cols="50"
+              class="form-control"
+              placeholder="Phản hồi thêm (không bắt buộc)"
+              v-model="response"
+              name="message"
+            ></textarea>
           </div>
-          <div class="col-7">
-            Nhan CS
-          </div>
-        </div>
-        <div class="star mb-20">
-          <AwesomeVueStarRating
-            :star="this.star"
-            :disabled="this.disabled"
-            :maxstars="this.maxstars"
-            :starsize="this.starsize"
-            :hasresults="this.hasresults"
-            :hasdescription="this.hasdescription"
-          />
-        </div>
-        <div style="margin-bottom: -16px;">
-          <textarea
-            style="position: static"
-            rows="4"
-            cols="50"
-            class="form-control"
-            placeholder="Phản hồi thêm (không bắt buộc)"
-            v-model="response"
-            name="message"
-          ></textarea>
-        </div>
+        </template>
         <template slot="footer">
           <p-button
+            :loading="isSubmitting"
             type="primary"
             @click="handleSave"
             style="margin: auto;width: 448px"
@@ -68,7 +79,7 @@
 
 <script>
 import AwesomeVueStarRating from 'awesome-vue-star-rating'
-import { FETCH_TICKET } from '@/packages/claim/store'
+import { FETCH_TICKET, RATING_TICKET } from '@/packages/claim/store'
 import { mapActions, mapState } from 'vuex'
 export default {
   name: 'FeedBack',
@@ -85,6 +96,9 @@ export default {
       maxstars: 5,
       disabled: false,
       visible: true,
+      visible_1: true,
+      isSubmitting: false,
+      isRated: false,
     }
   },
   computed: {
@@ -99,13 +113,31 @@ export default {
     this.init()
   },
   methods: {
-    ...mapActions('claim', [FETCH_TICKET]),
+    ...mapActions('claim', [FETCH_TICKET, RATING_TICKET]),
     async init() {
       await this[FETCH_TICKET](this.ticketID)
     },
-    handleSave() {},
+    async handleSave() {
+      let payload = {
+        ticket_id: this.ticket.id,
+        support_id: 14,
+        rating: this.star,
+        response: this.response,
+      }
+      this.isSubmitting = true
+      const r = await this[RATING_TICKET](payload)
+      this.isSubmitting = false
+      if (r.error) {
+        this.$toast.open({ type: 'error', message: r.message })
+        return
+      }
+      this.isRated = true
+    },
     handleClose() {
       this.visible = false
+    },
+    handleClose1() {
+      this.visible_1 = false
     },
   },
 }
@@ -135,5 +167,23 @@ export default {
 }
 .feedback-modal .row label {
   color: #626363;
+}
+.thank_rate .modal-footer {
+  display: none;
+}
+.thank_rate .modal-header {
+  border: none;
+  position: absolute;
+  right: 0;
+}
+.thank_rate .modal-header .close {
+  z-index: 9999;
+}
+.thank_rate .modal-body {
+  padding: 0;
+}
+.thank_rate .p-modal-content {
+  width: 480px;
+  height: 228px;
 }
 </style>

@@ -17,6 +17,7 @@ export const PUSH_MESSAGE = 'pushMessage'
 export const APPEND_MESSAGE = 'appendMessage'
 export const SET_MESSAGES = 'setMessages'
 export const COUNT_TICKET = 'countTicket'
+export const RATING_TICKET = 'ratingTicket'
 
 export const state = {
   claims: [],
@@ -202,5 +203,14 @@ export const actions = {
 
     commit(PUSH_MESSAGE, res.message)
     return { success: true, reply: res.message }
+  },
+  // eslint-disable-next-line
+  async [RATING_TICKET]({ commit }, payload) {
+    let res
+    res = await api.ratingTicket(payload)
+    if (!res || res.error) {
+      return { error: true, message: res.errorMessage || '' }
+    }
+    return { error: false }
   },
 }
