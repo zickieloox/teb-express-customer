@@ -182,7 +182,7 @@
                 </div>
                 <div class="row m-0 mb-8" v-if="claim.amount">
                   <span class="col-4 p-0">{{
-                    claim.amount > 0 ? 'Số tiền thêm:' : 'số tiền hoàn:'
+                    claim.amount > 0 ? 'Số tiền thêm:' : 'Số tiền hoàn:'
                   }}</span>
                   <span class="col-8 p-0">{{
                     Math.abs(claim.amount) | formatPrice
