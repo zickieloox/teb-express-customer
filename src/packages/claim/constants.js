@@ -1,6 +1,10 @@
-const CLAIM_STATUS_APPLYING = 1
+export const CLAIM_STATUS_APPLYING = 1
 export const CLAIM_STATUS_PENDING = 2
 export const CLAIM_STATUS_PROCESSED = 3
+
+export const TicketTypeDefault = 1
+export const TicketTypeReship = 2
+export const TicketTypeRefund = 3
 
 export const CLAIM_STATUS = {
   'Xét duyệt': CLAIM_STATUS_APPLYING,

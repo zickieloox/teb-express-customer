@@ -57,7 +57,10 @@
                           {{ item.id }}
                           <img
                             class="ml-10"
-                            v-if="item.status_rep == claimAdminReply"
+                            v-if="
+                              item.status_rep == claimAdminReply &&
+                                item.status != statusProcessed
+                            "
                             src="@assets/img/messenger.svg"
                             alt=""
                           />
@@ -96,7 +99,7 @@
                       <td width="150">
                         <span v-status="item.status" type="claim"></span>
                       </td>
-                      <td width="150">{{ item.type ? '' : '-' }}</td>
+                      <td width="150">{{ getTypeClaim(item.type) }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -129,7 +132,13 @@
 </template>
 <script>
 import EmptySearchResult from '../../../components/shared/EmptySearchResult'
-import { CLAIM_STATUS, CLAIM_ADMIN_REPLY } from '../constants'
+import {
+  CLAIM_STATUS,
+  CLAIM_ADMIN_REPLY,
+  TicketTypeReship,
+  TicketTypeRefund,
+  CLAIM_STATUS_PROCESSED,
+} from '../constants'
 
 import { truncate } from '@core/utils/string'
 import mixinRoute from '@core/mixins/route'
@@ -138,7 +147,6 @@ import ModalAddClaim from '../components/ModalAddClaim'
 import { FETCH_CLAIMS } from '../store'
 import { mapActions, mapState } from 'vuex'
 import PButton from '../../../../uikit/components/button/Button'
-
 export default {
   name: 'ListClaim',
   mixins: [mixinRoute, mixinTable],
@@ -169,6 +177,9 @@ export default {
       listclaim: (state) => state.claims,
       totalCount: (state) => state.totalCount,
     }),
+    statusProcessed() {
+      return CLAIM_STATUS_PROCESSED
+    },
   },
   methods: {
     ...mapActions('claim', [FETCH_CLAIMS]),
@@ -185,6 +196,16 @@ export default {
     },
     handleModal() {
       this.visibleModal = true
+    },
+    getTypeClaim(type) {
+      switch (type) {
+        case TicketTypeReship:
+          return 'Vận chuyển lại'
+        case TicketTypeRefund:
+          return 'Hoàn tiền'
+        default:
+          return '-'
+      }
     },
     handleSearch(e) {
       // Default result after search in page 1

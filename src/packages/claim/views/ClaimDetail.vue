@@ -167,7 +167,7 @@
                   <span class="col-4 p-0">Lý do:</span>
                   <span class="col-8 p-0">{{ reason }}</span>
                 </div>
-                <div class="row m-0 mb-5">
+                <div class="row m-0 mb-16">
                   <span class="col-4 p-0">Trạng thái:</span>
                   <span
                     class="col-8 p-0"
@@ -175,12 +175,19 @@
                     type="claim"
                   ></span>
                 </div>
-                <button
-                  class="btn btn-outline-info w-100"
-                  v-if="!isClosed"
-                  @click="handleCloseTicket()"
-                  >Đóng khiếu nại</button
-                >
+                <hr class="row m-0 mb-16" />
+                <div class="row m-0 mb-8">
+                  <span class="col-4 p-0">Kết quả:</span>
+                  <span class="col-8 p-0">{{ getTypeClaim(claim.type) }}</span>
+                </div>
+                <div class="row m-0 mb-8" v-if="claim.amount">
+                  <span class="col-4 p-0">{{
+                    claim.amount > 0 ? 'Số tiền thêm:' : 'Số tiền hoàn:'
+                  }}</span>
+                  <span class="col-8 p-0">{{
+                    Math.abs(claim.amount) | formatPrice
+                  }}</span>
+                </div>
               </div>
             </div>
             <div class="card-block card-attachments">
@@ -244,6 +251,8 @@ import {
   CLAIM_STATUS_TEXT,
   MAP_REASON_CATEGORY_TEXT,
   REASON_CATEGORY_OTHER_TEXT,
+  TicketTypeReship,
+  TicketTypeRefund,
 } from '../constants'
 import { truncate } from '@core/utils/string'
 import { Upload } from '@kit'
@@ -356,7 +365,6 @@ export default {
     ticketID() {
       return parseInt(this.$route.params.id)
     },
-
     displayMessages() {
       let last = null
       const results = []
@@ -492,7 +500,16 @@ export default {
       this.fileErrors = []
       this.countIsUploading += files.length || 0
     },
-
+    getTypeClaim(type) {
+      switch (type) {
+        case TicketTypeReship:
+          return 'Vận chuyển lại'
+        case TicketTypeRefund:
+          return 'Hoàn tiền'
+        default:
+          return '-'
+      }
+    },
     handleChangeFile(file) {
       const index = this.files.findIndex(({ uid }) => uid === file.uid)
       if (index !== -1) {
