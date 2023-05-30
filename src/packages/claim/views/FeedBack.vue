@@ -122,9 +122,10 @@ export default {
       await this[FETCH_RATING_TICKET](this.ticketID)
     },
     async handleSave() {
+      const star = document.querySelectorAll('.star.active').length
       let payload = {
         ticket_id: this.ticket.id,
-        rating: this.star,
+        rating: star,
         response: this.response,
       }
       this.isSubmitting = true
