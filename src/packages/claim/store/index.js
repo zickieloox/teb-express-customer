@@ -17,6 +17,7 @@ export const PUSH_MESSAGE = 'pushMessage'
 export const APPEND_MESSAGE = 'appendMessage'
 export const SET_MESSAGES = 'setMessages'
 export const COUNT_TICKET = 'countTicket'
+export const FETCH_RATING_TICKET = 'fetchRatingTicket'
 export const RATING_TICKET = 'ratingTicket'
 
 export const state = {
@@ -26,6 +27,8 @@ export const state = {
   message: [],
   countMess: 0,
   totalCount: [],
+  ratingTicket: {},
+  supports: [],
 }
 
 export const mutations = {
@@ -61,6 +64,10 @@ export const mutations = {
   },
   [COUNT_CLAIMS_BY_STATUS]: (state, payload) => {
     state.totalCount = payload
+  },
+  [FETCH_RATING_TICKET]: (state, payload) => {
+    state.ratingTicket = payload.ticket
+    state.supports = payload.supports
   },
 }
 
@@ -212,5 +219,16 @@ export const actions = {
       return { error: true, message: res.errorMessage || '' }
     }
     return { error: false }
+  },
+
+  async [FETCH_RATING_TICKET]({ commit }, id) {
+    const res = await api.fetchRatingTicket(id)
+    if (!res || res.error) {
+      return { error: true, message: res.errorMessage || '' }
+    }
+    commit(FETCH_RATING_TICKET, res)
+    return {
+      error: false,
+    }
   },
 }

@@ -37,7 +37,7 @@
               <label>Người xử lý khiếu nại: </label>
             </div>
             <div class="col-7">
-              Nhan CS
+              {{ getSupportNames }}
             </div>
           </div>
           <div class="star mb-20">
@@ -79,7 +79,7 @@
 
 <script>
 import AwesomeVueStarRating from 'awesome-vue-star-rating'
-import { FETCH_TICKET, RATING_TICKET } from '@/packages/claim/store'
+import { FETCH_RATING_TICKET, RATING_TICKET } from '@/packages/claim/store'
 import { mapActions, mapState } from 'vuex'
 export default {
   name: 'FeedBack',
@@ -103,8 +103,12 @@ export default {
   },
   computed: {
     ...mapState('claim', {
-      ticket: (state) => state.ticket,
+      ticket: (state) => state.ratingTicket,
+      supports: (state) => state.supports,
     }),
+    getSupportNames() {
+      return this.supports.map((u) => u.full_name).join(', ') || ''
+    },
     ticketID() {
       return parseInt(this.$route.params.id)
     },
@@ -113,14 +117,13 @@ export default {
     this.init()
   },
   methods: {
-    ...mapActions('claim', [FETCH_TICKET, RATING_TICKET]),
+    ...mapActions('claim', [FETCH_RATING_TICKET, RATING_TICKET]),
     async init() {
-      await this[FETCH_TICKET](this.ticketID)
+      await this[FETCH_RATING_TICKET](this.ticketID)
     },
     async handleSave() {
       let payload = {
         ticket_id: this.ticket.id,
-        support_id: 14,
         rating: this.star,
         response: this.response,
       }
