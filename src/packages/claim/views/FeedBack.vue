@@ -120,6 +120,11 @@ export default {
     ...mapActions('claim', [FETCH_RATING_TICKET, RATING_TICKET]),
     async init() {
       await this[FETCH_RATING_TICKET](this.ticketID)
+      if (this.ticket.is_rated) {
+        this.isRated = true
+        await this.delay(2000)
+        this.$router.push({ name: 'claims' })
+      }
     },
     async handleSave() {
       const star = document.querySelectorAll('.star.active').length
@@ -136,9 +141,11 @@ export default {
         return
       }
       this.isRated = true
-      const delay = (ms) => new Promise((res) => setTimeout(res, ms))
-      await delay(2000)
+      await this.delay(2000)
       this.$router.push({ name: 'claims' })
+    },
+    async delay(ms) {
+      return new Promise((res) => setTimeout(res, ms))
     },
     handleClose() {
       this.visible = false
