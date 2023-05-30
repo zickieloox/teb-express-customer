@@ -136,6 +136,9 @@ export default {
         return
       }
       this.isRated = true
+      const delay = (ms) => new Promise((res) => setTimeout(res, ms))
+      await delay(2000)
+      this.$router.push({ name: 'claims' })
     },
     handleClose() {
       this.visible = false
