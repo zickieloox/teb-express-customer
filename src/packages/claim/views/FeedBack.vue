@@ -32,14 +32,6 @@
               {{ ticket.content }}
             </div>
           </div>
-          <div class="row mb-20">
-            <div class="col-5">
-              <label>Người xử lý khiếu nại: </label>
-            </div>
-            <div class="col-7">
-              {{ getSupportNames }}
-            </div>
-          </div>
           <div class="star mb-20">
             <AwesomeVueStarRating
               :star="this.star"
@@ -104,11 +96,7 @@ export default {
   computed: {
     ...mapState('claim', {
       ticket: (state) => state.ratingTicket,
-      supports: (state) => state.supports,
     }),
-    getSupportNames() {
-      return this.supports.map((u) => u.full_name).join(', ') || ''
-    },
     ticketID() {
       return parseInt(this.$route.params.id)
     },
