@@ -81,6 +81,7 @@
 import AwesomeVueStarRating from 'awesome-vue-star-rating'
 import { FETCH_RATING_TICKET, RATING_TICKET } from '@/packages/claim/store'
 import { mapActions, mapState } from 'vuex'
+import Browser from '@core/helpers/browser'
 export default {
   name: 'FeedBack',
   components: {
@@ -119,7 +120,13 @@ export default {
   methods: {
     ...mapActions('claim', [FETCH_RATING_TICKET, RATING_TICKET]),
     async init() {
-      await this[FETCH_RATING_TICKET](this.ticketID)
+      const r = await this[FETCH_RATING_TICKET](this.ticketID)
+
+      if (r.error && r.statusCode == 403) {
+        Browser.redirect('/logout')
+        return
+      }
+
       if (this.ticket.is_rated) {
         this.isRated = true
         await this.delay(2000)

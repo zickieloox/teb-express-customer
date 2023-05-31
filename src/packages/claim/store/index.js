@@ -224,7 +224,11 @@ export const actions = {
   async [FETCH_RATING_TICKET]({ commit }, id) {
     const res = await api.fetchRatingTicket(id)
     if (!res || res.error) {
-      return { error: true, message: res.errorMessage || '' }
+      return {
+        error: true,
+        message: res.errorMessage || '',
+        statusCode: res.statusCode,
+      }
     }
     commit(FETCH_RATING_TICKET, res)
     return {
