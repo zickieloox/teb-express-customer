@@ -67,7 +67,6 @@ export const mutations = {
   },
   [FETCH_RATING_TICKET]: (state, payload) => {
     state.ratingTicket = payload.ticket
-    state.supports = payload.supports
   },
 }
 
