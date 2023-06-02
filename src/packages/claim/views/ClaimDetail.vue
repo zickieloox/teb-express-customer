@@ -507,7 +507,7 @@ export default {
         case TicketTypeRefund:
           return 'Hoàn tiền'
         default:
-          return '-'
+          return 'Đóng'
       }
     },
     handleChangeFile(file) {
@@ -523,7 +523,9 @@ export default {
 
       this.countIsUploading--
       this.fileErrors.push(
-        `"${file.name}" định dạng không đúng.Tệp phải có định dạng:  *XLSX, *PNG, *JPG, *JPEG.`
+        `"${
+          file.name
+        }" định dạng không đúng.Tệp phải có định dạng:  *XLSX, *PNG, *JPG, *JPEG.`
       )
       this.fileErrors = [...new Set(this.fileErrors)]
     },
