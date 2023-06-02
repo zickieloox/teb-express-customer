@@ -204,7 +204,7 @@ export default {
         case TicketTypeRefund:
           return 'Hoàn tiền'
         default:
-          return '-'
+          return 'Đóng'
       }
     },
     handleSearch(e) {
