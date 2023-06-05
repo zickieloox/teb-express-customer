@@ -175,12 +175,12 @@
                     type="claim"
                   ></span>
                 </div>
-                <hr class="row m-0 mb-16" />
-                <div class="row m-0 mb-8">
+                <hr class="row m-0 mb-16" v-if="showResult" />
+                <div class="row m-0 mb-8" v-if="showResult">
                   <span class="col-4 p-0">Kết quả:</span>
                   <span class="col-8 p-0">{{ getTypeClaim(claim.type) }}</span>
                 </div>
-                <div class="row m-0 mb-8" v-if="claim.amount">
+                <div class="row m-0 mb-8" v-if="claim.amount && showResult">
                   <span class="col-4 p-0">{{
                     claim.amount > 0 ? 'Số tiền thêm:' : 'Số tiền hoàn:'
                   }}</span>
@@ -248,6 +248,7 @@ import {
 import { FETCH_TICKET } from '@/packages/claim/store'
 import {
   CLAIM_STATUS_PROCESSED,
+  CLAIM_STATUS_PENDING,
   CLAIM_STATUS_TEXT,
   MAP_REASON_CATEGORY_TEXT,
   REASON_CATEGORY_OTHER_TEXT,
@@ -326,7 +327,12 @@ export default {
       const status = this.claim.status || 0
       return CLAIM_STATUS_TEXT[status] || 'Unknown'
     },
-
+    showResult() {
+      return (
+        this.claim.status == CLAIM_STATUS_PROCESSED ||
+        this.claim.status == CLAIM_STATUS_PENDING
+      )
+    },
     isClosed() {
       return this.claim.status == CLAIM_STATUS_PROCESSED
     },

@@ -99,7 +99,9 @@
                       <td width="150">
                         <span v-status="item.status" type="claim"></span>
                       </td>
-                      <td width="150">{{ getTypeClaim(item.type) }}</td>
+                      <td width="150">{{
+                        showResult(item) ? getTypeClaim(item.type) : ''
+                      }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -138,6 +140,7 @@ import {
   TicketTypeReship,
   TicketTypeRefund,
   CLAIM_STATUS_PROCESSED,
+  CLAIM_STATUS_PENDING,
 } from '../constants'
 
 import { truncate } from '@core/utils/string'
@@ -211,6 +214,12 @@ export default {
       // Default result after search in page 1
       this.filter.page = 1
       this.$set(this.filter, 'search', e.target.value.trim())
+    },
+    showResult(claim) {
+      return (
+        claim.status == CLAIM_STATUS_PROCESSED ||
+        claim.status == CLAIM_STATUS_PENDING
+      )
     },
   },
   watch: {
