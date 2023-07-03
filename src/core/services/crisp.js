@@ -11,7 +11,10 @@ function signEmail(email) {
 }
 
 export default {
+  /* eslint-disable */
   init(userId) {
+    return
+
     window.$crisp = []
     window.CRISP_WEBSITE_ID = process.env.VUE_APP_CRISP_WEBSITE_ID
     if (userId) {
