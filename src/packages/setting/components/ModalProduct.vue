@@ -84,7 +84,35 @@
             errors.first('weight')
           }}</span>
         </div>
-
+        <div class="row mb-8">
+          <div class="col-12 size">
+            <label class="modal__add-claim-label"
+              >Quốc gia: <span>*</span></label
+            >
+            <p-select
+              placeholder="Chọn quốc gia"
+              v-model="productEdit.country"
+              v-validate="'required'"
+              name="country"
+              data-vv-as="Quốc gia"
+              :class="{
+                'error-color': errors.has('country'),
+                text: productEdit.country,
+              }"
+            >
+              <option
+                :value="country"
+                v-for="(country, i) in countries"
+                :key="i"
+              >
+                {{ country }}
+              </option>
+            </p-select>
+          </div>
+          <span class="err-span" v-if="errors.has('country')">{{
+            errors.first('country')
+          }}</span>
+        </div>
         <div class="row mb-8">
           <div class="col-4 size">
             <label class="modal__add-claim-label">Dài:</label>
@@ -182,7 +210,9 @@ export default {
         length: '',
         width: '',
         height: '',
+        country: '',
       },
+      countries: ['US', 'CA'],
     }
   },
   methods: {
@@ -247,5 +277,11 @@ export default {
 }
 .err-span {
   margin: 0px 5px 0 10px;
+}
+select[name='country'] {
+  padding: 2px 16px;
+  &:not(.text) {
+    color: #999;
+  }
 }
 </style>
