@@ -225,6 +225,7 @@ export default {
       const data = {
         name: this.productEdit.name.trim(),
         sku: this.productEdit.sku.trim(),
+        country: this.productEdit.country,
       }
 
       if (this.productEdit.detail) {

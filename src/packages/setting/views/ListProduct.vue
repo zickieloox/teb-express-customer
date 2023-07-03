@@ -36,6 +36,7 @@
                     <th>CHẤT LIỆU SẢN PHẨM</th>
                     <th class="text-center">TRỌNG LƯỢNG (GRAM)</th>
                     <th class="text-center">KÍCH THƯỚC (CM)</th>
+                    <th>QUỐC GIA</th>
                     <th width="100"></th>
                   </tr>
                 </thead>
@@ -50,6 +51,7 @@
                     <td>{{ item.material }}</td>
                     <td class="text-center">{{ item.weight }}</td>
                     <td class="text-center">{{ size(item) }}</td>
+                    <td class="text-center">{{ item.country }}</td>
                     <td>
                       <a href="javascript:void(0)" @click="handleModal(item)">
                         <inline-svg
