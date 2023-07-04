@@ -138,6 +138,7 @@
       title="Nhập Excel"
       @selected="handleImportPackage"
       v-if="isVisibleImport"
+      :is-fba="true"
     >
     </modal-import>
   </div>

@@ -115,6 +115,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    isFba: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -143,6 +147,10 @@ export default {
       return this.files[this.files.length - 1]
     },
     csvTemplate() {
+      if (this.isFba) {
+        return `${process.env.VUE_APP_ASSETS}/lionbay_template_FBA.xlsx`
+      }
+
       return `${process.env.VUE_APP_ASSETS}/lionbay_template.xlsx`
     },
   },
