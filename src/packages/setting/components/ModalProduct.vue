@@ -212,7 +212,7 @@ export default {
         height: '',
         country: '',
       },
-      countries: ['US', 'CA'],
+      countries: ['US', 'AU'],
     }
   },
   methods: {
