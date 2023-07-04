@@ -71,4 +71,19 @@ export const routes = [
   //       import(/* webpackChunkName: "forgot" */ './views/ResetPassword.vue')
   //     ),
   // },
+
+  {
+    path: '/invite-expired',
+    name: 'expired-expired',
+    meta: {
+      title: 'Expired expired',
+      layout: 'empty',
+      class: 'page-auth',
+      ...noAuthRequired(),
+    },
+    component: () =>
+      lazyLoadView(
+        import(/* webpackChunkName: "forgot" */ './views/InviteExpired.vue')
+      ),
+  },
 ]

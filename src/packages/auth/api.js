@@ -32,4 +32,7 @@ export default {
   resendEmail(payload) {
     return http.post('/auth/resend-email', payload)
   },
+  getInfoInvite(code) {
+    return http.get(`/auth/invite?code=${code}`)
+  },
 }

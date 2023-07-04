@@ -11,6 +11,7 @@ export const GET_USER = 'getUser'
 export const VERIFY_EMAIL = 'verifyEmail'
 export const RESEND_EMAIL = 'resendEmail'
 export const CURRENT_USER = 'currentUser'
+export const GET_INFO_INVITE = 'getInfoInvite'
 /**
  * State
  */
@@ -163,6 +164,16 @@ export const actions = {
     }
 
     return { success: false }
+  },
+
+  // eslint-disable-next-line
+  async [GET_INFO_INVITE]({ commit }, code) {
+    const res = await api.getInfoInvite(code)
+    if (!res || res.error) {
+      return { ...res, error: true, message: res.errorMessage }
+    }
+
+    return { error: false, ...res }
   },
 }
 

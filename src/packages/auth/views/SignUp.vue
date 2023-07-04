@@ -4,6 +4,7 @@
       <div class="header">
         <h2>Tạo tài khoản mới</h2>
       </div>
+
       <p
         v-if="message"
         class="alert"
@@ -148,14 +149,21 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 import { signup } from '../validate'
 import SmsOtp from '../components/SmsOtp'
 import Requested from '../components/Requested'
 import { OPTIONS_PACKAGES } from '../constants'
+import { GET_INFO_INVITE } from '../store'
+import { SET_LOADING } from '../../package/store'
+import { delay } from '../../../core/utils'
+
 export default {
   components: { SmsOtp, Requested },
   computed: {
+    ...mapState('package', {
+      isLoading: (state) => state.isLoading,
+    }),
     disableBtn() {
       return (
         this.isSubmitting ||
@@ -168,6 +176,10 @@ export default {
     URL_POLICY() {
       return process.env.VUE_APP_POLICY_URL
     },
+    tkExpire() {
+      const code = this.$route.query['tk_expire'] || ''
+      return code.trim()
+    },
   },
   data() {
     return {
@@ -177,6 +189,8 @@ export default {
         email: '',
         phone: '',
         password: '',
+        tk_expire: '',
+        referral_code: '',
       },
       options: OPTIONS_PACKAGES,
       visibleSMSOtpComponent: false,
@@ -188,8 +202,36 @@ export default {
       valider: signup,
     }
   },
+  created() {
+    this.init()
+  },
   methods: {
-    ...mapActions('auth', ['signUp']),
+    ...mapActions('auth', ['signUp', GET_INFO_INVITE]),
+    ...mapMutations('package', ['package', SET_LOADING]),
+
+    async init() {
+      this[SET_LOADING](true)
+      const code = this.tkExpire
+      if (!code) {
+        this[SET_LOADING](false)
+        return
+      }
+
+      const res = await this[GET_INFO_INVITE](code)
+      this[SET_LOADING](false)
+
+      if (res.statusCode == '404') {
+        await this.$router.push({
+          name: 'expired-expired',
+          query: { tk_expire: code },
+        })
+        return
+      }
+
+      this.user.tk_expire = code
+      this.user.email = res.email
+      this.user.referral_code = res.referral_code
+    },
 
     onInput(key) {
       switch (key) {
@@ -221,32 +263,43 @@ export default {
       if (!this.valider.isValid(this.user)) {
         return
       }
+
       const payload = {
         full_name: this.user.fullname.trim(),
         email: this.user.email.trim().toLowerCase(),
         password: this.user.password,
         phone_number: this.user.phone.trim(),
         package: this.user.package.id,
+        tk_expire: this.user.tk_expire,
+        referral_code: this.user.referral_code,
       }
 
       this.isSubmitting = true
       const res = await this.signUp({ user: payload })
-      setTimeout(() => {
-        this.isSubmitting = false
-        if (res && res.success) {
-          this.error = false
-          // Storage.set('userEmail', this.user.email)
-          // Storage.set('expried', null)
-          this.visibleSignInForm = false
-          this.visibleCompleteRequest = true
-        } else {
-          this.error = true
-          this.message = res.message || 'Có lỗi xảy, vui lòng thử lại!'
-          if (res.errors && res.errors.length) {
-            this.message = `${res.errors.join('\n')}`
-          }
+
+      await delay(1500)
+      this.isSubmitting = false
+
+      if (res && res.success) {
+        this.error = false
+        // Storage.set('userEmail', this.user.email)
+        // Storage.set('expried', null)
+
+        if (payload.referral_code != '') {
+          await this.$router.push({ name: 'sign-in' })
+          return
         }
-      }, 1500)
+
+        this.visibleSignInForm = false
+        this.visibleCompleteRequest = true
+        return
+      }
+
+      this.error = true
+      this.message = res.message || 'Có lỗi xảy, vui lòng thử lại!'
+      if (res.errors && res.errors.length) {
+        this.message = `${res.errors.join('\n')}`
+      }
     },
   },
 }
