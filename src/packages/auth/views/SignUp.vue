@@ -145,6 +145,7 @@
     </div>
     <sms-otp :visible.sync="visibleSMSOtpComponent"></sms-otp>
     <requested :visible.sync="visibleCompleteRequest"></requested>
+    <Success v-if="visibleSuccessRequest" />
   </div>
 </template>
 
@@ -157,9 +158,10 @@ import { OPTIONS_PACKAGES } from '../constants'
 import { GET_INFO_INVITE } from '../store'
 import { SET_LOADING } from '../../package/store'
 import { delay } from '../../../core/utils'
+import Success from '../components/Success.vue'
 
 export default {
-  components: { SmsOtp, Requested },
+  components: { SmsOtp, Requested, Success },
   computed: {
     ...mapState('package', {
       isLoading: (state) => state.isLoading,
@@ -195,6 +197,7 @@ export default {
       options: OPTIONS_PACKAGES,
       visibleSMSOtpComponent: false,
       visibleCompleteRequest: false,
+      visibleSuccessRequest: false,
       visibleSignInForm: true,
       error: false,
       message: '',
@@ -277,7 +280,7 @@ export default {
       this.isSubmitting = true
       const res = await this.signUp({ user: payload })
 
-      await delay(1500)
+      await delay(1000)
       this.isSubmitting = false
 
       if (res && res.success) {
@@ -286,7 +289,9 @@ export default {
         // Storage.set('expried', null)
 
         if (payload.referral_code != '') {
-          await this.$router.push({ name: 'sign-in' })
+          // await this.$router.push({ name: 'sign-in' })
+          this.visibleSignInForm = false
+          this.visibleSuccessRequest = true
           return
         }
 
