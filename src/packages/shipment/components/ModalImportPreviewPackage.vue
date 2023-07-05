@@ -49,10 +49,10 @@
           <tr v-for="(error, i) in importErrors" :key="i">
             <td>{{ error.line }}</td>
             <td>
-              <pre>{{ error.value.join('\n') }}</pre>
+              <pre>{{ (error.value || []).join('\n') }}</pre>
             </td>
             <td>
-              <pre>{{ error.messages.join('') }}</pre>
+              <pre>{{ (error.messages || []).join('') }}</pre>
             </td>
           </tr>
         </tbody>
