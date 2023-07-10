@@ -292,7 +292,7 @@ export default {
         // Storage.set('userEmail', this.user.email)
         // Storage.set('expried', null)
 
-        if (payload.referral_code != '') {
+        if (payload.tk_expire != '') {
           // await this.$router.push({ name: 'sign-in' })
           this.visibleSignInForm = false
           this.visibleSuccessRequest = true
