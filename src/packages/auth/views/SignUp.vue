@@ -183,6 +183,10 @@ export default {
       const code = this.$route.query['tk_expire'] || ''
       return code.trim()
     },
+    referCode() {
+      const code = this.$route.query['refer_code'] || ''
+      return code.trim()
+    },
   },
   data() {
     return {
@@ -234,7 +238,6 @@ export default {
 
       this.user.tk_expire = code
       this.user.email = res.email
-      this.user.referral_code = res.referral_code
     },
 
     onInput(key) {
@@ -275,7 +278,7 @@ export default {
         phone_number: this.user.phone.trim(),
         package: this.user.package.id,
         tk_expire: this.user.tk_expire,
-        referral_code: this.user.referral_code,
+        referral_code: this.referCode,
       }
 
       this.isSubmitting = true
