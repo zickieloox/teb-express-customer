@@ -75,6 +75,7 @@
             :error="valider.hasError('email')"
             :messages="valider.error('email')"
             @input="onInput('email')"
+            :disabled="tkExpire != ''"
           >
             <template v-if="!user.email">
               Nhập email của bạn
