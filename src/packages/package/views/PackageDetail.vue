@@ -5,7 +5,12 @@
         <div class="page-header__subtitle">
           <div
             class="page-header__info"
-            :class="{ 'grip-5-col': !current.estimate_date_process }"
+            :class="{
+              'grip-5-col':
+                !current.estimate_date_process && !current.estimate_delivery,
+              'grip-7-col':
+                current.estimate_date_process && current.estimate_delivery,
+            }"
           >
             <div class="info-package" style="padding-left: 48px;"
               >Mã vận đơn:</div
@@ -15,6 +20,9 @@
             <div class="info-package">Ngày tạo </div>
             <div class="info-package" v-if="current.estimate_date_process"
               >Ngày xử lý dự kiến:
+            </div>
+            <div class="info-package" v-if="current.estimate_delivery > 0"
+              >Thời gian dự kiến:
             </div>
             <div class="info-package">Trạng thái</div>
             <div
@@ -75,6 +83,9 @@
                 current.estimate_date_process
                   | datetime('dd/MM/yyyy - HH:mm:ss')
               }}
+            </div>
+            <div class="content-title" v-if="current.estimate_delivery > 0">
+              {{ current.estimate_delivery | toDay }}
             </div>
             <div class="content-title">
               <span v-status:status="current.status_string"></span>
@@ -737,6 +748,14 @@ export default {
     },
     hasMoreTicket() {
       return this.totalTicket > this.ticketLimit
+    },
+  },
+  filters: {
+    toDay(val) {
+      if (!val) return 'N/A'
+
+      const day = Math.round(val / 86400)
+      return `${day} ngày`
     },
   },
   mounted() {
