@@ -99,7 +99,7 @@
             </p-button>
             <p-button
               class="ml-7"
-              @click="handleWayBill"
+              @click="showModalCoupon"
               type="primary"
               v-if="hasMakeTracking"
             >
@@ -528,6 +528,8 @@
       :loading="actions.returnPackage.loading"
       @action="pendingPickupPackageAction"
     ></modal-confirm>
+    <modal-coupon :visible.sync="visibleModalCoupon" @apply="handleApplyCoupon">
+    </modal-coupon>
   </div>
 </template>
 
@@ -578,6 +580,7 @@ import { FETCH_TICKETS, COUNT_TICKET } from '../../claim/store'
 import { cloneDeep } from '../../../core/utils'
 import TrackLink from './components/Track.vue'
 import { FBA_SERVICE_CODE } from '../constants'
+import ModalCoupon from '../views/components/ModalCoupon'
 export default {
   name: 'PackageDetail',
   mixins: [mixinPackageDetail, mixinTable],
@@ -588,6 +591,7 @@ export default {
     AuditLog,
     DeliveryLog,
     TrackLink,
+    ModalCoupon,
   },
   data() {
     return {
@@ -597,6 +601,8 @@ export default {
       isVisiblePopupMoreExtraFee: false,
       isVisiblePopupMoreRefundFee: false,
       isVisibleConfirmWayBill: false,
+      visibleModalCoupon: false,
+      coupon_code: '',
       actions: {
         wayBill: {
           type: 'primary',
@@ -770,7 +776,14 @@ export default {
 
       this.isFetching = false
     },
-
+    handleApplyCoupon(code) {
+      this.coupon_code = code
+      this.visibleModalCoupon = false
+      this.handleActionWayBill()
+    },
+    showModalCoupon() {
+      this.visibleModalCoupon = true
+    },
     changeDisplayDeliverDetail() {
       this.displayDeliverDetail = !this.displayDeliverDetail
     },
@@ -796,7 +809,7 @@ export default {
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
-      let params = { ids: [this.packageID] }
+      let params = { ids: [this.packageID], coupon_code: this.coupon_code }
 
       this.actions.wayBill.loading = true
       const res = await this.processPackage(params)
