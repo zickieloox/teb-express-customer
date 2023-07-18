@@ -90,12 +90,10 @@ export const actions = {
 
     if (response && response.user && response.user.id) {
       commit(CURRENT_USER, response.user)
-      return {
-        success: true,
-      }
+      return { success: true }
     }
 
-    return response
+    return { ...response, success: false, message: response.errorMessage }
   },
 
   /**

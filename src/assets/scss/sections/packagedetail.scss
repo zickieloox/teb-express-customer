@@ -209,6 +209,10 @@
                 grid-column-gap: 47px;
                 grid-template-columns: auto auto auto auto auto !important;
             }
+            &.grip-7-col {
+                grid-column-gap: 30px;
+                grid-template-columns: auto auto auto auto auto auto auto !important;
+            }
             .info-package {
                 font-weight: 400;
                 font-size: 12px;
