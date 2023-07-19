@@ -34,6 +34,9 @@ export const UPDATE_PRODUCT = 'updateProduct'
 export const DELETE_PRODUCT = 'deleteProduct'
 
 export const FETCH_LIST_SERVICES = 'fetchServices'
+export const FETCH_LIST_COUPONS = 'fetchListCoupons'
+export const FETCH_COUNT_COUPONS = 'fetchCountCoupons'
+export const APPLY_COUPON = 'applyCoupon'
 
 /**
  * State
@@ -49,6 +52,8 @@ export const state = {
   products: [],
   count_product: 0,
   services: [],
+  coupons: [],
+  count_coupons: 0,
 }
 
 /**
@@ -95,6 +100,12 @@ export const mutations = {
   },
   [FETCH_LIST_SERVICES]: (state, payload) => {
     state.services = payload
+  },
+  [FETCH_LIST_COUPONS]: (state, payload) => {
+    state.coupons = payload
+  },
+  [FETCH_COUNT_COUPONS]: (state, payload) => {
+    state.count_coupons = payload
   },
 }
 
@@ -433,6 +444,36 @@ export const actions = {
     }
 
     commit(FETCH_LIST_SERVICES, res.services)
+    return { error: false }
+  },
+
+  async [FETCH_LIST_COUPONS]({ commit }, payload) {
+    const res = await api.fetchListCoupons(payload)
+    if (!res || res.error) {
+      commit(FETCH_LIST_COUPONS, [])
+      return { error: true, message: res.errorMessage || '' }
+    }
+
+    commit(FETCH_LIST_COUPONS, res.coupons)
+    return { error: false }
+  },
+  async [FETCH_COUNT_COUPONS]({ commit }, payload) {
+    const res = await api.fetchCountCoupons(payload)
+    if (!res || res.error) {
+      commit(FETCH_COUNT_COUPONS, 0)
+      return { error: true, message: res.errorMessage || '' }
+    }
+
+    commit(FETCH_COUNT_COUPONS, res.count)
+    return { error: false }
+  },
+  // eslint-disable-next-line
+  async [APPLY_COUPON]({ commit }, payload) {
+    const res = await api.applyCoupon(payload)
+    if (!res || res.error) {
+      return { error: true, message: res.errorMessage || '' }
+    }
+
     return { error: false }
   },
 }

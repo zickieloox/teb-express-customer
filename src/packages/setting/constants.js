@@ -1,3 +1,15 @@
+export const COUPON_TYPE_MONEY = 1
+export const COUPON_TYPE_DISCOUNT_MONEY = 2
+export const COUPON_TYPE_DISCOUNT_PERCENT = 3
+export const COUPON_NO_USED = 0
+export const COUPON_USED = 1
+
+export const MAP_COUPON_TEXT = {
+  [COUPON_TYPE_MONEY]: 'Tặng tiền',
+  [COUPON_TYPE_DISCOUNT_MONEY]: 'Giảm giá',
+  [COUPON_TYPE_DISCOUNT_PERCENT]: 'Giảm giá',
+}
+
 export const LIST_DEFAULT_FIELD = [
   {
     key: 0,

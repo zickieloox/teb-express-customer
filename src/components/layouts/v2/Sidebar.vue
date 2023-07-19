@@ -251,6 +251,10 @@ export default {
               route: '/setting/prices',
               title: 'Bảng giá',
             },
+            {
+              route: '/setting/coupons',
+              title: 'Quản lý Coupons',
+            },
           ],
         },
       ],

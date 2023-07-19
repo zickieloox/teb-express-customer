@@ -131,4 +131,13 @@ export default {
   fetchServices(payload) {
     return http.get(`/services?${buildQueryString(payload)}`)
   },
+  fetchListCoupons(payload) {
+    return http.get(`/packages/coupons?${buildQueryString(payload)}`)
+  },
+  fetchCountCoupons(payload) {
+    return http.get(`/packages/coupons/count?${buildQueryString(payload)}`)
+  },
+  applyCoupon(code) {
+    return http.post(`/packages/coupons/${code}/apply`)
+  },
 }

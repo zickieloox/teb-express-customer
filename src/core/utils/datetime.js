@@ -188,3 +188,10 @@ export function getTimeSecondNow() {
 }
 
 export { format }
+
+export function timeSince(val) {
+  if (!val) return 0
+  const date = isNumber(val) ? new Date(val * 1000) : new Date(val)
+
+  return new Date() - date
+}
