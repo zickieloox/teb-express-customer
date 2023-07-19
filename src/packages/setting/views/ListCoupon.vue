@@ -9,6 +9,8 @@
           type="search"
           :value="filter.search"
           @keyup.enter="handleSearch"
+          :clearable="true"
+          @reset="clearSearchHandle"
         >
         </p-input>
       </div>
@@ -124,6 +126,7 @@ export default {
   data() {
     return {
       filter: {
+        page: 1,
         limit: 25,
         search: '',
         status: '',
@@ -209,7 +212,10 @@ export default {
     },
     async useCouponHandler({ type, code }) {
       if (type != COUPON_TYPE_MONEY) {
-        await this.$router.push({ name: 'list-packages' })
+        await this.$router.push({
+          name: 'list-packages',
+          query: { status: 'pending' },
+        })
         return
       }
 
@@ -238,6 +244,10 @@ export default {
 
       this.$toast.success(`Bạn đã sử dụng coupon “${code}” thành công!!!`)
       this.init()
+    },
+    async clearSearchHandle() {
+      this.filter.search = ''
+      this.filter.page = 1
     },
   },
   watch: {
