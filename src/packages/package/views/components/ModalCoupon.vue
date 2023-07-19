@@ -52,6 +52,7 @@ export default {
     handleClose() {
       this.$emit('update:visible', false)
       this.$emit('close')
+      this.$emit('apply', '')
     },
     handleAccept() {
       this.$emit('apply', this.coupon_code)
