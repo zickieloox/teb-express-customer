@@ -798,7 +798,7 @@ export default {
     handleApplyCoupon(code) {
       this.coupon_code = code
       this.visibleModalCoupon = false
-      this.handleActionWayBill()
+      this.handleWayBill()
     },
     showModalCoupon() {
       this.visibleModalCoupon = true
