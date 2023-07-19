@@ -62,7 +62,7 @@ export default {
 </script>
 
 <style lang="css">
-input::-webkit-input-placeholder {
+.modal_coupon input::-webkit-input-placeholder {
   text-align: center;
   font-family: Be Vietnam Pro;
   font-size: 14px;
@@ -70,13 +70,13 @@ input::-webkit-input-placeholder {
   font-weight: 400;
   line-height: 20px;
 }
-.input-group{
+.modal_coupon .input-group{
   display: block;
   margin: auto;
   width: 400px;
 }
 
-input[type=text]{
+.modal_coupon input[type=text]{
   width: 100% !important;
   padding: 18px 16px;
   border: 1px solid #E1E2E2;
@@ -84,13 +84,13 @@ input[type=text]{
   height: 56px !important;
 }
 
-.modal-footer{
+.modal_coupon .modal-footer{
   justify-content: center;
   border-top: none;
   padding-bottom: 60px;
 }
 
-h1{
+.modal_coupon h1{
   font-family: Be Vietnam Pro;
   font-size: 24px;
   font-style: normal;
@@ -99,7 +99,7 @@ h1{
   color: #111212;
   margin-bottom: 24px;
 }
-.txt-description{
+.modal_coupon .txt-description{
   font-family: Be Vietnam Pro;
   font-size: 14px;
   font-style: normal;
@@ -108,13 +108,13 @@ h1{
   color: #626363;
   margin-bottom: 24px;
 }
-.modal-body{
+.modal_coupon .modal-body{
   padding-bottom: 0;
 }
-.modal-footer{
+.modal_coupon .modal-footer{
   padding-top: 0;
 }
-.modal-footer button{
+.modal_coupon .modal-footer button{
   width: 400px;
   padding: 16px 24px;
   font-size: 16px;
@@ -122,7 +122,7 @@ h1{
   line-height: 24px;
   height: 56px;
 }
-.modal-header{
+.modal_coupon .modal-header{
   border-bottom: none;
 }
 </style>
