@@ -32,6 +32,7 @@
                     <th>GIÁ TRỊ ÁP DỤNG TỐI THIỆU</th>
                     <th>GIÁ TRỊ GIẢM TỐI ĐA</th>
                     <th>GIÁ TRỊ</th>
+                    <th class="text-center">SL CÒN LẠI</th>
                     <th>TRẠNG THÁI</th>
                     <th></th>
                   </tr>
@@ -43,8 +44,8 @@
                     :class="{ expired: item.is_expired, used: item.is_used }"
                   >
                     <td>{{ item.code }}</td>
-                    <td>{{ item.start_date | date('dd/MM/yyyy') }}</td>
-                    <td>{{ item.end_date | date('dd/MM/yyyy') }}</td>
+                    <td>{{ item.start_date | date('dd/MM/yyyy HH:mm:ss') }}</td>
+                    <td>{{ item.end_date | date('dd/MM/yyyy HH:mm:ss') }}</td>
                     <td>{{ item.point }}</td>
                     <td>{{ item.type_text }}</td>
                     <td>
@@ -59,6 +60,7 @@
                       <span v-if="!item.value">-</span>
                       <span v-else>{{ item.value_text }}</span>
                     </td>
+                    <td class="text-center">{{ item.quantity - item.used }}</td>
                     <td>
                       <span
                         v-if="item.is_used"
