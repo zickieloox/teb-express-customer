@@ -12,7 +12,7 @@
           <p-button
             :disabled="createOrder(filter.status)"
             class="bulk-actions__selection-status"
-            @click="handleWayBill"
+            @click="showModalCoupon"
             type="primary"
             >Tạo tracking</p-button
           >
@@ -544,6 +544,10 @@
       @fetch="searchAdvanced"
     >
     </ModalSearchAdvanced>
+    <modal-coupon
+      :visible.sync="visibleModalCoupon"
+      @apply="handleApplyCoupon"
+    ></modal-coupon>
   </div>
 </template>
 <script>
@@ -558,7 +562,7 @@ import mixinChaining from '@/packages/shared/mixins/chaining'
 import ModalConfirmAddress from './components/ModalConfirmAddress'
 import { formatPrice } from '@core/utils/formatter'
 import Datepicker from './components/Datepicker.vue'
-
+import ModalCoupon from '../views/components/ModalCoupon'
 import {
   PACKAGE_STATUS_TAB,
   PACKAGE_STATUS_ARCHIVED,
@@ -616,6 +620,7 @@ export default {
     ModalSearchAdvanced,
     TrackLink,
     Datepicker,
+    ModalCoupon,
   },
   mounted() {
     window.addEventListener('scroll', this.updateScroll)
@@ -677,6 +682,7 @@ export default {
       visibleConfirmCancel: false,
       visibleConfirmReturn: false,
       visibleConfirmValidate: false,
+      visibleModalCoupon: false,
       selected: [],
       idSelected: 0,
       PackageStatusExpiredText: PACKAGE_STATUS_EXPIRED_TEXT,
@@ -687,6 +693,7 @@ export default {
       scrollPosition: null,
       isVisibleModalSearch: false,
       PACKAGE_STATUS_DELIVERED: PACKAGE_STATUS_DELIVERED,
+      coupon_code: '',
     }
   },
   created() {
@@ -743,6 +750,14 @@ export default {
         return
       }
       this.isVisibleModalSearch = false
+    },
+    handleApplyCoupon(code) {
+      this.coupon_code = code
+      this.visibleModalCoupon = false
+      this.handleWayBill()
+    },
+    showModalCoupon() {
+      this.visibleModalCoupon = true
     },
     async searchAdvanced(filter) {
       this.filter = { ...filter, status: '' }
@@ -941,7 +956,9 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn hủy đơn?`
+      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${
+        this.selectedIds.length
+      }. Bạn có chắc chắn muốn hủy đơn?`
       this.visibleConfirmCancel = true
     },
     handlerReturnPackages() {
@@ -964,7 +981,9 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.returnPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn chuyển lại hàng ?`
+      this.actions.returnPackage.Description = `Tổng số đơn hàng đang chọn là ${
+        this.selectedIds.length
+      }. Bạn có chắc chắn muốn chuyển lại hàng ?`
       this.visibleConfirmReturn = true
     },
     async pendingPickupPackagesAction() {
@@ -1041,6 +1060,7 @@ export default {
 
       let params = {
         ids: ids,
+        coupon_code: this.coupon_code,
       }
 
       this.actions.wayBill.loading = true

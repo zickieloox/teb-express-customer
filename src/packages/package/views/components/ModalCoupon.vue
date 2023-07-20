@@ -58,6 +58,13 @@ export default {
       this.$emit('apply', this.coupon_code)
     },
   },
+  watch: {
+    visible: {
+      handler: function() {
+        this.coupon_code = ''
+      },
+    },
+  },
 }
 </script>
 
