@@ -52,12 +52,21 @@
                   </div>
                   <div class="action">
                     <button
-                      class="pull-right btn ml-2"
+                      class="btn"
                       :class="getClassBtn(item)"
                       @click="useCouponHandler(item)"
                     >
                       {{ getTxtButton(item) }}
                     </button>
+                    <div
+                      style="cursor: pointer"
+                      @click="showCouponDetail(item)"
+                    >
+                      <inline-svg
+                        :src="require(`../../../assets/img/info_coupon.svg`)"
+                      ></inline-svg>
+                      Tìm hiểu thêm
+                    </div>
                   </div>
                 </div>
               </div>
@@ -78,6 +87,12 @@
         </div>
       </div>
     </div>
+    <modal-detail-coupon
+      :visible.sync="visibleModalDetail"
+      :coupon="coupon"
+      @apply="useCouponHandler"
+    >
+    </modal-detail-coupon>
   </div>
 </template>
 <script>
@@ -87,6 +102,7 @@ import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import { mapActions, mapState } from 'vuex'
 import { FETCH_LIST_COUPONS, FETCH_COUNT_COUPONS, APPLY_COUPON } from '../store'
+import ModalDetailCoupon from '../components/ModalDetailCoupon'
 import {
   MAP_COUPON_TEXT,
   COUPON_TYPE_MONEY,
@@ -99,7 +115,7 @@ import { timeSince } from '@core/utils/datetime'
 export default {
   name: 'ListCoupon',
   mixins: [mixinRoute, mixinTable],
-  components: { EmptySearchResult },
+  components: { EmptySearchResult, ModalDetailCoupon },
   data() {
     return {
       filter: {
@@ -110,6 +126,8 @@ export default {
       },
       visibleModal: false,
       visibleModalDelete: false,
+      visibleModalDetail: false,
+      coupon: {},
       isFetching: false,
     }
   },
@@ -196,6 +214,10 @@ export default {
         return 'discount_percent.svg'
       }
       return 'money_coupon.svg'
+    },
+    showCouponDetail(coupon) {
+      this.coupon = coupon
+      this.visibleModalDetail = true
     },
     getClassBtn(item) {
       if (item.is_expired) {
