@@ -30,7 +30,11 @@
                 >
                   <div class="icon">
                     <inline-svg
-                      :src="require('../../../assets/img/discount_percent.svg')"
+                      :src="
+                        require(`../../../assets/img/${getIconCoupon(
+                          item.type
+                        )}`)
+                      "
                     ></inline-svg>
                   </div>
                   <div class="txt">
@@ -50,6 +54,7 @@
                     <button
                       class="pull-right btn ml-2"
                       :class="getClassBtn(item)"
+                      @click="useCouponHandler(item)"
                     >
                       {{ getTxtButton(item) }}
                     </button>
@@ -186,6 +191,12 @@ export default {
     isDisabled(item) {
       return item.is_expired || item.is_used
     },
+    getIconCoupon(type) {
+      if (type === COUPON_TYPE_DISCOUNT_PERCENT) {
+        return 'discount_percent.svg'
+      }
+      return 'money_coupon.svg'
+    },
     getClassBtn(item) {
       if (item.is_expired) {
         return 'btn-danger'
@@ -210,7 +221,11 @@ export default {
         type === COUPON_TYPE_DISCOUNT_MONEY
       )
     },
-    async useCouponHandler({ type, code }) {
+    async useCouponHandler({ type, code, is_expired, is_used }) {
+      if (is_expired || is_used) {
+        return
+      }
+
       if (type !== COUPON_TYPE_MONEY) {
         await this.$router.push({
           name: 'list-packages',
