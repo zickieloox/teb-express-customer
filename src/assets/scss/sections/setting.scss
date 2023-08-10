@@ -236,3 +236,56 @@
         color: #F5222D;
     }
 }
+.list__coupon{
+    .card{
+        background-color: unset !important;
+        border: unset !important;
+    }
+    .card-body{
+     padding-top: 0 !important;
+    }
+    .item{
+        background-image: url("~@/assets/img/coupon_bg_image.png");
+        height: 168px;
+        border-radius: 8px;
+        background-size: cover;
+        margin: -8px -8px;
+        .icon{
+            width: 160px;
+            padding-left: 26px;
+        }
+        .txt{
+            width: calc(100% - 320px);
+            h2{
+                font-family: Be Vietnam Pro;
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 28px;
+                color: #111212;
+                margin-bottom: 0;
+            }
+            p{
+                font-family: Be Vietnam Pro;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 20px;
+                margin-bottom: 0;
+                color: #313232;
+            }
+        }
+        .action{
+           margin-right: 20px;
+        }
+    }
+    .disabled{
+        opacity: 0.5;
+        .action{
+            .btn{
+                cursor: not-allowed;
+                pointer-events: none;
+            }
+        }
+    }
+}

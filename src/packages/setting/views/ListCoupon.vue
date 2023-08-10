@@ -1,105 +1,76 @@
 <template>
-  <div class="pages list__product">
+  <div class="pages list__coupon">
     <div class="page-header d-flex">
-      <div class="col-12">
-        <p-input
-          placeholder="Tìm mã coupon"
-          prefixIcon="search"
-          class="mb-2"
-          type="search"
-          :value="filter.search"
-          @keyup.enter="handleSearch"
-          :clearable="true"
-          @reset="clearSearchHandle"
-        >
-        </p-input>
-      </div>
+      <p-input
+        placeholder="Tìm mã coupon"
+        prefixIcon="search"
+        class="mb-2"
+        type="search"
+        :value="filter.search"
+        @keyup.enter="handleSearch"
+        :clearable="true"
+        @reset="clearSearchHandle"
+      >
+      </p-input>
     </div>
     <div class="page-content">
       <div class="card">
         <div class="card-body">
           <vcl-table class="md-20" v-if="isFetching"></vcl-table>
           <template v-else-if="coupons.length > 0">
-            <div class="table-responsive">
-              <table class="table table-hover table-coupons">
-                <thead>
-                  <tr class="list__product-title">
-                    <th>MÃ COUPON</th>
-                    <th>NGÀY BẮT ĐẦU</th>
-                    <th>NGÀY HẾT HẠN</th>
-                    <th>ĐIỂM MUA</th>
-                    <th>LOẠI COUPON</th>
-                    <th>GIÁ TRỊ ÁP DỤNG TỐI THIỆU</th>
-                    <th>GIÁ TRỊ GIẢM TỐI ĐA</th>
-                    <th>GIÁ TRỊ</th>
-                    <th>TRẠNG THÁI</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="item in listCoupons"
-                    :key="item.id"
-                    :class="{ expired: item.is_expired, used: item.is_used }"
-                  >
-                    <td>{{ item.code }}</td>
-                    <td>{{ item.start_date | date('dd/MM/yyyy') }}</td>
-                    <td>{{ item.end_date | date('dd/MM/yyyy') }}</td>
-                    <td>{{ item.point }}</td>
-                    <td>{{ item.type_text }}</td>
-                    <td>
-                      <span v-if="!item.min_apply">-</span>
-                      <span v-else>{{ item.min_apply | formatPrice }}</span>
-                    </td>
-                    <td>
-                      <span v-if="!item.max_apply">-</span>
-                      <span v-else>{{ item.max_apply | formatPrice }}</span>
-                    </td>
-                    <td>
-                      <span v-if="!item.value">-</span>
-                      <span v-else>{{ item.value_text }}</span>
-                    </td>
-                    <td>
-                      <span
-                        v-if="item.is_used"
-                        class="badge badge-round badge-light"
-                        >Đã sử dụng</span
-                      >
-                      <span
-                        v-else-if="item.is_expired"
-                        class="badge badge-round badge-expired"
-                        >Hết hiệu lực</span
-                      >
-                      <span v-else class="badge badge-round badge-success"
-                        >Còn hiệu lực</span
-                      >
-                    </td>
-                    <td>
-                      <button
-                        v-if="!item.is_expired && !item.is_used"
-                        class="btn btn-primary"
-                        @click="useCouponHandler(item)"
-                        >Sử dụng</button
-                      >
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="row">
+              <div
+                class="col-6 mb-24"
+                :class="{ disabled: isDisabled(item) }"
+                v-for="item in listCoupons"
+                :key="item.id"
+              >
+                <div
+                  class="item d-flex justify-content-between align-items-center"
+                >
+                  <div class="icon">
+                    <inline-svg
+                      :src="require('../../../assets/img/discount_percent.svg')"
+                    ></inline-svg>
+                  </div>
+                  <div class="txt">
+                    <h2>{{ item.text_head }}</h2>
+                    <p>Số lượng: {{ item.quantity }}</p>
+                    <p
+                      >Thời gian áp dụng:
+                      {{ item.start_date | date('dd/MM/yyyy') }} -
+                      {{ item.end_date | date('dd/MM/yyyy') }}</p
+                    >
+                    <p v-if="isDiscount(item.type)">
+                      Giá trị áp dụng tối thiểu:
+                      {{ item.min_apply | formatPrice }}</p
+                    >
+                  </div>
+                  <div class="action">
+                    <button
+                      class="pull-right btn ml-2"
+                      :class="getClassBtn(item)"
+                    >
+                      {{ getTxtButton(item) }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="d-flex justify-content-between align-items-center paginate"
+              v-if="count > 0"
+            >
+              <p-pagination
+                :total="count"
+                :perPage.sync="filter.limit"
+                :current.sync="filter.page"
+                size="sm"
+              ></p-pagination>
             </div>
           </template>
           <EmptySearchResult v-else></EmptySearchResult>
         </div>
-      </div>
-      <div
-        class="d-flex justify-content-between align-items-center mb-80 paginate"
-        v-if="count > 0"
-      >
-        <p-pagination
-          :total="count"
-          :perPage.sync="filter.limit"
-          :current.sync="filter.page"
-          size="sm"
-        ></p-pagination>
       </div>
     </div>
   </div>
@@ -115,6 +86,7 @@ import {
   MAP_COUPON_TEXT,
   COUPON_TYPE_MONEY,
   COUPON_TYPE_DISCOUNT_PERCENT,
+  COUPON_TYPE_DISCOUNT_MONEY,
 } from '../constants'
 import { formatPrice } from '@core/utils/formatter'
 import { timeSince } from '@core/utils/datetime'
@@ -147,7 +119,6 @@ export default {
       count: (state) => state.count_coupons,
       coupons: (state) => state.coupons,
     }),
-
     listCoupons() {
       return this.coupons.map((item) => {
         const {
@@ -163,10 +134,12 @@ export default {
           value,
           quantity,
         } = item
-        const value_text =
-          type == COUPON_TYPE_DISCOUNT_PERCENT
-            ? `${value}%`
-            : formatPrice(value)
+        const text_head =
+          type === COUPON_TYPE_DISCOUNT_PERCENT
+            ? `Giảm ngay ${value}% tối đa ${formatPrice(max_apply)}`
+            : type === COUPON_TYPE_DISCOUNT_MONEY
+            ? `Giảm ngay ${formatPrice(max_apply)}`
+            : `Tặng ngay ${formatPrice(max_apply)}`
         return {
           id,
           code,
@@ -177,11 +150,11 @@ export default {
           type_text: MAP_COUPON_TEXT[type] || 'unknown',
           used,
           quantity,
-          is_used: used == quantity,
+          is_used: used === quantity,
           max_apply: type == COUPON_TYPE_MONEY ? 0 : max_apply,
-          min_apply: type == COUPON_TYPE_MONEY ? 0 : min_apply,
+          min_apply: type === COUPON_TYPE_MONEY ? 0 : min_apply,
           value,
-          value_text,
+          text_head,
           is_expired: timeSince(end_date) > 0,
         }
       })
@@ -210,8 +183,35 @@ export default {
 
       this.isFetching = false
     },
+    isDisabled(item) {
+      return item.is_expired || item.is_used
+    },
+    getClassBtn(item) {
+      if (item.is_expired) {
+        return 'btn-danger'
+      }
+      if (item.is_used) {
+        return 'btn-default'
+      }
+      return 'btn-primary'
+    },
+    getTxtButton(item) {
+      if (item.is_expired) {
+        return 'Hết hiệu lực'
+      }
+      if (item.is_used) {
+        return 'Đã sử dụng'
+      }
+      return 'Sử dụng'
+    },
+    isDiscount(type) {
+      return (
+        type === COUPON_TYPE_DISCOUNT_PERCENT ||
+        type === COUPON_TYPE_DISCOUNT_MONEY
+      )
+    },
     async useCouponHandler({ type, code }) {
-      if (type != COUPON_TYPE_MONEY) {
+      if (type !== COUPON_TYPE_MONEY) {
         await this.$router.push({
           name: 'list-packages',
           query: { status: 'pending' },

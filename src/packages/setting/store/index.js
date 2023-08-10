@@ -454,7 +454,7 @@ export const actions = {
       return { error: true, message: res.errorMessage || '' }
     }
 
-    commit(FETCH_LIST_COUPONS, res.coupons)
+    commit(FETCH_LIST_COUPONS, res.coupons || [])
     return { error: false }
   },
   async [FETCH_COUNT_COUPONS]({ commit }, payload) {
