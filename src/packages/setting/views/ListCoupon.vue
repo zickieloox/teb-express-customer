@@ -162,7 +162,7 @@ export default {
             ? `Giảm ngay ${value}% tối đa ${formatPrice(max_apply)}`
             : type === COUPON_TYPE_DISCOUNT_MONEY
             ? `Giảm ngay ${formatPrice(max_apply)}`
-            : `Tặng ngay ${formatPrice(max_apply)}`
+            : `Tặng ngay ${formatPrice(value)}`
         return {
           id,
           code,
