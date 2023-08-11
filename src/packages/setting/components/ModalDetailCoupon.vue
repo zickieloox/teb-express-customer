@@ -142,8 +142,8 @@ export default {
               this.coupon.max_apply
             )}`
           : this.coupon.type === COUPON_TYPE_DISCOUNT_MONEY
-          ? `Giảm ngay ${formatPrice(this.coupon.max_apply)}`
-          : `Tặng ngay ${formatPrice(this.coupon.max_apply)}`
+          ? `Giảm ngay ${formatPrice(this.coupon.value)}`
+          : `Tặng ngay ${formatPrice(this.coupon.value)}`
         : ''
     },
     getClassBtn() {
