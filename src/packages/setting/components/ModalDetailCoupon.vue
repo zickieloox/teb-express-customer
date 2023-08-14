@@ -52,7 +52,7 @@
             {{ coupon.end_date | date('dd/MM/yyyy HH:mm:ss') }}
           </div>
         </div>
-        <div class="row">
+        <div class="row" v-if="coupon.type != typeGifMoney">
           <div class="col-6">
             Giá trị áp dụng tối thiểu:
           </div>
@@ -116,6 +116,7 @@
 import {
   COUPON_TYPE_DISCOUNT_MONEY,
   COUPON_TYPE_DISCOUNT_PERCENT,
+  COUPON_TYPE_MONEY,
 } from '../constants'
 import { formatPrice } from '@core/utils/formatter'
 export default {
@@ -145,6 +146,9 @@ export default {
           ? `Giảm ngay ${formatPrice(this.coupon.value)}`
           : `Tặng ngay ${formatPrice(this.coupon.value)}`
         : ''
+    },
+    typeGifMoney() {
+      return COUPON_TYPE_MONEY
     },
     getClassBtn() {
       if (this.coupon && this.coupon.is_expired) {
@@ -177,7 +181,7 @@ export default {
       return this.coupon
         ? this.coupon.type === COUPON_TYPE_DISCOUNT_PERCENT
           ? `${this.coupon.value}%`
-          : `${formatPrice(this.coupon.max_apply)}`
+          : `${formatPrice(this.coupon.value)}`
         : ''
     },
     getCouponType() {
