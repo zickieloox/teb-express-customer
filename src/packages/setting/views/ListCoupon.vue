@@ -280,6 +280,7 @@ export default {
       }
 
       this.$toast.success(`Bạn đã sử dụng coupon “${code}” thành công!!!`)
+      this.visibleModalDetail = false
       this.init()
     },
     async clearSearchHandle() {
