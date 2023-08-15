@@ -544,8 +544,16 @@
       @apply="handleApplyCoupon"
       :coupons="coupons"
       :total="sumFee"
+      @show="handleShowCouponDetail"
     >
     </modal-coupon>
+    <modal-detail-coupon
+      :visible.sync="visibleDetailCoupon"
+      :coupon="coupon"
+      @close="showListCoupon"
+      @apply="handleApplyCoupon"
+    >
+    </modal-detail-coupon>
   </div>
 </template>
 
@@ -598,6 +606,7 @@ import { cloneDeep } from '../../../core/utils'
 import TrackLink from './components/Track.vue'
 import { FBA_SERVICE_CODE } from '../constants'
 import ModalCoupon from '../views/components/ModalCoupon'
+import ModalDetailCoupon from '../../setting/components/ModalDetailCoupon'
 export default {
   name: 'PackageDetail',
   mixins: [mixinPackageDetail, mixinTable],
@@ -609,6 +618,7 @@ export default {
     DeliveryLog,
     TrackLink,
     ModalCoupon,
+    ModalDetailCoupon,
   },
   data() {
     return {
@@ -656,6 +666,8 @@ export default {
       ticketLimit: 5,
       coupons: [],
       isFetchingCoupon: false,
+      coupon: {},
+      visibleDetailCoupon: false,
     }
   },
   computed: {
@@ -804,7 +816,7 @@ export default {
 
       this.isFetching = false
     },
-    handleApplyCoupon(id) {
+    handleApplyCoupon({ id }) {
       this.coupon_user_id = id
       this.visibleModalCoupon = false
       this.handleWayBill()
@@ -920,6 +932,13 @@ export default {
       } catch (error) {
         this.$toast.error('File error !!!')
       }
+    },
+    handleShowCouponDetail(coupon) {
+      this.coupon = coupon
+      this.visibleDetailCoupon = true
+    },
+    showListCoupon() {
+      this.visibleModalCoupon = true
     },
   },
 }

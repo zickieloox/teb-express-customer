@@ -38,7 +38,7 @@
                 :native-value="item.id"
                 :disabled="isDisabled(item)"
               ></p-radio>
-              <div class="show-more">
+              <div class="show-more" @click="showCouponDetail(item)">
                 <inline-svg
                   :src="require(`../../../../assets/img/info_coupon.svg`)"
                 ></inline-svg>
@@ -165,7 +165,11 @@ export default {
       this.$emit('close')
     },
     handleApply() {
-      this.$emit('apply', this.selected)
+      this.$emit('apply', { id: this.selected })
+    },
+    showCouponDetail(coupon) {
+      this.$emit('show', coupon)
+      this.$emit('update:visible', false)
     },
     getIconCoupon(type) {
       if (type === COUPON_TYPE_DISCOUNT_PERCENT) {

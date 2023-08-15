@@ -549,7 +549,15 @@
       :coupons="coupons"
       @apply="handleApplyCoupon"
       :total="total"
+      @show="handleShowCouponDetail"
     ></modal-coupon>
+    <modal-detail-coupon
+      :visible.sync="visibleDetailCoupon"
+      :coupon="coupon"
+      @close="showListCoupon"
+      @apply="handleApplyCoupon"
+    >
+    </modal-detail-coupon>
   </div>
 </template>
 <script>
@@ -565,6 +573,7 @@ import ModalConfirmAddress from './components/ModalConfirmAddress'
 import { formatPrice } from '@core/utils/formatter'
 import Datepicker from './components/Datepicker.vue'
 import ModalCoupon from '../views/components/ModalCoupon'
+import ModalDetailCoupon from '../../setting/components/ModalDetailCoupon'
 import {
   PACKAGE_STATUS_TAB,
   PACKAGE_STATUS_ARCHIVED,
@@ -624,6 +633,7 @@ export default {
     TrackLink,
     Datepicker,
     ModalCoupon,
+    ModalDetailCoupon,
   },
   mounted() {
     window.addEventListener('scroll', this.updateScroll)
@@ -700,6 +710,8 @@ export default {
       coupons: [],
       total: 0,
       coupon_user_id: null,
+      coupon: {},
+      visibleDetailCoupon: false,
     }
   },
   created() {
@@ -758,9 +770,10 @@ export default {
       }
       this.isVisibleModalSearch = false
     },
-    handleApplyCoupon(id) {
+    handleApplyCoupon({ id }) {
       this.coupon_user_id = id
       this.visibleModalCoupon = false
+      this.visibleDetailCoupon = false
       this.handleWayBill()
     },
     async showModalCoupon() {
@@ -777,7 +790,6 @@ export default {
     },
     async searchAdvanced(filter) {
       this.filter = { ...filter, status: '' }
-      console.log(filter, this.filter)
     },
     showPackageCode(item) {
       if (item.status === PACKAGE_STATUS_ARCHIVED) {
@@ -1248,6 +1260,13 @@ export default {
     },
     onFilterByDateType(val) {
       this.filter.by_date = val
+    },
+    handleShowCouponDetail(coupon) {
+      this.coupon = coupon
+      this.visibleDetailCoupon = true
+    },
+    showListCoupon() {
+      this.visibleModalCoupon = true
     },
   },
   watch: {
