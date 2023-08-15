@@ -54,9 +54,19 @@
         class="d-flex justify-content-between align-items-center"
         style="width: 100%;"
       >
-        <div>
-          <p>Giảm giá: {{ getDiscount }}</p>
-          <p>Tổng cước: {{ total | formatPrice }}</p>
+        <div style="min-width: 160px;">
+          <div class="d-flex">
+            <div style="width: 50%;">Giảm giá:</div>
+            <div style="width: 50%;" class="text-right">
+              {{ getDiscount }}
+            </div>
+          </div>
+          <div class="d-flex">
+            <div style="width: 50%;">Tổng cước:</div>
+            <div class="text-right" style="width: 50%;">
+              {{ total | formatPrice }}
+            </div>
+          </div>
         </div>
 
         <div class="group-button">
