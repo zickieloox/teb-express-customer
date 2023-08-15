@@ -98,7 +98,7 @@
         </div>
       </template>
 
-      <template slot="footer">
+      <template slot="footer" v-if="!hiddenButton">
         <button
           :class="`btn-${getClassBtn}`"
           class="pull-right btn ml-2"
@@ -134,9 +134,14 @@ export default {
       type: Object,
       default: () => {},
     },
+    hiddenButton: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     getHeader() {
+      console.log(this.hiddenButton)
       return this.coupon
         ? this.coupon.type === COUPON_TYPE_DISCOUNT_PERCENT
           ? `Giảm ngay ${this.coupon.value}% tối đa ${formatPrice(
@@ -160,22 +165,13 @@ export default {
       return 'primary'
     },
     isStopAction() {
-      return (
-        this.coupon &&
-        (this.coupon.is_expired ||
-          this.coupon.is_used ||
-          (typeof this.coupon.use_able !== 'undefined' &&
-            !this.coupon.use_able))
-      )
+      return this.coupon && (this.coupon.is_expired || this.coupon.is_used)
     },
     getClassBtn() {
       if (this.coupon && this.coupon.is_expired) {
         return 'danger'
       }
-      if (
-        (this.coupon && this.coupon.is_used) ||
-        (typeof this.coupon.use_able !== 'undefined' && !this.coupon.use_able)
-      ) {
+      if (this.coupon && this.coupon.is_used) {
         return 'default'
       }
       return 'primary'
@@ -186,13 +182,6 @@ export default {
       }
       if (this.coupon && this.coupon.is_used) {
         return 'Đã sử dụng'
-      }
-
-      if (
-        typeof this.coupon.use_able !== 'undefined' &&
-        !this.coupon.use_able
-      ) {
-        return 'Không khả dụng'
       }
       return 'Sử dụng'
     },

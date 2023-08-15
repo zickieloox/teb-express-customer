@@ -552,6 +552,7 @@
       :coupon="coupon"
       @close="showListCoupon"
       @apply="handleApplyCoupon"
+      :hidden-button="true"
     >
     </modal-detail-coupon>
   </div>
