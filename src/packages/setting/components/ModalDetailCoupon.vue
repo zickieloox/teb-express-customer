@@ -91,7 +91,7 @@
           <div class="col-6">
             <span
               class="badge badge-round badge-status"
-              :class="`badge-${getClassBtn}`"
+              :class="`badge-${getClassStatus}`"
               >{{ getStatus }}</span
             >
           </div>
@@ -150,11 +150,31 @@ export default {
     typeGifMoney() {
       return COUPON_TYPE_MONEY
     },
-    getClassBtn() {
+    getClassStatus() {
       if (this.coupon && this.coupon.is_expired) {
         return 'danger'
       }
       if (this.coupon && this.coupon.is_used) {
+        return 'default'
+      }
+      return 'primary'
+    },
+    isStopAction() {
+      return (
+        this.coupon &&
+        (this.coupon.is_expired ||
+          this.coupon.is_used ||
+          (typeof this.coupon.use_able !== undefined && !this.coupon.use_able))
+      )
+    },
+    getClassBtn() {
+      if (this.coupon && this.coupon.is_expired) {
+        return 'danger'
+      }
+      if (
+        (this.coupon && this.coupon.is_used) ||
+        (typeof this.coupon.use_able !== undefined && !this.coupon.use_able)
+      ) {
         return 'default'
       }
       return 'primary'
@@ -165,6 +185,9 @@ export default {
       }
       if (this.coupon && this.coupon.is_used) {
         return 'Đã sử dụng'
+      }
+      if (typeof this.coupon.use_able !== undefined && !this.coupon.use_able) {
+        return 'Không khả dụng'
       }
       return 'Sử dụng'
     },
@@ -209,6 +232,9 @@ export default {
       this.$emit('close', true)
     },
     handleSave() {
+      if (this.isStopAction) {
+        return
+      }
       this.$emit('apply', this.coupon)
     },
   },

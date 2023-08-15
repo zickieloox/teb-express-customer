@@ -243,11 +243,7 @@ export default {
         type === COUPON_TYPE_DISCOUNT_MONEY
       )
     },
-    async useCouponHandler({ type, code, is_expired, is_used }) {
-      if (is_expired || is_used) {
-        return
-      }
-
+    async useCouponHandler({ type, code }) {
       if (type !== COUPON_TYPE_MONEY) {
         await this.$router.push({
           name: 'list-packages',

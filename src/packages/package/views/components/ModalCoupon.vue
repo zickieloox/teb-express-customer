@@ -150,6 +150,7 @@ export default {
           value,
           text_head,
           is_expired: timeSince(end_date) > 0,
+          use_able: min_apply <= this.total,
         }
       })
     },
@@ -198,7 +199,9 @@ export default {
   },
   watch: {
     visible: {
-      handler: function() {},
+      handler: function() {
+        this.selected = null
+      },
     },
   },
 }
