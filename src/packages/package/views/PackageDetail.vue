@@ -539,7 +539,12 @@
       :loading="actions.returnPackage.loading"
       @action="pendingPickupPackageAction"
     ></modal-confirm>
-    <modal-coupon :visible.sync="visibleModalCoupon" @apply="handleApplyCoupon">
+    <modal-coupon
+      :visible.sync="visibleModalCoupon"
+      @apply="handleApplyCoupon"
+      :coupons="coupons"
+      :total="sumFee"
+    >
     </modal-coupon>
   </div>
 </template>
@@ -575,6 +580,7 @@ import {
   PROCESS_PACKAGE,
   CANCEL_PACKAGES,
   PENDING_PICKUP_PACKAGES,
+  FETCH_LIST_COUPON_APPLY,
 } from '../store/index'
 import {
   PACKAGE_STATUS_CREATED_TEXT,
@@ -613,7 +619,7 @@ export default {
       isVisiblePopupMoreRefundFee: false,
       isVisibleConfirmWayBill: false,
       visibleModalCoupon: false,
-      coupon_code: '',
+      coupon_user_id: '',
       actions: {
         wayBill: {
           type: 'primary',
@@ -648,6 +654,8 @@ export default {
       visibleConfirmReturn: false,
       blob: null,
       ticketLimit: 5,
+      coupons: [],
+      isFetchingCoupon: false,
     }
   },
   computed: {
@@ -774,6 +782,7 @@ export default {
       PROCESS_PACKAGE,
       CANCEL_PACKAGES,
       PENDING_PICKUP_PACKAGES,
+      FETCH_LIST_COUPON_APPLY,
     ]),
     ...mapActions('claim', [FETCH_TICKETS, COUNT_TICKET]),
 
@@ -795,12 +804,20 @@ export default {
 
       this.isFetching = false
     },
-    handleApplyCoupon(code) {
-      this.coupon_code = code
+    handleApplyCoupon(id) {
+      this.coupon_user_id = id
       this.visibleModalCoupon = false
       this.handleWayBill()
     },
-    showModalCoupon() {
+    async showModalCoupon() {
+      this.isFetchingCoupon = true
+      const result = await this[FETCH_LIST_COUPON_APPLY]()
+      this.isFetchingCoupon = false
+      if (result.error) {
+        this.$toast.open({ message: result.message, type: 'error' })
+        return
+      }
+      this.coupons = result.coupons
       this.visibleModalCoupon = true
     },
     changeDisplayDeliverDetail() {
@@ -828,7 +845,10 @@ export default {
       this.isVisibleConfirmWayBill = true
     },
     async handleActionWayBill() {
-      let params = { ids: [this.packageID], coupon_code: this.coupon_code }
+      let params = {
+        ids: [this.packageID],
+        coupon_user_id: this.coupon_user_id,
+      }
 
       this.actions.wayBill.loading = true
       const res = await this.processPackage(params)

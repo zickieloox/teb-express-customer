@@ -368,7 +368,6 @@ export const actions = {
         message: res.errorMessage || res.error || res.message || '',
       }
     }
-    console.log(res)
     return { error: false, ...res }
   },
 }
