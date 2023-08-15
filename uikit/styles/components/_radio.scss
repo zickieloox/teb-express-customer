@@ -1,25 +1,20 @@
-// .radio{
-//   margin-top: 15px;
-// }
-// .p-radio {
-//   margin-bottom: 10px;
-//   input:disabled ~span{
-//     color: #B0B3B9;
-//   }
-//   label {
-//     font-size: 14px;
-//     line-height: 160%;
-//     color: #37393E;
-//     display: flex;
-//     align-items: center;
-//     position: relative;
-//     input {
-//       position: absolute;
-//       bottom: 5px;
-//     }
-//     .select-export {
-//       margin-top: 0;
-//       margin-left: 20px;
-//     }
-//   }
-// }
+.radio{
+
+}
+.p-radio {
+    input[type="radio"]{
+        display: none;
+    }
+    label{
+        cursor: pointer;
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background-image: url("~@/assets/img/radio.svg");
+        transition: all .3s ease-in-out 0s;
+    }
+    input[type="radio"]:checked+label{
+        background-image: url("~@/assets/img/radio_checked.svg") !important;
+    }
+}
+

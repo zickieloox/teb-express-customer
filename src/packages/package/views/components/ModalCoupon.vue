@@ -36,6 +36,7 @@
                 type="info"
                 v-model="selected"
                 :native-value="item.id"
+                :disabled="isDisabled(item)"
               ></p-radio>
               <div class="show-more">
                 <inline-svg
@@ -108,7 +109,7 @@ export default {
         ? coupon.type === COUPON_TYPE_DISCOUNT_PERCENT
           ? (coupon.value * this.total) / 100 > coupon.max_apply
             ? `${formatPrice(coupon.max_apply)}`
-            : (coupon.value * this.total) / 100
+            : `${formatPrice(((coupon.value * this.total) / 100).toFixed(2))}`
           : `${formatPrice(coupon.value)}`
         : '-'
     },

@@ -4,21 +4,21 @@
     ref="radio"
     @keydown.prevent.enter="$refs.radio.click()"
   >
-    <label>
-      <input
-        v-model="internalVal"
-        :indeterminate.prop="indeterminate"
-        type="radio"
-        @click.stop
-        :disabled="disabled"
-        :required="required"
-        :name="name"
-        :value="nativeValue"
-        :true-value="trueValue"
-        :false-value="falseValue"
-      />
-      <slot />
-    </label>
+    <input
+      v-model="internalVal"
+      :indeterminate.prop="indeterminate"
+      type="radio"
+      @click.stop
+      :disabled="disabled"
+      :required="required"
+      :name="name"
+      :value="nativeValue"
+      :true-value="trueValue"
+      :false-value="falseValue"
+      :id="id"
+    />
+    <slot />
+    <label :for="id"> </label>
   </div>
 </template>
 
@@ -88,7 +88,11 @@ export default {
   data() {
     return {
       internalVal: this.value,
+      id: null,
     }
+  },
+  mounted() {
+    this.id = this._uid
   },
   watch: {
     internalVal(val) {
