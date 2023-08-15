@@ -164,7 +164,8 @@ export default {
         this.coupon &&
         (this.coupon.is_expired ||
           this.coupon.is_used ||
-          (typeof this.coupon.use_able !== undefined && !this.coupon.use_able))
+          (typeof this.coupon.use_able !== 'undefined' &&
+            !this.coupon.use_able))
       )
     },
     getClassBtn() {
@@ -173,7 +174,7 @@ export default {
       }
       if (
         (this.coupon && this.coupon.is_used) ||
-        (typeof this.coupon.use_able !== undefined && !this.coupon.use_able)
+        (typeof this.coupon.use_able !== 'undefined' && !this.coupon.use_able)
       ) {
         return 'default'
       }
@@ -186,7 +187,11 @@ export default {
       if (this.coupon && this.coupon.is_used) {
         return 'Đã sử dụng'
       }
-      if (typeof this.coupon.use_able !== undefined && !this.coupon.use_able) {
+
+      if (
+        typeof this.coupon.use_able !== 'undefined' &&
+        !this.coupon.use_able
+      ) {
         return 'Không khả dụng'
       }
       return 'Sử dụng'
