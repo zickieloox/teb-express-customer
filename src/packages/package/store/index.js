@@ -31,6 +31,7 @@ export const COUNT_PACKAGES_RETURN = 'countPackagesReturn'
 export const PACKAGE_RESHIP = 'packageReship'
 export const PACKAGE_RESHIP_ESTIMATE_COST = 'packageReshipEstimateCost'
 export const FETCH_PACKAGE_PRODUCTS = 'fetchPackageProducts'
+export const FETCH_LIST_COUPON_APPLY = 'fetchListCouponApply'
 
 /**
  * State
@@ -356,6 +357,18 @@ export const actions = {
       }
     }
 
+    return { error: false, ...res }
+  },
+  // eslint-disable-next-line no-empty-pattern
+  async [FETCH_LIST_COUPON_APPLY]({}) {
+    const res = await api.getListCouponApply()
+    if (!res || res.error) {
+      return {
+        error: true,
+        message: res.errorMessage || res.error || res.message || '',
+      }
+    }
+    console.log(res)
     return { error: false, ...res }
   },
 }

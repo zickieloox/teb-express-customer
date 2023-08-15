@@ -89,4 +89,7 @@ export default {
   packageReshipEstimateCost({ id, ...payload }) {
     return http.post(`/packages/${id}/reship/estimate-cost`, payload)
   },
+  getListCouponApply() {
+    return http.get(`/packages/coupons/apply`)
+  },
 }

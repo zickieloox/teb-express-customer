@@ -546,7 +546,9 @@
     </ModalSearchAdvanced>
     <modal-coupon
       :visible.sync="visibleModalCoupon"
+      :coupons="coupons"
       @apply="handleApplyCoupon"
+      :total="total"
     ></modal-coupon>
   </div>
 </template>
@@ -588,6 +590,7 @@ import {
   CANCEL_PACKAGES,
   PENDING_PICKUP_PACKAGES,
   VALIDATE_ADDRESS,
+  FETCH_LIST_COUPON_APPLY,
 } from '@/packages/package/store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
@@ -678,6 +681,7 @@ export default {
           loading: false,
         },
       },
+      isFetchingCoupon: false,
       isVisibleConfirmWayBill: false,
       visibleConfirmCancel: false,
       visibleConfirmReturn: false,
@@ -693,7 +697,8 @@ export default {
       scrollPosition: null,
       isVisibleModalSearch: false,
       PACKAGE_STATUS_DELIVERED: PACKAGE_STATUS_DELIVERED,
-      coupon_code: '',
+      coupons: [],
+      total: 0,
     }
   },
   created() {
@@ -736,6 +741,7 @@ export default {
       CANCEL_PACKAGES,
       PENDING_PICKUP_PACKAGES,
       VALIDATE_ADDRESS,
+      FETCH_LIST_COUPON_APPLY,
       SET_LOADING,
     ]),
     truncate,
@@ -756,7 +762,16 @@ export default {
       this.visibleModalCoupon = false
       this.handleWayBill()
     },
-    showModalCoupon() {
+    async showModalCoupon() {
+      this.isFetchingCoupon = true
+      const result = await this[FETCH_LIST_COUPON_APPLY]()
+      this.isFetchingCoupon = false
+      if (result.error) {
+        this.$toast.open({ message: result.message, type: 'error' })
+        return
+      }
+      this.coupons = result.coupons
+      this.total = this.selectionCountTotal
       this.visibleModalCoupon = true
     },
     async searchAdvanced(filter) {

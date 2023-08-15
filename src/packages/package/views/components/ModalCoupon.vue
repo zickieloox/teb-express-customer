@@ -2,42 +2,85 @@
   <p-modal
     class="modal_coupon"
     :active="visible"
-    title=""
+    title="Chọn coupon"
     @close="handleClose"
     :width="600"
   >
-    <template>
-      <div class="text-center">
-        <h1>Nhập mã coupon</h1>
-        <div class="txt-description">
-          Vui lòng nhập mã coupon vào ô bên dưới và nhấn nút xác nhận để sử dụng
-          mã coupon
-        </div>
-        <p-input
-          placeholder="Nhập mã coupon"
-          class="mb-2"
-          type="text"
-          clearable
-          v-model="coupon_code"
+    <template v-if="coupons.length > 0">
+      <div class="row">
+        <div
+          class="col-12 mb-16"
+          :class="{ disabled: isDisabled(item) }"
+          v-for="item in listCoupons"
+          :key="item.id"
         >
-        </p-input>
+          <div class="item d-flex justify-content-between align-items-center">
+            <div class="icon">
+              <inline-svg
+                :src="
+                  require(`../../../../assets/img/${getIconCoupon(item.type)}`)
+                "
+              ></inline-svg>
+            </div>
+            <div class="txt">
+              <h2>{{ item.text_head }}</h2>
+              <p>Số lượng: {{ item.quantity }}</p>
+              <p>Ngày hết hạn: {{ item.end_date | date('dd/MM/yyyy') }}</p>
+              <p v-if="isDiscount(item.type)">
+                Giá trị áp dụng tối thiểu:
+                {{ item.min_apply | formatPrice }}</p
+              >
+            </div>
+            <div class="action">
+              <p-radio
+                type="info"
+                v-model="selected"
+                :native-value="item.id"
+              ></p-radio>
+              <div class="show-more">
+                <inline-svg
+                  :src="require(`../../../../assets/img/info_coupon.svg`)"
+                ></inline-svg>
+                Tìm hiểu thêm
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </template>
     <template slot="footer">
-      <p-button type="primary" @click="handleAccept" :loading="loading">
-        Xác nhận
-      </p-button>
+      <div
+        class="d-flex justify-content-between align-items-center"
+        style="width: 100%;"
+      >
+        <div>
+          <p>Giảm giá: {{ getDiscount }}</p>
+          <p>Tổng cước: {{ total | formatPrice }}</p>
+        </div>
+
+        <div class="group-button">
+          <p-button type="default" @click="handleClose" :disabled="loading">
+            Bỏ qua
+          </p-button>
+          <p-button type="primary" @click="handleApply" :loading="loading">
+            Áp dụng
+          </p-button>
+        </div>
+      </div>
     </template>
   </p-modal>
 </template>
 <script>
+import {
+  MAP_COUPON_TEXT,
+  COUPON_TYPE_MONEY,
+  COUPON_TYPE_DISCOUNT_PERCENT,
+  COUPON_TYPE_DISCOUNT_MONEY,
+} from '../../../setting/constants'
+import { formatPrice } from '@core/utils/formatter'
+import { timeSince } from '@core/utils/datetime'
 export default {
   name: 'ModalCoupon',
-  data() {
-    return {
-      coupon_code: '',
-    }
-  },
   props: {
     visible: {
       type: Boolean,
@@ -47,22 +90,110 @@ export default {
       type: Boolean,
       default: false,
     },
+    coupons: {
+      type: Array,
+      default: () => [],
+    },
+    total: {
+      type: Number,
+      default: 0,
+    },
+  },
+  computed: {
+    getDiscount() {
+      const coupon = this.coupons.find(({ id }) => {
+        return id === this.selected
+      })
+      return coupon
+        ? coupon.type === COUPON_TYPE_DISCOUNT_PERCENT
+          ? (coupon.value * this.total) / 100 > coupon.max_apply
+            ? `${formatPrice(coupon.max_apply)}`
+            : (coupon.value * this.total) / 100
+          : `${formatPrice(coupon.value)}`
+        : '-'
+    },
+    listCoupons() {
+      return this.coupons.map((item) => {
+        const {
+          id,
+          code,
+          start_date,
+          end_date,
+          point,
+          type,
+          used,
+          max_apply,
+          min_apply,
+          value,
+          quantity,
+        } = item
+        const text_head =
+          type === COUPON_TYPE_DISCOUNT_PERCENT
+            ? `Giảm ngay ${value}% tối đa ${formatPrice(max_apply)}`
+            : type === COUPON_TYPE_DISCOUNT_MONEY
+            ? `Giảm ngay ${formatPrice(value)}`
+            : `Tặng ngay ${formatPrice(value)}`
+        return {
+          id,
+          code,
+          start_date,
+          end_date,
+          point,
+          type,
+          type_text: MAP_COUPON_TEXT[type] || 'unknown',
+          used,
+          quantity,
+          is_used: used === quantity,
+          max_apply: type === COUPON_TYPE_MONEY ? 0 : max_apply,
+          min_apply: type === COUPON_TYPE_MONEY ? 0 : min_apply,
+          value,
+          text_head,
+          is_expired: timeSince(end_date) > 0,
+        }
+      })
+    },
+  },
+  data() {
+    return {
+      selected: null,
+    }
   },
   methods: {
     handleClose() {
       this.$emit('update:visible', false)
       this.$emit('close')
-      this.$emit('apply', '')
     },
-    handleAccept() {
-      this.$emit('apply', this.coupon_code)
+    handleApply() {
+      this.$emit('apply', this.selected)
+    },
+    getIconCoupon(type) {
+      if (type === COUPON_TYPE_DISCOUNT_PERCENT) {
+        return 'discount_percent.svg'
+      }
+      return 'money_coupon.svg'
+    },
+    getClassBtn(item) {
+      if (item.is_expired) {
+        return 'btn-danger'
+      }
+      if (item.is_used) {
+        return 'btn-default'
+      }
+      return 'btn-primary'
+    },
+    isDisabled(item) {
+      return item.is_expired || item.is_used || item.min_apply > this.total
+    },
+    isDiscount(type) {
+      return (
+        type === COUPON_TYPE_DISCOUNT_PERCENT ||
+        type === COUPON_TYPE_DISCOUNT_MONEY
+      )
     },
   },
   watch: {
     visible: {
-      handler: function() {
-        this.coupon_code = ''
-      },
+      handler: function() {},
     },
   },
 }
@@ -90,13 +221,6 @@ export default {
   border-radius: 8px !important;
   height: 56px !important;
 }
-
-.modal_coupon .modal-footer{
-  justify-content: center;
-  border-top: none;
-  padding-bottom: 60px;
-}
-
 .modal_coupon h1{
   font-family: Be Vietnam Pro;
   font-size: 24px;
@@ -117,17 +241,6 @@ export default {
 }
 .modal_coupon .modal-body{
   padding-bottom: 0;
-}
-.modal_coupon .modal-footer{
-  padding-top: 0;
-}
-.modal_coupon .modal-footer button{
-  width: 400px;
-  padding: 16px 24px;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 24px;
-  height: 56px;
 }
 .modal_coupon .modal-header{
   border-bottom: none;
