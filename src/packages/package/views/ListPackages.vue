@@ -699,6 +699,7 @@ export default {
       PACKAGE_STATUS_DELIVERED: PACKAGE_STATUS_DELIVERED,
       coupons: [],
       total: 0,
+      coupon_user_id: null,
     }
   },
   created() {
@@ -757,8 +758,8 @@ export default {
       }
       this.isVisibleModalSearch = false
     },
-    handleApplyCoupon(code) {
-      this.coupon_code = code
+    handleApplyCoupon(id) {
+      this.coupon_user_id = id
       this.visibleModalCoupon = false
       this.handleWayBill()
     },
@@ -1075,7 +1076,7 @@ export default {
 
       let params = {
         ids: ids,
-        coupon_code: this.coupon_code,
+        coupon_user_id: this.coupon_user_id,
       }
 
       this.actions.wayBill.loading = true
