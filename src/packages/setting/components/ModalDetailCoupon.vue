@@ -141,7 +141,6 @@ export default {
   },
   computed: {
     getHeader() {
-      console.log(this.hiddenButton)
       return this.coupon
         ? this.coupon.type === COUPON_TYPE_DISCOUNT_PERCENT
           ? `Giảm ngay ${this.coupon.value}% tối đa ${formatPrice(

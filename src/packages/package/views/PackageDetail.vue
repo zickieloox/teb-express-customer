@@ -545,6 +545,7 @@
       :coupons="coupons"
       :total="sumFee"
       @show="handleShowCouponDetail"
+      :event-out="parentComponentAction"
     >
     </modal-coupon>
     <modal-detail-coupon
@@ -669,6 +670,7 @@ export default {
       isFetchingCoupon: false,
       coupon: {},
       visibleDetailCoupon: false,
+      parentComponentAction: false,
     }
   },
   computed: {
@@ -833,6 +835,7 @@ export default {
       this.coupons = result.coupons || []
       if (this.coupons.length) {
         this.visibleModalCoupon = true
+        this.parentComponentAction = true
         return
       }
       this.handleWayBill()
@@ -940,6 +943,7 @@ export default {
     },
     handleShowCouponDetail(coupon) {
       this.coupon = coupon
+      this.parentComponentAction = false
       this.visibleDetailCoupon = true
     },
     showListCoupon() {

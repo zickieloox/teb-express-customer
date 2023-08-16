@@ -109,6 +109,10 @@ export default {
       type: Number,
       default: 0,
     },
+    eventOut: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     getDiscount() {
@@ -167,21 +171,17 @@ export default {
   data() {
     return {
       selected: null,
-      is_show_more: false,
     }
   },
   methods: {
     handleClose() {
-      this.is_show_more = false
       this.$emit('update:visible', false)
       this.$emit('close')
     },
     handleApply() {
-      this.is_show_more = false
       this.$emit('apply', { id: this.selected })
     },
     showCouponDetail(coupon) {
-      this.is_show_more = true
       this.$emit('show', coupon)
       this.$emit('update:visible', false)
     },
@@ -218,7 +218,7 @@ export default {
   watch: {
     visible: {
       handler: function() {
-        if (!this.is_show_more) {
+        if (this.eventOut) {
           this.selected = null
         }
       },

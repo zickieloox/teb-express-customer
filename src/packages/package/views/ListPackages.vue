@@ -550,6 +550,7 @@
       @apply="handleApplyCoupon"
       :total="total"
       @show="handleShowCouponDetail"
+      :event-out="parentComponentAction"
     ></modal-coupon>
     <modal-detail-coupon
       :visible.sync="visibleDetailCoupon"
@@ -713,6 +714,7 @@ export default {
       coupon_user_id: null,
       coupon: {},
       visibleDetailCoupon: false,
+      parentComponentAction: false,
     }
   },
   created() {
@@ -789,6 +791,7 @@ export default {
       if (this.coupons.length) {
         this.total = this.selectionCountTotal
         this.visibleModalCoupon = true
+        this.parentComponentAction = true
         return
       }
       this.handleWayBill()
@@ -1269,6 +1272,7 @@ export default {
     handleShowCouponDetail(coupon) {
       this.coupon = coupon
       this.visibleDetailCoupon = true
+      this.parentComponentAction = false
     },
     showListCoupon() {
       this.visibleModalCoupon = true
