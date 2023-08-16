@@ -786,8 +786,12 @@ export default {
         return
       }
       this.coupons = result.coupons || []
-      this.total = this.selectionCountTotal
-      this.visibleModalCoupon = true
+      if (this.coupons.length) {
+        this.total = this.selectionCountTotal
+        this.visibleModalCoupon = true
+        return
+      }
+      this.handleWayBill()
     },
     async searchAdvanced(filter) {
       this.filter = { ...filter, status: '' }

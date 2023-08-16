@@ -831,7 +831,11 @@ export default {
         return
       }
       this.coupons = result.coupons || []
-      this.visibleModalCoupon = true
+      if (this.coupons.length) {
+        this.visibleModalCoupon = true
+        return
+      }
+      this.handleWayBill()
     },
     changeDisplayDeliverDetail() {
       this.displayDeliverDetail = !this.displayDeliverDetail
