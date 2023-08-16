@@ -631,7 +631,7 @@ export default {
       isVisiblePopupMoreRefundFee: false,
       isVisibleConfirmWayBill: false,
       visibleModalCoupon: false,
-      coupon_user_id: '',
+      coupon_user_id: null,
       actions: {
         wayBill: {
           type: 'primary',
