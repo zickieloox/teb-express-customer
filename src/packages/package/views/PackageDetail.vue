@@ -830,7 +830,7 @@ export default {
         this.$toast.open({ message: result.message, type: 'error' })
         return
       }
-      this.coupons = result.coupons
+      this.coupons = result.coupons || []
       this.visibleModalCoupon = true
     },
     changeDisplayDeliverDetail() {
