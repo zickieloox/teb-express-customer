@@ -197,7 +197,12 @@ export default {
       return 'btn-primary'
     },
     isDisabled(item) {
-      return item.is_expired || item.is_used || item.min_apply > this.total
+      return (
+        item.is_expired ||
+        item.is_used ||
+        item.min_apply > this.total ||
+        timeSince(item.start_date) < 0
+      )
     },
     isDiscount(type) {
       return (
