@@ -12,7 +12,7 @@
           <p-button
             :disabled="createOrder(filter.status)"
             class="bulk-actions__selection-status"
-            @click="showModalCoupon"
+            @click="handleWayBill"
             type="primary"
             >Tạo tracking</p-button
           >
@@ -492,17 +492,6 @@
     ></modal-import-preview-package>
     <modal-export :visible="isVisibleExport"> </modal-export>
     <modal-confirm
-      :visible.sync="isVisibleConfirmWayBill"
-      v-if="isVisibleConfirmWayBill"
-      :actionConfirm="actions.wayBill.button"
-      :description="actions.wayBill.Description"
-      :title="actions.wayBill.title"
-      :type="actions.wayBill.type"
-      :disabled="actions.wayBill.disabled"
-      :loading="actions.wayBill.loading"
-      @action="handleActionWayBill"
-    ></modal-confirm>
-    <modal-confirm
       :visible.sync="visibleConfirmCancel"
       v-if="visibleConfirmCancel"
       :actionConfirm="actions.cancelPackage.button"
@@ -551,6 +540,7 @@
       :total="total"
       @show="handleShowCouponDetail"
       :event-out="parentComponentAction"
+      :txt="actions.wayBill.Description"
     ></modal-coupon>
     <modal-detail-coupon
       :visible.sync="visibleDetailCoupon"
@@ -777,7 +767,7 @@ export default {
       this.coupon_user_id = id
       this.visibleModalCoupon = false
       this.visibleDetailCoupon = false
-      this.handleWayBill()
+      this.handleActionWayBill()
     },
     async showModalCoupon() {
       this.isFetchingCoupon = true
@@ -788,13 +778,9 @@ export default {
         return
       }
       this.coupons = result.coupons || []
-      if (this.coupons.length) {
-        this.total = this.selectionCountTotal
-        this.visibleModalCoupon = true
-        this.parentComponentAction = true
-        return
-      }
-      this.handleWayBill()
+      this.total = this.selectionCountTotal
+      this.visibleModalCoupon = true
+      this.parentComponentAction = true
     },
     async searchAdvanced(filter) {
       this.filter = { ...filter, status: '' }
@@ -1083,12 +1069,12 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.wayBill.Description = `Tổng số đơn hàng đang chọn là <b> ${
+      this.actions.wayBill.Description = `Bạn có  <b> ${
         this.selected.length
-      } </b>. Tổng tiền là <b> ${formatPrice(
+      } đơn hàng</b> đang được chọn. Tổng số tiền là <b> ${formatPrice(
         this.selectionCountTotal
-      )} </b> bạn có chắc chắn muốn tạo tracking?`
-      this.isVisibleConfirmWayBill = true
+      )} </b>`
+      this.showModalCoupon()
     },
     async handleActionWayBill() {
       let ids

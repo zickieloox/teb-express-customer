@@ -282,7 +282,16 @@
         .modal-content{
             border-radius: 4px;
             .modal-body{
-                background-color: #F6F7F7;
+                padding: 24px 16px;
+                .list_apply_coupon{
+                    background-color: #F6F7F7;
+                    padding: 18px 16px 0 16px;
+                    margin-top: 4px;
+                    .row > div:last-child{
+                        margin-bottom: 0 !important;
+                    }
+                }
+               
             }
         }
     }
@@ -291,10 +300,14 @@
     }
     .item{
         background-image: url("~@/assets/img/coupon_bg_image.png");
-        height: 108px;
+        height: 98px;
         border-radius: 8px;
         background-size: cover;
         margin: -8px -8px;
+        margin-bottom: 16px;
+        &:last-child{
+            margin-bottom: 14px !important;
+        }
         .icon{
             width: 102px;
             padding-left: 33px;
