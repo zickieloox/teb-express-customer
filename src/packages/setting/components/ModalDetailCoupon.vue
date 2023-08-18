@@ -81,7 +81,7 @@
             Số lượng:
           </div>
           <div class="col-6">
-            {{ coupon.quantity - coupon.used }}
+            {{ coupon.quantity }}
           </div>
         </div>
         <div class="row">
