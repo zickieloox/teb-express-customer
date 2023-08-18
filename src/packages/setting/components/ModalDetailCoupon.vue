@@ -78,10 +78,18 @@
         </div>
         <div class="row">
           <div class="col-6">
-            Số lượng còn lại:
+            Số lượng:
           </div>
           <div class="col-6">
             {{ coupon.quantity - coupon.used }}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            Đã sử dụng:
+          </div>
+          <div class="col-6">
+            {{ coupon.used }}
           </div>
         </div>
         <div class="row">

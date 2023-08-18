@@ -39,7 +39,7 @@
                   </div>
                   <div class="txt">
                     <h2>{{ item.text_head }}</h2>
-                    <p>Số lượng: {{ item.quantity }}</p>
+                    <p>Số lượng còn lại: {{ item.quantity - item.used }}</p>
                     <p
                       >Thời gian áp dụng:
                       {{ item.start_date | date('dd/MM/yyyy') }} -
