@@ -110,7 +110,7 @@
             </p-button>
             <p-button
               class="ml-7"
-              @click="showModalCoupon"
+              @click="handleWayBill"
               type="primary"
               v-if="hasMakeTracking"
             >
@@ -546,6 +546,7 @@
       :total="sumFee"
       @show="handleShowCouponDetail"
       :event-out="parentComponentAction"
+      :txt="actions.wayBill.Description"
     >
     </modal-coupon>
     <modal-detail-coupon
@@ -609,6 +610,7 @@ import TrackLink from './components/Track.vue'
 import { FBA_SERVICE_CODE } from '../constants'
 import ModalCoupon from '../views/components/ModalCoupon'
 import ModalDetailCoupon from '../../setting/components/ModalDetailCoupon'
+import { formatPrice } from '@core/utils/formatter'
 export default {
   name: 'PackageDetail',
   mixins: [mixinPackageDetail, mixinTable],
@@ -822,7 +824,7 @@ export default {
     handleApplyCoupon({ id }) {
       this.coupon_user_id = id
       this.visibleModalCoupon = false
-      this.handleWayBill()
+      this.handleActionWayBill()
     },
     async showModalCoupon() {
       this.isFetchingCoupon = true
@@ -833,12 +835,9 @@ export default {
         return
       }
       this.coupons = result.coupons || []
-      if (this.coupons.length) {
-        this.visibleModalCoupon = true
-        this.parentComponentAction = true
-        return
-      }
-      this.handleWayBill()
+
+      this.visibleModalCoupon = true
+      this.parentComponentAction = true
     },
     changeDisplayDeliverDetail() {
       this.displayDeliverDetail = !this.displayDeliverDetail
@@ -861,8 +860,10 @@ export default {
     },
 
     handleWayBill() {
-      this.actions.wayBill.Description = `Bạn có chắc chắn muốn tạo tracking?`
-      this.isVisibleConfirmWayBill = true
+      this.actions.wayBill.Description = `Bạn có <b>1 đơn hàng</b> đang được chọn. Tổng số tiền là <b>${formatPrice(
+        this.sumFee
+      )}</b>`
+      this.showModalCoupon()
     },
     async handleActionWayBill() {
       let params = {
