@@ -38,17 +38,20 @@
                     ></inline-svg>
                   </div>
                   <div class="txt">
+                    <div class="d-flex">
+                      <span class="cp-code" :title="item.code">{{
+                        item.code
+                      }}</span>
+                      <span class="cp-count"
+                        >Còn {{ item.quantity - item.used }} Coupons</span
+                      >
+                    </div>
                     <h2>{{ item.text_head }}</h2>
-                    <p>Số lượng còn lại: {{ item.quantity - item.used }}</p>
-                    <p
-                      >Thời gian áp dụng:
-                      {{ item.start_date | date('dd/MM/yyyy') }} -
-                      {{ item.end_date | date('dd/MM/yyyy') }}</p
-                    >
                     <p v-if="isDiscount(item.type)">
                       Giá trị áp dụng tối thiểu:
                       {{ item.min_apply | formatPrice }}</p
                     >
+                    <p>HSD: {{ item.end_date | date('dd/MM/yyyy') }}</p>
                   </div>
                   <div class="action">
                     <button
