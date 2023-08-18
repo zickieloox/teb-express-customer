@@ -242,6 +242,7 @@ export default {
     },
     toogleCoupone() {
       this.is_use_coupon = !this.is_use_coupon
+      this.selected = null
     },
     getIconCoupon(type) {
       if (type === COUPON_TYPE_DISCOUNT_PERCENT) {
