@@ -120,7 +120,7 @@
         </div>
 
         <div class="group-button">
-          <p-button type="default" @click="handleClose" :disabled="loading">
+          <p-button type="default" @click="handleSkip" :disabled="loading">
             Bỏ qua
           </p-button>
           <p-button type="primary" @click="handleApply" :loading="loading">
@@ -232,6 +232,10 @@ export default {
     handleClose() {
       this.$emit('update:visible', false)
       this.$emit('close')
+    },
+    handleSkip() {
+      this.is_use_coupon = false
+      this.selected = null
     },
     handleApply() {
       this.$emit('apply', { id: this.selected })
