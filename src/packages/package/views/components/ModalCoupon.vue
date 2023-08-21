@@ -3,7 +3,7 @@
     class="modal_coupon"
     :active="visible"
     title="Xác nhận tạo tracking"
-    @close="handleClose"
+    @close="handleSkip"
     :width="600"
   >
     <div v-html="txt" style="line-height: 20px;margin-bottom: 16px;"> </div>
