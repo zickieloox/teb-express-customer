@@ -241,8 +241,12 @@ export default {
       this.$emit('close')
     },
     handleSkip() {
-      this.is_use_coupon = false
-      this.selected = null
+      if (this.is_use_coupon) {
+        this.is_use_coupon = false
+        this.selected = null
+      } else {
+        this.handleClose()
+      }
     },
     handleApply() {
       this.$emit('apply', { id: this.selected })
