@@ -189,44 +189,53 @@ export default {
         : 0
     },
     listCoupons() {
-      return this.coupons.map((item) => {
-        const {
-          id,
-          code,
-          start_date,
-          end_date,
-          point,
-          type,
-          used,
-          max_apply,
-          min_apply,
-          value,
-          quantity,
-        } = item
-        const text_head =
-          type === COUPON_TYPE_DISCOUNT_PERCENT
-            ? `Giảm ngay ${value}% tối đa ${formatPrice(max_apply)}`
-            : type === COUPON_TYPE_DISCOUNT_MONEY
-            ? `Giảm ngay ${formatPrice(value)}`
-            : `Tặng ngay ${formatPrice(value)}`
-        return {
-          id,
-          code,
-          start_date,
-          end_date,
-          point,
-          type,
-          type_text: MAP_COUPON_TEXT[type] || 'unknown',
-          used,
-          quantity,
-          is_used: used === quantity,
-          max_apply: type === COUPON_TYPE_MONEY ? 0 : max_apply,
-          min_apply: type === COUPON_TYPE_MONEY ? 0 : min_apply,
-          value,
-          text_head,
-          is_expired: timeSince(end_date) > 0,
-        }
-      })
+      const isDisabled = this.isDisabled
+      return this.coupons
+        .map((item) => {
+          const {
+            id,
+            code,
+            start_date,
+            end_date,
+            type,
+            used,
+            max_apply,
+            min_apply,
+            value,
+            quantity,
+          } = item
+          const text_head =
+            type === COUPON_TYPE_DISCOUNT_PERCENT
+              ? `Giảm ngay ${value}% tối đa ${formatPrice(max_apply)}`
+              : type === COUPON_TYPE_DISCOUNT_MONEY
+              ? `Giảm ngay ${formatPrice(value)}`
+              : `Tặng ngay ${formatPrice(value)}`
+          return {
+            id,
+            code,
+            start_date,
+            end_date,
+            type,
+            type_text: MAP_COUPON_TEXT[type] || 'unknown',
+            used,
+            quantity,
+            is_used: used === quantity,
+            max_apply: type === COUPON_TYPE_MONEY ? 0 : max_apply,
+            min_apply: type === COUPON_TYPE_MONEY ? 0 : min_apply,
+            value,
+            text_head,
+            is_expired: timeSince(end_date) > 0,
+          }
+        })
+        .sort(function(a, b) {
+          if (!isDisabled(a) && isDisabled(b)) {
+            return -1
+          }
+          if (isDisabled(a) && !isDisabled(b)) {
+            return 1
+          }
+          return 0
+        })
     },
   },
   data() {
