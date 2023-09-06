@@ -47,10 +47,10 @@
                         item.code
                       }}</span>
                       <span class="cp-count">
-                        <span v-if="quantity"
+                        <span v-if="item.quantity"
                           >Còn {{ item.quantity - item.used }} Coupons</span
                         >
-                        <span>{{ item.point }} ĐIỂM</span>
+                        <span v-else>{{ item.point }} ĐIỂM</span>
                       </span>
                     </div>
                     <h2>{{ item.text_head }}</h2>
