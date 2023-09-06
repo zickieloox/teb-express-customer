@@ -115,6 +115,7 @@ import {
   COUPON_TYPE_MONEY,
   COUPON_TYPE_DISCOUNT_PERCENT,
   COUPON_TYPE_DISCOUNT_MONEY,
+  COUPON_KEY_STATUS_ALL,
 } from '../constants'
 import { formatPrice } from '@core/utils/formatter'
 import { timeSince } from '@core/utils/datetime'
@@ -134,7 +135,7 @@ export default {
         page: 1,
         limit: 25,
         search: '',
-        status: '',
+        status: COUPON_KEY_STATUS_ALL,
       },
       visibleModal: false,
       visibleModalDelete: false,
