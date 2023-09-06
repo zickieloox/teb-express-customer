@@ -54,6 +54,7 @@ export const state = {
   services: [],
   coupons: [],
   count_coupons: 0,
+  count_coupon_by_status: [],
 }
 
 /**
@@ -105,7 +106,8 @@ export const mutations = {
     state.coupons = payload
   },
   [FETCH_COUNT_COUPONS]: (state, payload) => {
-    state.count_coupons = payload
+    state.count_coupons = payload.count || 0
+    state.count_coupon_by_status = payload.count_by_status || []
   },
 }
 
@@ -460,11 +462,11 @@ export const actions = {
   async [FETCH_COUNT_COUPONS]({ commit }, payload) {
     const res = await api.fetchCountCoupons(payload)
     if (!res || res.error) {
-      commit(FETCH_COUNT_COUPONS, 0)
+      commit(FETCH_COUNT_COUPONS, null)
       return { error: true, message: res.errorMessage || '' }
     }
 
-    commit(FETCH_COUNT_COUPONS, res.count)
+    commit(FETCH_COUNT_COUPONS, res)
     return { error: false }
   },
   // eslint-disable-next-line

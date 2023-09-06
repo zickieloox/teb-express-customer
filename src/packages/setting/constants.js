@@ -97,3 +97,18 @@ export const LIST_DEFAULT_FIELD = [
     require: false,
   },
 ]
+
+export const COUPON_STATUS_TAB = [
+  {
+    value: '',
+    text: 'Tất cả',
+  },
+  {
+    value: 'current',
+    text: 'Hiện có',
+  },
+  {
+    value: 'used',
+    text: 'Đã sử dụng',
+  },
+]

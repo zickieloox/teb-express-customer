@@ -16,6 +16,10 @@
     <div class="page-content">
       <div class="card">
         <div class="card-body">
+          <cuopon-status-tab
+            :count-status="countByStatus"
+            v-model="filter.status"
+          ></cuopon-status-tab>
           <vcl-table class="md-20" v-if="isFetching"></vcl-table>
           <template v-else-if="coupons.length > 0">
             <div class="row">
@@ -114,11 +118,16 @@ import {
 } from '../constants'
 import { formatPrice } from '@core/utils/formatter'
 import { timeSince } from '@core/utils/datetime'
+import CuoponStatusTab from '../components/CouponStatusTab'
 
 export default {
   name: 'ListCoupon',
   mixins: [mixinRoute, mixinTable],
-  components: { EmptySearchResult, ModalDetailCoupon },
+  components: {
+    EmptySearchResult,
+    ModalDetailCoupon,
+    CuoponStatusTab,
+  },
   data() {
     return {
       filter: {
@@ -143,6 +152,7 @@ export default {
   computed: {
     ...mapState('setting', {
       count: (state) => state.count_coupons,
+      countByStatus: (state) => state.count_coupon_by_status,
       coupons: (state) => state.coupons,
     }),
     listCoupons() {
@@ -206,7 +216,6 @@ export default {
         this.$toast.error(res.message)
         return
       }
-
       this.isFetching = false
     },
     isDisabled(item) {
