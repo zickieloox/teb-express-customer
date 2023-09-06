@@ -3,6 +3,9 @@ export const COUPON_TYPE_DISCOUNT_MONEY = 2
 export const COUPON_TYPE_DISCOUNT_PERCENT = 3
 export const COUPON_NO_USED = 0
 export const COUPON_USED = 1
+export const COUPON_KEY_STATUS_ALL = 'all'
+export const COUPON_KEY_STATUS_CURRENT = 'current'
+export const COUPON_KEY_STATUS_USED = 'used'
 
 export const MAP_COUPON_TEXT = {
   [COUPON_TYPE_MONEY]: 'Tặng tiền',
@@ -100,15 +103,15 @@ export const LIST_DEFAULT_FIELD = [
 
 export const COUPON_STATUS_TAB = [
   {
-    value: '',
+    value: COUPON_KEY_STATUS_ALL,
     text: 'Tất cả',
   },
   {
-    value: 'current',
+    value: COUPON_KEY_STATUS_CURRENT,
     text: 'Hiện có',
   },
   {
-    value: 'used',
+    value: COUPON_KEY_STATUS_USED,
     text: 'Đã sử dụng',
   },
 ]
