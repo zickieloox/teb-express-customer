@@ -59,11 +59,19 @@
                   </div>
                   <div class="action">
                     <button
+                      v-if="item.quantity"
                       class="btn"
                       :class="getClassBtn(item)"
                       @click="useCouponHandler(item)"
                     >
                       {{ getTxtButton(item) }}
+                    </button>
+                    <button
+                      v-else
+                      class="btn btn-primary"
+                      @click="confirmBuyCoupon(item.code)"
+                    >
+                      Mua
                     </button>
                     <div
                       style="cursor: pointer"
@@ -187,7 +195,7 @@ export default {
           type_text: MAP_COUPON_TEXT[type] || 'unknown',
           used,
           quantity,
-          is_used: used === quantity,
+          is_used: used === quantity && quantity && used,
           max_apply: type == COUPON_TYPE_MONEY ? 0 : max_apply,
           min_apply: type === COUPON_TYPE_MONEY ? 0 : min_apply,
           value,
@@ -255,6 +263,17 @@ export default {
         type === COUPON_TYPE_DISCOUNT_PERCENT ||
         type === COUPON_TYPE_DISCOUNT_MONEY
       )
+    },
+    confirmBuyCoupon(code) {
+      this.$dialog.confirm({
+        title: 'Xác nhận mua coupon !',
+        message: `Bạn có chắc chắn muốn mua coupon “${code}” ?`,
+        type: 'primary',
+        typeCancel: 'default',
+        confirmText: 'Chấp nhận',
+        cancelText: 'Không',
+        onConfirm: () => this.useCouponSubmit(code),
+      })
     },
     async useCouponHandler({ type, code }) {
       if (type !== COUPON_TYPE_MONEY) {
