@@ -140,4 +140,7 @@ export default {
   applyCoupon(code) {
     return http.post(`/packages/coupons/${code}/apply`)
   },
+  buyCoupon(payload) {
+    return http.put(`/packages/coupons/${payload.id}`)
+  },
 }

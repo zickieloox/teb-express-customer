@@ -72,7 +72,7 @@
                     <button
                       v-else
                       class="btn btn-primary"
-                      @click="confirmBuyCoupon(item.code)"
+                      @click="confirmBuyCoupon(item)"
                     >
                       Mua
                     </button>
@@ -119,7 +119,12 @@ import { truncate } from '@core/utils/string'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import { mapActions, mapState } from 'vuex'
-import { FETCH_LIST_COUPONS, FETCH_COUNT_COUPONS, APPLY_COUPON } from '../store'
+import {
+  FETCH_LIST_COUPONS,
+  FETCH_COUNT_COUPONS,
+  APPLY_COUPON,
+  BUY_COUPON,
+} from '../store'
 import ModalDetailCoupon from '../components/ModalDetailCoupon'
 import {
   MAP_COUPON_TEXT,
@@ -152,6 +157,7 @@ export default {
       visibleModalDelete: false,
       visibleModalDetail: false,
       coupon: {},
+      isSubmitting: false,
       isFetching: false,
     }
   },
@@ -213,6 +219,7 @@ export default {
       FETCH_LIST_COUPONS,
       FETCH_COUNT_COUPONS,
       APPLY_COUPON,
+      BUY_COUPON,
     ]),
     truncate,
     async init() {
@@ -267,7 +274,7 @@ export default {
         type === COUPON_TYPE_DISCOUNT_MONEY
       )
     },
-    confirmBuyCoupon(code) {
+    confirmBuyCoupon({ id, code }) {
       this.$dialog.confirm({
         title: 'Xác nhận mua coupon !',
         message: `Bạn có chắc chắn muốn mua coupon “${code}” ?`,
@@ -275,7 +282,7 @@ export default {
         typeCancel: 'default',
         confirmText: 'Chấp nhận',
         cancelText: 'Không',
-        onConfirm: () => this.useCouponSubmit(code),
+        onConfirm: () => this.buyCouponHandler({ id, code }),
       })
     },
     async useCouponHandler({ type, code }) {
@@ -294,8 +301,25 @@ export default {
         typeCancel: 'default',
         confirmText: 'Chấp nhận',
         cancelText: 'Không',
-        onConfirm: () => this.useCouponSubmit(code),
+        onConfirm: () => this.buyCouponHandler(code),
       })
+    },
+    async buyCouponHandler({ id, code }) {
+      if (this.isSubmitting) return
+      const payload = {
+        id: id,
+      }
+      this.isSubmitting = true
+      const res = await this[BUY_COUPON](payload)
+      this.isSubmitting = false
+
+      if (res.error) {
+        this.$toast.error(res.message)
+        return
+      }
+
+      this.$toast.success(`Mua coupon “${code}” thành công !`)
+      this.init()
     },
     async useCouponSubmit(code) {
       if (this.isFetching) return

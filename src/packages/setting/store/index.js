@@ -37,6 +37,7 @@ export const FETCH_LIST_SERVICES = 'fetchServices'
 export const FETCH_LIST_COUPONS = 'fetchListCoupons'
 export const FETCH_COUNT_COUPONS = 'fetchCountCoupons'
 export const APPLY_COUPON = 'applyCoupon'
+export const BUY_COUPON = 'buyCoupon'
 
 /**
  * State
@@ -477,5 +478,19 @@ export const actions = {
     }
 
     return { error: false }
+  },
+
+  // eslint-disable-next-line
+  async [BUY_COUPON]({ commit }, payload) {
+    const response = await api.buyCoupon(payload)
+
+    if (response && response.success) {
+      return { success: true }
+    }
+
+    return {
+      success: false,
+      message: response.errorMessage || '',
+    }
   },
 }
