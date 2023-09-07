@@ -313,7 +313,7 @@ export default {
       const res = await this[BUY_COUPON](payload)
       this.isSubmitting = false
 
-      if (res.error) {
+      if (!res.success) {
         this.$toast.error(res.message)
         return
       }
