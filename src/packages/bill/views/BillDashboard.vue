@@ -10,6 +10,25 @@
                 <div class="ml-24">
                   <p class="title">Số dư trong ví</p>
                   <p class="money">{{ balance | formatPrice }}</p>
+                  <p class="mt-8">
+                    <b>Điểm tích lũy: {{ point | formatNumber }} điểm</b>
+                  </p>
+                  <p class="mt-2">
+                    <router-link
+                      style="color: #006A5E;font-size: 12px;font-weight: 400;line-height: 16px;"
+                      :to="{ name: 'list-coupons' }"
+                    >
+                      Sử dụng
+                      <inline-svg
+                        style="margin-top: -3px;"
+                        class="navbar__header-icon"
+                        :src="
+                          require('../../../../src/assets/img/use_point.svg')
+                        "
+                      >
+                      </inline-svg>
+                    </router-link>
+                  </p>
                 </div>
               </div>
             </div>
@@ -121,6 +140,9 @@ export default {
     balance() {
       return this.user.balance > 0 ? this.user.balance : 0
     },
+    point() {
+      return this.user.point > 0 ? this.user.point : 0
+    },
     debit() {
       return this.user.balance < 0 ? Math.abs(this.user.balance) : 0
     },
@@ -166,7 +188,9 @@ export default {
       return this.page === 'rate_currency'
     },
     supersetLink() {
-      return `https://superset-new.lionnix.com/login?username=view&redirect=${process.env.VUE_APP_SUPERSET_DASHBOARD}`
+      return `https://superset-new.lionnix.com/login?username=view&redirect=${
+        process.env.VUE_APP_SUPERSET_DASHBOARD
+      }`
     },
   },
   data() {
