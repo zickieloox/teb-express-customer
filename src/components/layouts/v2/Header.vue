@@ -17,10 +17,7 @@
 
       <!--      Start Notifications  -->
       <div class="navbar__header-right d-flex align-items-center">
-        <div
-          class="navbar_header-map-point"
-          :class="{ 'mr-8': promotion, 'mr-30': !promotion }"
-        >
+        <div class="navbar_header-map-point mr-8">
           <button class="btn btn-map-point" @click="handleMapPoint">
             <inline-svg
               :src="
@@ -29,6 +26,24 @@
             >
             </inline-svg>
             <span>Lionbay Point</span>
+          </button>
+        </div>
+        <div
+          class="navbar_header-map-point"
+          :class="{ 'mr-8': promotion, 'mr-24': !promotion }"
+        >
+          <button
+            class="btn btn-map-point"
+            style="width: max-content;display: block;text-align: left;"
+          >
+            <inline-svg
+              style="margin: 0 4px 4px 0;"
+              :src="require('../../../../src/assets/img/point_icon.svg')"
+            >
+            </inline-svg>
+            <span style="display: inline-block;line-height: 28px;"
+              >{{ user.point | formatNumber }} Điểm tích lũy</span
+            >
           </button>
         </div>
         <div class="navbar_header-map-point mr-30" v-if="promotion">
