@@ -119,6 +119,7 @@ import { truncate } from '@core/utils/string'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
 import { mapActions, mapState } from 'vuex'
+import { GET_USER } from '../../../packages/shared/store'
 import {
   FETCH_LIST_COUPONS,
   FETCH_COUNT_COUPONS,
@@ -215,6 +216,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions('shared', [GET_USER]),
     ...mapActions('setting', [
       FETCH_LIST_COUPONS,
       FETCH_COUNT_COUPONS,
@@ -319,6 +321,7 @@ export default {
       }
 
       this.$toast.success(`Mua coupon “${code}” thành công !`)
+      await this[GET_USER]()
       this.init()
     },
     async useCouponSubmit(code) {
