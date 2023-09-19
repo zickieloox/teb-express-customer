@@ -301,7 +301,7 @@ export default {
         typeCancel: 'default',
         confirmText: 'Chấp nhận',
         cancelText: 'Không',
-        onConfirm: () => this.buyCouponHandler(code),
+        onConfirm: () => this.useCouponSubmit(code),
       })
     },
     async buyCouponHandler({ id, code }) {
