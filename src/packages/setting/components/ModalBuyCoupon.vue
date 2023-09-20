@@ -114,7 +114,7 @@ export default {
   },
   data() {
     return {
-      quantity: '',
+      quantity: 1,
     }
   },
   methods: {
@@ -125,15 +125,25 @@ export default {
       if (!/^\d+$/.test(e)) {
         this.quantity = e.slice(0, -1)
       }
+      if (parseInt(this.quantity) < 1) {
+        this.quantity = 1
+      }
     },
     subQuantity() {
+      if (parseInt(this.quantity) <= 1) {
+        return
+      }
       this.quantity--
     },
     addQuantity() {
       this.quantity++
     },
     handleSave() {
-      this.$emit('buy', this.quantity)
+      if (this.quantity === '') {
+        this.$toast.error('Số lượng bắt buộc nhập')
+        return
+      }
+      this.$emit('buy', parseInt(this.quantity))
     },
   },
   watch: {

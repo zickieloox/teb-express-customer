@@ -141,6 +141,6 @@ export default {
     return http.post(`/packages/coupons/${code}/apply`)
   },
   buyCoupon(payload) {
-    return http.put(`/packages/coupons/${payload.id}`)
+    return http.put(`/packages/coupons/buy`, payload)
   },
 }

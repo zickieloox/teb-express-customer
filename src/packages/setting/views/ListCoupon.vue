@@ -114,6 +114,7 @@
     <modal-buy-coupon
       :visible.sync="isVisibleBuyCoupon"
       :coupon="submitCoupon"
+      :loading="isSubmitting"
       @buy="buyCouponHandler"
     >
     </modal-buy-coupon>
@@ -312,7 +313,7 @@ export default {
     async buyCouponHandler(quantity) {
       if (this.isSubmitting) return
       const payload = {
-        id: this.submitCoupon.id,
+        coupon_id: this.submitCoupon.id,
         quantity: quantity,
       }
       this.isSubmitting = true
@@ -325,6 +326,7 @@ export default {
       }
 
       this.$toast.success(`Mua coupon “${this.submitCoupon.code}” thành công !`)
+      this.isVisibleBuyCoupon = false
       await this[GET_USER]()
       this.init()
     },
