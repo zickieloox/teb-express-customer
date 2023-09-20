@@ -72,7 +72,7 @@
                     <button
                       v-else
                       class="btn btn-primary"
-                      @click="confirmBuyCoupon(item)"
+                      @click="showModalBuyCopon(item)"
                     >
                       Mua
                     </button>
@@ -111,10 +111,17 @@
       @apply="useCouponHandler"
     >
     </modal-detail-coupon>
+    <modal-buy-coupon
+      :visible.sync="isVisibleBuyCoupon"
+      :coupon="submitCoupon"
+      @buy="buyCouponHandler"
+    >
+    </modal-buy-coupon>
   </div>
 </template>
 <script>
 import EmptySearchResult from '../../../components/shared/EmptySearchResult'
+import ModalBuyCoupon from '../components/ModalBuyCoupon'
 import { truncate } from '@core/utils/string'
 import mixinRoute from '@core/mixins/route'
 import mixinTable from '@core/mixins/table'
@@ -145,6 +152,7 @@ export default {
     EmptySearchResult,
     ModalDetailCoupon,
     CuoponStatusTab,
+    ModalBuyCoupon,
   },
   data() {
     return {
@@ -160,6 +168,8 @@ export default {
       coupon: {},
       isSubmitting: false,
       isFetching: false,
+      isVisibleBuyCoupon: false,
+      submitCoupon: {},
     }
   },
   created() {
@@ -248,6 +258,10 @@ export default {
       }
       return 'money_coupon.svg'
     },
+    showModalBuyCopon(coupon) {
+      this.submitCoupon = coupon
+      this.isVisibleBuyCoupon = true
+    },
     showCouponDetail(coupon) {
       this.coupon = coupon
       this.visibleModalDetail = true
@@ -276,17 +290,6 @@ export default {
         type === COUPON_TYPE_DISCOUNT_MONEY
       )
     },
-    confirmBuyCoupon({ id, code }) {
-      this.$dialog.confirm({
-        title: 'Xác nhận mua coupon !',
-        message: `Bạn có chắc chắn muốn mua coupon “${code}” ?`,
-        type: 'primary',
-        typeCancel: 'default',
-        confirmText: 'Chấp nhận',
-        cancelText: 'Không',
-        onConfirm: () => this.buyCouponHandler({ id, code }),
-      })
-    },
     async useCouponHandler({ type, code }) {
       if (type !== COUPON_TYPE_MONEY) {
         await this.$router.push({
@@ -306,10 +309,11 @@ export default {
         onConfirm: () => this.useCouponSubmit(code),
       })
     },
-    async buyCouponHandler({ id, code }) {
+    async buyCouponHandler(quantity) {
       if (this.isSubmitting) return
       const payload = {
-        id: id,
+        id: this.submitCoupon.id,
+        quantity: quantity,
       }
       this.isSubmitting = true
       const res = await this[BUY_COUPON](payload)
@@ -320,7 +324,7 @@ export default {
         return
       }
 
-      this.$toast.success(`Mua coupon “${code}” thành công !`)
+      this.$toast.success(`Mua coupon “${this.submitCoupon.code}” thành công !`)
       await this[GET_USER]()
       this.init()
     },
