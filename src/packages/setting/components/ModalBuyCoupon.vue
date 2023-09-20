@@ -148,7 +148,9 @@ export default {
   },
   watch: {
     visible: {
-      handler: function() {},
+      handler: function() {
+        this.quantity = 1
+      },
       immediate: true,
     },
   },
