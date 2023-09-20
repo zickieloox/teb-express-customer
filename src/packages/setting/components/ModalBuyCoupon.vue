@@ -165,7 +165,7 @@ export default {
 }
 .btn-add {
   position: absolute;
-  left: 16px;
+  right: 16px;
   z-index: 999;
   cursor: pointer;
   display: inline-block;
@@ -174,7 +174,7 @@ export default {
 }
 .btn-sub {
   position: absolute;
-  right: 16px;
+  left: 16px;
   z-index: 999;
   cursor: pointer;
   display: inline-block;
