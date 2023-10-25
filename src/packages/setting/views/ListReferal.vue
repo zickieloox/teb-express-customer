@@ -26,9 +26,10 @@
               class="p-input-group input-group"
               :single-date-picker="true"
               id="filter-date"
+              @update="selectDate"
               :value="{
-                startDate: filter.start_date,
-                endDate: filter.end_date,
+                startDate: filter.date,
+                endDate: filter.date,
               }"
               :label="labelDate"
               :ranges="false"
@@ -86,6 +87,7 @@ import mixinTable from '@core/mixins/table'
 import { mapActions } from 'vuex'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import { GET_REFERAL_INFO } from '../store'
+import { date } from '@core/utils/datetime'
 export default {
   name: 'ListCoupon',
   mixins: [mixinRoute, mixinTable],
@@ -98,8 +100,7 @@ export default {
         limit: 25,
         status: '',
         search: '',
-        start_date: '',
-        end_date: '',
+        date: '',
       },
       link: '',
       labelDate: `Chọn ngày`,
@@ -116,6 +117,7 @@ export default {
     ...mapActions('setting', [GET_REFERAL_INFO]),
     async init() {
       this.isFetching = true
+      this.handleUpdateRouteQuery()
       let r = await this[GET_REFERAL_INFO](this.filter)
       this.isFetching = false
       if (!r.success) {
@@ -129,6 +131,9 @@ export default {
       this.link = r.link
       this.users = r.users
       this.count = r.count
+    },
+    selectDate(v) {
+      this.filter.date = date(v.startDate, 'yyyy-MM-dd')
     },
     copy() {
       let copyText = this.link
@@ -146,6 +151,14 @@ export default {
     clearSearchDate() {
       this.filter.end_date = ''
       this.filter.start_date = ''
+    },
+  },
+  watch: {
+    filter: {
+      handler: function() {
+        this.init()
+      },
+      deep: true,
     },
   },
 }
