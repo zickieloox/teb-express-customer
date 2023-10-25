@@ -38,7 +38,7 @@ export const FETCH_LIST_COUPONS = 'fetchListCoupons'
 export const FETCH_COUNT_COUPONS = 'fetchCountCoupons'
 export const APPLY_COUPON = 'applyCoupon'
 export const BUY_COUPON = 'buyCoupon'
-
+export const GET_REFERAL_INFO = 'getReferalInfo'
 /**
  * State
  */
@@ -492,5 +492,20 @@ export const actions = {
       success: false,
       message: response.errorMessage || '',
     }
+  },
+
+  // eslint-disable-next-line no-unused-vars
+  async [GET_REFERAL_INFO]({ commit }, payload) {
+    let result = { success: true }
+    let response = await api.getReferalInfo(payload)
+
+    if (!response || response.error) {
+      result = {
+        success: false,
+        message: response.errorMessage || '',
+      }
+    }
+    result = { ...result, ...response }
+    return result
   },
 }

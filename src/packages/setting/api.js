@@ -143,4 +143,7 @@ export default {
   buyCoupon(payload) {
     return http.put(`/packages/coupons/buy`, payload)
   },
+  getReferalInfo(payload) {
+    return http.get(`/settings/referal?${buildQueryString(payload)}`)
+  },
 }

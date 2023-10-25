@@ -255,6 +255,10 @@ export default {
               route: '/setting/coupons',
               title: 'Quản lý Coupons',
             },
+            {
+              route: '/setting/referal',
+              title: 'Mời bạn bè',
+            },
           ],
         },
       ],

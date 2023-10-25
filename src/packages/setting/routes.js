@@ -71,4 +71,13 @@ export const routes = [
     component: () =>
       import(/* webpackChunkName: "settings" */ './views/ListCoupon.vue'),
   },
+  {
+    path: '/setting/referal',
+    name: 'list-referal',
+    meta: {
+      title: 'Mời bạn bè',
+    },
+    component: () =>
+      import(/* webpackChunkName: "settings" */ './views/ListReferal.vue'),
+  },
 ]
