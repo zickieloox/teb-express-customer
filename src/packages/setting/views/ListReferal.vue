@@ -129,7 +129,7 @@ export default {
         return
       }
       this.link = r.link
-      this.users = r.users
+      this.users = r.users || []
       this.count = r.count
     },
     selectDate(v) {
