@@ -56,7 +56,8 @@
                       :src="
                         item.type === typeTopup ||
                         item.type === typePayoneer ||
-                        item.type === typePingPong
+                        item.type === typePingPong ||
+                        item.type == typeAffiliate
                           ? require('@assets/img/in.svg')
                           : require('@assets/img/out.svg')
                       "
