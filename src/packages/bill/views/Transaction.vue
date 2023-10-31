@@ -74,7 +74,7 @@
                       >
                       <span class="transaction-title" v-else
                         >{{
-                          item.type == typeRefund
+                          item.type == typeRefund || item.type == typeAffiliate
                             ? 'Hoàn tiền cho hóa đơn'
                             : 'Thanh toán hóa đơn'
                         }}
@@ -154,6 +154,7 @@ import {
   TransactionLogTypeRefund,
   TransactionLogTypePayoneer,
   TransactionLogTypePingPong,
+  TransactionLogAffiliate,
   TRANSACTION_STATUS,
 } from '../constants'
 
@@ -186,6 +187,7 @@ export default {
       typePayoneer: TransactionLogTypePayoneer,
       typePay: TransactionLogTypePay,
       typeRefund: TransactionLogTypeRefund,
+      typeAffiliate: TransactionLogAffiliate,
       label: 'Tìm theo ngày',
       transactionStatus: TRANSACTION_STATUS,
     }

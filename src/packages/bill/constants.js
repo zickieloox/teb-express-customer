@@ -18,6 +18,7 @@ export const TransactionLogTypePay = 2
 export const TransactionLogTypeRefund = 4
 export const TransactionLogTypePayoneer = 5
 export const TransactionLogTypePingPong = 6
+export const TransactionLogAffiliate = 7
 
 export const TransactionStatusProcess = 1
 export const TransactionStatusSuccess = 2
