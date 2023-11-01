@@ -242,6 +242,55 @@
                     </div>
                   </div>
                 </div>
+                <div class="card-block" v-if="commissionFee.length">
+                  <div class="card-content">
+                    <div class="card-title">
+                      <div class="title-text"> Hoa hồng </div>
+                      <PrevNext
+                        :current.sync="filterCommission.page"
+                        :total="countCommissionFee"
+                        :per-page="filterCommission.limit"
+                      />
+                    </div>
+                    <vcl-table
+                      class="md-20"
+                      v-if="isFetchingCommission"
+                    ></vcl-table>
+                    <div class="table-responsive" v-else>
+                      <table class="table table-hover">
+                        <thead>
+                          <tr class="table-header">
+                            <th width="540">THỜI GIAN </th>
+                            <th>NỘI DUNG</th>
+                            <th class="text-right">PHÍ HOÀN TIỀN </th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          <tr v-for="(item, i) in commissionFee" :key="i">
+                            <td>{{
+                              item.created_at | datetime('dd/MM/yyyy HH:mm:ss')
+                            }}</td>
+                            <td>
+                              <p-tooltip
+                                :label="item.description"
+                                size="large"
+                                position="top"
+                                type="dark"
+                                :active="item.description.length > 15"
+                              >
+                                {{ truncate(item.description, 15) }}
+                              </p-tooltip>
+                            </td>
+                            <td class="text-right">{{
+                              item.amount | formatPrice2
+                            }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
               </div>
             </template>
             <empty-search-result v-else></empty-search-result>
@@ -258,6 +307,7 @@ import {
   FETCH_BILL_DETAIL,
   FETCH_BILL_EXTRA,
   FETCH_BILL_REFUND,
+  FETCH_BILL_COMMISSION,
   FETCH_PACKAGES,
   EXPORT_BILL,
 } from '../store'
@@ -270,7 +320,13 @@ import NotFound from '../../../components/shared/NotFound'
 import mixinDownload from '@/packages/shared/mixins/download'
 import _ from 'lodash'
 import { dateFormat } from '@core/utils/datetime'
-import { BillCreate, BillRefund, BillPay, EXTRA_FEE_REFUND } from '../constants'
+import {
+  BillCreate,
+  BillRefund,
+  BillPay,
+  EXTRA_FEE_REFUND,
+  EXTRA_FEE_COMMISSION,
+} from '../constants'
 
 export default {
   name: 'BillDetail',
@@ -296,10 +352,16 @@ export default {
         page: 1,
         type: EXTRA_FEE_REFUND,
       },
+      filterCommission: {
+        limit: 5,
+        page: 1,
+        type: EXTRA_FEE_COMMISSION,
+      },
       isFetching: false,
       isFetchingPackages: false,
       isFetchingFees: false,
       isFetchingRefund: false,
+      isFetchingCommission: false,
       isVisibleExport: false,
       BillCreate: BillCreate,
       BillRefund: BillRefund,
@@ -315,6 +377,8 @@ export default {
       countExtra: (state) => state.countExtra,
       feeRefund: (state) => state.feeRefund,
       countRefund: (state) => state.countRefund,
+      commissionFee: (state) => state.commissionFee,
+      countCommissionFee: (state) => state.countCommissionFee,
     }),
     extraFee() {
       const extra = this.feeExtra.filter(
@@ -352,6 +416,7 @@ export default {
       FETCH_BILL_DETAIL,
       FETCH_BILL_EXTRA,
       FETCH_BILL_REFUND,
+      FETCH_BILL_COMMISSION,
       FETCH_PACKAGES,
       EXPORT_BILL,
     ]),
@@ -369,11 +434,13 @@ export default {
       const filter = Object.assign({ code }, this.filter)
       const filterExtra = Object.assign({ code }, this.filterExtra)
       const filterRefund = Object.assign({ code }, this.filterRefund)
+      const filterCommission = Object.assign({ code }, this.filterCommission)
 
       await Promise.all([
         this[FETCH_PACKAGES](filter),
         this[FETCH_BILL_EXTRA](filterExtra),
         this[FETCH_BILL_REFUND](filterRefund),
+        this[FETCH_BILL_COMMISSION](filterCommission),
       ])
     },
     async handleExport() {

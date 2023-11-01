@@ -25,6 +25,7 @@ export const TransactionStatusSuccess = 2
 export const TransactionStatusFailure = 3
 export const TransactionStatusWaiting = 5
 export const EXTRA_FEE_REFUND = 9
+export const EXTRA_FEE_COMMISSION = 21
 
 export const MAP_TRANSACTION_STATUS = {
   [TransactionStatusProcess]: {
