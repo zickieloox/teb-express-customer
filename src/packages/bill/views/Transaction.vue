@@ -47,7 +47,9 @@
                 <div class="d-flex jc-sb">
                   <div class="info-left">
                     <img
-                      v-if="item.type === typeRefund"
+                      v-if="
+                        item.type === typeRefund || item.type == typeAffiliate
+                      "
                       :src="require('@assets/img/rotate-left.svg')"
                       alt=""
                     />
@@ -56,8 +58,7 @@
                       :src="
                         item.type === typeTopup ||
                         item.type === typePayoneer ||
-                        item.type === typePingPong ||
-                        item.type == typeAffiliate
+                        item.type === typePingPong
                           ? require('@assets/img/in.svg')
                           : require('@assets/img/out.svg')
                       "
