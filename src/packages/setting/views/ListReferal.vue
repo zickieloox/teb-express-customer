@@ -63,9 +63,7 @@
                     <td>{{ dateFilter }}</td>
                     <td> {{ item.revenue | formatPrice }}</td>
                     <td> {{ item.commission | formatPrice }}</td>
-                    <td>{{
-                      item.created_at | datetime('dd/MM/yyyy HH:mm:ss ')
-                    }}</td>
+                    <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>
                   </tr>
                 </tbody>
               </table>
