@@ -138,8 +138,8 @@
                       ></copy>
                     </strong>
                     <strong v-if="isPingPong"
-                      >tungpk@lionnix.com<copy
-                        :value="`tungpk@lionnix.com`"
+                      >trungpq@lionnix.com<copy
+                        :value="`trungpq@lionnix.com`"
                       ></copy
                     ></strong> </span
                 ></p>
