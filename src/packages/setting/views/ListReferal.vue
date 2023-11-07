@@ -45,29 +45,29 @@
                     <th>
                       Tên
                     </th>
+                    <th>Ngày được mời</th>
                     <template v-if="isPromAff">
-                      <th>Ngày được mời</th>
                       <th>
                         Doanh thu
                       </th>
                       <th>
                         Hoa hồng
                       </th>
+                      <th>
+                        Ngày trả hoa hồng
+                      </th>
                     </template>
-                    <th>
-                      Ngày trả hoa hồng
-                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="(item, i) in users" :key="i">
                     <td> {{ item.full_name }}</td>
+                    <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>
                     <template v-if="isPromAff">
-                      <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>
                       <td> {{ item.revenue | formatPrice }}</td>
                       <td> {{ item.commission | formatPrice }}</td>
+                      <td>{{ dateFilter }}</td>
                     </template>
-                    <td>{{ dateFilter }}</td>
                   </tr>
                 </tbody>
               </table>
