@@ -45,6 +45,7 @@
                     <th>
                       Tên
                     </th>
+                    <th>Ngày</th>
                     <th>
                       Doanh thu
                     </th>
@@ -56,6 +57,7 @@
                 <tbody>
                   <tr v-for="(item, i) in users" :key="i">
                     <td> {{ item.full_name }}</td>
+                    <td>{{ dateFilter }}</td>
                     <td> {{ item.revenue | formatPrice }}</td>
                     <td> {{ item.commission | formatPrice }}</td>
                   </tr>
@@ -109,7 +111,13 @@ export default {
       count: 0,
     }
   },
-  computed: {},
+  computed: {
+    dateFilter() {
+      return this.filter.date
+        ? date(this.filter.date, 'dd/MM/yyyy')
+        : date(new Date(), 'dd/MM/yyyy')
+    },
+  },
   created() {
     this.init()
   },
