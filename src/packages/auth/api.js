@@ -35,4 +35,7 @@ export default {
   getInfoInvite(code) {
     return http.get(`/auth/invite?code=${code}`)
   },
+  getRefInfo(code) {
+    return http.get(`/auth/ref/info?refer_code=${code}`)
+  },
 }

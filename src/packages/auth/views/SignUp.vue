@@ -3,6 +3,9 @@
     <div class="sign-up-form" v-if="visibleSignInForm">
       <div class="header">
         <h2>Tạo tài khoản mới</h2>
+        <p style="margin-top: -10px;margin-bottom: 24px;" v-if="ref_fullname"
+          >Được mời bởi <strong>{{ ref_fullname }}</strong></p
+        >
       </div>
 
       <p
@@ -156,7 +159,7 @@ import { signup } from '../validate'
 import SmsOtp from '../components/SmsOtp'
 import Requested from '../components/Requested'
 import { OPTIONS_PACKAGES } from '../constants'
-import { GET_INFO_INVITE } from '../store'
+import { GET_INFO_INVITE, FETCH_REF_INFO } from '../store'
 import { SET_LOADING } from '../../package/store'
 import { delay } from '../../../core/utils'
 import Success from '../components/Success.vue'
@@ -208,16 +211,18 @@ export default {
       message: '',
       isSubmitting: false,
       valider: signup,
+      ref_fullname: '',
     }
   },
   created() {
-    this.init()
+    this.checkTokenExpire()
+    this.fetchRefInfoHandle()
   },
   methods: {
-    ...mapActions('auth', ['signUp', GET_INFO_INVITE]),
+    ...mapActions('auth', ['signUp', GET_INFO_INVITE, FETCH_REF_INFO]),
     ...mapMutations('package', ['package', SET_LOADING]),
 
-    async init() {
+    async checkTokenExpire() {
       this[SET_LOADING](true)
       const code = this.tkExpire
       if (!code) {
@@ -238,6 +243,26 @@ export default {
 
       this.user.tk_expire = code
       this.user.email = res.email
+    },
+
+    async fetchRefInfoHandle() {
+      this[SET_LOADING](true)
+      const code = this.referCode
+      if (!code) {
+        this[SET_LOADING](false)
+        return
+      }
+
+      const res = await this[FETCH_REF_INFO](code)
+      this[SET_LOADING](false)
+
+      if (res.statusCode == '404') {
+        await this.$router.push({
+          name: 'sign-up',
+        })
+        return
+      }
+      this.ref_fullname = res.full_name
     },
 
     onInput(key) {
@@ -289,11 +314,7 @@ export default {
 
       if (res && res.success) {
         this.error = false
-        // Storage.set('userEmail', this.user.email)
-        // Storage.set('expried', null)
-
         if (payload.tk_expire != '') {
-          // await this.$router.push({ name: 'sign-in' })
           this.visibleSignInForm = false
           this.visibleSuccessRequest = true
           return
