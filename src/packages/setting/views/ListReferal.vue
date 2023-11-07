@@ -149,8 +149,7 @@ export default {
       setTimeout(() => (tooltip.innerHTML = ''), 1000)
     },
     clearSearchDate() {
-      this.filter.end_date = ''
-      this.filter.start_date = ''
+      this.filter.date = ''
     },
   },
   watch: {
