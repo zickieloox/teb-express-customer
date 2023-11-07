@@ -48,22 +48,26 @@
                     <th>
                       Ngày trả hoa hồng
                     </th>
-                    <th>
-                      Doanh thu
-                    </th>
-                    <th>
-                      Hoa hồng
-                    </th>
-                    <th>Ngày được mời</th>
+                    <template v-if="isPromAff">
+                      <th>
+                        Doanh thu
+                      </th>
+                      <th>
+                        Hoa hồng
+                      </th>
+                      <th>Ngày được mời</th>
+                    </template>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="(item, i) in users" :key="i">
                     <td> {{ item.full_name }}</td>
                     <td>{{ dateFilter }}</td>
-                    <td> {{ item.revenue | formatPrice }}</td>
-                    <td> {{ item.commission | formatPrice }}</td>
-                    <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>
+                    <template v-if="isPromAff">
+                      <td> {{ item.revenue | formatPrice }}</td>
+                      <td> {{ item.commission | formatPrice }}</td>
+                      <td>{{ item.created_at | datetime('dd/MM/yyyy') }}</td>
+                    </template>
                   </tr>
                 </tbody>
               </table>
@@ -108,6 +112,7 @@ export default {
         search: '',
         date: '',
       },
+      isPromAff: false,
       link: '',
       labelDate: `Chọn ngày`,
       isFetching: false,
@@ -143,6 +148,7 @@ export default {
       this.link = r.link
       this.users = r.users || []
       this.count = r.count
+      this.isPromAff = r.is_promotion_aff
     },
     selectDate(v) {
       this.filter.date = date(v.startDate, 'yyyy-MM-dd')
