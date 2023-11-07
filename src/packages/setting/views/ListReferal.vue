@@ -45,13 +45,16 @@
                     <th>
                       Tên
                     </th>
-                    <th>Ngày</th>
+                    <th>
+                      Ngày trả hoa hồng
+                    </th>
                     <th>
                       Doanh thu
                     </th>
                     <th>
-                      Hoa hồng dự kiến
+                      Hoa hồng
                     </th>
+                    <th>Ngày được mời</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -60,6 +63,9 @@
                     <td>{{ dateFilter }}</td>
                     <td> {{ item.revenue | formatPrice }}</td>
                     <td> {{ item.commission | formatPrice }}</td>
+                    <td>{{
+                      item.created_at | datetime('dd/MM/yyyy HH:mm:ss ')
+                    }}</td>
                   </tr>
                 </tbody>
               </table>
