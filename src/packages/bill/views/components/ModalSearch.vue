@@ -134,6 +134,11 @@ export default {
           value: 'extra',
           label: 'Phí phát sinh',
         },
+        {
+          name: 'commission',
+          value: 'commission',
+          label: 'Phí hoa hồng',
+        },
       ],
       exportOptionType: [
         {

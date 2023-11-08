@@ -220,6 +220,7 @@ export default {
       let params = {
         package: filter.status_arr.includes('package') ? 'true' : '',
         extra: filter.status_arr.includes('extra') ? 'true' : '',
+        commission: filter.status_arr.includes('commission') ? 'true' : '',
         start_date: filter.start_date,
         end_date: filter.end_date,
         export_type: filter.export_type,
