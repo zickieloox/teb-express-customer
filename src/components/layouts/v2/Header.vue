@@ -25,7 +25,7 @@
               "
             >
             </inline-svg>
-            <span>Lionbay Point</span>
+            <span>Lionbay Hub</span>
           </button>
         </div>
         <div
