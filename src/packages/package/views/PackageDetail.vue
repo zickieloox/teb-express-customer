@@ -443,7 +443,14 @@
 
                 <div v-if="refundFee.length > 0" class="fee__number"
                   >{{ sumRefundFee | formatPrice }}
-                  <span class="refund-txt">
+                  <span v-if="isAlreadyRefunded" class="refund-txt refunded">
+                    <img
+                      src="~@/assets/img/check.svg"
+                      style="margin-top: -3px;"
+                    />
+                    Đã hoàn vào ví
+                  </span>
+                  <span class="refund-txt waiting_refund" v-else>
                     <img
                       style="margin-top: -5px;"
                       src="~@/assets/img/timer.svg"
@@ -559,6 +566,7 @@ import {
 import {
   PACKAGE_STATUS_CREATED_TEXT,
   EXTRA_FEE_TYPE_DISCOUNT,
+  PACKAGE_REFUND_COMPLETE,
 } from '../constants'
 import ModalEditOrder from './components/ModalEditOrder'
 import NotFound from '@/components/shared/NotFound'
@@ -651,6 +659,14 @@ export default {
     },
     sumRefundFee() {
       return this.refundFee.reduce((total, { amount }) => total + amount, 0)
+    },
+    isAlreadyRefunded() {
+      return (
+        this.refundFee.length > 0 &&
+        this.refundFee.filter(
+          ({ status }) => status !== PACKAGE_REFUND_COMPLETE
+        ).length === 0
+      )
     },
     isPkgExceedNotEstimate() {
       return this.current.is_package_exceed && this.current.shipping_fee == 0
