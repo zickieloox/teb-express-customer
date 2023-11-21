@@ -3,27 +3,13 @@
     <div v-if="!isEmpty" class="page-content">
       <div class="page-header">
         <div class="page-header__subtitle">
-          <div
-            class="page-header__info"
-            :class="{
-              'grip-5-col':
-                !current.estimate_date_process && !current.estimate_delivery,
-              'grip-7-col':
-                current.estimate_date_process && current.estimate_delivery,
-            }"
-          >
+          <div class="page-header__info grip-5-col">
             <div class="info-package" style="padding-left: 48px;"
               >Mã vận đơn:</div
             >
             <div class="info-package">Dịch vụ </div>
             <div class="info-package">Last mile tracking </div>
             <div class="info-package">Ngày tạo </div>
-            <div class="info-package" v-if="current.estimate_date_process"
-              >Ngày xử lý dự kiến:
-            </div>
-            <div class="info-package" v-if="current.estimate_delivery > 0"
-              >Thời gian dự kiến:
-            </div>
             <div class="info-package">Trạng thái</div>
             <div
               class="package-code"
@@ -77,15 +63,6 @@
             </div>
             <div class="content-title">
               {{ current.created_at | datetime('dd/MM/yyyy - HH:mm:ss') }}
-            </div>
-            <div class="content-title" v-if="current.estimate_date_process">
-              {{
-                current.estimate_date_process
-                  | datetime('dd/MM/yyyy - HH:mm:ss')
-              }}
-            </div>
-            <div class="content-title" v-if="current.estimate_delivery > 0">
-              {{ current.estimate_delivery | toDay }}
             </div>
             <div class="content-title">
               <span v-status:status="current.status_string"></span>
@@ -420,7 +397,7 @@
                 <div class="title">Phí phát sinh:</div>
                 <div class="title">Khuyến mãi:</div>
                 <div class="title" :class="{ hidden_refund: !refundFee.length }"
-                  >Phí hold:</div
+                  >Phí tạm giữ:</div
                 >
                 <div class="fee__number">
                   {{ (current.shipping_fee || 0) | formatPrice }}
@@ -466,28 +443,23 @@
 
                 <div v-if="refundFee.length > 0" class="fee__number"
                   >{{ sumRefundFee | formatPrice }}
-                  <div class="more-extra-fee">
+                  <span class="refund-txt">
                     <img
-                      @mouseover="showPopupMoreRefundFee"
-                      @mouseleave="hiddenPopupMoreRefundFee"
-                      src="~@/assets/img/InfoCircleGrey.svg"
-                      alt=""
+                      style="margin-top: -5px;"
+                      src="~@/assets/img/timer.svg"
                     />
-                  </div>
+                    Ngày xử lý dự kiến:
+                    <strong>{{ current.estimate_delivery | toDay }}</strong>
+                  </span>
                 </div>
 
                 <div
                   v-if="isVisiblePopupMoreRefundFee"
                   class="pop-up-more-refund-fee"
                 >
-                  <div class="">Ngày xử lý dự kiến</div>
-                  <div
-                    v-for="(item, i) of package_detail.package_refund"
-                    :key="i"
+                  <div class=""
+                    >Ngày xử lý dự kiến:{{ current.estimate_delivery }}</div
                   >
-                    <div class="amount">{{ item.amount | formatPrice }} : </div>
-                    <div>{{ item.created_at | datetime('dd/MM/yyyy') }} </div>
-                  </div>
                 </div>
               </div>
               <div class="fee__right">

@@ -327,6 +327,24 @@
         line-height: 28px;
         color: #111212;
     }
+
+    .refund-txt{
+        display: inline-block;
+        border-radius: 40px;
+        color: #898A8A !important;
+        background-color: #F6F7F7;
+        font-size: 14px !important;
+        font-style: normal !important;
+        font-weight: 400 !important;
+        line-height: 20px !important; 
+        padding: 4px 8px;
+        margin-left: 4px;
+        white-space: unset !important;
+        strong{
+            font-weight: 600;
+        }
+    }
+
     .more-extra-fee {
         z-index: 1001;
         width: 18px;
