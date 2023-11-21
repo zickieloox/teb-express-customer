@@ -448,7 +448,7 @@
                       style="margin-top: -5px;"
                       src="~@/assets/img/timer.svg"
                     />
-                    Ngày xử lý dự kiến:
+                    Thời gian dự kiến:
                     <strong>{{ current.estimate_delivery | toDay }}</strong>
                   </span>
                 </div>
