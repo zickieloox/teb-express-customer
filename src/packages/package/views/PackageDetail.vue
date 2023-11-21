@@ -452,15 +452,6 @@
                     <strong>{{ current.estimate_delivery | toDay }}</strong>
                   </span>
                 </div>
-
-                <div
-                  v-if="isVisiblePopupMoreRefundFee"
-                  class="pop-up-more-refund-fee"
-                >
-                  <div class=""
-                    >Ngày xử lý dự kiến:{{ current.estimate_delivery }}</div
-                  >
-                </div>
               </div>
               <div class="fee__right">
                 <div> Tổng cước: </div>
