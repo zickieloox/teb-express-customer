@@ -572,6 +572,7 @@ import {
   PACKAGE_STATUS_CREATED_TEXT,
   EXTRA_FEE_TYPE_DISCOUNT,
   PACKAGE_REFUND_COMPLETE,
+  EXTRA_FEE_CANCEL_LABEL,
 } from '../constants'
 import ModalEditOrder from './components/ModalEditOrder'
 import NotFound from '@/components/shared/NotFound'
@@ -688,7 +689,12 @@ export default {
         amount += this.calculateFee(this.current.weight)
       }
 
-      amount += this.extraFees.reduce((total, v) => total + v.amount, 0)
+      amount += this.extraFees.reduce((total, v) => {
+        if (v.extra_fee_type_id !== EXTRA_FEE_CANCEL_LABEL) {
+          return total + v.amount
+        }
+        return total
+      }, 0)
       return amount
     },
     sumFee() {
@@ -731,6 +737,9 @@ export default {
         let index = result.findIndex(
           (x) => x.extra_fee_types.name == ele.extra_fee_types.name
         )
+        if (ele.extra_fee_type_id === EXTRA_FEE_CANCEL_LABEL) {
+          continue
+        }
 
         if (index === -1) {
           result.push(cloneDeep(ele))
