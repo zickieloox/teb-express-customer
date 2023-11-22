@@ -456,7 +456,12 @@
                       src="~@/assets/img/timer.svg"
                     />
                     Thời gian dự kiến:
-                    <strong>{{ current.estimate_date_process | toDay }}</strong>
+                    <strong
+                      >{{
+                        getDateDiff(current.estimate_date_process)
+                      }}
+                      ngày</strong
+                    >
                   </span>
                 </div>
               </div>
@@ -804,6 +809,12 @@ export default {
       this.coupon_user_id = id
       this.visibleModalCoupon = false
       this.handleActionWayBill()
+    },
+    getDateDiff(t) {
+      var today = new Date()
+      var date_to_reply = new Date(t)
+      var timeinmilisec = date_to_reply.getTime() - today.getTime()
+      return Math.ceil(timeinmilisec / (1000 * 60 * 60 * 24))
     },
     async showModalCoupon() {
       this.isFetchingCoupon = true
