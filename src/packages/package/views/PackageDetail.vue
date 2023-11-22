@@ -456,7 +456,7 @@
                       src="~@/assets/img/timer.svg"
                     />
                     Thời gian dự kiến:
-                    <strong>{{ current.estimate_delivery | toDay }}</strong>
+                    <strong>{{ current.estimate_date_process | toDay }}</strong>
                   </span>
                 </div>
               </div>
