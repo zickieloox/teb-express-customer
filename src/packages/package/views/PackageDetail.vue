@@ -690,10 +690,13 @@ export default {
       }
 
       amount += this.extraFees.reduce((total, v) => {
-        if (v.extra_fee_type_id !== EXTRA_FEE_CANCEL_LABEL) {
-          return total + v.amount
+        if (
+          !this.isAlreadyRefunded &&
+          v.extra_fee_type_id !== EXTRA_FEE_CANCEL_LABEL
+        ) {
+          return total
         }
-        return total
+        return total + v.amount
       }, 0)
       return amount
     },
@@ -738,7 +741,9 @@ export default {
           (x) => x.extra_fee_types.name == ele.extra_fee_types.name
         )
         if (ele.extra_fee_type_id === EXTRA_FEE_CANCEL_LABEL) {
-          continue
+          if (!this.isAlreadyRefunded) {
+            continue
+          }
         }
 
         if (index === -1) {
