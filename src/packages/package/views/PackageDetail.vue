@@ -692,7 +692,7 @@ export default {
       amount += this.extraFees.reduce((total, v) => {
         if (
           !this.isAlreadyRefunded &&
-          v.extra_fee_type_id !== EXTRA_FEE_CANCEL_LABEL
+          v.extra_fee_type_id === EXTRA_FEE_CANCEL_LABEL
         ) {
           return total
         }
