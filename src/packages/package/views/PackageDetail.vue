@@ -69,9 +69,31 @@
             </div>
           </div>
           <div class="page-header__action" v-if="!isFbaPkg">
+            <p-tooltip
+              :label="
+                package_detail.is_bookmark
+                  ? `Hủy đánh dấu đơn hàng này`
+                  : `Đánh dấu đơn hàng này`
+              "
+              size="large"
+              position="top"
+              type="dark"
+            >
+              <p-button href="#" type="lb-default">
+                <inline-svg
+                  style="margin:unset"
+                  @click="handleBookmarkPackage(package_detail.id)"
+                  :src="
+                    package_detail.is_bookmark
+                      ? require('../../../assets/img/bookmarked.svg')
+                      : require('../../../assets/img/bookmark.svg')
+                  "
+                ></inline-svg>
+              </p-button>
+            </p-tooltip>
             <p-button
               href="#"
-              type="lb-default"
+              type="lb-default ml-7"
               @click="handleCancelPackage"
               v-if="hasCancelPackage"
             >
@@ -567,6 +589,7 @@ import {
   CANCEL_PACKAGES,
   PENDING_PICKUP_PACKAGES,
   FETCH_LIST_COUPON_APPLY,
+  BOOKMARK_PACKAGE,
 } from '../store/index'
 import {
   PACKAGE_STATUS_CREATED_TEXT,
@@ -588,6 +611,7 @@ import { FBA_SERVICE_CODE } from '../constants'
 import ModalCoupon from '../views/components/ModalCoupon'
 import ModalDetailCoupon from '../../setting/components/ModalDetailCoupon'
 import { formatPrice } from '@core/utils/formatter'
+import debounce from 'lodash/debounce'
 export default {
   name: 'PackageDetail',
   mixins: [mixinPackageDetail, mixinTable],
@@ -798,6 +822,7 @@ export default {
       CANCEL_PACKAGES,
       PENDING_PICKUP_PACKAGES,
       FETCH_LIST_COUPON_APPLY,
+      BOOKMARK_PACKAGE,
     ]),
     ...mapActions('claim', [FETCH_TICKETS, COUNT_TICKET]),
 
@@ -819,6 +844,19 @@ export default {
 
       this.isFetching = false
     },
+    handleBookmarkPackage: debounce(async function(id) {
+      this.isSubmitting = true
+      const payload = {
+        id: id,
+      }
+      const result = await this[BOOKMARK_PACKAGE](payload)
+      this.isSubmitting = true
+      if (result.error) {
+        this.$toast.open({ message: result.message, type: 'error' })
+        return
+      }
+      this.init()
+    }, 500),
     handleApplyCoupon({ id }) {
       this.coupon_user_id = id
       this.visibleModalCoupon = false
