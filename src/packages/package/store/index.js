@@ -14,6 +14,7 @@ export const UPDATE_PACKAGE = 'updatePackage'
 export const PROCESS_PACKAGE = 'processPackage'
 export const CANCEL_PACKAGES = 'cancelPackages'
 export const PENDING_PICKUP_PACKAGES = 'pendingPickupPackages'
+export const BOOKMARK_PACKAGE = 'bookmarkPackage'
 
 export const EXPORT_PACKAGE = 'exportPackage'
 export const GET_SERVICE = 'getService'
@@ -262,6 +263,19 @@ export const actions = {
       }
     }
     return res
+  },
+
+  // eslint-disable-next-line no-unused-vars
+  async [BOOKMARK_PACKAGE]({ commit }, payload) {
+    let result = { success: true }
+    const res = await api.bookmarkPackage(payload)
+    if (res.error || res.message) {
+      result = {
+        success: false,
+        message: res.errorMessage || res.error || res.message,
+      }
+    }
+    return { ...result, ...res }
   },
 
   // eslint-disable-next-line no-unused-vars

@@ -92,4 +92,7 @@ export default {
   getListCouponApply() {
     return http.get(`/packages/coupons/apply`)
   },
+  bookmarkPackage({ id }) {
+    return http.put(`/packages/bookmark/${id}`)
+  },
 }

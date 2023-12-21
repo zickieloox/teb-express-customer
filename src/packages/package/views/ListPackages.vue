@@ -151,7 +151,7 @@
                 >
                   <thead>
                     <tr>
-                      <th width="40">
+                      <th width="80">
                         <p-checkbox
                           class="order-select-checkbox"
                           :class="{ checkAll: totalSelected > 0 }"
@@ -184,13 +184,23 @@
                         'sm-view': isSmScreen,
                       }"
                     >
-                      <td width="40">
+                      <td width="80">
                         <p-checkbox
                           v-model="action.selected"
                           :native-value="item"
                           @input="handleValue($event)"
                         >
                         </p-checkbox>
+                        <inline-svg
+                          v-if="item.is_bookmark"
+                          @click="handleBookmarkPackage(item.id)"
+                          :src="require('../../../assets/img/bookmarked.svg')"
+                        ></inline-svg>
+                        <inline-svg
+                          @click="handleBookmarkPackage(item.id)"
+                          v-else
+                          :src="require('../../../assets/img/bookmark.svg')"
+                        ></inline-svg>
                       </td>
                       <td class="order-number">
                         <div class="d-flex justify-content-between">
@@ -592,6 +602,7 @@ import {
   PENDING_PICKUP_PACKAGES,
   VALIDATE_ADDRESS,
   FETCH_LIST_COUPON_APPLY,
+  BOOKMARK_PACKAGE,
 } from '@/packages/package/store'
 import EmptySearchResult from '@components/shared/EmptySearchResult'
 import mixinRoute from '@core/mixins/route'
@@ -655,6 +666,7 @@ export default {
       searchCode: '',
       allowSearch: true,
       isFetching: false,
+      isSubmitting: false,
       actions: {
         wayBill: {
           type: 'primary',
@@ -748,6 +760,7 @@ export default {
       PENDING_PICKUP_PACKAGES,
       VALIDATE_ADDRESS,
       FETCH_LIST_COUPON_APPLY,
+      BOOKMARK_PACKAGE,
       SET_LOADING,
     ]),
     truncate,
@@ -781,6 +794,20 @@ export default {
       this.total = this.selectionCountTotal
       this.visibleModalCoupon = true
       this.parentComponentAction = true
+    },
+    async handleBookmarkPackage(id) {
+      console.log(id)
+      this.isSubmitting = true
+      const payload = {
+        id: id,
+      }
+      const result = await this[BOOKMARK_PACKAGE](payload)
+      this.isSubmitting = true
+      if (result.error) {
+        this.$toast.open({ message: result.message, type: 'error' })
+        return
+      }
+      this.init()
     },
     async searchAdvanced(filter) {
       this.filter = { ...filter, status: '' }
@@ -978,9 +1005,7 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selectedIds.length
-      }. Bạn có chắc chắn muốn hủy đơn?`
+      this.actions.cancelPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn hủy đơn?`
       this.visibleConfirmCancel = true
     },
     handlerReturnPackages() {
@@ -1003,9 +1028,7 @@ export default {
           duration: 5000,
         })
       }
-      this.actions.returnPackage.Description = `Tổng số đơn hàng đang chọn là ${
-        this.selectedIds.length
-      }. Bạn có chắc chắn muốn chuyển lại hàng ?`
+      this.actions.returnPackage.Description = `Tổng số đơn hàng đang chọn là ${this.selectedIds.length}. Bạn có chắc chắn muốn chuyển lại hàng ?`
       this.visibleConfirmReturn = true
     },
     async pendingPickupPackagesAction() {
@@ -1314,5 +1337,10 @@ export default {
   font-size: 12px;
   color: #898a8a;
   font-weight: 400;
+}
+.checkbox-custom {
+  position: unset;
+  display: inline-block;
+  margin-right: 4px;
 }
 </style>
