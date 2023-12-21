@@ -79,7 +79,11 @@
               position="top"
               type="dark"
             >
-              <p-button href="#" type="lb-default">
+              <p-button
+                href="#"
+                type="lb-default"
+                style="padding-left: 12px;padding-right: 12px;"
+              >
                 <inline-svg
                   style="margin:unset"
                   @click="handleBookmarkPackage(package_detail.package.id)"
