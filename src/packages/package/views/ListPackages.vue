@@ -563,6 +563,7 @@
   </div>
 </template>
 <script>
+import debounce from 'lodash/debounce'
 import ModalExport from './components/ModalExport'
 import PackageStatusTab from './components/PackageStatusTab'
 import ModalImportPreviewPackage from './components/ModalImportPreviewPackage'
@@ -795,8 +796,7 @@ export default {
       this.visibleModalCoupon = true
       this.parentComponentAction = true
     },
-    async handleBookmarkPackage(id) {
-      console.log(id)
+    handleBookmarkPackage: debounce(async function(id) {
       this.isSubmitting = true
       const payload = {
         id: id,
@@ -808,7 +808,7 @@ export default {
         return
       }
       this.init()
-    },
+    }, 500),
     async searchAdvanced(filter) {
       this.filter = { ...filter, status: '' }
     },
