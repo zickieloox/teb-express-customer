@@ -71,7 +71,7 @@
           <div class="page-header__action" v-if="!isFbaPkg">
             <p-tooltip
               :label="
-                package_detail.is_bookmark
+                package_detail.package.is_bookmark
                   ? `Hủy đánh dấu đơn hàng này`
                   : `Đánh dấu đơn hàng này`
               "
@@ -82,9 +82,9 @@
               <p-button href="#" type="lb-default">
                 <inline-svg
                   style="margin:unset"
-                  @click="handleBookmarkPackage(package_detail.id)"
+                  @click="handleBookmarkPackage(package_detail.package.id)"
                   :src="
-                    package_detail.is_bookmark
+                    package_detail.package.is_bookmark
                       ? require('../../../assets/img/bookmarked.svg')
                       : require('../../../assets/img/bookmark.svg')
                   "
