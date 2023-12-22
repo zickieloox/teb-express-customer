@@ -28,6 +28,7 @@ export const PACKAGE_STATUS_PROCESSING_TEXT = 'processing'
 export const PACKAGE_STATUS_IN_TRANSIT_TEXT = 'in-transit'
 export const PACKAGE_STATUS_DELIVERED_TEXT = 'delivered'
 export const PACKAGE_STATUS_ALERT_TEXT = 'alert'
+export const PACKAGE_BOOKMARKED_TEXT = 'bookmarks'
 export const PACKAGE_STATUS_CANCELLED_TEXT = 'canceled'
 export const PACKAGE_STATUS_EXPIRED_TEXT = 'expired'
 export const PACKAGE_STATUS_UNDELIVERED_TEXT = 'undelivered'
@@ -86,10 +87,6 @@ export const PACKAGE_STATUS_TAB = [
     value: PACKAGE_STATUS_PENDING_PICKUP_TEXT,
     text: 'Pre-Transit',
   },
-  // {
-  //   value: PACKAGE_STATUS_PROCESSING_TEXT,
-  //   text: 'Processing',
-  // },
   {
     value: PACKAGE_STATUS_IN_TRANSIT_TEXT,
     text: 'In-Transit',
@@ -117,6 +114,10 @@ export const PACKAGE_STATUS_TAB = [
   {
     value: PACKAGE_STATUS_ARCHIVED_TEXT,
     text: 'Archived',
+  },
+  {
+    value: PACKAGE_BOOKMARKED_TEXT,
+    text: 'Bookmarks',
   },
 ]
 

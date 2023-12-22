@@ -39,7 +39,10 @@
 <script>
 import { capitalize } from '@core/utils/string'
 import { numFormatter } from '@core/utils/formatter'
-import { PACKAGE_STATUS_ALERT_TEXT } from '../../constants'
+import {
+  PACKAGE_STATUS_ALERT_TEXT,
+  PACKAGE_BOOKMARKED_TEXT,
+} from '../../constants'
 
 export default {
   name: 'PackageStatusTab',
@@ -75,7 +78,10 @@ export default {
           let count
           let total = 0
           this.countStatus.forEach((obj) => {
-            if (obj.status !== PACKAGE_STATUS_ALERT_TEXT) {
+            if (
+              obj.status !== PACKAGE_STATUS_ALERT_TEXT &&
+              obj.status !== PACKAGE_BOOKMARKED_TEXT
+            ) {
               total += parseInt(obj.count)
             }
             if (obj.status === item.value) {
