@@ -191,16 +191,25 @@
                           @input="handleValue($event)"
                         >
                         </p-checkbox>
-                        <inline-svg
-                          v-if="item.is_bookmark"
-                          @click="handleBookmarkPackage(item.id)"
-                          :src="require('../../../assets/img/bookmarked.svg')"
-                        ></inline-svg>
-                        <inline-svg
-                          @click="handleBookmarkPackage(item.id)"
-                          v-else
-                          :src="require('../../../assets/img/bookmark.svg')"
-                        ></inline-svg>
+                        <p-tooltip
+                          :label="
+                            item.is_bookmark
+                              ? `Hủy đánh dấu đơn hàng này`
+                              : `Đánh dấu đơn hàng này`
+                          "
+                          size="large"
+                          position="top"
+                          type="dark"
+                        >
+                          <inline-svg
+                            @click="handleBookmarkPackage(item.id)"
+                            :src="
+                              item.is_bookmark
+                                ? require('../../../assets/img/bookmarked.svg')
+                                : require('../../../assets/img/bookmark.svg')
+                            "
+                          ></inline-svg>
+                        </p-tooltip>
                       </td>
                       <td class="order-number">
                         <div class="d-flex justify-content-between">
