@@ -83,6 +83,7 @@
                 href="#"
                 type="lb-default"
                 style="padding-left: 12px;padding-right: 12px;"
+                :class="{ btn_bg: package_detail.package.is_bookmark }"
               >
                 <inline-svg
                   style="margin:unset"
@@ -999,3 +1000,8 @@ export default {
   },
 }
 </script>
+<style scoped>
+.btn_bg {
+  background: #ddf2f2;
+}
+</style>
