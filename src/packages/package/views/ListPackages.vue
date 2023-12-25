@@ -432,21 +432,28 @@
                             ></inline-svg>
                           </p-tooltip>
                         </span>
-                        <span
-                          class="time-ago"
-                          v-if="
-                            item.delivered_at &&
-                              item.accepted_at &&
-                              item.status == PACKAGE_STATUS_DELIVERED
-                          "
+                        <p-tooltip
+                          :label="item.estimate_delivery_rate"
+                          size="large"
+                          position="top"
+                          type="dark"
                         >
-                          ({{
-                            item.delivered_at
-                              | distanceTime(
-                                item.accepted_at || item.created_at
-                              )
-                          }})
-                        </span>
+                          <span
+                            class="time-ago"
+                            v-if="
+                              item.delivered_at &&
+                                item.accepted_at &&
+                                item.status == PACKAGE_STATUS_DELIVERED
+                            "
+                          >
+                            ({{
+                              item.delivered_at
+                                | distanceTime(
+                                  item.accepted_at || item.created_at
+                                )
+                            }})
+                          </span>
+                        </p-tooltip>
                       </td>
                       <td
                         v-if="item.is_package_exceed"
@@ -629,11 +636,13 @@ import Copy from '../../bill/components/Copy.vue'
 import ModalSearchAdvanced from './components/ModalSearchAdvanced'
 import { extension } from '../../../core/utils/url'
 import TrackLink from './components/Track.vue'
+import PTooltip from '../../../../uikit/components/tooltip/Tooltip'
 
 export default {
   name: 'ListPackages',
   mixins: [mixinRoute, mixinTable, mixinDownload, mixinChaining],
   components: {
+    PTooltip,
     ModalImport,
     ModalImportPreviewPackage,
     EmptySearchResult,
