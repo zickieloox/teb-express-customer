@@ -21,6 +21,7 @@ import { NotificationRead } from '../constants'
 export const state = {
   user: {},
   promotion: null,
+  push_bookmark: false,
   addresses: [],
   isDebt: false,
   notifications: [],
@@ -59,6 +60,7 @@ export const mutations = {
   [GET_USER]: (state, payload) => {
     state.user = payload.user
     state.promotion = payload.promotion
+    state.push_bookmark = payload.push_bookmark
   },
   [GET_CONFIGS]: (state, payload) => {
     state.configs = payload

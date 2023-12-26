@@ -86,7 +86,9 @@
           </div>
         </div>
         <p style="margin-bottom: 16px;">
-          <p-checkbox>Chỉ notifications order bookmark</p-checkbox>
+          <p-checkbox v-model="data.push_bookmark"
+            >Chỉ notifications order bookmark</p-checkbox
+          >
         </p>
         <hr />
         <div class="note">
@@ -123,6 +125,7 @@ export default {
   computed: {
     ...mapState('shared', {
       user: (state) => state.user,
+      push_bookmark: (state) => state.push_bookmark,
     }),
 
     maxDate() {
@@ -132,6 +135,7 @@ export default {
   mounted() {
     this.data.full_name = this.user.full_name
     this.data.birthday = this.user.birthday
+    this.data.push_bookmark = this.push_bookmark
     this.label = this.data.birthday ? this.data.birthday : 'dd/mm/yyyy'
   },
   data() {
@@ -141,6 +145,7 @@ export default {
         current_password: '',
         new_password: '',
         birthday: '',
+        push_bookmark: false,
       },
       isLoading: false,
       label: 'dd/mm/yyyy',
@@ -267,6 +272,7 @@ export default {
       handler: function(newVal) {
         this.data.full_name = newVal.full_name
         this.data.birthday = newVal.birthday
+        this.data.push_bookmark = this.push_bookmark
         this.label = this.data.birthday ? this.data.birthday : 'dd/mm/yyyy'
       },
       deep: true,
