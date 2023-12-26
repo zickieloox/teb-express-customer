@@ -1,6 +1,7 @@
 import format from 'date-fns/format'
 import parseISO from 'date-fns/parseISO'
-import distanceInWords from 'date-fns/formatDistance'
+import { formatDistanceStrict } from 'date-fns'
+import { distanceInWords } from 'date-fns'
 import getTime from 'date-fns/getTime'
 import { isNumber } from '@core/utils/type'
 import { vi } from 'date-fns/esm/locale'
@@ -93,7 +94,10 @@ export const distanceTime = (val1, val2) => {
     }
   }
 
-  return distanceInWords(date1, date2, { locale: vi })
+  return formatDistanceStrict(date1, date2, {
+    locale: vi,
+    roundingMethod: 'floor',
+  })
 }
 
 /**
