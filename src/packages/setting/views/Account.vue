@@ -85,6 +85,10 @@
             </div>
           </div>
         </div>
+        <p style="margin-bottom: 16px;">
+          <p-checkbox>Chỉ notifications order bookmark</p-checkbox>
+        </p>
+        <hr />
         <div class="note">
           <img src="@/assets/img/note.svg" alt="" />
           <p
@@ -270,3 +274,9 @@ export default {
   },
 }
 </script>
+<style scoped>
+.checkbox-custom {
+  position: unset !important;
+  padding-left: 10px;
+}
+</style>
