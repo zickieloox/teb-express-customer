@@ -115,10 +115,6 @@ export const PACKAGE_STATUS_TAB = [
     value: PACKAGE_STATUS_ARCHIVED_TEXT,
     text: 'Archived',
   },
-  {
-    value: PACKAGE_BOOKMARKED_TEXT,
-    text: 'Bookmarks',
-  },
 ]
 
 export const MAP_STATUS_CLASS_NAME = {

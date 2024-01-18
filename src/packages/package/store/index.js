@@ -47,6 +47,7 @@ export const state = {
   },
   packages: [],
   countPackages: 0,
+  count_bookmark: 0,
   count_status: [],
   products: [],
   service: [],
@@ -90,6 +91,7 @@ export const mutations = {
   [COUNT_LIST_PACKAGES]: (state, payload) => {
     state.countPackages = payload.count
     state.count_status = payload.status_count
+    state.count_bookmark = payload.count_bookmark
   },
   [SET_LOADING]: (state, payload) => {
     state.isLoading = payload

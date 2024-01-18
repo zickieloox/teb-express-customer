@@ -86,6 +86,21 @@
             </inline-svg>
             <span>Tìm nâng cao</span>
           </button>
+          <button
+            class="search-advanced ml-12"
+            :class="{ bg_bookmark: filter.is_bookmark }"
+            @click="setBookmark"
+          >
+            <inline-svg
+              :src="
+                !filter.is_bookmark
+                  ? require('../../../assets/img/bookmark_icon.svg')
+                  : require('../../../assets/img/bookmark_bg.svg')
+              "
+            >
+            </inline-svg>
+            <span>Bookmarks ({{ count_bookmark }})</span>
+          </button>
           <div class="btn-action">
             <button
               class="pull-right btn-primary btn ml-2"
@@ -671,6 +686,7 @@ export default {
         code: '',
         alert: 0,
         by_date: '',
+        is_bookmark: false,
       },
       labelDate: `Tìm theo ngày`,
       isUploading: false,
@@ -748,6 +764,7 @@ export default {
     ...mapState('package', {
       packages: (state) => state.packages,
       count: (state) => state.countPackages,
+      count_bookmark: (state) => state.count_bookmark,
       count_status: (state) => state.count_status,
       hiddenClass() {
         return this.action.selected.length > 0 || this.isAllChecked
@@ -1303,6 +1320,9 @@ export default {
     },
     showListCoupon() {
       this.visibleModalCoupon = true
+    },
+    setBookmark() {
+      this.filter.is_bookmark = !this.filter.is_bookmark
     },
   },
   watch: {
