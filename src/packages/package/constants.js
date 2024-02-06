@@ -196,7 +196,7 @@ export const CHANGE_PACKAGE_TYPE = {
   [PACKAGE_UPDATE_RETURN_PACKAGE]: 'Return',
   [PACKAGE_UPDATE_EXTRAFEE_TYPE_BATTERY]: 'Phụ phí pin',
   [PACKAGE_UPDATE_EXTRAFEE_TYPE_INSURED]: 'Phí bảo hiểm',
-  [PACKAGE_UPDATE_EXTRAFEE_TYPE_SERVICE]: 'Phí quá kích thước',
+  [PACKAGE_UPDATE_EXTRAFEE_TYPE_SERVICE]: 'Phụ phí kích thước',
 }
 // cSpell:enable
 
